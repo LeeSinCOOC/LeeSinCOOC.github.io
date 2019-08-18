@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="Python 来了Python（英国发音：/ˈpaɪθən/ 美国发音：/ˈpaɪθɑːn/）是一种广泛使用的解释型、高级编程、通用型编程语言，由吉多·范罗苏姆创造，第一版发布于1991年。背景Python的创始人为吉多·范罗苏姆。1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承。之所以选中Python作为程序的名字，是因为他是">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.Python 介绍">
+<meta property="og:url" content="http://leesin.cc/2019/08/19/python/1.Python 介绍/index.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="Python 来了Python（英国发音：/ˈpaɪθən/ 美国发音：/ˈpaɪθɑːn/）是一种广泛使用的解释型、高级编程、通用型编程语言，由吉多·范罗苏姆创造，第一版发布于1991年。背景Python的创始人为吉多·范罗苏姆。1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承。之所以选中Python作为程序的名字，是因为他是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-18T16:16:56.414Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1.Python 介绍">
+<meta name="twitter:description" content="Python 来了Python（英国发音：/ˈpaɪθən/ 美国发音：/ˈpaɪθɑːn/）是一种广泛使用的解释型、高级编程、通用型编程语言，由吉多·范罗苏姆创造，第一版发布于1991年。背景Python的创始人为吉多·范罗苏姆。1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承。之所以选中Python作为程序的名字，是因为他是">
+  <link rel="canonical" href="http://leesin.cc/2019/08/19/python/1.Python 介绍/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>1.Python 介绍 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/2019/08/19/python/1.Python 介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">1.Python 介绍
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-19 00:16:56" itemprop="dateCreated datePublished" datetime="2019-08-19T00:16:56+08:00">2019-08-19</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python-来了"><a href="#Python-来了" class="headerlink" title="Python 来了"></a>Python 来了</h1><p><strong>Python</strong>（英国发音：<a href="https://wikipedia.hk.wjbk.site/baike-Wikipedia:國際音標英語發音" target="_blank" rel="noopener">/ˈpaɪθən/</a> 美国发音：<a href="https://wikipedia.hk.wjbk.site/baike-Wikipedia:國際音標英語發音" target="_blank" rel="noopener">/ˈpaɪθɑːn/</a>）是一种广泛使用的<a href="https://wikipedia.hk.wjbk.site/baike-直譯語言" target="_blank" rel="noopener">解释型</a>、<a href="https://wikipedia.hk.wjbk.site/baike-高级编程语言" target="_blank" rel="noopener">高级编程</a>、<a href="https://wikipedia.hk.wjbk.site/baike-通用编程语言" target="_blank" rel="noopener">通用型编程语言</a>，由<a href="https://wikipedia.hk.wjbk.site/baike-吉多·范罗苏姆" target="_blank" rel="noopener">吉多·范罗苏姆</a>创造，第一版发布于1991年。</p><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>Python的创始人为<a href="https://wikipedia.hk.wjbk.site/baike-吉多·范罗苏姆" target="_blank" rel="noopener">吉多·范罗苏姆</a>。1989年的圣诞节期间，<a href="https://wikipedia.hk.wjbk.site/baike-吉多·范罗苏姆" target="_blank" rel="noopener">吉多·范罗苏姆</a>为了在<a href="https://wikipedia.hk.wjbk.site/baike-阿姆斯特丹" target="_blank" rel="noopener">阿姆斯特丹</a>打发时间，决心开发一个新的脚本解释程序，作为<a href="https://wikipedia.hk.wjbk.site/baike-ABC語言" target="_blank" rel="noopener">ABC语言</a>的一种继承。之所以选中Python作为程序的名字，是因为他是BBC电视剧——<a href="https://wikipedia.hk.wjbk.site/baike-蒙提·派森的飛行馬戲團" target="_blank" rel="noopener">蒙提·派森的飞行马戏团</a>的爱好者。</p><a id="more"></a>
+
+<h3 id="特性与设计哲学"><a href="#特性与设计哲学" class="headerlink" title="特性与设计哲学"></a>特性与设计哲学</h3><p>Python是完全面向对象的语言。函数、模块、数字、字符串都是对象。并且完全支持继承、重载、派生、多重继承，有益于增强源代码的复用性。</p>
+<h3 id="标准库"><a href="#标准库" class="headerlink" title="标准库"></a>标准库</h3><p>为了代码的重用性，Python 在设计之初就包含了许多好用的库函数，避免重复造轮子。所以对于标准库的掌握是Python开发者必备技能。</p>
+<p>我们可以看看标准库包含哪些功能呢？</p>
+<p>Python标准库的主要功能有：</p>
+<ul>
+<li><p>文本处理，包含文本格式化、正则表达式匹配、文本差异计算与合并、Unicode支持，二进制数据处理等功能</p>
+</li>
+<li><p>文件处理，包含文件操作、创建临时文件、文件压缩与归档、操作配置文件等功能</p>
+</li>
+<li><p>操作系统功能，包含线程与进程支持、IO复用、日期与时间处理、调用系统函数、日志（logging）等功能</p>
+</li>
+<li><p>网络通信，包含网络套接字，SSL加密通信、异步网络通信等功能</p>
+</li>
+<li><p>网络协议，支持HTTP，FTP，SMTP，POP，IMAP，NNTP，XMLRPC等多种网络协议，并提供了编写网络服务器的框架</p>
+</li>
+<li><p>W3C格式支持，包含HTML，SGML，XML的处理。</p>
+</li>
+<li><p>其它功能，包括国际化支持、数学运算、HASH、Tkinter等</p>
+<blockquote>
+<p>想要详细了解 Python 的标准库？</p>
+<p>请访问官方标准库文档：<a href="https://docs.python.org/3/library/index.html" target="_blank" rel="noopener">https://docs.python.org/3/library/index.html</a></p>
+</blockquote>
+</li>
+</ul>
+<p>如果你是初学者，上面的库功能可能难以理解，是的，标准库就是安装 Python 自带的内置电池，也算是比较底层的东西。接下来，让我们不妨再看看 Python 的第三方库吧：</p>
+<h3 id="著名的第三方库："><a href="#著名的第三方库：" class="headerlink" title="著名的第三方库："></a>著名的第三方库：</h3><h4 id="Web框架-编辑"><a href="#Web框架-编辑" class="headerlink" title="Web框架[编辑]"></a>Web框架[<a href="https://wikipedia.hk.wjbk.site/w/index.php?title=Python&action=edit&section=21" target="_blank" rel="noopener">编辑</a>]</h4><ul>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-Django" target="_blank" rel="noopener">Django</a></p>
+<p>开源Web开发框架，它鼓励快速开发,并遵循MVC设计，开发周期短。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-Flask" target="_blank" rel="noopener">Flask</a></p>
+<p>轻量级的Web框架。</p>
+</li>
+<li><p>Pyramid</p>
+<p>轻量，同时有可以规模化的Web框架，Pylon projects 的一部分。</p>
+</li>
+<li><p>ActiveGrid</p>
+<p>企业级的Web2.0解决方案。</p>
+</li>
+<li><p>Karrigell</p>
+<p>简单的Web框架，自身包含了Web服务，py脚本引擎和纯python的数据库PyDBLite。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-Tornado" target="_blank" rel="noopener">Tornado</a></p>
+<p>一个轻量级的Web框架，内置非阻塞式服务器，而且速度相当快</p>
+</li>
+<li><p>webpy</p>
+<p>一个小巧灵活的Web框架，虽然简单但是功能强大。</p>
+</li>
+<li><p>CherryPy</p>
+<p>基于Python的Web应用程序开发框架。</p>
+</li>
+<li><p>Pylons</p>
+<p>基于Python的一个极其高效和可靠的Web开发框架。</p>
+</li>
+<li><p>Zope</p>
+<p>开源的Web应用服务器。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-TurboGears" target="_blank" rel="noopener">TurboGears</a></p>
+<p>基于Python的MVC风格的Web应用程序框架。</p>
+</li>
+<li><p>Twisted</p>
+<p>流行的网络编程库，大型Web框架。</p>
+</li>
+<li><p>Quixote</p>
+<p>Web开发框架。</p>
+</li>
+<li><p>aiohttp</p>
+<p>轻量级的Web框架，采用的是Python3的asyncio异步特性。</p>
+</li>
+</ul>
+<h4 id="科学计算-编辑"><a href="#科学计算-编辑" class="headerlink" title="科学计算[编辑]"></a>科学计算[<a href="https://wikipedia.hk.wjbk.site/w/index.php?title=Python&action=edit&section=22" target="_blank" rel="noopener">编辑</a>]</h4><ul>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-Matplotlib" target="_blank" rel="noopener">Matplotlib</a></p>
+<p>用Python实现的类matlab的第三方库，用以绘制一些高质量的数学二维图形。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/w/index.php?title=Pandas&action=edit&redlink=1" target="_blank" rel="noopener">Pandas</a></p>
+<p>用于数据分析、数据建模、数据可视化的第三方库。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-SciPy" target="_blank" rel="noopener">SciPy</a></p>
+<p>基于Python的matlab实现，旨在实现matlab的所有功能。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-NumPy" target="_blank" rel="noopener">NumPy</a></p>
+<p>基于Python的科学计算第三方库，提供了矩阵，线性代数，傅立叶变换等等的解决方案。</p>
+</li>
+</ul>
+<h4 id="GUI-编辑"><a href="#GUI-编辑" class="headerlink" title="GUI[编辑]"></a>GUI[<a href="https://wikipedia.hk.wjbk.site/w/index.php?title=Python&action=edit&section=23" target="_blank" rel="noopener">编辑</a>]</h4><ul>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-PyGTK" target="_blank" rel="noopener">PyGtk</a></p>
+<p>基于Python的GUI程序开发GTK+库。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-PyQt" target="_blank" rel="noopener">PyQt</a></p>
+<p>用于Python的QT开发库。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-WxPython" target="_blank" rel="noopener">WxPython</a></p>
+<p>Python下的GUI编程框架，与MFC的架构相似。</p>
+</li>
+</ul>
+<h4 id="其它-编辑"><a href="#其它-编辑" class="headerlink" title="其它[编辑]"></a>其它[<a href="https://wikipedia.hk.wjbk.site/w/index.php?title=Python&action=edit&section=24" target="_blank" rel="noopener">编辑</a>]</h4><ul>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-BeautifulSoup" target="_blank" rel="noopener">BeautifulSoup</a></p>
+<p>基于Python的HTML/XML解析器，简单易用。</p>
+</li>
+<li><p>gevent</p>
+<p>python的一个高性能并发框架,使用了<a href="https://wikipedia.hk.wjbk.site/baike-Epoll" target="_blank" rel="noopener">epoll</a>事件监听、协程等机制将异步调用封装为同步调用。</p>
+</li>
+<li><p>PIL</p>
+<p>基于Python的图像处理库，功能强大，对图形文件的格式支持广泛。当前已无维护，另一个第三方库Pillow实现了对PIL库的支持和维护。</p>
+</li>
+<li><p>PyGame</p>
+<p>基于Python的多媒体开发和游戏软件开发模块。</p>
+</li>
+<li><p>Py2exe</p>
+<p>将python脚本转换为windows上可以独立运行的可执行程序。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/w/index.php?title=Requests&action=edit&redlink=1" target="_blank" rel="noopener">Requests</a></p>
+<p>适合于人类使用的HTTP库，封装了许多繁琐的HTTP功能，极大地简化了HTTP请求所需要的代码量。</p>
+</li>
+<li><p>scikit-learn</p>
+<p><a href="https://wikipedia.hk.wjbk.site/baike-机器学习" target="_blank" rel="noopener">机器学习</a>第三方库，实现许多知名的机器学习算法。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-TensorFlow" target="_blank" rel="noopener">TensorFlow</a></p>
+<p><a href="https://wikipedia.hk.wjbk.site/baike-Google" target="_blank" rel="noopener">Google</a>开发维护的<a href="https://wikipedia.hk.wjbk.site/baike-开源" target="_blank" rel="noopener">开源</a>机器学习库。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-Keras" target="_blank" rel="noopener">Keras</a></p>
+<p>基于<a href="https://wikipedia.hk.wjbk.site/baike-TensorFlow" target="_blank" rel="noopener">TensorFlow</a>，<a href="https://wikipedia.hk.wjbk.site/w/index.php?title=Theano&action=edit&redlink=1" target="_blank" rel="noopener">Theano</a>与<a href="https://wikipedia.hk.wjbk.site/baike-CNTK" target="_blank" rel="noopener">CNTK</a>的高端<a href="https://wikipedia.hk.wjbk.site/baike-神經網絡" target="_blank" rel="noopener">神经网络</a><a href="https://wikipedia.hk.wjbk.site/baike-API" target="_blank" rel="noopener">API</a>。</p>
+</li>
+<li><p><a href="https://wikipedia.hk.wjbk.site/baike-SQLAlchemy" target="_blank" rel="noopener">SQLAlchemy</a></p>
+<p><a href="https://wikipedia.hk.wjbk.site/baike-关系型数据库" target="_blank" rel="noopener">关系型数据库</a>的<a href="https://wikipedia.hk.wjbk.site/baike-对象关系映射" target="_blank" rel="noopener">对象关系映射</a>(ORM)工具</p>
+</li>
+</ul>
+<hr>
+<h3 id="利用上面这些著名的第三方库，可以完成下面的方向。有你感兴趣的领域吗？"><a href="#利用上面这些著名的第三方库，可以完成下面的方向。有你感兴趣的领域吗？" class="headerlink" title="利用上面这些著名的第三方库，可以完成下面的方向。有你感兴趣的领域吗？"></a>利用上面这些著名的第三方库，可以完成下面的方向。有你感兴趣的领域吗？</h3><hr>
+<ul>
+<li><h5 id="1-WEB开发"><a href="#1-WEB开发" class="headerlink" title="1. WEB开发"></a>1. WEB开发</h5></li>
+<li><p><strong>2.</strong> <strong>网络编程</strong></p>
+</li>
+<li><p><strong>3.</strong> <strong>爬虫开发</strong></p>
+</li>
+<li><p><strong>4.</strong> <strong>云计算开发</strong></p>
+</li>
+<li><p><strong>5.</strong> <strong>人工智能</strong></p>
+</li>
+<li><p><strong>6.</strong> <strong>自动化运维</strong></p>
+</li>
+<li><p><strong>7.</strong> <strong>金融分析</strong></p>
+</li>
+<li><p><strong>8.</strong> <strong>科学运算</strong></p>
+</li>
+<li><p><strong>9.</strong> <strong>游戏开发</strong>     </p>
+</li>
+<li><p><strong>10.</strong> <strong>桌面软件</strong></p>
+</li>
+</ul>
+<hr>
+<p>如果你对下面的某一个或几个方向感兴趣，不妨试试 Python 吧，我将会和你一起从零开始学习这些，并且在每一个细分领域从实战出发进行学习，每一篇博客布置相应内容的习题帮助巩固，最后完结的时候，让我们共同攻克一个较为完整的项目。</p>
+<hr>
+<blockquote>
+<p>文章参考：</p>
+<table>
+<thead>
+<tr>
+<th>参考文献</th>
+<th>细则</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>维基百科</td>
+<td>python</td>
+</tr>
+<tr>
+<td>python 官网</td>
+<td><a href="https://docs.python.org/3/library/index.html" target="_blank" rel="noopener">https://docs.python.org/3/library/index.html</a></td>
+</tr>
+</tbody></table>
+</blockquote>
+<hr>
+<p>Python 作为一门编程语言，应用广泛。曾经有个伟人说过：</p>
+<p><strong>吾生也有涯，而知也无涯。以有涯随无涯，殆已！</strong></p>
+<p>就是说这么多东西，等我学完，早挂掉了。莫非是劝我们弃疗？如何用有限的生命解锁 Python 技能呢？</p>
+<hr>
+<h2 id="—欲知后事如何，且听下回分解"><a href="#—欲知后事如何，且听下回分解" class="headerlink" title="—欲知后事如何，且听下回分解"></a>—欲知后事如何，且听下回分解</h2>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/2019/08/19/python/1.Python 介绍/" title="1.Python 介绍">http://leesin.cc/2019/08/19/python/1.Python 介绍/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/19/homework/Hello World/" rel="next" title="2.安装 Anaconda">
+                  <i class="fa fa-chevron-left"></i> 2.安装 Anaconda
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/08/19/python/2.安装 Anaconda/" rel="prev" title="2.安装 Anaconda">
+                  2.安装 Anaconda <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-来了"><span class="nav-number">1.</span> <span class="nav-text">Python 来了</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.0.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特性与设计哲学"><span class="nav-number">1.0.2.</span> <span class="nav-text">特性与设计哲学</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准库"><span class="nav-number">1.0.3.</span> <span class="nav-text">标准库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#著名的第三方库："><span class="nav-number">1.0.4.</span> <span class="nav-text">著名的第三方库：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Web框架-编辑"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">Web框架[编辑]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#科学计算-编辑"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">科学计算[编辑]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GUI-编辑"><span class="nav-number">1.0.4.3.</span> <span class="nav-text">GUI[编辑]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它-编辑"><span class="nav-number">1.0.4.4.</span> <span class="nav-text">其它[编辑]</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用上面这些著名的第三方库，可以完成下面的方向。有你感兴趣的领域吗？"><span class="nav-number">1.0.5.</span> <span class="nav-text">利用上面这些著名的第三方库，可以完成下面的方向。有你感兴趣的领域吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-WEB开发"><span class="nav-number">1.0.5.0.1.</span> <span class="nav-text">1. WEB开发</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#—欲知后事如何，且听下回分解"><span class="nav-number">1.1.</span> <span class="nav-text">—欲知后事如何，且听下回分解</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
