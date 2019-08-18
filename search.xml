@@ -2,79 +2,28 @@
 <search>
   <entry>
     <title><![CDATA[Hello World]]></title>
-    <url>%2F2019%2F08%2F16%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+    <url>%2F2019%2F08%2F18%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[第一篇博客就像程序员每学习一门新的编程语言的时候，首先输出：Hello World 一样，这篇博客也是我创建自己博客所迈出的第一步。为什么想起写博客在学习工作的过程中，从大家的博客中获益匪浅，也希望自己能够将学到的知识记录下来，分享出去。既可以给自己留下一点复习参考的笔记，又可以服务大家，能够有意或者无意帮助到别人，也算是赠人玫瑰，手留余香的快乐吧。 主要记录些什么作为自己的个人博客，我希望可以记录得随意一些。学习到的新知识，搜索记录的笔记，个人的人生感悟，生活中的一些琐碎，还有杂七杂八的兴趣吧 自己的一方天地生活中零零碎碎的事情，千丝万缕的关系，很难衷心地说出自己的想法，自己的思考。比起朋友圈，这里有更加独立的空间。虽然是公开博客，躲在这互联网的汪洋大海之中，谁也找不到，反而更能够沉下心来记录，感悟。]]></content>
   </entry>
   <entry>
-    <title><![CDATA[2.第一个项目]]></title>
-    <url>%2F2019%2F08%2F16%2F2-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE-1%2F</url>
+    <title><![CDATA[3.数学运算]]></title>
+    <url>%2F2019%2F08%2F18%2Fpython%2F3.%E6%95%B0%E5%AD%A6%E8%BF%90%E7%AE%97%2F</url>
     <content type="text"></content>
-      <categories>
-        <category>Pytorch 教程</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>pytorch</tag>
-      </tags>
   </entry>
   <entry>
-    <title><![CDATA[1.介绍]]></title>
-    <url>%2F2019%2F08%2F16%2F1-%E4%BB%8B%E7%BB%8D-2%2F</url>
-    <content type="text"></content>
-      <categories>
-        <category>Pytorch 教程</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>pytorch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[2.第一个项目]]></title>
-    <url>%2F2019%2F08%2F16%2F2-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE%2F</url>
-    <content type="text"></content>
-      <categories>
-        <category>Tensorflow 教程</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[1.介绍]]></title>
-    <url>%2F2019%2F08%2F16%2F1-%E4%BB%8B%E7%BB%8D-1%2F</url>
-    <content type="text"></content>
-      <categories>
-        <category>Tensorflow 教程</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[2.第一个程序]]></title>
-    <url>%2F2019%2F08%2F16%2F2-%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%2F</url>
+    <title><![CDATA[2.Python介绍]]></title>
+    <url>%2F2019%2F08%2F18%2Fpython%2F2.Python%E4%BB%8B%E7%BB%8D%2F</url>
     <content type="text"></content>
       <categories>
         <category>Python 教程</category>
       </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>system</tag>
-      </tags>
   </entry>
   <entry>
-    <title><![CDATA[1.介绍]]></title>
-    <url>%2F2019%2F08%2F16%2F1-%E4%BB%8B%E7%BB%8D%2F</url>
-    <content type="text"><![CDATA[这里是 Python它的老父亲龟叔 它的应用领域它的优点它的缺点]]></content>
+    <title><![CDATA[1.第一个程序]]></title>
+    <url>%2F2019%2F08%2F18%2Fpython%2F1.%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[Hello World]]></content>
       <categories>
         <category>Python 教程</category>
       </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>system</tag>
-      </tags>
   </entry>
 </search>
