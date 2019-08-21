@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="书接上文上一篇博客中简单介绍了一下Python的各种变量类型，这一篇我们重点介绍Python的数字类型。数字类型算得上是程序语言的灵魂了，大家都知道计算机通过高低电平的状态，规定高电平为1，低电平为0，用0和1来表示了如此庞大的计算体系。用0和1推演出字符，数字等的表达方式，再用数字，字符组成了如此复杂的程序结构。古老的程序员都是用打孔纸带进行编程，哪有现在这么舒服。作为语言中最重要的一环，数字，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-21T15:12:05.027Z">
+<meta property="og:updated_time" content="2019-08-21T15:13:55.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="5.Python的数字类型">
 <meta name="twitter:description" content="书接上文上一篇博客中简单介绍了一下Python的各种变量类型，这一篇我们重点介绍Python的数字类型。数字类型算得上是程序语言的灵魂了，大家都知道计算机通过高低电平的状态，规定高电平为1，低电平为0，用0和1来表示了如此庞大的计算体系。用0和1推演出字符，数字等的表达方式，再用数字，字符组成了如此复杂的程序结构。古老的程序员都是用打孔纸带进行编程，哪有现在这么舒服。作为语言中最重要的一环，数字，">
@@ -295,7 +295,7 @@
                 
               
 
-              <time title="创建时间：2019-08-21 23:11:00 / 修改时间：23:12:05" itemprop="dateCreated datePublished" datetime="2019-08-21T23:11:00+08:00">2019-08-21</time>
+              <time title="创建时间：2019-08-21 23:11:00 / 修改时间：23:13:55" itemprop="dateCreated datePublished" datetime="2019-08-21T23:11:00+08:00">2019-08-21</time>
             </span>
           
             
@@ -425,7 +425,7 @@
 </ul>
 <p>当我们想所有环境下都统一显示的话，可以重构<strong>repr</strong>方法；当我们想在不同环境下支持不同的显示，例如终端用户显示使用<strong>str</strong>，而程序员在开发期间则使用底层的<strong>repr</strong>来显示，实际上<strong>str</strong>只是覆盖了<strong>repr</strong>以得到更友好的用户显示。</p>
 <p>大概了解一下，不懂没关系。等学完整个课程再来理解就好。</p>
-<p>下面的事例为未来王者归来的你所写，提前面个眼缘就行。</p>
+<p>下面的示例为未来王者归来的你所写，提前面个眼缘就行。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,value=<span class="string">'hello world'</span>)</span>:</span></span><br><span class="line">        self.data = value</span><br><span class="line"></span><br><span class="line">t = Test()</span><br><span class="line">print(t)</span><br><span class="line"></span><br><span class="line">&lt;__main__.Test object at <span class="number">0x00000249BD7180F0</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <p>上面打印类对象并不是很友好，显示的是对象的内存地址</p>
