@@ -1,3 +1,5 @@
+http://leesin.cc/python/5.Python的数字类型.html
+http://leesin.cc/python/6.Python的math模块.html
 http://leesin.cc/reading/OpenCV调用摄像头拍照.html
 http://leesin.cc/python/3.Python 基础语法.html
 http://leesin.cc/python/4.Python 的变量类型.html

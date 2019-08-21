@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="书接上文这年头，自己造轮子的还是少啊，当你觉得别人的轮子不好用的时候，试试自己造一个，就会反省道：”真香” 我就是饿死，从这里跳下去，也绝不会用 math 模块的 123&amp;gt;&amp;gt;&amp;gt; import math&amp;gt;&amp;gt;&amp;gt; dir(math)[&apos;__doc__&apos;, &apos;__loader__&apos;, &apos;__name__&apos;, &apos;__package__&apos;, &apos;__spec__&apos;, &apos;aco">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.Python的math模块">
+<meta property="og:url" content="http://leesin.cc/python/6.Python的math模块.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="书接上文这年头，自己造轮子的还是少啊，当你觉得别人的轮子不好用的时候，试试自己造一个，就会反省道：”真香” 我就是饿死，从这里跳下去，也绝不会用 math 模块的 123&amp;gt;&amp;gt;&amp;gt; import math&amp;gt;&amp;gt;&amp;gt; dir(math)[&apos;__doc__&apos;, &apos;__loader__&apos;, &apos;__name__&apos;, &apos;__package__&apos;, &apos;__spec__&apos;, &apos;aco">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-21T15:11:31.712Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.Python的math模块">
+<meta name="twitter:description" content="书接上文这年头，自己造轮子的还是少啊，当你觉得别人的轮子不好用的时候，试试自己造一个，就会反省道：”真香” 我就是饿死，从这里跳下去，也绝不会用 math 模块的 123&amp;gt;&amp;gt;&amp;gt; import math&amp;gt;&amp;gt;&amp;gt; dir(math)[&apos;__doc__&apos;, &apos;__loader__&apos;, &apos;__name__&apos;, &apos;__package__&apos;, &apos;__spec__&apos;, &apos;aco">
+  <link rel="canonical" href="http://leesin.cc/python/6.Python的math模块">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>6.Python的math模块 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/6.Python的math模块.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">6.Python的math模块
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-21 23:11:00 / 修改时间：23:11:31" itemprop="dateCreated datePublished" datetime="2019-08-21T23:11:00+08:00">2019-08-21</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><p>这年头，自己造轮子的还是少啊，当你觉得别人的轮子不好用的时候，试试自己造一个，就会反省道：”真香”</p><blockquote>
+<p>我就是饿死，从这里跳下去，也绝不会用 math 模块的</p>
+</blockquote><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> math</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(math)</span><br><span class="line">[<span class="string">'__doc__'</span>, <span class="string">'__loader__'</span>, <span class="string">'__name__'</span>, <span class="string">'__package__'</span>, <span class="string">'__spec__'</span>, <span class="string">'acos'</span>, <span class="string">'acosh'</span>, <span class="string">'asin'</span>, <span class="string">'asinh'</span>, <span class="string">'atan'</span>, <span class="string">'atan2'</span>, <span class="string">'atanh'</span>, <span class="string">'ceil'</span>, <span class="string">'copysign'</span>, <span class="string">'cos'</span>, <span class="string">'cosh'</span>, <span class="string">'degrees'</span>, <span class="string">'e'</span>, <span class="string">'erf'</span>, <span class="string">'erfc'</span>, <span class="string">'exp'</span>, <span class="string">'expm1'</span>, <span class="string">'fabs'</span>, <span class="string">'factorial'</span>, <span class="string">'floor'</span>, <span class="string">'fmod'</span>, <span class="string">'frexp'</span>, <span class="string">'fsum'</span>, <span class="string">'gamma'</span>, <span class="string">'gcd'</span>, <span class="string">'hypot'</span>, <span class="string">'inf'</span>, <span class="string">'isclose'</span>, <span class="string">'isfinite'</span>, <span class="string">'isinf'</span>, <span class="string">'isnan'</span>, <span class="string">'ldexp'</span>, <span class="string">'lgamma'</span>, <span class="string">'log'</span>, <span class="string">'log10'</span>, <span class="string">'log1p'</span>, <span class="string">'log2'</span>, <span class="string">'modf'</span>, <span class="string">'nan'</span>, <span class="string">'pi'</span>, <span class="string">'pow'</span>, <span class="string">'radians'</span>, <span class="string">'remainder'</span>, <span class="string">'sin'</span>, <span class="string">'sinh'</span>, <span class="string">'sqrt'</span>, <span class="string">'tan'</span>, <span class="string">'tanh'</span>, <span class="string">'tau'</span>, <span class="string">'trunc'</span>]</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>dir 查看 math 查看包中的内容,每遇到一个新的模块，都可以用来看看，不讲了，懒得讲</p>
+<h3 id="Python常用数学函数"><a href="#Python常用数学函数" class="headerlink" title="Python常用数学函数"></a>Python常用数学函数</h3><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>abs(x)</td>
+<td>返回数字的绝对值，如abs(-10) 返回 10</td>
+</tr>
+<tr>
+<td>ceil(x)</td>
+<td>返回数字的上入整数，如math.ceil(4.1) 返回 5</td>
+</tr>
+<tr>
+<td><del>cmp</del>(x,y)</td>
+<td>如果 x &lt; y 返回 -1, 如果 x == y 返回 0, 如果 x &gt; y 返回 1。已被删除</td>
+</tr>
+<tr>
+<td>exp(x)</td>
+<td>返回e的x次幂(ex),如math.exp(1) 返回2.718281828459045</td>
+</tr>
+<tr>
+<td>fabs(x)</td>
+<td>返回数字的绝对值，如math.fabs(-10) 返回10.0</td>
+</tr>
+<tr>
+<td>floor(x)</td>
+<td>返回数字的下舍整数，如math.floor(4.9)返回 4</td>
+</tr>
+<tr>
+<td>log(x)</td>
+<td>如math.log(math.e)返回1.0,math.log(100,10)返回2.0</td>
+</tr>
+<tr>
+<td>max(x1,x2,…)</td>
+<td>返回给定参数的最大值，参数可以为序列。</td>
+</tr>
+<tr>
+<td>min(x1,x2,…)</td>
+<td>返回给定参数的最小值，参数可以为序列。</td>
+</tr>
+<tr>
+<td>modf(x)</td>
+<td>返回x的整数部分与小数部分，两部分的数值符号与x相同，整数部分以浮点型表示。</td>
+</tr>
+<tr>
+<td>pow(x,y,z)</td>
+<td>x**y 运算后的值。</td>
+</tr>
+<tr>
+<td>round(x,[n])</td>
+<td>浮点数x的四舍五入值，如给出n值，则代表舍入到小数点后的位数。</td>
+</tr>
+<tr>
+<td>sqrt(x)</td>
+<td>返回数字x的平方根</td>
+</tr>
+</tbody></table>
+<p>下面给出部分函数的示例，如果是没有数学基础，第一次看见这些函数，或者想要更多详细的参考，可以参考官方文档</p>
+<p>或者，使用帮助命名 help                          <del>_</del> :救救我</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> math</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(math)</span><br><span class="line">Help on built-<span class="keyword">in</span> module math:</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line">    math</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">    This module provides access to the mathematical functions</span><br><span class="line">    defined by the C standard.</span><br><span class="line"></span><br><span class="line">FUNCTIONS</span><br><span class="line">    acos(x, /)</span><br><span class="line">        Return the arc cosine (measured <span class="keyword">in</span> radians) of x.</span><br><span class="line">    </span><br><span class="line">    acosh(x, /)</span><br><span class="line">        Return the inverse hyperbolic cosine of x.</span><br><span class="line">    </span><br><span class="line">    asin(x, /)</span><br><span class="line">        Return the arc sine (measured <span class="keyword">in</span> radians) of x.</span><br><span class="line">    </span><br><span class="line">    asinh(x, /)</span><br><span class="line">        Return the inverse hyperbolic sine of x.</span><br><span class="line">    </span><br><span class="line">    atan(x, /)</span><br><span class="line">        Return the arc tangent (measured <span class="keyword">in</span> radians) of x.</span><br><span class="line">    </span><br><span class="line">    atan2(y, x, /)</span><br><span class="line">        Return the arc tangent (measured <span class="keyword">in</span> radians) of y/x.</span><br><span class="line">        </span><br><span class="line">        Unlike atan(y/x), the signs of both x <span class="keyword">and</span> y are considered.</span><br><span class="line">    </span><br><span class="line">    atanh(x, /)</span><br><span class="line">        Return the inverse hyperbolic tangent of x.</span><br><span class="line">    </span><br><span class="line">    ceil(x, /)</span><br><span class="line">        Return the ceiling of x <span class="keyword">as</span> an Integral.</span><br><span class="line"><span class="comment"># 还有很多</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">print(abs(<span class="number">-10</span>),<span class="string">'\t'</span>,math.ceil(<span class="number">1.1</span>),<span class="string">'\t'</span>,math.exp(<span class="number">1</span>),<span class="string">'\n'</span>,</span><br><span class="line">      max(<span class="number">1</span>,<span class="number">2</span>),<span class="string">'\t'</span>,math.floor(<span class="number">4.5</span>),<span class="string">'\t'</span>,math.log(<span class="number">2</span>,<span class="number">4</span>),<span class="string">'\n'</span>,</span><br><span class="line">      pow(<span class="number">2</span>,<span class="number">5</span>,<span class="number">2</span>),<span class="string">'\t'</span>,math.sin(math.pi),<span class="string">'\t'</span>,math.modf(<span class="number">2.3</span>),<span class="string">'\n'</span>,</span><br><span class="line">      round(<span class="number">4.3334</span>,<span class="number">2</span>),<span class="string">'\t'</span>,math.cmp(<span class="number">1</span>,<span class="number">2</span>),<span class="string">'\t'</span>,math.cmp(<span class="number">1</span>,<span class="number">1</span>),<span class="string">'\n'</span>,</span><br><span class="line">      math.cmp(<span class="number">2</span>,<span class="number">1</span>),<span class="string">'\t'</span>,math.sqrt(<span class="number">4</span>),<span class="string">'\t'</span>,   </span><br><span class="line">      )</span><br><span class="line"><span class="comment">#因为已经移除，会报错</span></span><br><span class="line">AttributeError: module <span class="string">'math'</span> has no attribute <span class="string">'cmp'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">print(abs(<span class="number">-10</span>),<span class="string">'\t\t'</span>,math.ceil(<span class="number">1.1</span>),<span class="string">'\t'</span>*<span class="number">5</span>,math.exp(<span class="number">1</span>),<span class="string">'\n'</span>,</span><br><span class="line">      max(<span class="number">1</span>,<span class="number">2</span>),<span class="string">'\t\t'</span>,math.floor(<span class="number">4.5</span>),<span class="string">'\t'</span>*<span class="number">5</span>,math.log(<span class="number">2</span>,<span class="number">4</span>),<span class="string">'\n'</span>,</span><br><span class="line">      pow(<span class="number">2</span>,<span class="number">5</span>,<span class="number">2</span>),<span class="string">'\t\t'</span>,math.sin(math.pi),<span class="string">'\t\t'</span>,math.modf(<span class="number">2.3</span>),<span class="string">'\n'</span>,</span><br><span class="line">      round(<span class="number">4.3334</span>,<span class="number">2</span>),<span class="string">'\t\t'</span>,math.sqrt(<span class="number">4</span>),<span class="string">'\t\t'</span>,   </span><br><span class="line">      )</span><br><span class="line"></span><br><span class="line"><span class="number">10</span>               <span class="number">2</span>                                       <span class="number">2.718281828459045</span> </span><br><span class="line"> <span class="number">2</span>               <span class="number">4</span>                                       <span class="number">0.5</span> </span><br><span class="line"> <span class="number">0</span>               <span class="number">1.2246467991473532e-16</span>                  (<span class="number">0.2999999999999998</span>, <span class="number">2.0</span>) </span><br><span class="line"> <span class="number">4.33</span>            <span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+
+<p>那我们想要比较两个值的时候怎么办呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> operator</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>operator.eq(<span class="string">'a'</span>,<span class="string">'b'</span>)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>operator.eq(<span class="string">'a'</span>,<span class="string">'a'</span>)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>需要导入 operator 模块</p>
+<p>并且提供了以下内置函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">operator.lt(a, b)  </span><br><span class="line">operator.le(a, b)  </span><br><span class="line">operator.eq(a, b)  </span><br><span class="line">operator.ne(a, b)  </span><br><span class="line">operator.ge(a, b)  </span><br><span class="line">operator.gt(a, b)  </span><br><span class="line">operator.__lt__(a, b)  </span><br><span class="line">operator.__le__(a, b)  </span><br><span class="line">operator.__eq__(a, b)  </span><br><span class="line">operator.__ne__(a, b)  </span><br><span class="line">operator.__ge__(a, b)  </span><br><span class="line">operator.__gt__(a, b)</span><br></pre></td></tr></table></figure>
+
+<p>math 模块暂时结束探讨，其实我自己使用感觉不是太多，通常用的还是自带的函数，尤其很多数据分析包都有自己的数学模块，不过看 math 包的源码倒是对编程思维的锻炼大有裨益。有时间一起看看咯。</p>
+<hr>
+<h2 id="—-欲知后事是如何，且听下回分解"><a href="#—-欲知后事是如何，且听下回分解" class="headerlink" title="— 欲知后事是如何，且听下回分解"></a>— 欲知后事是如何，且听下回分解</h2>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/python/6.Python的math模块.html" title="6.Python的math模块">http://leesin.cc/python/6.Python的math模块.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/OpenCV调用摄像头拍照.html" rel="next" title="如何调用 OpenCV 读取摄像头图片保存在本地">
+                  <i class="fa fa-chevron-left"></i> 如何调用 OpenCV 读取摄像头图片保存在本地
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/python/5.Python的数字类型.html" rel="prev" title="5.Python的数字类型">
+                  5.Python的数字类型 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#书接上文"><span class="nav-number">1.</span> <span class="nav-text">书接上文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python常用数学函数"><span class="nav-number">1.1.</span> <span class="nav-text">Python常用数学函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#—-欲知后事是如何，且听下回分解"><span class="nav-number">2.</span> <span class="nav-text">— 欲知后事是如何，且听下回分解</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

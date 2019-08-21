@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://leesin.cc/python/5.Python%E7%9A%84%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B.html</loc>
+    <lastmod>2019-08-21</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/python/6.Python%E7%9A%84math%E6%A8%A1%E5%9D%97.html</loc>
+    <lastmod>2019-08-21</lastmod>
+  </url>  <url>
     <loc>http://leesin.cc/reading/OpenCV%E8%B0%83%E7%94%A8%E6%91%84%E5%83%8F%E5%A4%B4%E6%8B%8D%E7%85%A7.html</loc>
     <lastmod>2019-08-21</lastmod>
   </url>  <url>
