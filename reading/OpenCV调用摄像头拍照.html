@@ -63,12 +63,12 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="如何调用 OpenCV 读取摄像头图片保存在本地1.导入OenCV 库1import cv212print(cv2.__version__) #版本的重要性不言而喻4.1.02.创建一个 VideoCapture 对象1cap = cv2.VideoCapture(0) #如果你有其他摄像头，注意换参数">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/images/4.jpg">
-<meta property="og:updated_time" content="2019-08-21T12:29:26.541Z">
+<meta property="og:image" content="http://leesin.cc/images/1.PNG">
+<meta property="og:updated_time" content="2019-08-21T12:33:29.912Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何调用 OpenCV 读取摄像头图片保存在本地">
 <meta name="twitter:description" content="如何调用 OpenCV 读取摄像头图片保存在本地1.导入OenCV 库1import cv212print(cv2.__version__) #版本的重要性不言而喻4.1.02.创建一个 VideoCapture 对象1cap = cv2.VideoCapture(0) #如果你有其他摄像头，注意换参数">
-<meta name="twitter:image" content="http://leesin.cc/images/4.jpg">
+<meta name="twitter:image" content="http://leesin.cc/images/1.PNG">
   <link rel="canonical" href="http://leesin.cc/reading/OpenCV调用摄像头拍照">
 
 
@@ -297,7 +297,7 @@
                 
               
 
-              <time title="创建时间：2019-08-21 20:34:20 / 修改时间：20:29:26" itemprop="dateCreated datePublished" datetime="2019-08-21T20:34:20+08:00">2019-08-21</time>
+              <time title="创建时间：2019-08-21 20:34:20 / 修改时间：20:33:29" itemprop="dateCreated datePublished" datetime="2019-08-21T20:34:20+08:00">2019-08-21</time>
             </span>
           
             
@@ -347,7 +347,7 @@
 
 <h3 id="4-主程序"><a href="#4-主程序" class="headerlink" title="4.主程序"></a>4.主程序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(cap.isOpened()):<span class="comment">#循环读取每一帧</span></span><br><span class="line">    ret_flag, Vshow = cap.read() </span><br><span class="line">    <span class="comment">#返回两个参数，第一个是bool是否正常打开，第二个是照片数组，</span></span><br><span class="line">    <span class="comment">#如果只设置一个则变成一个tumple包含bool和图片</span></span><br><span class="line">    </span><br><span class="line">    cv2.imshow(<span class="string">"Capture_Test"</span>,Vshow)  <span class="comment">#窗口显示，显示名为 Capture_Test</span></span><br><span class="line">    k = cv2.waitKey(<span class="number">1</span>) &amp; <span class="number">0xFF</span> <span class="comment">#每帧数据延时 1ms，延时不能为 0，否则读取的结果会是静态帧</span></span><br><span class="line">    <span class="keyword">if</span> k == ord(<span class="string">'s'</span>):  <span class="comment">#若检测到按键 ‘s’，打印字符串</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">       下面的存储路径改为你自己的文件路径，尽量不要有中文，num是上面的递增，保证新图片不会覆盖原图</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        cv2.imwrite(<span class="string">"images/"</span>+ str(num) + <span class="string">".jpg"</span>, Vshow) </span><br><span class="line">        print(cap.get(<span class="number">3</span>)); <span class="comment">#得到长宽</span></span><br><span class="line">        print(cap.get(<span class="number">4</span>));</span><br><span class="line">        print(<span class="string">"success to save"</span>+str(num)+<span class="string">".jpg"</span>)</span><br><span class="line">        print(<span class="string">"-------------------------"</span>)</span><br><span class="line">        num += <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> k == ord(<span class="string">'q'</span>): <span class="comment">#若检测到按键 ‘q’，退出</span></span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="5-效果"><a href="#5-效果" class="headerlink" title="5.效果"></a>5.效果</h3><p><img src="/images/4.jpg" alt></p>
+<h3 id="5-效果"><a href="#5-效果" class="headerlink" title="5.效果"></a>5.效果</h3><p><img src="/images/1.PNG" alt></p>
 
     </div>
 
