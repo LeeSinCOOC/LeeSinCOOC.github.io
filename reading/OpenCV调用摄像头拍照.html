@@ -57,7 +57,7 @@
 
   <meta name="description" content="如何调用 OpenCV 读取摄像头图片保存在本地1.导入OenCV 库1import cv212print(cv2.__version__) #版本的重要性不言而喻4.1.02.创建一个 VideoCapture 对象1cap = cv2.VideoCapture(0) #如果你有其他摄像头，注意换参数">
 <meta name="keywords" content="python,tensorflow,pytorch,人工智能">
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:title" content="如何调用 OpenCV 读取摄像头图片保存在本地">
 <meta property="og:url" content="http://leesin.cc/reading/OpenCV调用摄像头拍照.html">
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
@@ -75,8 +75,8 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
-    isPage: true,
+    isPost: true,
+    isPage: false,
     isArchive: false
   };
 </script>
@@ -225,30 +225,6 @@
 
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
 </nav>
   <div class="site-search">
     
@@ -285,28 +261,81 @@
 
   <div id="posts" class="posts-expand">
     
-    
-    
-    <div class="post-block page">
-      <header class="post-header">
 
-<h2 class="post-title" itemprop="name headline">如何调用 OpenCV 读取摄像头图片保存在本地
-
-</h2>
-
-<div class="post-meta">
+  <article class="post" itemscope itemtype="http://schema.org/Article">
   
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/OpenCV调用摄像头拍照.html">
 
-</div>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
 
-</header>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">如何调用 OpenCV 读取摄像头图片保存在本地
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-21 20:34:20 / 修改时间：20:22:28" itemprop="dateCreated datePublished" datetime="2019-08-21T20:34:20+08:00">2019-08-21</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-      
-      
-      <div class="post-body">
-        
-          <h2 id="如何调用-OpenCV-读取摄像头图片保存在本地"><a href="#如何调用-OpenCV-读取摄像头图片保存在本地" class="headerlink" title="如何调用 OpenCV 读取摄像头图片保存在本地"></a>如何调用 OpenCV 读取摄像头图片保存在本地</h2><h3 id="1-导入OenCV-库"><a href="#1-导入OenCV-库" class="headerlink" title="1.导入OenCV 库"></a>1.导入OenCV 库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(cv2.__version__) <span class="comment">#版本的重要性不言而喻</span></span><br><span class="line"><span class="number">4.1</span><span class="number">.0</span></span><br></pre></td></tr></table></figure><h3 id="2-创建一个-VideoCapture-对象"><a href="#2-创建一个-VideoCapture-对象" class="headerlink" title="2.创建一个 VideoCapture 对象"></a>2.创建一个 VideoCapture 对象</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cap = cv2.VideoCapture(<span class="number">0</span>) <span class="comment">#如果你有其他摄像头，注意换参数</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+        <h2 id="如何调用-OpenCV-读取摄像头图片保存在本地"><a href="#如何调用-OpenCV-读取摄像头图片保存在本地" class="headerlink" title="如何调用 OpenCV 读取摄像头图片保存在本地"></a>如何调用 OpenCV 读取摄像头图片保存在本地</h2><h3 id="1-导入OenCV-库"><a href="#1-导入OenCV-库" class="headerlink" title="1.导入OenCV 库"></a>1.导入OenCV 库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(cv2.__version__) <span class="comment">#版本的重要性不言而喻</span></span><br><span class="line"><span class="number">4.1</span><span class="number">.0</span></span><br></pre></td></tr></table></figure><h3 id="2-创建一个-VideoCapture-对象"><a href="#2-创建一个-VideoCapture-对象" class="headerlink" title="2.创建一个 VideoCapture 对象"></a>2.创建一个 VideoCapture 对象</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cap = cv2.VideoCapture(<span class="number">0</span>) <span class="comment">#如果你有其他摄像头，注意换参数</span></span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
 
@@ -317,17 +346,81 @@
 <h3 id="4-主程序"><a href="#4-主程序" class="headerlink" title="4.主程序"></a>4.主程序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(cap.isOpened()):<span class="comment">#循环读取每一帧</span></span><br><span class="line">    ret_flag, Vshow = cap.read() </span><br><span class="line">    <span class="comment">#返回两个参数，第一个是bool是否正常打开，第二个是照片数组，</span></span><br><span class="line">    <span class="comment">#如果只设置一个则变成一个tumple包含bool和图片</span></span><br><span class="line">    </span><br><span class="line">    cv2.imshow(<span class="string">"Capture_Test"</span>,Vshow)  <span class="comment">#窗口显示，显示名为 Capture_Test</span></span><br><span class="line">    k = cv2.waitKey(<span class="number">1</span>) &amp; <span class="number">0xFF</span> <span class="comment">#每帧数据延时 1ms，延时不能为 0，否则读取的结果会是静态帧</span></span><br><span class="line">    <span class="keyword">if</span> k == ord(<span class="string">'s'</span>):  <span class="comment">#若检测到按键 ‘s’，打印字符串</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">       下面的存储路径改为你自己的文件路径，尽量不要有中文，num是上面的递增，保证新图片不会覆盖原图</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        cv2.imwrite(<span class="string">"images/"</span>+ str(num) + <span class="string">".jpg"</span>, Vshow) </span><br><span class="line">        print(cap.get(<span class="number">3</span>)); <span class="comment">#得到长宽</span></span><br><span class="line">        print(cap.get(<span class="number">4</span>));</span><br><span class="line">        print(<span class="string">"success to save"</span>+str(num)+<span class="string">".jpg"</span>)</span><br><span class="line">        print(<span class="string">"-------------------------"</span>)</span><br><span class="line">        num += <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> k == ord(<span class="string">'q'</span>): <span class="comment">#若检测到按键 ‘q’，退出</span></span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 
 
-        
-      </div>
-      
-      
-      
     </div>
-    
 
     
     
     
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/OpenCV调用摄像头拍照.html" title="如何调用 OpenCV 读取摄像头图片保存在本地">http://leesin.cc/reading/OpenCV调用摄像头拍照.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/python/3.Python 基础语法.html" rel="next" title="3.Python基础语法">
+                  <i class="fa fa-chevron-left"></i> 3.Python基础语法
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
   </div>
 
 
@@ -372,7 +465,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -391,7 +484,9 @@
         
           
         
-        <span class="site-state-item-count">2</span>
+          
+        
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -580,9 +675,8 @@
 
 
   
-    <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
 
-  
 
 </body>
 </html>
