@@ -63,24 +63,24 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="直接可以用的Python和OpenCV检测及分割图像的目标区域例子第一天老师：你知道么，今天有人问了我一个问题。~.我：什么？老师：他说很难。~.我：关于什么的？老师：图像处理。~.我：喔，你说说看，我确实做了不少图像处理的东西（心里默念，你不知知道你给过我多少图像吗？）老师：好嘞！在用深度学习的时候，比如说面对一张图像，对某个区域感兴趣怎么办？~.我：他傻啊，切割出来啊，只需要训练感兴趣的部分就">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/reading/images/20171217151645112.png">
-<meta property="og:image" content="http://leesin.cc/reading/images/20171217153537561.png">
-<meta property="og:image" content="http://leesin.cc/reading/images/20171217153628642.png">
-<meta property="og:image" content="http://leesin.cc/reading/images/20171217170851779.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171217171857880.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171217171641843.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171217172950667.png">
+<meta property="og:image" content="http://leesin.cc/images/20171217151645112.png">
+<meta property="og:image" content="http://leesin.cc/images/20171217153537561.png">
+<meta property="og:image" content="http://leesin.cc/images/20171217153628642.png">
+<meta property="og:image" content="http://leesin.cc/images/20171217170851779.png">
+<meta property="og:image" content="http://leesin.cc/images%5C20171217171857880.png">
+<meta property="og:image" content="http://leesin.cc/images%5C20171217171641843.png">
+<meta property="og:image" content="http://leesin.cc/images%5C20171217172950667.png">
 <meta property="og:image" content="http://leesin.cc/reading/images%5C20171217173611986.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171217174137392.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171217174357314.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171218161923975.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171218162320264.png">
-<meta property="og:image" content="http://leesin.cc/reading/images%5C20171218162710456.png">
-<meta property="og:updated_time" content="2019-08-22T11:55:27.958Z">
+<meta property="og:image" content="http://leesin.cc/images%5C20171217174137392.png">
+<meta property="og:image" content="http://leesin.cc/images%5C20171217174357314.png">
+<meta property="og:image" content="http://leesin.cc/images%5C20171218161923975.png">
+<meta property="og:image" content="http://leesin.cc/images%5C20171218162320264.png">
+<meta property="og:image" content="http://leesin.cc/images%5C20171218162710456.png">
+<meta property="og:updated_time" content="2019-08-22T12:12:59.360Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="直接可以用的Python和OpenCV检测及分割图像的目标区域例子">
 <meta name="twitter:description" content="直接可以用的Python和OpenCV检测及分割图像的目标区域例子第一天老师：你知道么，今天有人问了我一个问题。~.我：什么？老师：他说很难。~.我：关于什么的？老师：图像处理。~.我：喔，你说说看，我确实做了不少图像处理的东西（心里默念，你不知知道你给过我多少图像吗？）老师：好嘞！在用深度学习的时候，比如说面对一张图像，对某个区域感兴趣怎么办？~.我：他傻啊，切割出来啊，只需要训练感兴趣的部分就">
-<meta name="twitter:image" content="http://leesin.cc/reading/images/20171217151645112.png">
+<meta name="twitter:image" content="http://leesin.cc/images/20171217151645112.png">
   <link rel="canonical" href="http://leesin.cc/reading/OpenCV检测分割图像">
 
 
@@ -309,7 +309,7 @@
                 
               
 
-              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：19:55:27" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:12:59" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
             </span>
           
             
@@ -352,30 +352,30 @@
         <h1 id="直接可以用的Python和OpenCV检测及分割图像的目标区域例子"><a href="#直接可以用的Python和OpenCV检测及分割图像的目标区域例子" class="headerlink" title="直接可以用的Python和OpenCV检测及分割图像的目标区域例子"></a>直接可以用的Python和OpenCV检测及分割图像的目标区域例子</h1><h2 id="第一天"><a href="#第一天" class="headerlink" title="第一天"></a>第一天</h2><p>老师：你知道么，今天有人问了我一个问题。<br>~.我：什么？<br>老师：他说很难。<br>~.我：关于什么的？<br>老师：图像处理。</p><p>~.我：喔，你说说看，我确实做了不少图像处理的东西（心里默念，你不知知道你给过我多少图像吗？）<br>老师：好嘞！在用深度学习的时候，比如说面对一张图像，对某个区域感兴趣怎么办？<br>~.我：他傻啊，切割出来啊，只需要训练感兴趣的部分就好啦。</p><a id="more"></a>
 
 <p>老师：哎，那你给我一个教程，我正好顺手把他的问题解决了。<br>~.我：好的（黑人脸.gif）<br>老师：我回头把图片数据发给你。<br>~.我：好的好的，老师，by the way, 有多少数据啊？<br>老师：也不多，一个U盘够了，这样吧，明天你过来拷一下吧。<br>~.我：好的（hello？一个U盘？）</p>
-<p><img src="images/20171217151645112.png" alt></p>
-<h2 id="第二天"><a href="#第二天" class="headerlink" title="第二天"></a>第二天</h2><p><img src="images/20171217153537561.png" alt></p>
+<p><img src="/images/20171217151645112.png" alt></p>
+<h2 id="第二天"><a href="#第二天" class="headerlink" title="第二天"></a>第二天</h2><p><img src="/images/20171217153537561.png" alt></p>
 <p><strong>有这么一个文件</strong><br><strong>看了里面。。。我要爆炸了。。。</strong></p>
-<p><img src="images/20171217153628642.png" alt></p>
+<p><img src="/images/20171217153628642.png" alt></p>
 <p><strong>&gt; 598M * 15 = 8970M = 8.97G 我的个妈呀。</strong></p>
 <p>打开一看 全是密密麻麻的——虫子！！！<br>为了视觉体验，自动屏蔽，请大家自行去谷歌：虫子、worm、bug、insects。。。</p>
 <h2 id="三天后"><a href="#三天后" class="headerlink" title="三天后"></a>三天后</h2><p>~.我： 老师， 我就给一个方法啊， 不同的虫子他们可以自己调阈值和方法，我已经有写说明文件。<br>老师： 好的，我看看。</p>
 <p>考虑到<strong>视觉忍受能力</strong>，我用一个可爱的虫子做为一个示例，其他的都差不多，大家自行尝试。</p>
 <p><strong>目标是把虫子区域抠出来</strong></p>
-<p><img src="images/20171217170851779.png" alt></p>
+<p><img src="/images/20171217170851779.png" alt></p>
 <h2 id="环境："><a href="#环境：" class="headerlink" title="环境："></a><strong>环境：</strong></h2><p>例图：谷歌，可爱的虫子–image<br>软件：Anaconda 4.20，Opencv3.2<br>OpenCv的安装：<br>1.1安装Python3.60<br>1.2<a href="http://blog.csdn.net/sinat_36458870/article/details/74857481" target="_blank" rel="noopener">下载安装opencv3.2</a></p>
 <h2 id="具体思路如下："><a href="#具体思路如下：" class="headerlink" title="具体思路如下："></a>具体思路如下：</h2><h4 id="1-获取图片，这个简单哈"><a href="#1-获取图片，这个简单哈" class="headerlink" title="1.获取图片，这个简单哈"></a><strong>1.获取图片，这个简单哈</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">img_path = <span class="string">r'C:\Users\aixin\Desktop\chongzi.png'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br></pre></td></tr></table></figure>
 
-<h2 id="看，这不就是你处理初始的样子？"><a href="#看，这不就是你处理初始的样子？" class="headerlink" title="看，这不就是你处理初始的样子？"></a>看，这不就是你处理初始的样子？</h2><p><img src="images%5C20171217171857880.png" alt></p>
+<h2 id="看，这不就是你处理初始的样子？"><a href="#看，这不就是你处理初始的样子？" class="headerlink" title="看，这不就是你处理初始的样子？"></a>看，这不就是你处理初始的样子？</h2><p><img src="/images%5C20171217171857880.png" alt></p>
 <h4 id="2-转换灰度并去噪声"><a href="#2-转换灰度并去噪声" class="headerlink" title="2.转换灰度并去噪声"></a><strong>2.转换灰度并去噪声</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line">blurred = cv2.GaussianBlur(gray, (<span class="number">9</span>, <span class="number">9</span>),<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 
 <p>我们可以得到这两张图，第一张是灰度图，第二张是去噪之后的，另外说一下，去噪咱们有很多种方法，均值滤波器、高斯滤波器、中值滤波器、双边滤波器等。</p>
 <p>这里取高斯是因为高斯去噪效果是最好的。</p>
-<p><img src="images%5C20171217171641843.png" alt></p>
+<p><img src="/images%5C20171217171641843.png" alt></p>
 <h4 id="3-提取图像的梯度"><a href="#3-提取图像的梯度" class="headerlink" title="3.提取图像的梯度"></a><strong>3.提取图像的梯度</strong></h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gradX = cv2.Sobel(gray, <span class="attribute">ddepth</span>=cv2.CV_32F, <span class="attribute">dx</span>=1, <span class="attribute">dy</span>=0)</span><br><span class="line">gradY = cv2.Sobel(gray, <span class="attribute">ddepth</span>=cv2.CV_32F, <span class="attribute">dx</span>=0, <span class="attribute">dy</span>=1)</span><br><span class="line"></span><br><span class="line">gradient = cv2.subtract(gradX, gradY)</span><br><span class="line">gradient = cv2.convertScaleAbs(gradient)</span><br></pre></td></tr></table></figure>
 
 <p>以Sobel算子计算x，y方向上的梯度，之后在x方向上减去y方向上的梯度，通过这个减法，我们留下具有高水平梯度和低垂直梯度的图像区域。</p>
 <p>此时，我们会得到</p>
-<p><img src="images%5C20171217172950667.png" alt></p>
+<p><img src="/images%5C20171217172950667.png" alt></p>
 <h4 id="4-我们继续去噪声"><a href="#4-我们继续去噪声" class="headerlink" title="4.我们继续去噪声"></a><strong>4.我们继续去噪声</strong></h4><blockquote>
 <p>考虑到图像的孔隙 首先使用低通滤泼器平滑图像, 这将有助于平滑图像中的高频噪声。 低通滤波器的目标是降低图像的变化率。<br>如将每个像素替换为该像素周围像素的均值， 这样就可以平滑并替代那些强度变化明显的区域。</p>
 </blockquote>
@@ -389,12 +389,12 @@
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kernel</span> = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (<span class="number">25</span>, <span class="number">25</span>))</span><br><span class="line"><span class="attr">closed</span> = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)</span><br></pre></td></tr></table></figure>
 
 <p>此时，我们会得到</p>
-<p><img src="images%5C20171217174137392.png" alt></p>
+<p><img src="/images%5C20171217174137392.png" alt></p>
 <h4 id="6-细节刻画"><a href="#6-细节刻画" class="headerlink" title="6.细节刻画"></a>6.细节刻画</h4><p>从上图我们可以发现和原图对比，发现有细节丢失，这会干扰之后的昆虫轮廓的检测，要把它们扩充，分别执行4次形态学腐蚀与膨胀（附录文档）</p>
 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">closed</span> = cv2.erode(<span class="keyword">closed</span>, None, iterations=4)</span><br><span class="line"><span class="keyword">closed</span> = cv2.dilate(<span class="keyword">closed</span>, None, iterations=4)</span><br></pre></td></tr></table></figure>
 
 <p>此时，我们会得到</p>
-<p><img src="images%5C20171217174357314.png" alt></p>
+<p><img src="/images%5C20171217174357314.png" alt></p>
 <h4 id="7-找出昆虫区域的轮廓"><a href="#7-找出昆虫区域的轮廓" class="headerlink" title="7.找出昆虫区域的轮廓"></a>7.找出昆虫区域的轮廓</h4><p>此时用cv2.findContours()函数<br>第一个参数是要检索的图片，必须是为二值图，即黑白的（不是灰度图）</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(_, cnts, _) = cv2.findContours(</span><br><span class="line">	参数一： 二值化图像</span><br><span class="line">	closed.copy(),</span><br><span class="line">	参数二：轮廓类型</span><br><span class="line">    <span class="comment"># cv2.RETR_EXTERNAL,             #表示只检测外轮廓</span></span><br><span class="line">    <span class="comment"># cv2.RETR_CCOMP,                #建立两个等级的轮廓,上一层是边界</span></span><br><span class="line">    <span class="comment"># cv2.RETR_LIST,                 #检测的轮廓不建立等级关系</span></span><br><span class="line">    <span class="comment"># cv2.RETR_TREE,                 #建立一个等级树结构的轮廓</span></span><br><span class="line">    <span class="comment"># cv2.CHAIN_APPROX_NONE,         #存储所有的轮廓点，相邻的两个点的像素位置差不超过1</span></span><br><span class="line">    参数三：处理近似方法</span><br><span class="line">    <span class="comment"># cv2.CHAIN_APPROX_SIMPLE,         #例如一个矩形轮廓只需4个点来保存轮廓信息</span></span><br><span class="line">    <span class="comment"># cv2.CHAIN_APPROX_TC89_L1,</span></span><br><span class="line">    <span class="comment"># cv2.CHAIN_APPROX_TC89_KCOS</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
 
@@ -402,14 +402,14 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">c = sorted(cnts, key=cv2.contourArea, reverse=<span class="literal">True</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># compute the rotated bounding box of the largest contour</span></span><br><span class="line">rect = cv2.minAreaRect(c)</span><br><span class="line">box = np.int0(cv2.boxPoints(rect))</span><br><span class="line"></span><br><span class="line"><span class="comment"># draw a bounding box arounded the detected barcode and display the image</span></span><br><span class="line">draw_img = cv2.drawContours(img.copy(), [box], <span class="number">-1</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">3</span>)</span><br><span class="line">cv2.imshow(<span class="string">"draw_img"</span>, draw_img)</span><br></pre></td></tr></table></figure>
 
 <p>此时，我们会得到</p>
-<p><img src="images%5C20171218161923975.png" alt></p>
+<p><img src="/images%5C20171218161923975.png" alt></p>
 <h4 id="9-裁剪出来就完成啦"><a href="#9-裁剪出来就完成啦" class="headerlink" title="9.裁剪出来就完成啦"></a>9.裁剪出来就完成啦</h4><p>方法嘛，这不就是么，找到这四个点切出来就好啦<br>我们放大一点看一下细节</p>
-<p><img src="images%5C20171218162320264.png" alt></p>
+<p><img src="/images%5C20171218162320264.png" alt></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Xs = [i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> box]</span><br><span class="line">Ys = [i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> box]</span><br><span class="line">x1 = min(Xs)</span><br><span class="line">x2 = max(Xs)</span><br><span class="line">y1 = min(Ys)</span><br><span class="line">y2 = max(Ys)</span><br><span class="line">hight = y2 - y1</span><br><span class="line">width = x2 - x1</span><br><span class="line">crop_img= img[y1:y1+hight, x1:x1+width]</span><br><span class="line">cv2.imshow(<span class="string">'crop_img'</span>, crop_img)</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>其实，box里保存的是绿色矩形区域四个顶点的坐标。 我将按下图红色矩形所示裁剪昆虫图像。<br>找出四个顶点的x，y坐标的最大最小值。新图像的高=maxY-minY，宽=maxX-minX</p>
-<p><img src="images%5C20171218162710456.png" alt></p>
+<p><img src="/images%5C20171218162710456.png" alt></p>
 </blockquote>
 <p>终于我们得到了可爱的小虫子。<br>得到了目标区域，那么你想拿它干什么就干什么！我不管你哈。</p>
 <p>考虑到现在的python教程一般都是一上来就是list、tuple什么的，而不是文件的读写和保存，包括批量读取等等，我特地加入了python版的文件<strong>批量读写和保存</strong>等附录文件。</p>
