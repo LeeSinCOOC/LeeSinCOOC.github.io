@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="如何使用SVM训练自己的数据1.分析数据示例数据集使用的是 CSV 文件（以逗号为分隔符的文本文件）数据集：标签文件2.导入相关模块12345678from sklearn.externals import joblib # 保存加载模型时使用from sklearn.model_selection import train_test_split # 划分数据集from sklearn.model">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用SVM训练自己的数据">
+<meta property="og:url" content="http://leesin.cc/reading/如何使用SVM训练自己的数据.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="如何使用SVM训练自己的数据1.分析数据示例数据集使用的是 CSV 文件（以逗号为分隔符的文本文件）数据集：标签文件2.导入相关模块12345678from sklearn.externals import joblib # 保存加载模型时使用from sklearn.model_selection import train_test_split # 划分数据集from sklearn.model">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/images/2019082201.PNG">
+<meta property="og:image" content="http://leesin.cc/reading/images/2019082202.PNG">
+<meta property="og:image" content="http://leesin.cc/reading/images/svm.png">
+<meta property="og:image" content="http://leesin.cc/reading/images/k.png">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-bff53ab9f396eeaf.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-680f6abaf737049d.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-501d5c7b77ad7f01.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-372b3b11cea8820f.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-7b40f5f4708be220.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-caf8440a113ea6b9.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-014e0f6af86cdc83.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-f77f295d41b1f0d1.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-b1215a472ac1432e.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-ac8969c28b290a81.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-3c8460859fd12c90.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-0810355738a433bc.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-cccdda85430af182.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-2738701538011f81.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-3ccdf6eefdb9bece.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-20020dffb5e1a5ae.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-5c9dcaad96946728.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-74b4c230879e2764.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-b42a47aa9385a804.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-510b48d7f89d7988.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-bb3fc0642fcbf03e.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-e87aa12f15ac089c.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-16295f6a139c7fc3.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-e4baaaa57b632be9.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-808af8ce7559e737.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-e466bd5b1a1ef5ac.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-d77a430ff2ed0dd9.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/8762099-cfc2e33c0f62445b.webp">
+<meta property="og:image" content="http://leesin.cc/reading/images/u=4046170768,437684437&fm=26&gp=0.jpg">
+<meta property="og:updated_time" content="2019-08-22T12:00:47.938Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何使用SVM训练自己的数据">
+<meta name="twitter:description" content="如何使用SVM训练自己的数据1.分析数据示例数据集使用的是 CSV 文件（以逗号为分隔符的文本文件）数据集：标签文件2.导入相关模块12345678from sklearn.externals import joblib # 保存加载模型时使用from sklearn.model_selection import train_test_split # 划分数据集from sklearn.model">
+<meta name="twitter:image" content="http://leesin.cc/images/2019082201.PNG">
+  <link rel="canonical" href="http://leesin.cc/reading/如何使用SVM训练自己的数据">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>如何使用SVM训练自己的数据 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/如何使用SVM训练自己的数据.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">如何使用SVM训练自己的数据
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:00:47" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何使用SVM训练自己的数据"><a href="#如何使用SVM训练自己的数据" class="headerlink" title="如何使用SVM训练自己的数据"></a>如何使用SVM训练自己的数据</h1><h2 id="1-分析数据"><a href="#1-分析数据" class="headerlink" title="1.分析数据"></a>1.分析数据</h2><p>示例数据集使用的是 CSV 文件（以逗号为分隔符的文本文件）</p><p><strong>数据集：</strong></p><p><img src="/images/2019082201.PNG" alt></p><p><strong>标签文件</strong></p><p><img src="images/2019082202.PNG" alt></p><h2 id="2-导入相关模块"><a href="#2-导入相关模块" class="headerlink" title="2.导入相关模块"></a>2.导入相关模块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.externals <span class="keyword">import</span> joblib <span class="comment"># 保存加载模型时使用</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split <span class="comment"># 划分数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV <span class="comment"># 网格搜索最优参数</span></span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC <span class="comment"># 导入 SVM 算法模块</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report <span class="comment"># 生成训练结果报告</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np <span class="comment"># 这个可以不用，我手滑习惯性都导入，新版的pandas改版了许多兼容numpy的类型，以前是很依赖numpy的，所以普遍教程都是先教你numpy再教你pandas。现在基本上numpy能做的pandas都能做，既独立，又兼容。</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+
+
+<h2 id="3-载入数据"><a href="#3-载入数据" class="headerlink" title="3.载入数据"></a>3.载入数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X = pd.read_csv(<span class="string">'histocsv.csv'</span>).astype(<span class="string">'float32'</span>)</span><br><span class="line">Y = pd.read_csv(<span class="string">'histocsv_labels.csv'</span>).astype(<span class="string">'float32'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>因为我的数据里面同字段的数值类型不一样，所以导入的时候统一转换成了 float32</p>
+<p>如果你不确定自己的字段是否一致，可以用类似下面的语句进行校验</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>X.dtypes</span><br><span class="line">Out[]: </span><br><span class="line"><span class="number">145</span>             float32</span><br><span class="line"><span class="number">35</span>              float32</span><br><span class="line"><span class="number">40</span>              float32</span><br><span class="line"><span class="number">53</span>              float32</span><br><span class="line"><span class="number">74</span>              float32</span><br><span class="line"><span class="number">74.1</span>            float32</span><br></pre></td></tr></table></figure>
+
+<p>产看数据维度是否对应</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>X.shape</span><br><span class="line">Out[]: (<span class="number">35153</span>, <span class="number">257</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Y.shape</span><br><span class="line">Out[]: (<span class="number">35153</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>取出你感兴趣的字段，我这里因为之前做 CSV 文件的时候，自己每一行结束写了  ‘\n’ ,所以我少取一列</p>
+<h2 id="4-取出想要训练的数据"><a href="#4-取出想要训练的数据" class="headerlink" title="4.取出想要训练的数据"></a>4.取出想要训练的数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = X.values[:,:<span class="number">256</span>]</span><br><span class="line">y = Y.values.ravel()</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个坑，虽然你的标签数据只是一列，显示的形状也是（None,1),但是实际训练需要的维度是（None,)，尽管表现是一样的，实际上却会报错。所以在取到 Value 的同时还需要 ravel 一下。这里还有一个坑，我们取值的时候，使用了 values ，不使用会报错的，因为这里的默认类型是 Dataframe , 需要转成 dnarray 类型。使用values可以直接转</p>
+<h2 id="5-划分数据集"><a href="#5-划分数据集" class="headerlink" title="5.划分数据集"></a>5.划分数据集</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">train_x,test_x,train_y,test_y = train_test_split(</span><br><span class="line">        								x,y,</span><br><span class="line">        								test_size=<span class="number">0.2</span>,</span><br><span class="line">        								shuffle=<span class="literal">True</span>,</span><br><span class="line">        								random_state=<span class="number">42</span>)</span><br></pre></td></tr></table></figure>
+
+<p>将你的数据进行划分，默认情况 shuffle 是会打乱的，random_state建议设为42，因为这是宇宙一切问题的终极答案，划分比例随意，实践大多数都是 0.2 ，0.3左右</p>
+<h2 id="6-设置网格搜索的超参数"><a href="#6-设置网格搜索的超参数" class="headerlink" title="6.设置网格搜索的超参数"></a>6.设置网格搜索的超参数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">turn_parameters = [</span><br><span class="line">        &#123;<span class="string">'kernel'</span> : [<span class="string">'rbf'</span>], <span class="string">'gamma'</span>:[<span class="number">1e-3</span>, <span class="number">1e-4</span>], <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>,<span class="number">100</span>,<span class="number">1000</span>]&#125;,  </span><br><span class="line">        &#123;<span class="string">'kernel'</span>:[<span class="string">'linear'</span>], <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>,<span class="number">100</span>,<span class="number">1000</span>]&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-调用网格搜索模块"><a href="#7-调用网格搜索模块" class="headerlink" title="7.调用网格搜索模块"></a>7.调用网格搜索模块</h2><p>将上面设置的超参数放入网格搜索，让训练按照你设置的参数进行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clf = GridSearchCV(SVC(C=<span class="number">1</span>), turn_parameters, cv=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>cv就是交叉验证的意思，5就是5折，意思数据分5块，这样你的训练就有80%的量</p>
+<h2 id="8-进行训练"><a href="#8-进行训练" class="headerlink" title="8.进行训练"></a>8.进行训练</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clf.fit(train_x,train_y)</span><br></pre></td></tr></table></figure>
+
+<p>fit 虽然是一个简单的函数，使用非常方便，但是有兴趣可以看看内部的源码，结构设计非常独特，整个fit家族貌合神离。</p>
+<h2 id="9-输出最佳参数"><a href="#9-输出最佳参数" class="headerlink" title="9.输出最佳参数"></a>9.输出最佳参数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(clf.best_params_)</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-预测结果和分类报告"><a href="#10-预测结果和分类报告" class="headerlink" title="10.预测结果和分类报告"></a>10.预测结果和分类报告</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y_true, y_pred = test_y, clf.predict(test_x)</span><br><span class="line">print(classification_report(y_true, y_pred))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="11-完整代码"><a href="#11-完整代码" class="headerlink" title="11.完整代码"></a>11.完整代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Created on Wed Aug 21 16:02:53 2019</span></span><br><span class="line"><span class="string">@author: CC</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">from</span> sklearn.externals <span class="keyword">import</span> joblib</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">X = pd.read_csv(<span class="string">'histocsv.csv'</span>).astype(<span class="string">'float32'</span>)</span><br><span class="line">Y = pd.read_csv(<span class="string">'histocsv_labels.csv'</span>).astype(<span class="string">'float32'</span>)</span><br><span class="line"></span><br><span class="line">x = X.values[:,:<span class="number">256</span>]</span><br><span class="line">y = Y.values.ravel()</span><br><span class="line"></span><br><span class="line">train_x,test_x,train_y,test_y = train_test_split(</span><br><span class="line">        x,y,test_size=<span class="number">0.25</span>,shuffle=<span class="literal">True</span>,random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line">turn_parameters = [</span><br><span class="line">        &#123;<span class="string">'kernel'</span> : [<span class="string">'rbf'</span>], <span class="string">'gamma'</span>:[<span class="number">1e-3</span>, <span class="number">1e-4</span>], <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>,<span class="number">100</span>,<span class="number">1000</span>]&#125;,  </span><br><span class="line">        &#123;<span class="string">'kernel'</span>:[<span class="string">'linear'</span>], <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>,<span class="number">100</span>,<span class="number">1000</span>]&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">clf = GridSearchCV(SVC(C=<span class="number">1</span>), turn_parameters, cv=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">clf.fit(train_x,train_y)</span><br><span class="line"></span><br><span class="line">print(clf.best_params_)</span><br><span class="line"></span><br><span class="line"><span class="comment">#分类报告</span></span><br><span class="line">y_true, y_pred = test_y, clf.predict(test_x)</span><br><span class="line">print(classification_report(y_true, y_pred))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="12-保存和加载模型"><a href="#12-保存和加载模型" class="headerlink" title="12.保存和加载模型"></a>12.保存和加载模型</h2><p>因为整个训练过程也不是每次都要保存，通常是有了重大突破的时候才需要保存模型，所以简单介绍一下，模型的<strong>保存</strong>和<strong>加载</strong>。为方便理解，使用了自带的 iris 花数据集</p>
+<h3 id="第一种方法是利用上面导入的-joblib-模块"><a href="#第一种方法是利用上面导入的-joblib-模块" class="headerlink" title="第一种方法是利用上面导入的 joblib 模块"></a>第一种方法是利用上面导入的 joblib 模块</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.externals <span class="keyword">import</span> joblib</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 定义分类器</span></span><br><span class="line">svm = SVC()</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载iris数据集</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取特征</span></span><br><span class="line">X = iris.data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取分类标签</span></span><br><span class="line">Y = iris.target</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">svm.fit(X, Y)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 保存成sklearn自带的文件格式</span></span><br><span class="line">joblib.dump(svm, <span class="string">'svm.pkl'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载svm.pkl</span></span><br><span class="line">new_svm = joblib.load(<span class="string">'svm.pkl'</span>)</span><br><span class="line">print(new_svm.predict(X[<span class="number">0</span>:<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二种方法是使用pickle模块"><a href="#第二种方法是使用pickle模块" class="headerlink" title="第二种方法是使用pickle模块"></a>第二种方法是使用pickle模块</h3><p>这个泡菜模块经常用来做数据打包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 定义分类器</span></span><br><span class="line">svm = SVC()</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载iris数据集</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取特征</span></span><br><span class="line">X = iris.data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取分类标签</span></span><br><span class="line">Y = iris.target</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">svm.fit(X, Y)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 保存成python支持的文件格式pickle</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'svm.pickle'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> fw:</span><br><span class="line">    pickle.dump(svm, fw)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载svm.pickle</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'svm.pickle'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> fr:</span><br><span class="line">    new_svm = pickle.load(fr)</span><br><span class="line">    print(new_svm.predict(X[<span class="number">0</span>:<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<h2 id="13-知识扩展"><a href="#13-知识扩展" class="headerlink" title="13.知识扩展"></a>13.知识扩展</h2><p>SVM是机器学习中分类和回归的算法之一，中文译为<strong>支持向量机</strong>。</p>
+<p>SVM用于分类，名称为<strong>SVC</strong>，用于回归，名称为<strong>SCR</strong></p>
+<h3 id="SVM的基本概念"><a href="#SVM的基本概念" class="headerlink" title="SVM的基本概念"></a>SVM的基本概念</h3><p><img src="images/svm.png" alt></p>
+<p><strong>分隔超平面</strong>：将数据集分割开来的直线叫做分隔超平面。</p>
+<p><strong>超平面</strong>：如果数据集是N维的，那么就需要N-1维的某对象来对数据进行分割。该对象叫做超平面，也就是分类的决策边界。</p>
+<p><strong>间隔</strong>：一个点到分割面的距离，称为点相对于分割面的距离。</p>
+<p>数据集中所有的点到分割面的最小间隔的2倍，称为分类器或数据集的间隔。</p>
+<p><strong>最大间隔</strong>：SVM分类器是要找最大的数据集间隔。</p>
+<p><strong>支持向量</strong>：坐落在数据边际的两边超平面上的点被称为支持向量</p>
+<p><strong>为什么要求最大间隔：</strong> 其实一个机器学习问题可能存在多解，我们想要找到的是最优的那个解，于是我们权衡，首先这个分类的平面要能够正确把两堆数据进行划分，其次我们希望两团数据难以区分的那些数据也就是支持向量距离这个平面的距离要足够远。这样得到的超平面就是最佳平面了。</p>
+<p><strong>软间隔和硬间隔</strong>：不可避免你的数据可能存在错误数据和采样误差，可能在事实上本来就区分不了，这样再去强行去分就达不到最佳的效果，所以我们允许部分数据分布在间隔的河道里，这就是软间隔，硬要分的话就是硬间隔</p>
+<h3 id="sklearn-svc-参数"><a href="#sklearn-svc-参数" class="headerlink" title="sklearn.svc 参数"></a>sklearn.svc 参数</h3><p>因为我们主要是使用分类模型，就只阐述SVC吧</p>
+<p>sklearn中的SVC函数是基于libsvm实现的，所以在参数设置上有很多相似的地方。（PS: libsvm中的二次规划问题的解决算法是SMO）。LIBSVM是台湾大学林智仁(Lin Chih-Jen)教授等开发设计的一个简单、易于使用和快速有效的SVM模式识别与回归的软件包。有关SMO最后介绍</p>
+<p><strong>C</strong>: float参数 默认值为1.0</p>
+<p>错误项的惩罚系数。C越大，即对分错样本的惩罚程度越大，因此在训练样本中准确率越高，但是泛化能力会降低。</p>
+<p><strong>kernel</strong>: 默认为‘rbf’</p>
+<p>核函数可选参数有：</p>
+<p><strong>‘linear’</strong>:线性核函数</p>
+<p><strong>‘poly’</strong>：多项式核函数</p>
+<p><strong>‘rbf’</strong>：径像核函数/高斯核</p>
+<p><strong>‘sigmod’</strong>:sigmod核函数</p>
+<p><strong>‘precomputed’</strong>:核矩阵</p>
+<p>你也可以<strong>自定义核函数</strong></p>
+<p><strong>degree</strong>: int型参数 默认为3</p>
+<p>这个参数只对多项式核函数有用，是指多项式核函数的阶数n</p>
+<p>如果给的核函数参数是其他核函数，则会自动忽略该参数。</p>
+<p><strong>gamma</strong>: float参数 默认为auto</p>
+<p>核函数系数，只对‘rbf’,‘poly’,‘sigmod’有效。</p>
+<p>如果gamma为auto，代表其值为样本特征数的倒数，即1/n_features.</p>
+<p><strong>coef0</strong>: float参数 默认为0.0</p>
+<p>核函数中的独立项，只有对‘poly’和‘sigmod’核函数有用，是指其中的参数c</p>
+<p><strong>probability</strong>： bool参数 默认为False</p>
+<p>是否启用概率估计。 这必须在调用fit()之前启用，并且会fit()方法速度变慢。</p>
+<p><strong>shrinking</strong>： bool参数 默认为True</p>
+<p>是否采用启发式收缩方式</p>
+<p><strong>tol</strong>: float参数 默认为1e^-3</p>
+<p>svm停止训练的误差精度</p>
+<p><strong>cache_size</strong>： float参数 默认为200</p>
+<p>指定训练所需要的内存，以MB为单位，默认为200MB。</p>
+<p><strong>class_weight</strong>： 字典类型或者‘balance’字符串。默认为None</p>
+<p>给每个类别分别设置不同的惩罚参数C，如果没有给，则会给所有类别都给C=1，即前面参数指出的参数C.</p>
+<p>如果给定参数‘balance’，则使用y的值自动调整与输入数据中的类频率成反比的权重。</p>
+<p><strong>verbose</strong> ： bool参数 默认为False</p>
+<p>是否启用详细输出。 此设置利用libsvm中的每个进程运行时设置，如果启用，可能无法在多线程上下文中正常工作。一般情况都设为False，不用管它。</p>
+<p><strong>max_iter</strong> ： int参数 默认为-1</p>
+<p>最大迭代次数，如果为-1，表示不限制</p>
+<p><strong>random_state</strong>： int型参数 默认为None</p>
+<h3 id="属性有哪些："><a href="#属性有哪些：" class="headerlink" title="属性有哪些："></a><strong>属性有哪些：</strong></h3><p><strong>svc.n_support_</strong>：各类各有多少个支持向量</p>
+<p><strong>svc.support_</strong>：各类的支持向量在训练样本中的索引</p>
+<p><strong>svc.support_vectors_</strong>：各类所有的支持向量</p>
+<hr>
+<h3 id="为什么要用核函数？"><a href="#为什么要用核函数？" class="headerlink" title="为什么要用核函数？"></a>为什么要用核函数？</h3><p>这里用到了一网图，获取链接：<a href="https://blog.csdn.net/SummerStoneS/article/details/78551757" target="_blank" rel="noopener">https://blog.csdn.net/SummerStoneS/article/details/78551757</a></p>
+<p><img src="images/k.png" alt></p>
+<p>如果你的数据在低维空间无法用低维手段分来，那么你可以将数据升维到高维空间用低维手段进行区分，这个核函数就是这个作用。那么为什么不用高维手段来分呢？因为高维表述复杂，我们习惯于用简单的算法来描述复杂现象。比如你说大多数鸟儿都会飞，远比你说除了生病，死亡，残疾，正在休息……的鸟儿都会飞来得轻松，低维表述虽然会损失部分精度，但是我觉得也不是不能接受</p>
+<h3 id="SMO的介绍"><a href="#SMO的介绍" class="headerlink" title="SMO的介绍"></a>SMO的介绍</h3><p>要介绍SMO的话，还是得从SVM说起。</p>
+<p>分类器的共同目标都是学一个平面正确分开正反例，就是：</p>
+<p><img src="images/8762099-bff53ab9f396eeaf.webp" alt></p>
+<p>SVM引入了支持向量，就当作哪些难以区分的点来看待吧，那么点x到平面的距离就是：</p>
+<p><img src="images/8762099-680f6abaf737049d.webp" alt></p>
+<p>假设超平面可以完全正确地将所有样本分类，则对于任意一个样本（xi，yi）来说都有如下性质：</p>
+<p><img src="images/8762099-501d5c7b77ad7f01.webp" alt></p>
+<p>两个类支持向量到超平面距离之和为：</p>
+<p><img src="images/8762099-372b3b11cea8820f.webp" alt></p>
+<p>最大化这个距离就是最小化它的倒数：</p>
+<p><img src="images/8762099-7b40f5f4708be220.webp" alt></p>
+<p>这是一个优化问题，可以使用拉格朗日乘子法求解其对偶问题，SVM的对偶问题表达：</p>
+<p><img src="images/8762099-caf8440a113ea6b9.webp" alt></p>
+<p>由于采用了拉格朗日乘子法，因此该对偶问题还有一个KKT条件约束，即要求：</p>
+<p><img src="images/8762099-014e0f6af86cdc83.webp" alt></p>
+<h3 id="SMO算法思想"><a href="#SMO算法思想" class="headerlink" title="SMO算法思想"></a>SMO算法思想</h3><p>观察SVM的优化目标我们可以发现其最终的目的是要计算出一组最优的alpha和常数项b的值。SMO算法的中心思想就是每次选出两个alpha进行优化（之所以是两个是因为alpha的约束条件决定了其与标签乘积的累加等于0，因此必须一次同时优化两个，否则就会破坏约束条件），然后固定其他的alpha值。重复此过程，直到达到某个终止条件程序退出并得到我们需要的优化结果。</p>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/eef51f939ace" target="_blank" rel="noopener">https://www.jianshu.com/p/eef51f939ace</a></p>
+</blockquote>
+<h3 id="算法数学推导"><a href="#算法数学推导" class="headerlink" title="算法数学推导"></a>算法数学推导</h3><p>由于SVM中有核函数的概念，因此我们用Kij来表示在核函数K下向量i和向量j的计算值。现在假定我们已经选出alpha1和alpha2两个待优化项，然后将原优化目标函数展开为与alpha1和alpha2有关的部分和无关的部分：</p>
+<p><img src="images/8762099-f77f295d41b1f0d1.webp" alt></p>
+<p>其中c是与alpha1和alpha2无关的部分，在本次优化中当做常数项处理。由SVM优化目标函数的约束条件：</p>
+<p><img src="images/8762099-b1215a472ac1432e.webp" alt></p>
+<p>可以得到：<img src="images/8762099-ac8969c28b290a81.webp" alt></p>
+<p>将优化目标中所有的alpha1都替换为用alpha2表示的形式，得到如下式子：</p>
+<p><img src="images/8762099-3c8460859fd12c90.webp" alt></p>
+<p>此时，优化目标中仅含有alpha2一个待优化变量了，我们现在将待优化函数对alpha2求偏导得到如下结果：</p>
+<p><img src="images/8762099-0810355738a433bc.webp" alt></p>
+<p>已知：</p>
+<p><img src="images/8762099-cccdda85430af182.webp" alt></p>
+<p>将以上三个条件带入偏导式子中，得到如下结果：</p>
+<p><img src="images/8762099-2738701538011f81.webp" alt></p>
+<p>化简后得：</p>
+<p><img src="images/8762099-3ccdf6eefdb9bece.webp" alt></p>
+<p>记：</p>
+<p><img src="images/8762099-20020dffb5e1a5ae.webp" alt></p>
+<p>若n&lt;=0则退出本次优化，若n&gt;0则可得到alpha2的更新公式：</p>
+<p><img src="images/8762099-5c9dcaad96946728.webp" alt></p>
+<p>此时，我们已经得到了alpha2的更新公式。不过我们此时还需要考虑alpha2的取值范围问题。因为alpha2的取值范围应该是在0到C之间，但是在这里并不能简单地把取值范围限定在0至C之间，因为alpha2的取值不仅仅与其本身的范围有关，也与alpha1，y1和y2有关。设alpha1<em>y1+alpha2</em>y2=k，画出其约束，在这里要分两种情况，即y1是否等于y2。我们在这里先来考虑y1!=y2的情况：在这种情况下alpha1-alpha2=k：</p>
+<p><img src="images/8762099-74b4c230879e2764.webp" alt></p>
+<p>可以看出此时alpha2的取值范围为：</p>
+<p><img src="images/8762099-b42a47aa9385a804.webp" alt></p>
+<p>当y1=y2时，alpha1+alpha2=k：</p>
+<p><img src="images/8762099-510b48d7f89d7988.webp" alt></p>
+<p>可以看出此时alpha2的取值范围为：</p>
+<p><img src="images/8762099-bb3fc0642fcbf03e.webp" alt></p>
+<p>以上，可以总结出alpha2的取值上下界的规律：</p>
+<p><img src="images/8762099-e87aa12f15ac089c.webp" alt></p>
+<p>故可得到alpha2的取值范围：</p>
+<p><img src="images/8762099-16295f6a139c7fc3.webp" alt></p>
+<p>由alpha_old1y1+alpha_old2y2=alpha_new1y1+alpha_new2y2可得alpha1的更新公式：</p>
+<p><img src="images/8762099-e4baaaa57b632be9.webp" alt></p>
+<p>接下来，需要确定常数b的更新公式，在这里首先需要根据“软间隔”下SVM优化目标函数的KKT条件推导出新的KKT条件，得到结果如下：</p>
+<p><img src="images/8762099-808af8ce7559e737.webp" alt></p>
+<p>由于现在alpha的取值范围已经限定在0至C之间，也就是上面KKT条件的第三种情况。接下来我们将第三种KKT条件推广到任意核函数的情境下：</p>
+<p><img src="images/8762099-e466bd5b1a1ef5ac.webp" alt></p>
+<p>由此我们可以得到常数b的更新公式：</p>
+<p><img src="images/8762099-d77a430ff2ed0dd9.webp" alt></p>
+<p>其中Ei是SVM的预测误差，计算式为：</p>
+<p><img src="images/8762099-cfc2e33c0f62445b.webp" alt></p>
+<hr>
+<p>接下来，我们可以根据这些推导对SMO算法进行实现，并且用我们的算法训练一个SVM分类器</p>
+<p>抓住其中两个特别重要的点就行了：</p>
+<ol>
+<li>如何选取每次迭代的alpha对</li>
+<li>如何确定SVM优化程序的退出条件</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Created on 2018年3月28日</span></span><br><span class="line"><span class="string">@author: IL MARE</span></span><br><span class="line"><span class="string">代码源作者github:</span></span><br><span class="line"><span class="string">https://github.com/yhswjtuILMARE/</span></span><br><span class="line"><span class="string">Machine-Learning-Study-Notes/blob/master/SVM/Lib/SVMLib.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> Lib.RFLib <span class="keyword">as</span> RFLib</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kernalTransfrom</span><span class="params">(dataMatrix, vector, kTup)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> kTup[<span class="number">0</span>] == <span class="string">"lin"</span>:</span><br><span class="line">        <span class="keyword">return</span> vector * dataMatrix.transpose()</span><br><span class="line">    <span class="keyword">elif</span> kTup[<span class="number">0</span>] == <span class="string">"rbf"</span>:</span><br><span class="line">        delta = dataMatrix - vector</span><br><span class="line">        K = np.matrix(np.diag(delta * delta.transpose()), dtype=np.float)</span><br><span class="line">        K = np.exp(K / (<span class="number">-2</span> * kTup[<span class="number">1</span>] ** <span class="number">2</span>))</span><br><span class="line">        <span class="keyword">return</span> K</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> NameError(<span class="string">"Kernal Name Error"</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">osStruct</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, dataMatIn, classlabels, C , toler, kTup)</span>:</span></span><br><span class="line">        self.dataMatrix = np.matrix(dataMatIn, dtype=np.float)</span><br><span class="line">        self.labelMatrix = np.matrix(classlabels, dtype=np.float).transpose()</span><br><span class="line">        self.C = C</span><br><span class="line">        self.toler = toler</span><br><span class="line">        self.m = self.dataMatrix.shape[<span class="number">0</span>]</span><br><span class="line">        self.b = <span class="number">0</span></span><br><span class="line">        self.alphas = np.matrix(np.zeros((self.m, <span class="number">1</span>)), dtype=np.float)</span><br><span class="line">        self.eCache = np.matrix(np.zeros((self.m, <span class="number">2</span>)), dtype=np.float)</span><br><span class="line">        self.K = np.matrix(np.zeros((self.m, self.m)), dtype=np.float)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.m):</span><br><span class="line">            self.K[i] = kernalTransfrom(self.dataMatrix, self.dataMatrix[i, :], kTup)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectJRand</span><span class="params">(i, m)</span>:</span></span><br><span class="line">    j = i</span><br><span class="line">    <span class="keyword">while</span> j == i:</span><br><span class="line">        j = np.random.randint(<span class="number">0</span>, m, <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> j</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">clipAlpha</span><span class="params">(alpha, L, H)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> alpha &gt;= H:</span><br><span class="line">        <span class="keyword">return</span> H</span><br><span class="line">    <span class="keyword">elif</span> alpha &lt;= L:</span><br><span class="line">        <span class="keyword">return</span> L</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> alpha</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calEi</span><span class="params">(obj, i)</span>:</span></span><br><span class="line">    fxi = float(np.multiply(obj.alphas, obj.labelMatrix).transpose() * \</span><br><span class="line">                obj.K[:, i]) + obj.b</span><br><span class="line">    Ek = fxi - obj.labelMatrix[i, <span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> float(Ek)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateEi</span><span class="params">(obj, i)</span>:</span></span><br><span class="line">    Ei = calEi(obj, i)</span><br><span class="line">    obj.eCache[i] = [<span class="number">1</span>, Ei]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectJIndex</span><span class="params">(obj, i, Ei)</span>:</span></span><br><span class="line">	<span class="string">'''</span></span><br><span class="line"><span class="string">	核心代码</span></span><br><span class="line"><span class="string">	'''</span></span><br><span class="line">    maxJ = <span class="number">-1</span></span><br><span class="line">    maxdelta = <span class="number">-1</span></span><br><span class="line">    Ek = <span class="number">-1</span></span><br><span class="line">    obj.eCache[i] = [<span class="number">1</span>, Ei]</span><br><span class="line">    vaildEiList = np.nonzero(obj.eCache[:, <span class="number">0</span>].A)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> len(vaildEiList) &gt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> vaildEiList:</span><br><span class="line">            <span class="keyword">if</span> j == i:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            Ej = calEi(obj, j)</span><br><span class="line">            delta = np.abs(Ei - Ej)</span><br><span class="line">            <span class="keyword">if</span> delta &gt; maxdelta:</span><br><span class="line">                maxdelta = delta</span><br><span class="line">                maxJ = j</span><br><span class="line">                Ek = Ej</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        maxJ = selectJRand(i, obj.m)</span><br><span class="line">        Ek = calEi(obj, maxJ)</span><br><span class="line">    <span class="keyword">return</span> Ek, maxJ</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">innerLoop</span><span class="params">(obj, i)</span>:</span></span><br><span class="line">    Ei = calEi(obj, i)</span><br><span class="line">    <span class="keyword">if</span> (obj.labelMatrix[i, <span class="number">0</span>] * Ei &lt; -obj.toler <span class="keyword">and</span> obj.alphas[i, <span class="number">0</span>] &lt; obj.C) <span class="keyword">or</span> \</span><br><span class="line">            (obj.labelMatrix[i, <span class="number">0</span>] * Ei &gt; obj.toler <span class="keyword">and</span> obj.alphas[i, <span class="number">0</span>] &gt; <span class="number">0</span>):</span><br><span class="line">        Ej, j = selectJIndex(obj, i, Ei)</span><br><span class="line">        alphaIold = obj.alphas[i, <span class="number">0</span>].copy()</span><br><span class="line">        alphaJold = obj.alphas[j, <span class="number">0</span>].copy()</span><br><span class="line">        <span class="keyword">if</span> obj.labelMatrix[i, <span class="number">0</span>] == obj.labelMatrix[j, <span class="number">0</span>]:</span><br><span class="line">            L = max(<span class="number">0</span>, obj.alphas[i, <span class="number">0</span>] + obj.alphas[j, <span class="number">0</span>] - obj.C)</span><br><span class="line">            H = min(obj.C , obj.alphas[i, <span class="number">0</span>] + obj.alphas[j, <span class="number">0</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            L = max(<span class="number">0</span>, obj.alphas[j, <span class="number">0</span>] - obj.alphas[i, <span class="number">0</span>])</span><br><span class="line">            H = min(obj.C, obj.C - obj.alphas[i, <span class="number">0</span>] + obj.alphas[j, <span class="number">0</span>])</span><br><span class="line">        <span class="keyword">if</span> L == H:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        eta = obj.K[i, i] + obj.K[j, j] - <span class="number">2</span> * obj.K[i, j]</span><br><span class="line">        <span class="keyword">if</span> eta &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        obj.alphas[j, <span class="number">0</span>] += obj.labelMatrix[j, <span class="number">0</span>] * (Ei - Ej) / eta</span><br><span class="line">        obj.alphas[j, <span class="number">0</span>] = clipAlpha(obj.alphas[j, <span class="number">0</span>], L, H)</span><br><span class="line">        updateEi(obj, j)</span><br><span class="line">        <span class="keyword">if</span> np.abs(obj.alphas[j, <span class="number">0</span>] - alphaJold) &lt; <span class="number">0.00001</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        obj.alphas[i, <span class="number">0</span>] += obj.labelMatrix[i, <span class="number">0</span>] * obj.labelMatrix[j, <span class="number">0</span>] * (alphaJold - obj.alphas[j, <span class="number">0</span>])</span><br><span class="line">        updateEi(obj, i)</span><br><span class="line">        b1 = -Ei - obj.labelMatrix[i, <span class="number">0</span>] * obj.K[i, i] * (obj.alphas[i, <span class="number">0</span>] - alphaIold) \</span><br><span class="line">             - obj.labelMatrix[j, <span class="number">0</span>] * obj.K[i, j] * (obj.alphas[j, <span class="number">0</span>] - alphaJold) + obj.b</span><br><span class="line">        b2 = -Ej - obj.labelMatrix[i, <span class="number">0</span>] * obj.K[i, j] * (obj.alphas[i, <span class="number">0</span>] - alphaIold) \</span><br><span class="line">             - obj.labelMatrix[j, <span class="number">0</span>] * obj.K[j, j] * (obj.alphas[j, <span class="number">0</span>] - alphaJold) + obj.b</span><br><span class="line">        <span class="keyword">if</span> obj.alphas[i, <span class="number">0</span>] &gt; <span class="number">0</span> <span class="keyword">and</span> obj.alphas[i, <span class="number">0</span>] &lt; obj.C:</span><br><span class="line">            obj.b = b1</span><br><span class="line">        <span class="keyword">elif</span> obj.alphas[j, <span class="number">0</span>] &gt; <span class="number">0</span> <span class="keyword">and</span> obj.alphas[j, <span class="number">0</span>] &lt; obj.C:</span><br><span class="line">            obj.b = b2</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            obj.b = (b1 + b2) / <span class="number">2.0</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">realSMO</span><span class="params">(trainSet, trainLabels, C, toler, kTup=<span class="params">(<span class="string">'lin'</span>, <span class="number">1.3</span>)</span>, maxIter=<span class="number">40</span>)</span>:</span></span><br><span class="line">	<span class="string">'''</span></span><br><span class="line"><span class="string">	核心代码</span></span><br><span class="line"><span class="string">	'''</span></span><br><span class="line">    obj = osStruct(trainSet, trainLabels, C, toler, kTup)</span><br><span class="line">    entrySet = <span class="literal">True</span></span><br><span class="line">    iterNum = <span class="number">0</span></span><br><span class="line">    alphapairschanged = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> (iterNum &lt; maxIter) <span class="keyword">and</span> (alphapairschanged &gt; <span class="number">0</span> <span class="keyword">or</span> entrySet):</span><br><span class="line">        print(iterNum)</span><br><span class="line">        alphapairschanged = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> entrySet:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(obj.m):</span><br><span class="line">                alphapairschanged += innerLoop(obj, i)</span><br><span class="line">                <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">                    print(<span class="string">"full set loop, iter: %d, alphapairschanged: %d, iterNum: %d"</span> % (i, alphapairschanged, iterNum))</span><br><span class="line">            iterNum += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            vaildalphsaList = np.nonzero((obj.alphas.A &gt; <span class="number">0</span>) * (obj.alphas.A &lt; C))[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> vaildalphsaList:</span><br><span class="line">                alphapairschanged += innerLoop(obj, i)</span><br><span class="line">                <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">                    print(<span class="string">"non-bound set loop, iter: %d, alphapairschanged: %d, iterNum: %d"</span> % (i, alphapairschanged, iterNum))</span><br><span class="line">            iterNum += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> entrySet:</span><br><span class="line">            entrySet = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">elif</span> alphapairschanged == <span class="number">0</span>:</span><br><span class="line">            entrySet = <span class="literal">True</span></span><br><span class="line">            print(<span class="string">"iter num: %d"</span> % (iterNum))</span><br><span class="line">    <span class="keyword">return</span> obj.alphas, obj.b</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSupportVectorandSupportLabel</span><span class="params">(trainSet, trainLabel, alphas)</span>:</span></span><br><span class="line">    vaildalphaList = np.nonzero(alphas.A)[<span class="number">0</span>]</span><br><span class="line">    dataMatrix = np.matrix(trainSet, dtype=np.float)</span><br><span class="line">    labelMatrix = np.matrix(trainLabel, dtype=np.float).transpose()</span><br><span class="line">    sv = dataMatrix[vaildalphaList]<span class="comment">#得到支持向量</span></span><br><span class="line">    svl = labelMatrix[vaildalphaList]</span><br><span class="line">    <span class="keyword">return</span> sv, svl</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predictLabel</span><span class="params">(data, sv, svl, alphas, b, kTup)</span>:</span></span><br><span class="line">    kernal = kernalTransfrom(sv, np.matrix(data, dtype=np.float), kTup).transpose()</span><br><span class="line">    fxi = np.multiply(svl.T, alphas[alphas != <span class="number">0</span>]) * kernal + b</span><br><span class="line">    <span class="keyword">return</span> np.sign(float(fxi))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>最后，附上一张本人照片，以缓解学习头昏脑胀</p>
+<p><img src="images/u=4046170768,437684437&fm=26&gp=0.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/如何使用SVM训练自己的数据.html" title="如何使用SVM训练自己的数据">http://leesin.cc/reading/如何使用SVM训练自己的数据.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/OpenCV检测分割图像.html" rel="next" title="直接可以用的Python和OpenCV检测及分割图像的目标区域例子">
+                  <i class="fa fa-chevron-left"></i> 直接可以用的Python和OpenCV检测及分割图像的目标区域例子
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用SVM训练自己的数据"><span class="nav-number">1.</span> <span class="nav-text">如何使用SVM训练自己的数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-分析数据"><span class="nav-number">1.1.</span> <span class="nav-text">1.分析数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-导入相关模块"><span class="nav-number">1.2.</span> <span class="nav-text">2.导入相关模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-载入数据"><span class="nav-number">1.3.</span> <span class="nav-text">3.载入数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-取出想要训练的数据"><span class="nav-number">1.4.</span> <span class="nav-text">4.取出想要训练的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-划分数据集"><span class="nav-number">1.5.</span> <span class="nav-text">5.划分数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-设置网格搜索的超参数"><span class="nav-number">1.6.</span> <span class="nav-text">6.设置网格搜索的超参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-调用网格搜索模块"><span class="nav-number">1.7.</span> <span class="nav-text">7.调用网格搜索模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-进行训练"><span class="nav-number">1.8.</span> <span class="nav-text">8.进行训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-输出最佳参数"><span class="nav-number">1.9.</span> <span class="nav-text">9.输出最佳参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-预测结果和分类报告"><span class="nav-number">1.10.</span> <span class="nav-text">10.预测结果和分类报告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-完整代码"><span class="nav-number">1.11.</span> <span class="nav-text">11.完整代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-保存和加载模型"><span class="nav-number">1.12.</span> <span class="nav-text">12.保存和加载模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种方法是利用上面导入的-joblib-模块"><span class="nav-number">1.12.1.</span> <span class="nav-text">第一种方法是利用上面导入的 joblib 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种方法是使用pickle模块"><span class="nav-number">1.12.2.</span> <span class="nav-text">第二种方法是使用pickle模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-知识扩展"><span class="nav-number">1.13.</span> <span class="nav-text">13.知识扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM的基本概念"><span class="nav-number">1.13.1.</span> <span class="nav-text">SVM的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sklearn-svc-参数"><span class="nav-number">1.13.2.</span> <span class="nav-text">sklearn.svc 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性有哪些："><span class="nav-number">1.13.3.</span> <span class="nav-text">属性有哪些：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要用核函数？"><span class="nav-number">1.13.4.</span> <span class="nav-text">为什么要用核函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMO的介绍"><span class="nav-number">1.13.5.</span> <span class="nav-text">SMO的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMO算法思想"><span class="nav-number">1.13.6.</span> <span class="nav-text">SMO算法思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法数学推导"><span class="nav-number">1.13.7.</span> <span class="nav-text">算法数学推导</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
