@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="几种经典的卷积神经网络模型1.卷积神经网络介绍卷积神经网络（Convolutional Neural Networks, CNN）是一类包含卷积计算且具有深度结构的前馈神经网络（Feedforward Neural Networks），是深度学习（deep learning）的代表算法之一1.1输入层">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几种经典的卷积神经网络模型">
+<meta property="og:url" content="http://leesin.cc/reading/卷积神经网络.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="几种经典的卷积神经网络模型1.卷积神经网络介绍卷积神经网络（Convolutional Neural Networks, CNN）是一类包含卷积计算且具有深度结构的前馈神经网络（Feedforward Neural Networks），是深度学习（deep learning）的代表算法之一1.1输入层">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/images/20190317143043906.png">
+<meta property="og:image" content="http://leesin.cc/images/20190317143113788.png">
+<meta property="og:image" content="http://leesin.cc/images/20190317143133229.png">
+<meta property="og:image" content="http://leesin.cc/images/20190310163724740.png">
+<meta property="og:image" content="http://leesin.cc/images/2019031714315493.png">
+<meta property="og:image" content="http://leesin.cc/images/20190310165946881.png">
+<meta property="og:image" content="http://leesin.cc/images/20190311154246307.png">
+<meta property="og:image" content="http://leesin.cc/images/20190311154734825.png">
+<meta property="og:updated_time" content="2019-08-22T12:42:50.896Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="几种经典的卷积神经网络模型">
+<meta name="twitter:description" content="几种经典的卷积神经网络模型1.卷积神经网络介绍卷积神经网络（Convolutional Neural Networks, CNN）是一类包含卷积计算且具有深度结构的前馈神经网络（Feedforward Neural Networks），是深度学习（deep learning）的代表算法之一1.1输入层">
+<meta name="twitter:image" content="http://leesin.cc/images/20190317143043906.png">
+  <link rel="canonical" href="http://leesin.cc/reading/卷积神经网络">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>几种经典的卷积神经网络模型 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/卷积神经网络.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">几种经典的卷积神经网络模型
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:42:50" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="几种经典的卷积神经网络模型"><a href="#几种经典的卷积神经网络模型" class="headerlink" title="几种经典的卷积神经网络模型"></a>几种经典的卷积神经网络模型</h1><h2 id="1-卷积神经网络介绍"><a href="#1-卷积神经网络介绍" class="headerlink" title="1.卷积神经网络介绍"></a>1.卷积神经网络介绍</h2><p>卷积神经网络（Convolutional Neural Networks, CNN）是一类包含卷积计算且具有深度结构的前馈神经网络（Feedforward Neural Networks），是深度学习（deep learning）的代表算法之一</p><h3 id="1-1输入层"><a href="#1-1输入层" class="headerlink" title="1.1输入层"></a><strong>1.1输入层</strong></h3><a id="more"></a>
+<p>输入层可以处理多维数据</p>
+<h3 id="1-2隐含层"><a href="#1-2隐含层" class="headerlink" title="1.2隐含层"></a>1.2隐含层</h3><p>卷积神经网络的隐含层包含<strong>卷积层</strong>、<strong>池化层</strong>和<strong>全连接层</strong>3类常见构筑，在一些更为现代的算法中可能有Inception模块、残差块（residual block）等复杂构筑。</p>
+<h4 id="1-2-1-卷积层（convolutional-layer）"><a href="#1-2-1-卷积层（convolutional-layer）" class="headerlink" title="1.2.1 卷积层（convolutional layer）"></a>1.2.1 <strong>卷积层（convolutional layer）</strong></h4><p><strong>卷积核（convolutional kernel）</strong>:卷积层的功能是对输入数据进行特征提取，其内部包含多个卷积核，组成卷积核的每个元素都对应一个权重系数和一个偏差量（bias vector），类似于一个前馈神经网络的神经元（neuron）卷积层内每个神经元都与前一层中位置接近的区域的多个神经元相连，区域的大小取决于卷积核的大小，在文献中被称为“感受野（receptive field）</p>
+<p><strong>卷积层参数</strong>:卷积核大小、步长和填充，三者共同决定了卷积层输出特征图的尺寸，是卷积神经网络的超参数</p>
+<p><strong>激励函数（activation function）</strong>:ReLU出现以前，Sigmoid函数和双曲正切函数，在一些早期的卷积神经网络研究，例如LeNet-5中，激励函数在池化层之后</p>
+<h4 id="1-2-2池化层（pooling-layer）："><a href="#1-2-2池化层（pooling-layer）：" class="headerlink" title="1.2.2池化层（pooling layer）："></a>1.2.2<strong>池化层（pooling layer）</strong>：</h4><p>在卷积层进行特征提取后，输出的特征图会被传递至池化层进行特征选择和信息过滤</p>
+<p><strong>Inception模块（Inception module）</strong>：是对多个卷积层和池化层进行堆叠所得的隐含层构筑，具体而言，一个Inception模块会同时包含多个不同类型的卷积和池化操作，并使用相同填充使上述操作得到相同尺寸的特征图，随后在数组中将这些特征图的通道进行叠加并通过激励函数</p>
+<h4 id="1-2-3全连接层（fully-connected-layer）："><a href="#1-2-3全连接层（fully-connected-layer）：" class="headerlink" title="1.2.3全连接层（fully-connected layer）："></a>1.2.3<strong>全连接层（fully-connected layer）</strong>：</h4><p>全连接层位于卷积神经网络隐含层的最后部分，并只向其它全连接层传递信号。特征图在全连接层中会失去空间拓扑结构，被展开为向量并通过激励函数，全连接层本身不被期望具有特征提取能力，而是试图利用现有的高阶特征完成学习目标。</p>
+<h3 id="1-3输出层："><a href="#1-3输出层：" class="headerlink" title="1.3输出层："></a>1.3<strong>输出层</strong>：</h3><ul>
+<li>输出层使用逻辑函数或归一化指数函数（softmax function）输出分类标签</li>
+<li>在物体识别（object detection）问题中，输出层可设计为输出物体的中心坐标、大小和分类</li>
+<li>在图像语义分割中，输出层直接输出每个像素的分类结果</li>
+</ul>
+<h2 id="2-卷积神经网络要解决什么"><a href="#2-卷积神经网络要解决什么" class="headerlink" title="2.卷积神经网络要解决什么"></a>2.卷积神经网络要解决什么</h2><p>图像数据本身具有特殊性，像素点之间是有关联的，如果直接展开进行学习分类，不但失去了形状空间的信息，像素点过多造成要学习的参数过多，几乎不可能完成训练。</p>
+<p>卷积操作尝试去解决这个问题：</p>
+<ol>
+<li>卷积层保留输⼊形状，使图像的像素在⾼和宽两个方向上的相关性均可能被有效识别</li>
+<li>卷积层通过滑动窗口将同⼀卷积核与不同位置的输⼊重复计算，从而避免参数尺⼨过大。</li>
+</ol>
+<p>卷积操作的优势：</p>
+<ul>
+<li>稀疏连接</li>
+<li>权值共享</li>
+</ul>
+<p>怎么去理解，稀疏连接就像是军营等级制度，每一层只负责管理下面几个人，并只向上几个汇报，权值共享就是一个工厂生产，图纸大家一起使用，大大减少了每个人都要画一张的繁重</p>
+<h2 id="3-经典的卷积神经网络"><a href="#3-经典的卷积神经网络" class="headerlink" title="3.经典的卷积神经网络"></a>3.经典的卷积神经网络</h2><h3 id="3-1-LeNet"><a href="#3-1-LeNet" class="headerlink" title="3.1 LeNet"></a>3.1 LeNet</h3><p><img src="/images/20190317143043906.png" alt></p>
+<p>卷积层块中，每个卷积层都使⽤5 × 5的窗口，并在输出上使⽤sigmoid激活函数。第⼀个卷积层输出通道数为6，第⼆个卷积层输出通道数则增加到16</p>
+<h3 id="3-2-AlexNet"><a href="#3-2-AlexNet" class="headerlink" title="3.2 AlexNet"></a>3.2 AlexNet</h3><p>AlexNet使⽤了8层卷积神经⽹络，并以很⼤的优势赢得了ImageNet 2012图像识别挑战赛</p>
+<p><img src="/images/20190317143113788.png" alt></p>
+<p>AlexNet与LeNet的设计理念⾮常相似，但也有显著的区别。</p>
+<p>第⼀，与相对较小的LeNet相⽐，AlexNet包含8层变换，其中有5层卷积和2层全连接隐藏层，以及1个全连接输出层。下⾯我们来详细描述这些层的设计。AlexNet第⼀层中的卷积窗口形状是11 × 11。因为ImageNet中绝⼤多数图像的⾼和宽均⽐MNIST图像的⾼和宽⼤10倍以上，ImageNet图像的物体占⽤更多的像素，所以需要更⼤的卷积窗口来捕获物体。第⼆层中的卷积窗口形状减小到5 × 5，之后全采⽤3 × 3。此外，第⼀、第⼆和第五个卷积层之后都使⽤了窗口形状为3 × 3、步幅为2的最⼤池化层。而且，AlexNet使⽤的卷积通道数也⼤于LeNet中的卷积通道数数⼗倍。<br>紧接着最后⼀个卷积层的是两个输出个数为4096的全连接层。这两个巨⼤的全连接层带来将近1GB的模型参数。由于早期显存的限制，最早的AlexNet使⽤双数据流的设计使⼀个GPU只需要处理⼀半模型。幸运的是，显存在过去⼏年得到了长足的发展，因此通常我们不再需要这样的特别设计了。</p>
+<p>第⼆，AlexNet将sigmoid激活函数改成了更加简单的ReLU激活函数。⼀⽅⾯，ReLU激活函数的计算更简单，例如它并没有sigmoid激活函数中的求幂运算。另⼀⽅⾯，ReLU激活函数在不同的参数初始化⽅法下使模型更容易训练。这是由于当sigmoid激活函数输出极接近0或1时，这些区域的梯度⼏乎为0，从而造成反向传播⽆法继续更新部分模型参数；而ReLU激活函数在正区间的梯度恒为1。因此，若模型参数初始化不当，sigmoid函数可能在正区间得到⼏乎为0的梯度，从而令模型⽆法得到有效训练。</p>
+<p>第三，AlexNet通过丢弃法来控制全连接层的模型复杂度。而LeNet并没有使⽤丢弃法。</p>
+<p>第四，AlexNet引⼊了⼤量的图像增⼴，如翻转、裁剪和颜⾊变化，从而进⼀步扩⼤数据集来缓解过拟合。</p>
+<h3 id="3-3-VGG"><a href="#3-3-VGG" class="headerlink" title="3.3 VGG"></a>3.3 VGG</h3><h4 id="3-3-1-VGG块"><a href="#3-3-1-VGG块" class="headerlink" title="3.3.1 VGG块"></a>3.3.1 VGG块</h4><p>VGG块的组成规律是：连续使⽤数个相同的填充为1、窗口形状为3 × 3的卷积层后接上⼀个步幅为2、窗口形状为2 × 2的最⼤池化层。卷积层保持输⼊的⾼和宽不变，而池化层则对其减半。</p>
+<h4 id="3-3-2-VGG网络"><a href="#3-3-2-VGG网络" class="headerlink" title="3.3.2 VGG网络"></a>3.3.2 VGG网络</h4><p><img src="/images/20190317143133229.png" alt></p>
+<p>与AlexNet和LeNet⼀样，VGG⽹络由卷积层模块后接全连接层模块构成。卷积层模块串联数个vgg_block，其超参数由变量conv_arch定义。该变量指定了每个VGG块⾥卷积层个数和输出通道数。全连接模块则跟AlexNet中的⼀样。现在我们构造⼀个VGG⽹络。它有5个卷积块，前2块使⽤单卷积层，而后3块使⽤双卷积层。第⼀块的输出通道是64，之后每次对输出通道数翻倍，直到变为512。因为这个⽹络使⽤了8个卷积层和3个全连接层，所以经常被称为VGG-11。</p>
+<p>其实是从VGG开始，大家发现，与其使用更多卷积核，更大的网络，不如使用小卷积核更深的网络来替代。也就是说这时候解决梯度消失和梯度爆炸成为一个必须面对的问题</p>
+<h3 id="3-4-NiN"><a href="#3-4-NiN" class="headerlink" title="3.4 NiN"></a>3.4 NiN</h3><h4 id="3-4-1-Nin块"><a href="#3-4-1-Nin块" class="headerlink" title="3.4.1 Nin块"></a>3.4.1 Nin块</h4><p>我们知道， 卷积层的输⼊和输出通常是四维数组 （样本， 通道， ⾼， 宽） ， 而全连接层的输⼊和输出则通常是⼆维数组 （样本， 特征） 。 如果想在全连接层后再接上卷积层， 则需要将全连接层的输出变换为四维。 回忆在 “多输⼊通道和多输出通道” ⼀节⾥介绍的1×1卷积层。 它可以看成全连接层， 其中空间维度 （⾼和宽） 上的每个元素相当于样本， 通道相当于特征。 因此， NiN使⽤1×1卷积层来替代全连接层， 从而使空间信息能够⾃然传递到后⾯的层中去。 下图对⽐了NiN同AlexNet和VGG等⽹络在结构上的主要区别。</p>
+<p><img src="/images/20190310163724740.png" alt></p>
+<h4 id="3-4-2-Nin网络"><a href="#3-4-2-Nin网络" class="headerlink" title="3.4.2 Nin网络"></a>3.4.2 Nin网络</h4><p><img src="/images/2019031714315493.png" alt></p>
+<p>除使⽤NiN块以外，NiN还有⼀个设计与AlexNet显著不同：NiN去掉了AlexNet最后的3个全连接层，取而代之地，NiN使⽤了输出通道数等于标签类别数的NiN块，然后使⽤全局平均池化层对每个通道中所有元素求平均并直接⽤于分类。 这⾥的全局平均池化层即窗口形状等于输⼊空间维形状的平均池化层。NiN的这个设计的好处是可以显著减小模型参数尺⼨，从而缓解过拟合。然而，该设计有时会造成获得有效模型的训练时间的增加。</p>
+<h3 id="3-5-GooLeNet"><a href="#3-5-GooLeNet" class="headerlink" title="3.5 GooLeNet"></a>3.5 GooLeNet</h3><p>名字就能看出来，是向LeNet致敬</p>
+<h4 id="3-5-1-Inception块"><a href="#3-5-1-Inception块" class="headerlink" title="3.5.1 Inception块"></a>3.5.1 Inception块</h4><p><img src="/images/20190310165946881.png" alt></p>
+<p>Inception块⾥有4条并⾏的线路。前3条线路使⽤窗口⼤小分别是1 × 1、3 ×3和5 × 5的卷积层来抽取不同空间尺⼨下的信息，其中中间2个线路会对输⼊先做1 × 1卷积来减少输⼊通道数，以降低模型复杂度。第四条线路则使⽤3 × 3最⼤池化层，后接1 × 1卷积层来改变通道数。4条线路都使⽤了合适的填充来使输⼊与输出的⾼和宽⼀致。最后我们将每条线路的输出在通道维上连结，并输⼊接下来的层中去。</p>
+<h4 id="3-5-2-GoogLeNet网络"><a href="#3-5-2-GoogLeNet网络" class="headerlink" title="3.5.2 GoogLeNet网络"></a>3.5.2 GoogLeNet网络</h4><p>GoogLeNet跟VGG⼀样， 在主体卷积部分中使⽤5个模块 （block） ， 每个模块之间使⽤步幅为2的3×3最⼤池化层来减小输出⾼宽。</p>
+<p>第⼀模块使⽤⼀个64通道的7 × 7卷积层。</p>
+<p>第⼆模块使⽤2个卷积层：⾸先是64通道的1 × 1卷积层， 然后是将通道增⼤3倍的3 × 3卷积层。它对应Inception块中的第⼆条线路。</p>
+<p>第三模块串联2个完整的Inception块。 第⼀个Inception块的输出通道数为64+128+32+32 = 256，其中4条线路的输出通道数⽐例为64 : 128 : 32 : 32 = 2 : 4 : 1 : 1。 其中第⼆、 第三条线路先分别将输⼊通道数减小⾄96/192 = 1/2和16/192 = 1/12后，再接上第⼆层卷积层。第⼆个Inception块输出通道数增⾄128 + 192 + 96 + 64 = 480，每条线路的输出通道数之⽐为128 : 192 : 96 : 64 =4 : 6 : 3 : 2。其中第⼆、第三条线路先分别将输⼊通道数减小⾄128/256 = 1/2和32/256 = 1/8。</p>
+<p>第四模块更加复杂。它串联了5个Inception块，其输出通道数分别是192 + 208 + 48 + 64 = 512、160+224+64+64 = 512、128+256+64+64 = 512、 112+288+64+64 = 528和256+320+128+128 =832。这些线路的通道数分配和第三模块中的类似，⾸先含3 × 3卷积层的第⼆条线路输出最多通道， 其次是仅含1 × 1卷积层的第⼀条线路， 之后是含5 × 5卷积层的第三条线路和含3 × 3最⼤池化层的第四条线路。 其中第⼆、 第三条线路都会先按⽐例减小通道数。 这些⽐例在各个Inception块中都略有不同。</p>
+<p>第五模块有输出通道数为256 + 320 + 128 + 128 = 832和384 + 384 + 128 + 128 = 1024的两个Inception块。 其中每条线路的通道数的分配思路和第三、 第四模块中的⼀致， 只是在具体数值上有所不同。需要注意的是，第五模块的后⾯紧跟输出层，该模块同NiN⼀样使⽤全局平均池化层来将每个通道的⾼和宽变成1。最后我们将输出变成⼆维数组后接上⼀个输出个数为标签类别数的全连接层。GoogLeNet模型的计算复杂，而且不如VGG那样便于修改通道数。</p>
+<h3 id="3-6-ResNet"><a href="#3-6-ResNet" class="headerlink" title="3.6 ResNet"></a>3.6 ResNet</h3><p>理论上，原模型解的空间只是新模型解的空间的⼦空间。也就是说，如果我们能将新添加的层训练成恒等映射f(x) = x，新模型和原模型将同样有效。由于新模型可能得出更优的解来拟合训练数据集，因此添加层似乎更容易降低训练误差。然而在实践中，添加过多的层后训练误差往往不降反升。即使利⽤批量归⼀化带来的数值稳定性使训练深层模型更加容易，该问题仍然存在。 针对这⼀问题， 何恺明等⼈提出了残差⽹络（ResNet）。 它在2015年的ImageNet图像识别挑战赛夺魁，并深刻影响了后来的深度神经⽹络的设计。</p>
+<h4 id="3-6-1-残差块"><a href="#3-6-1-残差块" class="headerlink" title="3.6.1 残差块"></a>3.6.1 残差块</h4><p>让我们聚焦于神经⽹络局部。如图所⽰，设输⼊为x。假设我们希望学出的理想映射为f(x)，从而作为图上⽅激活函数的输⼊。左图虚线框中的部分需要直接拟合出该映射f(x)，而右图虚线框中的部分则需要拟合出有关恒等映射的残差映射f(x) − x。残差映射在实际中往往更容易优化。以本节开头提到的恒等映射作为我们希望学出的理想映射f(x)。我们只需将图中右图虚线框内上⽅的加权运算（如仿射）的权重和偏差参数学成0，那么f(x)即为恒等映射。实际中，当理想映射f(x)极接近于恒等映射时，残差映射也易于捕捉恒等映射的细微波动。右图也是ResNet的基础块，即残差块（residual block） 。在残差块中，输⼊可通过跨层的数据线路更快地向前传播。</p>
+<h4 id="3-6-2-残差网络"><a href="#3-6-2-残差网络" class="headerlink" title="3.6.2 残差网络"></a>3.6.2 残差网络</h4><p><img src="/images/20190311154246307.png" alt></p>
+<p>ResNet沿⽤了VGG全3 × 3卷积层的设计。残差块⾥⾸先有2个有相同输出通道数的3 × 3卷积层。每个卷积层后接⼀个批量归⼀化层和ReLU激活函数。然后我们将输⼊跳过这两个卷积运算后直接加在最后的ReLU激活函数前。这样的设计要求两个卷积层的输出与输⼊形状⼀样，从而可以相加。如果想改变通道数， 就需要引⼊⼀个额外的1 × 1卷积层来将输⼊变换成需要的形状后再做相加运算。</p>
+<h3 id="3-7-DenseNet"><a href="#3-7-DenseNet" class="headerlink" title="3.7 DenseNet"></a>3.7 DenseNet</h3><p>ResNet中的跨层连接设计引申出了数个后续⼯作。本节我们介绍其中的⼀个：稠密连接⽹络（DenseNet）。它与ResNet的主要区别如图所⽰。</p>
+<p><img src="/images/20190311154734825.png" alt></p>
+<p>图中将部分前后相邻的运算抽象为模块A和模块B。与ResNet的主要区别在于，DenseNet⾥模块B的输出不是像ResNet那样和模块A的输出相加，而是在通道维上连结。这样模块A的输出可以直接传⼊模块B后⾯的层。在这个设计⾥，模块A直接跟模块B后⾯的所有层连接在了⼀起。这也是它被称为“稠密连接”的原因。</p>
+<p>DenseNet的主要构建模块是稠密块（dense block）和过渡层（transition layer） 。前者定义了输⼊和输出是如何连结的，后者则⽤来控制通道数，使之不过⼤。</p>
+<blockquote>
+<p>参考博客：<a href="https://blog.csdn.net/yaoxunji/article/details/88351396" target="_blank" rel="noopener">https://blog.csdn.net/yaoxunji/article/details/88351396</a></p>
+</blockquote>
+<hr>
+<p>文中简单介绍了主流卷积网络，接下来我会分两部分对作者的这篇博客进行补充，一是把论文进行翻译解读，二是用不同的框架对论文网络进行复现</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/卷积神经网络.html" title="几种经典的卷积神经网络模型">http://leesin.cc/reading/卷积神经网络.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/OpenCV检测分割图像.html" rel="next" title="直接可以用的Python和OpenCV检测及分割图像的目标区域例子">
+                  <i class="fa fa-chevron-left"></i> 直接可以用的Python和OpenCV检测及分割图像的目标区域例子
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/python/8.Python的字符串.html" rel="prev" title="8.Python的字符串">
+                  8.Python的字符串 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#几种经典的卷积神经网络模型"><span class="nav-number">1.</span> <span class="nav-text">几种经典的卷积神经网络模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-卷积神经网络介绍"><span class="nav-number">1.1.</span> <span class="nav-text">1.卷积神经网络介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1输入层"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1输入层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2隐含层"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2隐含层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-卷积层（convolutional-layer）"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1.2.1 卷积层（convolutional layer）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2池化层（pooling-layer）："><span class="nav-number">1.1.2.2.</span> <span class="nav-text">1.2.2池化层（pooling layer）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3全连接层（fully-connected-layer）："><span class="nav-number">1.1.2.3.</span> <span class="nav-text">1.2.3全连接层（fully-connected layer）：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3输出层："><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3输出层：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-卷积神经网络要解决什么"><span class="nav-number">1.2.</span> <span class="nav-text">2.卷积神经网络要解决什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-经典的卷积神经网络"><span class="nav-number">1.3.</span> <span class="nav-text">3.经典的卷积神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-LeNet"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 LeNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-AlexNet"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 AlexNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-VGG"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 VGG</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-VGG块"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">3.3.1 VGG块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-VGG网络"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">3.3.2 VGG网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-NiN"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 NiN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-Nin块"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">3.4.1 Nin块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-Nin网络"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">3.4.2 Nin网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-GooLeNet"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5 GooLeNet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-Inception块"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">3.5.1 Inception块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-GoogLeNet网络"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">3.5.2 GoogLeNet网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-ResNet"><span class="nav-number">1.3.6.</span> <span class="nav-text">3.6 ResNet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-1-残差块"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">3.6.1 残差块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-2-残差网络"><span class="nav-number">1.3.6.2.</span> <span class="nav-text">3.6.2 残差网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-DenseNet"><span class="nav-number">1.3.7.</span> <span class="nav-text">3.7 DenseNet</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

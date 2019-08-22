@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="书接上文在学习新的内容之前，我们做一个小校验，看看自己前面的数值类型是否掌握。 123456789&amp;gt; 1.把你的名字拼音用编码数字进行输出&amp;gt; 2.把上一题的编码解析出来，你或许以后可以用这个当成你的某网站密码&amp;gt; 3.数字3.1向上取整&amp;gt; 4.数字4.9向下取整&amp;gt; 5.数字5.555保留两位小数&amp;gt; 6.把你名字的数字编码转为二进制，八进制，十六进制&amp;gt; 7.将">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.Python的字符串">
+<meta property="og:url" content="http://leesin.cc/python/8.Python的字符串.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="书接上文在学习新的内容之前，我们做一个小校验，看看自己前面的数值类型是否掌握。 123456789&amp;gt; 1.把你的名字拼音用编码数字进行输出&amp;gt; 2.把上一题的编码解析出来，你或许以后可以用这个当成你的某网站密码&amp;gt; 3.数字3.1向上取整&amp;gt; 4.数字4.9向下取整&amp;gt; 5.数字5.555保留两位小数&amp;gt; 6.把你名字的数字编码转为二进制，八进制，十六进制&amp;gt; 7.将">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-22T15:01:13.718Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8.Python的字符串">
+<meta name="twitter:description" content="书接上文在学习新的内容之前，我们做一个小校验，看看自己前面的数值类型是否掌握。 123456789&amp;gt; 1.把你的名字拼音用编码数字进行输出&amp;gt; 2.把上一题的编码解析出来，你或许以后可以用这个当成你的某网站密码&amp;gt; 3.数字3.1向上取整&amp;gt; 4.数字4.9向下取整&amp;gt; 5.数字5.555保留两位小数&amp;gt; 6.把你名字的数字编码转为二进制，八进制，十六进制&amp;gt; 7.将">
+  <link rel="canonical" href="http://leesin.cc/python/8.Python的字符串">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>8.Python的字符串 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/8.Python的字符串.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">8.Python的字符串
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：23:01:13" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><p>在学习新的内容之前，我们做一个小校验，看看自己前面的数值类型是否掌握。</p><blockquote>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="number">1.</span>把你的名字拼音用编码数字进行输出</span><br><span class="line">&gt; <span class="number">2.</span>把上一题的编码解析出来，你或许以后可以用这个当成你的某网站密码</span><br><span class="line">&gt; <span class="number">3.</span>数字<span class="number">3.1</span>向上取整</span><br><span class="line">&gt; <span class="number">4.</span>数字<span class="number">4.9</span>向下取整</span><br><span class="line">&gt; <span class="number">5.</span>数字<span class="number">5.555</span>保留两位小数</span><br><span class="line">&gt; <span class="number">6.</span>把你名字的数字编码转为二进制，八进制，十六进制</span><br><span class="line">&gt; <span class="number">7.</span>将数字<span class="number">8.88</span>转为整型</span><br><span class="line">&gt; <span class="number">8.</span>将字符串的python语句转为正常语句，再赋给一个字符串</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote><a id="more"></a>
+
+<hr>
+<h3 id="Python-字符串"><a href="#Python-字符串" class="headerlink" title="Python 字符串"></a>Python 字符串</h3><p>字符串是 Python 中最常用的数据类型。我们可以使用引号(‘或”)来创建字符串。</p>
+<p>创建字符串很简单，只要为变量分配一个值即可。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1 =  <span class="string">'Hello'</span></span><br><span class="line">s2 =  <span class="string">"world"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Python访问字符串中的值"><a href="#Python访问字符串中的值" class="headerlink" title="Python访问字符串中的值"></a>Python访问字符串中的值</h3><p>Python不支持单字符类型，单字符在 Python 中也是作为一个字符串使用。</p>
+<p>Python访问子字符串，可以使用方括号来截取字符串，如下实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">'Hello world'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>]</span><br><span class="line"><span class="string">'H'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">-1</span>]</span><br><span class="line"><span class="string">'d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>:<span class="number">-1</span>]</span><br><span class="line"><span class="string">'Hello worl'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[:]</span><br><span class="line"><span class="string">'Hello world'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[::<span class="number">-1</span>]</span><br><span class="line"><span class="string">'dlrow olleH'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[::<span class="number">2</span>]</span><br><span class="line"><span class="string">'Hlowrd'</span></span><br></pre></td></tr></table></figure>
+
+<p>注意是怎么将字符串反转的语法。</p>
+<h3 id="Python字符串更新"><a href="#Python字符串更新" class="headerlink" title="Python字符串更新"></a>Python字符串更新</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">'Hello world'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>] = <span class="string">'C'</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;pyshell#2&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    a[<span class="number">0</span>] = <span class="string">'C'</span></span><br><span class="line">TypeError: <span class="string">'str'</span> object does <span class="keyword">not</span> support item assignment</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a[<span class="number">0</span>] + <span class="string">'C'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">'HC'</span></span><br></pre></td></tr></table></figure>
+
+<p>字符串是不能直接修改的，原因和总结，学习完基本类型后会进行说明。但是你可以访问得到它的值然后赋给其他变量</p>
+<h3 id="Python转义字符"><a href="#Python转义字符" class="headerlink" title="Python转义字符"></a>Python转义字符</h3><table>
+<thead>
+<tr>
+<th align="left">转义字符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">\(在行尾时)</td>
+<td align="left">续行符</td>
+</tr>
+<tr>
+<td align="left">\\</td>
+<td align="left">反斜杠符号</td>
+</tr>
+<tr>
+<td align="left">\‘</td>
+<td align="left">单引号</td>
+</tr>
+<tr>
+<td align="left">\“</td>
+<td align="left">双引号</td>
+</tr>
+<tr>
+<td align="left">\a</td>
+<td align="left">响铃</td>
+</tr>
+<tr>
+<td align="left">\b</td>
+<td align="left">退格(Backspace)</td>
+</tr>
+<tr>
+<td align="left">\e</td>
+<td align="left">转义</td>
+</tr>
+<tr>
+<td align="left">\000</td>
+<td align="left">空</td>
+</tr>
+<tr>
+<td align="left">\n</td>
+<td align="left">换行</td>
+</tr>
+<tr>
+<td align="left">\v</td>
+<td align="left">纵向制表符</td>
+</tr>
+<tr>
+<td align="left">\t</td>
+<td align="left">横向制表符</td>
+</tr>
+<tr>
+<td align="left">\r</td>
+<td align="left">回车</td>
+</tr>
+<tr>
+<td align="left">\f</td>
+<td align="left">换页</td>
+</tr>
+<tr>
+<td align="left">\oyy</td>
+<td align="left">八进制数，yy代表的字符，例如：\o12代表换行</td>
+</tr>
+<tr>
+<td align="left">\xyy</td>
+<td align="left">十六进制数，yy代表的字符，例如：\x0a代表换行</td>
+</tr>
+<tr>
+<td align="left">\other</td>
+<td align="left">其它的字符以普通格式输出</td>
+</tr>
+</tbody></table>
+<p>用的较多的是 \n 和 \t</p>
+<h3 id="Python字符串运算符"><a href="#Python字符串运算符" class="headerlink" title="Python字符串运算符"></a>Python字符串运算符</h3><p>下表实例变量 a 值为字符串 “Hello”，b 变量值为 “Python”：</p>
+<table>
+<thead>
+<tr>
+<th align="left">操作符</th>
+<th align="left">描述</th>
+<th align="left">实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">+</td>
+<td align="left">字符串连接</td>
+<td align="left">&gt;&gt;&gt;a + b ‘HelloPython’</td>
+</tr>
+<tr>
+<td align="left">*</td>
+<td align="left">重复输出字符串</td>
+<td align="left">&gt;&gt;&gt;a * 2<br> ‘HelloHello’</td>
+</tr>
+<tr>
+<td align="left">[]</td>
+<td align="left">通过索引获取字符串中字符</td>
+<td align="left">&gt;&gt;&gt;a[1] <br>‘e’</td>
+</tr>
+<tr>
+<td align="left">[ : ]</td>
+<td align="left">截取字符串中的一部分</td>
+<td align="left">&gt;&gt;&gt;a[1:4] ‘ell’</td>
+</tr>
+<tr>
+<td align="left">in</td>
+<td align="left">成员运算符 - 如果字符串中包含给定的字符返回 True</td>
+<td align="left">&gt;&gt;&gt;”H”in a <br>True</td>
+</tr>
+<tr>
+<td align="left">not in</td>
+<td align="left">成员运算符 - 如果字符串中不包含给定的字符返回 True</td>
+<td align="left">&gt;&gt;&gt;”M” not in a <br>True</td>
+</tr>
+<tr>
+<td align="left">r/R</td>
+<td align="left">原始字符串 - 原始字符串：所有的字符串都是直接按照字面的意思来使用，没有转义特殊或不能打印的字符。</td>
+<td align="left">&gt;&gt;&gt;print(r’\n’ \n)<br>&gt;&gt;&gt; print(R’\n’ )</td>
+</tr>
+<tr>
+<td align="left">%</td>
+<td align="left">格式字符串</td>
+<td align="left">请看下一章节</td>
+</tr>
+</tbody></table>
+<h3 id="Python-字符串格式化"><a href="#Python-字符串格式化" class="headerlink" title="Python 字符串格式化"></a>Python 字符串格式化</h3><p>如果我们想让字符串可以随时变化，就像很多网站当你登录的时候都会说，欢迎您，[你的用户名]，那就要用到字符串格式化，这样表达有点抽象，也就是说你想让字符串哪里变化，不妨在那个位置上留点东西，像图书馆占位置一样。也不能随便留，你要留点象征性的东西嘛，这样它看到你留的记号就知道这里是给它占的位置。</p>
+<p>python 字符串格式化符号:</p>
+<table>
+<thead>
+<tr>
+<th align="left">符   号</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">%c</td>
+<td align="left">格式化字符及其ASCII码</td>
+</tr>
+<tr>
+<td align="left">%s</td>
+<td align="left">格式化字符串</td>
+</tr>
+<tr>
+<td align="left">%d</td>
+<td align="left">格式化整数</td>
+</tr>
+<tr>
+<td align="left">%u</td>
+<td align="left">格式化无符号整型</td>
+</tr>
+<tr>
+<td align="left">%o</td>
+<td align="left">格式化无符号八进制数</td>
+</tr>
+<tr>
+<td align="left">%x</td>
+<td align="left">格式化无符号十六进制数</td>
+</tr>
+<tr>
+<td align="left">%X</td>
+<td align="left">格式化无符号十六进制数（大写）</td>
+</tr>
+<tr>
+<td align="left">%f</td>
+<td align="left">格式化浮点数字，可指定小数点后的精度</td>
+</tr>
+<tr>
+<td align="left">%e</td>
+<td align="left">用科学计数法格式化浮点数</td>
+</tr>
+<tr>
+<td align="left">%E</td>
+<td align="left">作用同%e，用科学计数法格式化浮点数</td>
+</tr>
+<tr>
+<td align="left">%g</td>
+<td align="left">%f和%e的简写</td>
+</tr>
+<tr>
+<td align="left">%G</td>
+<td align="left">%F 和 %E 的简写</td>
+</tr>
+<tr>
+<td align="left">%p</td>
+<td align="left">用十六进制数格式化变量的地址</td>
+</tr>
+</tbody></table>
+<p>  格式化操作符辅助指令:</p>
+<table>
+<thead>
+<tr>
+<th align="left">符号</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">*</td>
+<td align="left">定义宽度或者小数点精度</td>
+</tr>
+<tr>
+<td align="left">-</td>
+<td align="left">用做左对齐</td>
+</tr>
+<tr>
+<td align="left">+</td>
+<td align="left">在正数前面显示加号( + )</td>
+</tr>
+<tr>
+<td align="left"><sp></sp></td>
+<td align="left">在正数前面显示空格</td>
+</tr>
+<tr>
+<td align="left">#</td>
+<td align="left">在八进制数前面显示零(‘0’)，在十六进制前面显示’0x’或者’0X’(取决于用的是’x’还是’X’)</td>
+</tr>
+<tr>
+<td align="left">0</td>
+<td align="left">显示的数字前面填充’0’而不是默认的空格</td>
+</tr>
+<tr>
+<td align="left">%</td>
+<td align="left">‘%%’输出一个单一的’%’</td>
+</tr>
+<tr>
+<td align="left">(var)</td>
+<td align="left">映射变量(字典参数)</td>
+</tr>
+<tr>
+<td align="left">m.n.</td>
+<td align="left">m 是显示的最小总宽度,n 是小数点后的位数(如果可用的话)</td>
+</tr>
+</tbody></table>
+<h3 id="Python三引号"><a href="#Python三引号" class="headerlink" title="Python三引号"></a>Python三引号</h3><p>python三引号允许一个字符串跨多行，字符串中可以包含换行符、制表符以及其他特殊字符。</p>
+<p>三引号的语法是一对连续的单引号或者双引号（通常都是成对的用）</p>
+<p>那些地方使用较多呢？通常在大段大段的说明使用较多，根本不像注释了，几乎就是帮助文档。还有就是很复杂的长字符串，比如下面这样的html页面，和SQL执行语句，常规的单双引简直没法处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">errHTML = </span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">&lt;HTML&gt;&lt;HEAD&gt;&lt;TITLE&gt;</span></span><br><span class="line"><span class="string">Friends CGI Demo&lt;/TITLE&gt;&lt;/HEAD&gt;</span></span><br><span class="line"><span class="string">&lt;BODY&gt;&lt;H3&gt;ERROR&lt;/H3&gt;</span></span><br><span class="line"><span class="string">&lt;B&gt;%s&lt;/B&gt;&lt;P&gt;</span></span><br><span class="line"><span class="string">&lt;FORM&gt;&lt;INPUT TYPE=button VALUE=Back</span></span><br><span class="line"><span class="string">ONCLICK="window.history.back()"&gt;&lt;/FORM&gt;</span></span><br><span class="line"><span class="string">&lt;/BODY&gt;&lt;/HTML&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">cursor.execute(</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">CREATE TABLE users (  </span></span><br><span class="line"><span class="string">login VARCHAR(8), </span></span><br><span class="line"><span class="string">uid INTEGER,</span></span><br><span class="line"><span class="string">prid INTEGER)</span></span><br><span class="line"><span class="string">'''</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Unicode-字符串"><a href="#Unicode-字符串" class="headerlink" title="Unicode 字符串"></a>Unicode 字符串</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">u'Hello World !'</span></span><br><span class="line"><span class="string">u'Hello World !'</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="python的字符串内建函数"><a href="#python的字符串内建函数" class="headerlink" title="python的字符串内建函数"></a>python的字符串内建函数</h2><p>这部分内容较多，先附上总表，然后我们一起在交互环境中多敲敲，逐步攻破</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left"><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-capitalize.html" target="_blank" rel="noopener">string.capitalize()</a></td>
+<td align="left">把字符串的第一个字符大写</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-center.html" target="_blank" rel="noopener">string.center(width)</a></td>
+<td align="left">返回一个原字符串居中,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td align="left"><strong>string.count(str, beg=0, end=len(string))</strong></td>
+<td align="left">返回 str 在 string 里面出现的次数，如果 beg 或者 end 指定则返回指定范围内 str 出现的次数</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-decode.html" target="_blank" rel="noopener">string.decode(encoding=’UTF-8’, errors=’strict’)</a></td>
+<td align="left">以 encoding 指定的编码格式解码 string，如果出错默认报一个 ValueError 的 异 常 ， 除非 errors 指 定 的 是 ‘ignore’ 或 者’replace’</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-encode.html" target="_blank" rel="noopener">string.encode(encoding=’UTF-8’, errors=’strict’)</a></td>
+<td align="left">以 encoding 指定的编码格式编码 string，如果出错默认报一个ValueError 的异常，除非 errors 指定的是’ignore’或者’replace’</td>
+</tr>
+<tr>
+<td align="left"><strong>string.endswith(obj, beg=0, end=len(string))</strong></td>
+<td align="left">检查字符串是否以 obj 结束，如果beg 或者 end 指定则检查指定的范围内是否以 obj 结束，如果是，返回 True,否则返回 False.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-expandtabs.html" target="_blank" rel="noopener">string.expandtabs(tabsize=8)</a></td>
+<td align="left">把字符串 string 中的 tab 符号转为空格，tab 符号默认的空格数是 8。</td>
+</tr>
+<tr>
+<td align="left"><strong>string.find(str, beg=0, end=len(string))</strong></td>
+<td align="left">检测 str 是否包含在 string 中，如果 beg 和 end 指定范围，则检查是否包含在指定范围内，如果是返回开始的索引值，否则返回-1</td>
+</tr>
+<tr>
+<td align="left"><strong>string.format()</strong></td>
+<td align="left">格式化字符串</td>
+</tr>
+<tr>
+<td align="left"><strong>string.index(str, beg=0, end=len(string))</strong></td>
+<td align="left">跟find()方法一样，只不过如果str不在 string中会报一个异常.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-isalnum.html" target="_blank" rel="noopener">string.isalnum()</a></td>
+<td align="left">如果 string 至少有一个字符并且所有字符都是字母或数字则返回 True,否则返回 False</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-isalpha.html" target="_blank" rel="noopener">string.isalpha()</a></td>
+<td align="left">如果 string 至少有一个字符并且所有字符都是字母则返回 True,否则返回 False</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-isdecimal.html" target="_blank" rel="noopener">string.isdecimal()</a></td>
+<td align="left">如果 string 只包含十进制数字则返回 True 否则返回 False.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-isdigit.html" target="_blank" rel="noopener">string.isdigit()</a></td>
+<td align="left">如果 string 只包含数字则返回 True 否则返回 False.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-islower.html" target="_blank" rel="noopener">string.islower()</a></td>
+<td align="left">如果 string 中包含至少一个区分大小写的字符，并且所有这些(区分大小写的)字符都是小写，则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-isnumeric.html" target="_blank" rel="noopener">string.isnumeric()</a></td>
+<td align="left">如果 string 中只包含数字字符，则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-isspace.html" target="_blank" rel="noopener">string.isspace()</a></td>
+<td align="left">如果 string 中只包含空格，则返回 True，否则返回 False.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-istitle.html" target="_blank" rel="noopener">string.istitle()</a></td>
+<td align="left">如果 string 是标题化的(见 title())则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-isupper.html" target="_blank" rel="noopener">string.isupper()</a></td>
+<td align="left">如果 string 中包含至少一个区分大小写的字符，并且所有这些(区分大小写的)字符都是大写，则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td align="left"><strong>string.join(seq)</strong></td>
+<td align="left">以 string 作为分隔符，将 seq 中所有的元素(的字符串表示)合并为一个新的字符串</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-ljust.html" target="_blank" rel="noopener">string.ljust(width)</a></td>
+<td align="left">返回一个原字符串左对齐,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-lower.html" target="_blank" rel="noopener">string.lower()</a></td>
+<td align="left">转换 string 中所有大写字符为小写.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-lstrip.html" target="_blank" rel="noopener">string.lstrip()</a></td>
+<td align="left">截掉 string 左边的空格</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-maketrans.html" target="_blank" rel="noopener">string.maketrans(intab, outtab])</a></td>
+<td align="left">maketrans() 方法用于创建字符映射的转换表，对于接受两个参数的最简单的调用方式，第一个参数是字符串，表示需要转换的字符，第二个参数也是字符串表示转换的目标。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-max.html" target="_blank" rel="noopener">max(str)</a></td>
+<td align="left">返回字符串 <em>str</em> 中最大的字母。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-min.html" target="_blank" rel="noopener">min(str)</a></td>
+<td align="left">返回字符串 <em>str</em> 中最小的字母。</td>
+</tr>
+<tr>
+<td align="left"><strong>string.partition(str)</strong></td>
+<td align="left">有点像 find()和 split()的结合体,从 str 出现的第一个位置起,把 字 符 串 string 分 成 一 个 3 元 素 的 元 组 (string_pre_str,str,string_post_str),如果 string 中不包含str 则 string_pre_str == string.</td>
+</tr>
+<tr>
+<td align="left"><strong>string.replace(str1, str2,  num=string.count(str1))</strong></td>
+<td align="left">把 string 中的 str1 替换成 str2,如果 num 指定，则替换不超过 num 次.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-rfind.html" target="_blank" rel="noopener">string.rfind(str, beg=0,end=len(string) )</a></td>
+<td align="left">类似于 find()函数，不过是从右边开始查找.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-rindex.html" target="_blank" rel="noopener">string.rindex( str, beg=0,end=len(string))</a></td>
+<td align="left">类似于 index()，不过是从右边开始.</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-rjust.html" target="_blank" rel="noopener">string.rjust(width)</a></td>
+<td align="left">返回一个原字符串右对齐,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-rpartition.html" target="_blank" rel="noopener">string.rpartition(str)</a></td>
+<td align="left">类似于 partition()函数,不过是从右边开始查找</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-rstrip.html" target="_blank" rel="noopener">string.rstrip()</a></td>
+<td align="left">删除 string 字符串末尾的空格.</td>
+</tr>
+<tr>
+<td align="left"><strong>string.split(str=””, num=string.count(str))</strong></td>
+<td align="left">以 str 为分隔符切片 string，如果 num 有指定值，则仅分隔 num+ 个子字符串</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-splitlines.html" target="_blank" rel="noopener">string.splitlines([keepends])</a></td>
+<td align="left">按照行(‘\r’, ‘\r\n’, \n’)分隔，返回一个包含各行作为元素的列表，如果参数 keepends 为 False，不包含换行符，如果为 True，则保留换行符。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-startswith.html" target="_blank" rel="noopener">string.startswith(obj, beg=0,end=len(string))</a></td>
+<td align="left">检查字符串是否是以 obj 开头，是则返回 True，否则返回 False。如果beg 和 end 指定值，则在指定范围内检查.</td>
+</tr>
+<tr>
+<td align="left"><strong>string.strip([obj])</strong></td>
+<td align="left">在 string 上执行 lstrip()和 rstrip()</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-swapcase.html" target="_blank" rel="noopener">string.swapcase()</a></td>
+<td align="left">翻转 string 中的大小写</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-title.html" target="_blank" rel="noopener">string.title()</a></td>
+<td align="left">返回”标题化”的 string,就是说所有单词都是以大写开始，其余字母均为小写(见 istitle())</td>
+</tr>
+<tr>
+<td align="left"><strong>string.translate(str, del=””)</strong></td>
+<td align="left">根据 str 给出的表(包含 256 个字符)转换 string 的字符,要过滤掉的字符放到 del 参数中</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-upper.html" target="_blank" rel="noopener">string.upper()</a></td>
+<td align="left">转换 string 中的小写字母为大写</td>
+</tr>
+<tr>
+<td align="left"><a href="https://www.runoob.com/python/att-string-zfill.html" target="_blank" rel="noopener">string.zfill(width)</a></td>
+<td align="left">返回长度为 width 的字符串，原字符串 string 右对齐，前面填充0</td>
+</tr>
+</tbody></table>
+<hr>
+<p>下面是我的示例代码，均是用jupyter编写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'the answer to life the universe and everything'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.capitalize()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'The</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.count(<span class="string">'a'</span>,<span class="number">0</span>,<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b = a.encode(encoding=<span class="string">'UTF-8'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b'the answer to life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c = b.decode(encoding=<span class="string">'UTF-8'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'the</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.endswith(<span class="string">'g'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.startswith(<span class="string">'g'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.expandtabs(tabsize=<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'the</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.find(<span class="string">'the'</span>,<span class="number">0</span>,<span class="number">42</span>) <span class="comment"># 如果是返回开始的索引</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs = <span class="string">'&#123;&#125;'</span>.format(<span class="string">'hello'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'hello</span>'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.index(<span class="string">'an'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.isalnum()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.isalpha()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.isdecimal()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.isdigit()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d = <span class="string">'0b110'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d.isalnum()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d.isdecimal()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d.isdigit()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.islower()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.isnumeric()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.isspace()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.istitle()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.isupper()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">' '</span>.join([<span class="string">'a'</span>,<span class="string">'b'</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'a</span> b'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.ljust(<span class="number">60</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'the</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything              <span class="string">'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.lower()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'the</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.lstrip()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'the</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.maketrans(<span class="string">'the'</span>,<span class="string">'CCC'</span>) <span class="comment"># 两个字符串必须相等长度</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">116</span>: <span class="number">67</span>, <span class="number">104</span>: <span class="number">67</span>, <span class="number">101</span>: <span class="number">67</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ord(<span class="string">'t'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">116</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">max(a)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'y</span>'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">min(a)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">' '</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.partition(<span class="string">'and'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="symbol">'the</span> answer to life the universe ', <span class="symbol">'and</span>', ' everything')</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.replace(<span class="string">'the'</span>,<span class="string">'The'</span>,a.count(<span class="string">'the'</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'The</span> answer <span class="keyword">to</span> life <span class="type">The</span> universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.rfind(<span class="string">'a'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">32</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.rindex(<span class="string">'a'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">32</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.rjust(<span class="number">60</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">'              the answer to life the universe and everything'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.rpartition(<span class="string">'the'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="symbol">'the</span> answer to life ', <span class="symbol">'the</span>', ' universe and everything')</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.rstrip()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'the</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.split(<span class="string">'a'</span>,<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">'the</span> ', <span class="symbol">'nswer</span> to life the universe and everything']</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'''</span></span><br><span class="line"><span class="string">i \n</span></span><br><span class="line"><span class="string">am a \n</span></span><br><span class="line"><span class="string">student</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sp1 = s.splitlines()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sp1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">['', <span class="symbol">'i</span> ', '', <span class="symbol">'am</span> a ', '', <span class="symbol">'student</span>']</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sp2 = s.splitlines(<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sp2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">['\n', <span class="symbol">'i</span> \n', '\n', <span class="symbol">'am</span> a \n', '\n', <span class="symbol">'student</span>\n']</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.strip()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'the</span> answer <span class="keyword">to</span> life the universe <span class="keyword">and</span> everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.title()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'The</span> Answer <span class="keyword">To</span> Life The Universe <span class="keyword">And</span> Everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.upper()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'THE</span> ANSWER <span class="keyword">TO</span> LIFE THE UNIVERSE <span class="keyword">AND</span> EVERYTHING'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.zfill(<span class="number">60</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'<span class="number">00000000000000</span>the answer to life the universe and everything'</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strs = <span class="string">"this is string example....wow!!!"</span></span><br><span class="line">trantab = str.maketrans(<span class="string">'aeiou'</span>,<span class="string">'12345'</span>)</span><br><span class="line">strs.translate(trantab)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'th3s <span class="number">3</span>s str3ng <span class="number">2</span>x1mpl2....w4w!!!'</span><br></pre></td></tr></table></figure>
+
+<p>大概也就这么多了，多加练习就可以了。</p>
+<hr>
+<h2 id="—欲知后事如何，且听下回分解"><a href="#—欲知后事如何，且听下回分解" class="headerlink" title="—欲知后事如何，且听下回分解"></a>—欲知后事如何，且听下回分解</h2>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/python/8.Python的字符串.html" title="8.Python的字符串">http://leesin.cc/python/8.Python的字符串.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/卷积神经网络.html" rel="next" title="几种经典的卷积神经网络模型">
+                  <i class="fa fa-chevron-left"></i> 几种经典的卷积神经网络模型
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/reading/如何使用SVM训练自己的数据.html" rel="prev" title="如何使用SVM训练自己的数据">
+                  如何使用SVM训练自己的数据 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#书接上文"><span class="nav-number">1.</span> <span class="nav-text">书接上文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-字符串"><span class="nav-number">1.1.</span> <span class="nav-text">Python 字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python访问字符串中的值"><span class="nav-number">1.2.</span> <span class="nav-text">Python访问字符串中的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python字符串更新"><span class="nav-number">1.3.</span> <span class="nav-text">Python字符串更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python转义字符"><span class="nav-number">1.4.</span> <span class="nav-text">Python转义字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python字符串运算符"><span class="nav-number">1.5.</span> <span class="nav-text">Python字符串运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-字符串格式化"><span class="nav-number">1.6.</span> <span class="nav-text">Python 字符串格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python三引号"><span class="nav-number">1.7.</span> <span class="nav-text">Python三引号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unicode-字符串"><span class="nav-number">1.8.</span> <span class="nav-text">Unicode 字符串</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python的字符串内建函数"><span class="nav-number">2.</span> <span class="nav-text">python的字符串内建函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#—欲知后事如何，且听下回分解"><span class="nav-number">3.</span> <span class="nav-text">—欲知后事如何，且听下回分解</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
