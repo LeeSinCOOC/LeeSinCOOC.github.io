@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="书接上文Python 模块Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。模块让你能够有逻辑地组织你的 Python 代码段。把相关的代码分配到一个模块里能让你的代码更好用，更易懂。模块能定义函数，类和变量，模块里也能包含可执行的代码。">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="17.Python的模块">
+<meta property="og:url" content="http://leesin.cc/python/17.Python的模块.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="书接上文Python 模块Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。模块让你能够有逻辑地组织你的 Python 代码段。把相关的代码分配到一个模块里能让你的代码更好用，更易懂。模块能定义函数，类和变量，模块里也能包含可执行的代码。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-03T12:09:26.781Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="17.Python的模块">
+<meta name="twitter:description" content="书接上文Python 模块Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。模块让你能够有逻辑地组织你的 Python 代码段。把相关的代码分配到一个模块里能让你的代码更好用，更易懂。模块能定义函数，类和变量，模块里也能包含可执行的代码。">
+  <link rel="canonical" href="http://leesin.cc/python/17.Python的模块">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>17.Python的模块 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/17.Python的模块.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">17.Python的模块
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-03 20:06:51 / 修改时间：20:09:26" itemprop="dateCreated datePublished" datetime="2019-09-03T20:06:51+08:00">2019-09-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><h2 id="Python-模块"><a href="#Python-模块" class="headerlink" title="Python 模块"></a>Python 模块</h2><p>Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。</p><p>模块让你能够有逻辑地组织你的 Python 代码段。</p><p>把相关的代码分配到一个模块里能让你的代码更好用，更易懂。</p><p>模块能定义函数，类和变量，模块里也能包含可执行的代码。</p><a id="more"></a>
+
+
+
+<h3 id="import-语句"><a href="#import-语句" class="headerlink" title="import 语句"></a>import 语句</h3><p>我们按照上一章的函数方式可以定义自己的模块，例如：my_print.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chen_print</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> (<span class="string">'Hello:'</span> + s)</span><br></pre></td></tr></table></figure>
+
+<p>在当前文件夹下新建model_test.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> my_print <span class="keyword">as</span> mp</span><br><span class="line"></span><br><span class="line">print(mp.chen_print(<span class="string">'haha'</span>)) //Hello:haha</span><br></pre></td></tr></table></figure>
+
+<p>如果在当前目录下，直接 import 导入就可以了，此外还可以用as给他重命名，你要导入这个文件中哪些模块，直接用 . 就可以了</p>
+<h3 id="from…import-语句"><a href="#from…import-语句" class="headerlink" title="from…import 语句"></a>from…import 语句</h3><p>Python 的 from 语句让你从模块中导入一个指定的部分到当前命名空间中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> my_print <span class="keyword">import</span> chen_print</span><br><span class="line"></span><br><span class="line">print(chen_print(<span class="string">'haha'</span>)) //Hello:haha</span><br><span class="line">    </span><br><span class="line"><span class="keyword">from</span>…<span class="keyword">import</span> * 语句 //使用*将所有模块导入进来，你也可以定义哪些模块能被这样的语法导入，后面再聊</span><br></pre></td></tr></table></figure>
+
+<h2 id="搜索路径"><a href="#搜索路径" class="headerlink" title="搜索路径"></a>搜索路径</h2><p>当你导入一个模块，Python 解析器对模块位置的搜索顺序是：</p>
+<ul>
+<li>1、当前目录</li>
+<li>2、如果不在当前目录，Python 则搜索在 shell 变量 PYTHONPATH 下的每个目录。</li>
+<li>3、如果都找不到，Python会察看默认路径。UNIX下，默认路径一般为/usr/local/lib/python/。</li>
+</ul>
+<p>模块搜索路径存储在 system 模块的 sys.path 变量中。变量里包含当前目录，PYTHONPATH和由安装过程决定的默认目录。</p>
+<p>搜索路径怎么理解呢？</p>
+<p>你可以认为程序是怎么找到你写的模块，想一想，我们刚开始是不是说在当前目录下创建测试文件，其实就是这个原因，你如果不告诉程序去哪里找，它默认先找当前目录，然后看你指定的目录，也就是环境变量，也就是shell变量下的PYTHONPATH的所有目录，如果都找不到，那就找程序默认的路径。</p>
+<p>我们可以借 sys这个模块来查看路径，如果你自己写的包或者安装的第三方模块没有在这些路径下，那么可能没法使用模块哦</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.path</span><br><span class="line">[<span class="string">''</span>, <span class="string">'C:\\Program Files\\Python37\\Lib\\idlelib'</span>, <span class="string">'C:\\Program Files\\Python37\\python37.zip'</span>, <span class="string">'C:\\Program Files\\Python37\\DLLs'</span>, <span class="string">'C:\\Program Files\\Python37\\lib'</span>, <span class="string">'C:\\Program Files\\Python37'</span>, <span class="string">'C:\\Users\\CC\\AppData\\Roaming\\Python\\Python37\\site-packages'</span>, <span class="string">'C:\\Program Files\\Python37\\lib\\site-packages'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>假如说我们知道路径不在这里面，怎么添加使用呢？</p>
+<h3 id="windows"><a href="#windows" class="headerlink" title="windows:"></a>windows:</h3><blockquote>
+<p>此电脑 —&gt; 属性 —&gt; 高级系统设置 —&gt; 环境变量 —&gt; Path 进行添加即可，通常都是你安装地址的bin下的目录</p>
+</blockquote>
+<h3 id="Linux："><a href="#Linux：" class="headerlink" title="Linux："></a>Linux：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line">export PYTHONPATH=$PYTHONPATH:/YOU_MODULE_DIRECTORY</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>如果说你想大量管理这些路径呢？</p>
+<h3 id="pth文件"><a href="#pth文件" class="headerlink" title="pth文件"></a>pth文件</h3><p>这种方式很简单便于管理，在需要大量添加外部路径的时候非常推荐，而且是永久生效。启动Python程序时候，解释器就会遍历目录，遇到pth就会读取这个文件中的内容并添加到sys.path中。这里以系统自带的Python2.7为例说明</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/lib/python2.7/site-packages</span><br><span class="line">cat Allinone.path</span><br><span class="line"></span><br><span class="line">//内容就是路径</span><br></pre></td></tr></table></figure>
+
+<p>不可忽视模块的路径学习，这是初学者最大问题，模块都用不了，搬砖都没法搬</p>
+<h2 id="dir-函数"><a href="#dir-函数" class="headerlink" title="dir()函数"></a>dir()函数</h2><p>dir() 函数一个排好序的字符串列表，内容是一个模块里定义过的名字。</p>
+<p>返回的列表容纳了在一个模块里定义的所有模块，变量和函数</p>
+<p>开始我们学习math的时候使用过这个函数，不知道还有没有印象，假如你恍惚记得my_print这个文件名，里面具体的模块函数忘记了怎么办？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> my_print</span><br><span class="line"></span><br><span class="line">print(dir(my_print))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'__builtins__'</span>, <span class="string">'__cached__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__file__'</span>, <span class="string">'__loader__'</span>, <span class="string">'__name__'</span>, <span class="string">'__package__'</span>, <span class="string">'__spec__'</span>, <span class="string">'chen_print'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>看见这个列表了吗？里面有个 chen_print正好是我们要找的函数。那么其他这么多玩意儿是什么？可以不用管它，当它是系统自带吧。我们就简单操作一下，看看和我们的模块关系，也是为了后面理解面对对象铺垫一下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">    这是我自己的打印函数</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chen_print</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> (<span class="string">'Hello:'</span> + s)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> my_print</span><br><span class="line"></span><br><span class="line">print(my_print.__name__)</span><br><span class="line">print(my_print.__doc__)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">my_print</span><br><span class="line"></span><br><span class="line">    这是我自己的打印函数</span><br></pre></td></tr></table></figure>
+
+<p>大概了解了一点吧，原来系统默认了一些模块自身的东西，比如帮助文档和模块的名字</p>
+<h2 id="命名空间和作用域"><a href="#命名空间和作用域" class="headerlink" title="命名空间和作用域"></a>命名空间和作用域</h2><p>变量是拥有匹配对象的名字（标识符）。命名空间是一个包含了变量名称们（键）和它们各自相应的对象们（值）的字典。</p>
+<p>一个 Python 表达式可以访问局部命名空间和全局命名空间里的变量。如果一个局部变量和一个全局变量重名，则局部变量会覆盖全局变量。</p>
+<p>每个函数都有自己的命名空间。类的方法的作用域规则和通常函数的一样。</p>
+<p>Python 会智能地猜测一个变量是局部的还是全局的，它假设任何在函数内赋值的变量都是局部的。</p>
+<p>因此，如果要给函数内的全局变量赋值，必须使用 global 语句。</p>
+<p>global VarName 的表达式会告诉 Python， VarName 是一个全局变量，这样 Python 就不会在局部命名空间里寻找这个变量了。</p>
+<p>例如，我们在全局命名空间里定义一个变量 Money。我们再在函数内给变量 Money 赋值，然后 Python 会假定 Money 是一个局部变量。然而，我们并没有在访问前声明一个局部变量 Money，结果就是会出现一个 UnboundLocalError 的错误。取消 global 语句前的注释符就能解决这个问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Money = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">AddMoney</span><span class="params">()</span>:</span></span><br><span class="line">    </span><br><span class="line">   <span class="comment"># global Money</span></span><br><span class="line">   Money = Money + <span class="number">1</span></span><br><span class="line"> </span><br><span class="line">print(Money)</span><br><span class="line">AddMoney()</span><br><span class="line">print(Money)</span><br></pre></td></tr></table></figure>
+
+<p>因为函数也不知道这个Money哪来的，又没人给它传参，所以只好报错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">100</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:\Users\CC\Desktop\print\model_test.py"</span>, line <span class="number">8</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    AddMoney()</span><br><span class="line">  File <span class="string">"C:\Users\CC\Desktop\print\model_test.py"</span>, line <span class="number">5</span>, <span class="keyword">in</span> AddMoney</span><br><span class="line">    Money = Money + <span class="number">1</span></span><br><span class="line">UnboundLocalError: local variable <span class="string">'Money'</span> referenced before assignment</span><br></pre></td></tr></table></figure>
+
+<p>我们再试试加上声明它是全局变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Money = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">AddMoney</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> Money</span><br><span class="line">    Money = Money + <span class="number">1</span></span><br><span class="line"> </span><br><span class="line">print(Money)</span><br><span class="line">AddMoney()</span><br><span class="line">print(Money)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">101</span></span><br></pre></td></tr></table></figure>
+
+<p>还记得我们讲过的可变不可变吗？我们用下面的几个例子帮助对比理解</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Money = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">AddMoney</span><span class="params">(money)</span>:</span></span><br><span class="line">    Money = Money + <span class="number">1</span></span><br><span class="line">    print(Money)</span><br><span class="line"> </span><br><span class="line">print(Money)</span><br><span class="line">AddMoney(Money)</span><br><span class="line">print(Money)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">100</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:\Users\CC\Desktop\print\model_test.py"</span>, line <span class="number">7</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    AddMoney(Money)</span><br><span class="line">  File <span class="string">"C:\Users\CC\Desktop\print\model_test.py"</span>, line <span class="number">3</span>, <span class="keyword">in</span> AddMoney</span><br><span class="line">    Money = Money + <span class="number">1</span></span><br><span class="line">UnboundLocalError: local variable <span class="string">'Money'</span> referenced before assignment</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Money = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">AddMoney</span><span class="params">(money)</span>:</span> </span><br><span class="line">    money = money + <span class="number">1</span></span><br><span class="line">    print(Money)</span><br><span class="line"> </span><br><span class="line">print(Money)</span><br><span class="line">AddMoney(Money)</span><br><span class="line">print(Money)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Money = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">AddMoney</span><span class="params">(money)</span>:</span></span><br><span class="line">    </span><br><span class="line">    money = Money + <span class="number">2</span></span><br><span class="line">    print(Money)</span><br><span class="line">    print(money)</span><br><span class="line">    </span><br><span class="line">print(Money)</span><br><span class="line">AddMoney(Money)</span><br><span class="line">print(Money)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">102</span></span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Money = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">AddMoney</span><span class="params">(money)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> Money</span><br><span class="line"></span><br><span class="line">    money += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">print(Money)</span><br><span class="line">AddMoney(Money)</span><br><span class="line">print(money) // 外面没法访问里面的变量，所以这里报错</span><br></pre></td></tr></table></figure>
+
+<p>请仔细体会各种情况下的输出，这些示例能够帮助你理解函数，不可忽视这些细节，因为今后的编程发生一些不知名的错误，往往都是命名空间不对，程序庞大的话很难排错，最好的办法就是熟悉函数，然后不要用 global ，神奇吧，为了不用它而学它。</p>
+<h2 id="globals-和-locals-函数"><a href="#globals-和-locals-函数" class="headerlink" title="globals() 和 locals() 函数"></a>globals() 和 locals() 函数</h2><p>根据调用地方的不同，globals() 和 locals() 函数可被用来返回全局和局部命名空间里的名字。</p>
+<p>如果在函数内部调用 locals()，返回的是所有能在该函数里访问的命名。</p>
+<p>如果在函数内部调用 globals()，返回的是所有在该函数里能访问的全局名字。</p>
+<p>两个函数的返回类型都是字典。所以名字们能用 keys() 函数摘取。代码栗子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">c</span><span class="params">()</span>:</span></span><br><span class="line">    d = <span class="number">4</span></span><br><span class="line"></span><br><span class="line">print(globals())</span><br><span class="line">print(<span class="string">'*'</span>*<span class="number">20</span>)</span><br><span class="line">print(locals())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': &lt;class '_frozen_importlib.BuiltinImporter'&gt;, '__spec__': None, '__annotations__': &#123;&#125;, '__builtins__': &lt;module 'builtins' (built-in)&gt;, '__file__': 'C:\\Users\\CC\\Desktop\\print\\my_print.py', 'argv': ['C:\\Users\\CC\\Desktop\\print\\my_print.py'], 'a': 1, 'b': 2, 'c': &lt;function c at 0x00000295CA3ED5E8&gt;&#125;</span><br><span class="line">********************</span><br><span class="line">&#123;'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': &lt;class '_frozen_importlib.BuiltinImporter'&gt;, '__spec__': None, '__annotations__': &#123;&#125;, '__builtins__': &lt;module 'builtins' (built-in)&gt;, '__file__': 'C:\\Users\\CC\\Desktop\\print\\my_print.py', 'argv': ['C:\\Users\\CC\\Desktop\\print\\my_print.py'], 'a': 1, 'b': 2, 'c': &lt;function c at 0x00000295CA3ED5E8&gt;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以，你还可以使用这两个函数进行模块函数的调用和查看哦</p>
+<h2 id="reload-函数"><a href="#reload-函数" class="headerlink" title="reload() 函数"></a>reload() 函数</h2><p>当一个模块被导入到一个脚本，模块顶层部分的代码只会被执行一次。</p>
+<p>因此，如果你想重新执行模块里顶层部分的代码，可以用 reload() 函数。该函数会重新导入之前导入过的模块。注意不要用字符串，直接输入模块名字就可以了</p>
+<h2 id="Python中的包"><a href="#Python中的包" class="headerlink" title="Python中的包"></a>Python中的包</h2><p>包是一个分层次的文件目录结构，它定义了一个由模块及子包，和子包下的子包等组成的 Python 的应用环境。</p>
+<p>简单来说，包就是文件夹，但该文件夹下必须存在 <strong>init</strong>.py 文件, 该文件的内容可以为空。<strong><strong>init</strong>.py</strong> 用于标识当前文件夹是一个包。</p>
+<p>其实见的包多了自然能够理解，随便下载包，注意都是有init这个文件的，我们举例说明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test.py</span><br><span class="line">package</span><br><span class="line">|-- __init__.py</span><br><span class="line">|-- <span class="number">1.</span>py</span><br><span class="line">|-- <span class="number">2.</span>py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.py</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">one</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'one'</span>)</span><br><span class="line"><span class="comment">#2.py</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'two'</span>)</span><br><span class="line"><span class="comment">#test.py</span></span><br><span class="line"><span class="keyword">from</span> package<span class="number">.1</span> <span class="keyword">import</span> one</span><br><span class="line"><span class="keyword">from</span> package<span class="number">.2</span> <span class="keyword">import</span> two</span><br><span class="line"></span><br><span class="line">one()</span><br><span class="line">two()</span><br><span class="line"><span class="comment">#__init__.py</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(<span class="string">'作为主程序运行'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'模块初始化'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们运行一下test看看效果：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">模块初始化</span><br><span class="line"><span class="literal">one</span></span><br><span class="line"><span class="literal">two</span></span><br></pre></td></tr></table></figure>
+
+<p>好像它还运行了<strong>init</strong>这是怎么回事呢，程序它找包，其实给它这样一个限制之后，它就能够很方便管理这个文件夹下的所有模块了，相当于一个配置文件。我们再单独运行它看看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">作为主程序运行</span><br></pre></td></tr></table></figure>
+
+<p>还记得前面看全局变量吗？它有这样的一个属性，来判断是不是主程序。</p>
+<p>这个玩意儿又有什么用？</p>
+<p>其实你写函数的时候，写模块的时候，自然要测试一下程序能否正常运行，但是测试过后吧又不想删测试代码，毕竟能够证明你这代码是正确的，而且很方便移植的时候进行调试更改，所以很多程序的单元代码测试都可以直接这样写，确保每个功能正确，拼装起来自然容易。</p>
+<p><strong>题外话</strong>：其实我们使用import 和 from 导入就是导包，凡是带点的左边都必须是包才可以，随着模块的增多，增加模块的管理方便后期的维护是很重要的。</p>
+<hr>
+<h2 id="—欲知后事如何，且听下回分解"><a href="#—欲知后事如何，且听下回分解" class="headerlink" title="—欲知后事如何，且听下回分解"></a>—欲知后事如何，且听下回分解</h2>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/python/17.Python的模块.html" title="17.Python的模块">http://leesin.cc/python/17.Python的模块.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/python/16.Python的函数.html" rel="next" title="16.Python的函数">
+                  <i class="fa fa-chevron-left"></i> 16.Python的函数
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/python/18.Python的文件.html" rel="prev" title="18.Python的文件">
+                  18.Python的文件 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#书接上文"><span class="nav-number">1.</span> <span class="nav-text">书接上文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-模块"><span class="nav-number">2.</span> <span class="nav-text">Python 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#import-语句"><span class="nav-number">2.1.</span> <span class="nav-text">import 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#from…import-语句"><span class="nav-number">2.2.</span> <span class="nav-text">from…import 语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索路径"><span class="nav-number">3.</span> <span class="nav-text">搜索路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#windows"><span class="nav-number">3.1.</span> <span class="nav-text">windows:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux："><span class="nav-number">3.2.</span> <span class="nav-text">Linux：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pth文件"><span class="nav-number">3.3.</span> <span class="nav-text">pth文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dir-函数"><span class="nav-number">4.</span> <span class="nav-text">dir()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命名空间和作用域"><span class="nav-number">5.</span> <span class="nav-text">命名空间和作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#globals-和-locals-函数"><span class="nav-number">6.</span> <span class="nav-text">globals() 和 locals() 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reload-函数"><span class="nav-number">7.</span> <span class="nav-text">reload() 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的包"><span class="nav-number">8.</span> <span class="nav-text">Python中的包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#—欲知后事如何，且听下回分解"><span class="nav-number">9.</span> <span class="nav-text">—欲知后事如何，且听下回分解</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

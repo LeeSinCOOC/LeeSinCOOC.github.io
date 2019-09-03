@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="LaTex语法公式前后都加上两个$$符号123456$$LaTex$$$$x=\frac&amp;#123;-b\pm\sqrt&amp;#123;b^2-4ac&amp;#125;&amp;#125;&amp;#123;2a&amp;#125;,y=\frac&amp;#123;-b\pm\sqrt&amp;#123;b^2-4ac&amp;#125;&amp;#125;&amp;#123;2a&amp;#125;$$">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用LaTex语法">
+<meta property="og:url" content="http://leesin.cc/reading/常用LaTex语法.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="LaTex语法公式前后都加上两个$$符号123456$$LaTex$$$$x=\frac&amp;#123;-b\pm\sqrt&amp;#123;b^2-4ac&amp;#125;&amp;#125;&amp;#123;2a&amp;#125;,y=\frac&amp;#123;-b\pm\sqrt&amp;#123;b^2-4ac&amp;#125;&amp;#125;&amp;#123;2a&amp;#125;$$">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-03T13:37:33.586Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用LaTex语法">
+<meta name="twitter:description" content="LaTex语法公式前后都加上两个$$符号123456$$LaTex$$$$x=\frac&amp;#123;-b\pm\sqrt&amp;#123;b^2-4ac&amp;#125;&amp;#125;&amp;#123;2a&amp;#125;,y=\frac&amp;#123;-b\pm\sqrt&amp;#123;b^2-4ac&amp;#125;&amp;#125;&amp;#123;2a&amp;#125;$$">
+  <link rel="canonical" href="http://leesin.cc/reading/常用LaTex语法">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>常用LaTex语法 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/常用LaTex语法.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">常用LaTex语法
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-03 21:34:58 / 修改时间：21:37:33" itemprop="dateCreated datePublished" datetime="2019-09-03T21:34:58+08:00">2019-09-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="LaTex语法"><a href="#LaTex语法" class="headerlink" title="LaTex语法"></a>LaTex语法</h1><h2 id="公式前后都加上两个-符号"><a href="#公式前后都加上两个-符号" class="headerlink" title="公式前后都加上两个$$符号"></a>公式前后都加上两个$$符号</h2><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">$</span><span class="symbol">$</span>LaTex<span class="symbol">$</span><span class="symbol">$</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">$</span><span class="symbol">$</span></span><br><span class="line">x=\<span class="built-in">frac</span>&#123;-b\pm\<span class="built-in">sqrt</span>&#123;b^<span class="number">2</span><span class="number">-4</span>ac&#125;&#125;&#123;<span class="number">2</span>a&#125;,</span><br><span class="line">y=\<span class="built-in">frac</span>&#123;-b\pm\<span class="built-in">sqrt</span>&#123;b^<span class="number">2</span><span class="number">-4</span>ac&#125;&#125;&#123;<span class="number">2</span>a&#125;</span><br><span class="line"><span class="symbol">$</span><span class="symbol">$</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+<p>$$<br>x=\frac{-b\pm\sqrt{b^2-4ac}}{2a},y=\frac{-b\pm\sqrt{b^2-4ac}}{2a}<br>$$</p>
+<h2 id="行符号为-“-”"><a href="#行符号为-“-”" class="headerlink" title="行符号为 “\”"></a>行符号为 “\”</h2><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">$</span><span class="symbol">$</span></span><br><span class="line">x=\<span class="built-in">frac</span>&#123;-b\pm\<span class="built-in">sqrt</span>&#123;b^<span class="number">2</span><span class="number">-4</span>ac&#125;&#125;&#123;<span class="number">2</span>a&#125;,</span><br><span class="line">\\ </span><br><span class="line">y=\<span class="built-in">frac</span>&#123;-b\pm\<span class="built-in">sqrt</span>&#123;b^<span class="number">2</span><span class="number">-4</span>ac&#125;&#125;&#123;<span class="number">2</span>a&#125;</span><br><span class="line"><span class="symbol">$</span><span class="symbol">$</span></span><br></pre></td></tr></table></figure>
+
+<p>$$<br>x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}<br>\<br>y=\frac{-b\pm\sqrt{b^2-4ac}}{2a}<br>$$</p>
+<h2 id="基本运算"><a href="#基本运算" class="headerlink" title="基本运算"></a>基本运算</h2><h3 id="乘法：x-times-y"><a href="#乘法：x-times-y" class="headerlink" title="乘法：x \times y"></a>乘法：<code>x \times y</code></h3><p>$$<br>x \times y<br>$$</p>
+<h3 id="乘方：2-3x"><a href="#乘方：2-3x" class="headerlink" title="乘方：2^{3x}"></a>乘方：<code>2^{3x}</code></h3><p>$$<br>2^{3x}<br>$$</p>
+<h3 id="平方根：-sqrt-x-y"><a href="#平方根：-sqrt-x-y" class="headerlink" title="平方根：\sqrt {x + y}"></a>平方根：<code>\sqrt {x + y}</code></h3><p>$$<br>\sqrt {x + y}<br>$$</p>
+<h3 id="除法：x-div-y"><a href="#除法：x-div-y" class="headerlink" title="除法：x \div y"></a>除法：<code>x \div y</code></h3><p>$$<br>x \div y<br>$$</p>
+<h3 id="分数：-frac-x-y"><a href="#分数：-frac-x-y" class="headerlink" title="分数：\frac {x}{y}"></a>分数：<code>\frac {x}{y}</code></h3><p>$$<br>\frac {x}{y}<br>$$</p>
+<h3 id="异或：-oplus"><a href="#异或：-oplus" class="headerlink" title="异或：\oplus"></a>异或：<code>\oplus</code></h3><p>$$<br>\oplus<br>$$</p>
+<h3 id="小于或等于：x-leq-y"><a href="#小于或等于：x-leq-y" class="headerlink" title="小于或等于：x \leq y"></a>小于或等于：<code>x \leq y</code></h3><p>$$<br>x \leq y<br>$$</p>
+<h3 id="大于或等于：x-geq-y"><a href="#大于或等于：x-geq-y" class="headerlink" title="大于或等于：x \geq y"></a>大于或等于：<code>x \geq y</code></h3><p>$$<br>x \geq y<br>$$</p>
+<h3 id="不等于：x-neq-y"><a href="#不等于：x-neq-y" class="headerlink" title="不等于：x \neq y"></a>不等于：<code>x \neq y</code></h3><p>$$<br>x \neq y<br>$$</p>
+<h3 id="向下取整：-lfloor-x-rfloor"><a href="#向下取整：-lfloor-x-rfloor" class="headerlink" title="向下取整：\lfloor x \rfloor"></a>向下取整：<code>\lfloor x \rfloor</code></h3><p>$$<br>\lfloor 32.443 \rfloor<br>$$</p>
+<h3 id="向上取整：-lceil-x-rceil"><a href="#向上取整：-lceil-x-rceil" class="headerlink" title="向上取整：\lceil x \rceil"></a>向上取整：<code>\lceil x \rceil</code></h3><p>$$<br>\lceil 20.444 \rceil<br>$$</p>
+<h3 id="求和：-sum-limits-x-1-n-7x"><a href="#求和：-sum-limits-x-1-n-7x" class="headerlink" title="求和：\sum\limits_{x = 1}^{n} 7x"></a>求和：<code>\sum\limits_{x = 1}^{n} 7x</code></h3><p>$$<br>\sum\limits_{x = 1}^{n} 7x<br>$$</p>
+<h3 id="积分：-int-0-frac-pi-2-sin-x"><a href="#积分：-int-0-frac-pi-2-sin-x" class="headerlink" title="积分：\int_{0}^{\frac{\pi}{2}} \sin(x)"></a>积分：<code>\int_{0}^{\frac{\pi}{2}} \sin(x)</code></h3><p>$$<br>\int_{0}^{\frac{\pi}{2}} \sin(x)<br>$$</p>
+<h3 id="集合符号：A-in-B"><a href="#集合符号：A-in-B" class="headerlink" title="集合符号：A \in B"></a>集合符号：<code>A \in B</code></h3><p>$$<br>A \in B<br>$$</p>
+<h3 id="不属于：A-notin-B"><a href="#不属于：A-notin-B" class="headerlink" title="不属于：A \notin B"></a>不属于：<code>A \notin B</code></h3><p>$$<br>A \notin B<br>$$</p>
+<h3 id="子集：-subet-sub"><a href="#子集：-subet-sub" class="headerlink" title="子集：\subet \sub"></a>子集：<code>\subet</code> <code>\sub</code></h3><p>$$<br>A \sube B<br>\<br>A \sub B<br>$$</p>
+<h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><h3 id="alpha"><a href="#alpha" class="headerlink" title="\alpha"></a><code>\alpha</code></h3><p>$$<br>\alpha<br>$$</p>
+<h3 id="beta"><a href="#beta" class="headerlink" title="\beta"></a><code>\beta</code></h3><p>$$<br>\beta<br>$$</p>
+<h3 id="theta"><a href="#theta" class="headerlink" title="theta"></a><code>theta</code></h3><p>$$<br>\theta<br>$$</p>
+<h3 id="pi"><a href="#pi" class="headerlink" title="\pi"></a><code>\pi</code></h3><p>$$<br>\pi<br>$$</p>
+<h2 id="向量矩阵"><a href="#向量矩阵" class="headerlink" title="向量矩阵"></a>向量矩阵</h2><h3 id="向量：-vec-v"><a href="#向量：-vec-v" class="headerlink" title="向量：\vec{v}"></a>向量：<code>\vec{v}</code></h3><p>$$<br>\vec{v}<br>$$</p>
+<h3 id="简单Matrix："><a href="#简单Matrix：" class="headerlink" title="简单Matrix："></a>简单Matrix：</h3><p><code>$$
+  \begin{matrix}
+   1 &amp; 2 &amp; 3 \\
+   4 &amp; 5 &amp; 6 \\
+   7 &amp; 8 &amp; 9
+  \end{matrix} \tag{1}
+$$</code><br>$$<br>\begin{matrix}<br>   1 &amp; 2 &amp; 3 \<br>   4 &amp; 5 &amp; 6 \<br>   7 &amp; 8 &amp; 9<br>  \end{matrix} \tag{1}<br>$$</p>
+<h3 id="带括号的Matrix"><a href="#带括号的Matrix" class="headerlink" title="带括号的Matrix"></a>带括号的Matrix</h3><p>可以给矩阵加上括号，加括号的方式有很多，大致可分为两种：使用<code>\left ... \right</code> 或者把公式命令中的<code>matrix</code> 改成 <code>pmatrix</code>、<code>bmatrix</code>、<code>Bmatrix</code>、<code>vmatrix</code>、<code>Vmatrix</code>等。</p>
+<p>使用\left … \right</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line"> \left\&#123;</span><br><span class="line"> \begin&#123;matrix&#125;</span><br><span class="line">   1 &amp; 2 &amp; 3 \\</span><br><span class="line">   4 &amp; 5 &amp; 6 \\</span><br><span class="line">   7 &amp; 8 &amp; 9</span><br><span class="line">  \end&#123;matrix&#125;</span><br><span class="line">  \right\&#125; \tag&#123;2&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
+<p>$$<br>\left{<br> \begin{matrix}<br>   1 &amp; 2 &amp; 3 \<br>   4 &amp; 5 &amp; 6 \<br>   7 &amp; 8 &amp; 9<br>  \end{matrix}<br>  \right} \tag{2}<br>$$</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line"> \left[</span><br><span class="line"> \begin&#123;matrix&#125;</span><br><span class="line">   <span class="number">1</span> &amp; <span class="number">2</span> &amp; <span class="number">3</span> \\</span><br><span class="line">   <span class="number">4</span> &amp; <span class="number">5</span> &amp; <span class="number">6</span> \\</span><br><span class="line">   <span class="number">7</span> &amp; <span class="number">8</span> &amp; <span class="number">9</span></span><br><span class="line">  \end&#123;matrix&#125;</span><br><span class="line">  \right] \tag&#123;<span class="number">3</span>&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
+<p>$$<br>\left[<br> \begin{matrix}<br>   1 &amp; 2 &amp; 3 \<br>   4 &amp; 5 &amp; 6 \<br>   7 &amp; 8 &amp; 9<br>  \end{matrix}<br>  \right] \tag{3}<br>$$</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line"> \begin&#123;bmatrix&#125;</span><br><span class="line">   <span class="number">1</span> &amp; <span class="number">2</span> &amp; <span class="number">3</span> \\</span><br><span class="line">   <span class="number">4</span> &amp; <span class="number">5</span> &amp; <span class="number">6</span> \\</span><br><span class="line">   <span class="number">7</span> &amp; <span class="number">8</span> &amp; <span class="number">9</span></span><br><span class="line">  \end&#123;bmatrix&#125; \tag&#123;<span class="number">4</span>&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
+<p>$$<br>\begin{bmatrix}<br>   1 &amp; 2 &amp; 3 \<br>   4 &amp; 5 &amp; 6 \<br>   7 &amp; 8 &amp; 9<br>  \end{bmatrix} \tag{4}<br>$$</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line"> \begin&#123;Bmatrix&#125;</span><br><span class="line">   <span class="number">1</span> &amp; <span class="number">2</span> &amp; <span class="number">3</span> \\</span><br><span class="line">   <span class="number">4</span> &amp; <span class="number">5</span> &amp; <span class="number">6</span> \\</span><br><span class="line">   <span class="number">7</span> &amp; <span class="number">8</span> &amp; <span class="number">9</span></span><br><span class="line">  \end&#123;Bmatrix&#125; \tag&#123;<span class="number">5</span>&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
+<p>$$<br>\begin{Bmatrix}<br>   1 &amp; 2 &amp; 3 \<br>   4 &amp; 5 &amp; 6 \<br>   7 &amp; 8 &amp; 9<br>  \end{Bmatrix} \tag{5}<br>$$</p>
+<p>如果矩阵元素太多，可以使用<code>\cdots</code> ⋯⋯ <code>\ddots</code> ⋱⋱ <code>\vdots</code> ⋮⋮ 等省略符号来定义矩阵。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line"><span class="string">\left[</span></span><br><span class="line"><span class="string">\begin&#123;matrix&#125;</span></span><br><span class="line"> <span class="number">1</span>      &amp; <span class="number">2</span>      &amp; <span class="string">\cdots</span> &amp; <span class="number">4</span>      <span class="string">\\</span></span><br><span class="line"> <span class="number">7</span>      &amp; <span class="number">6</span>      &amp; <span class="string">\cdots</span> &amp; <span class="number">5</span>      <span class="string">\\</span></span><br><span class="line"> <span class="string">\vdots</span> &amp; <span class="string">\vdots</span> &amp; <span class="string">\ddots</span> &amp; <span class="string">\vdots</span> <span class="string">\\</span></span><br><span class="line"> <span class="number">8</span>      &amp; <span class="number">9</span>      &amp; <span class="string">\cdots</span> &amp; <span class="number">0</span>      <span class="string">\\</span></span><br><span class="line"><span class="string">\end&#123;matrix&#125;</span></span><br><span class="line"><span class="string">\right]</span></span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
+<p>$$<br>\left[<br>\begin{matrix}<br> 1      &amp; 2      &amp; \cdots &amp; 4      \<br> 7      &amp; 6      &amp; \cdots &amp; 5      \<br> \vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br> 8      &amp; 9      &amp; \cdots &amp; 0      \<br>\end{matrix}<br>\right]<br>$$</p>
+<h3 id="带参数的Matrix"><a href="#带参数的Matrix" class="headerlink" title="带参数的Matrix"></a>带参数的Matrix</h3><p>比如写增广矩阵，可能需要最右边一列单独考虑。可以用<code>array</code>命令来处理：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$$ </span><br><span class="line">\left[</span><br><span class="line">    \begin&#123;array&#125;&#123;cc|c&#125;</span><br><span class="line">      <span class="number">1</span> &amp; <span class="number">2</span> &amp; <span class="number">3</span> \\</span><br><span class="line">      <span class="number">4</span> &amp; <span class="number">5</span> &amp; <span class="number">6</span></span><br><span class="line">    \end&#123;array&#125;</span><br><span class="line">\right] \tag&#123;<span class="number">7</span>&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
+<p>$$<br>\left[<br>    \begin{array}{cc|c}<br>      1 &amp; 2 &amp; 3 \<br>      4 &amp; 5 &amp; 6<br>    \end{array}<br>\right] \tag{7}<br>$$</p>
+<p>其中<code>\begin{array}{cc|c}</code>中的c表示居中对齐元素,<code>|</code>用来作为分割列的符号。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/常用LaTex语法.html" title="常用LaTex语法">http://leesin.cc/reading/常用LaTex语法.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/常用Markdown语法.html" rel="next" title="常用Markdown语法">
+                  <i class="fa fa-chevron-left"></i> 常用Markdown语法
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LaTex语法"><span class="nav-number">1.</span> <span class="nav-text">LaTex语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#公式前后都加上两个-符号"><span class="nav-number">1.1.</span> <span class="nav-text">公式前后都加上两个$$符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行符号为-“-”"><span class="nav-number">1.2.</span> <span class="nav-text">行符号为 “\”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本运算"><span class="nav-number">1.3.</span> <span class="nav-text">基本运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#乘法：x-times-y"><span class="nav-number">1.3.1.</span> <span class="nav-text">乘法：x \times y</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乘方：2-3x"><span class="nav-number">1.3.2.</span> <span class="nav-text">乘方：2^{3x}</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平方根：-sqrt-x-y"><span class="nav-number">1.3.3.</span> <span class="nav-text">平方根：\sqrt {x + y}</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#除法：x-div-y"><span class="nav-number">1.3.4.</span> <span class="nav-text">除法：x \div y</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分数：-frac-x-y"><span class="nav-number">1.3.5.</span> <span class="nav-text">分数：\frac {x}{y}</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异或：-oplus"><span class="nav-number">1.3.6.</span> <span class="nav-text">异或：\oplus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小于或等于：x-leq-y"><span class="nav-number">1.3.7.</span> <span class="nav-text">小于或等于：x \leq y</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大于或等于：x-geq-y"><span class="nav-number">1.3.8.</span> <span class="nav-text">大于或等于：x \geq y</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不等于：x-neq-y"><span class="nav-number">1.3.9.</span> <span class="nav-text">不等于：x \neq y</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向下取整：-lfloor-x-rfloor"><span class="nav-number">1.3.10.</span> <span class="nav-text">向下取整：\lfloor x \rfloor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向上取整：-lceil-x-rceil"><span class="nav-number">1.3.11.</span> <span class="nav-text">向上取整：\lceil x \rceil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求和：-sum-limits-x-1-n-7x"><span class="nav-number">1.3.12.</span> <span class="nav-text">求和：\sum\limits_{x = 1}^{n} 7x</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#积分：-int-0-frac-pi-2-sin-x"><span class="nav-number">1.3.13.</span> <span class="nav-text">积分：\int_{0}^{\frac{\pi}{2}} \sin(x)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合符号：A-in-B"><span class="nav-number">1.3.14.</span> <span class="nav-text">集合符号：A \in B</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不属于：A-notin-B"><span class="nav-number">1.3.15.</span> <span class="nav-text">不属于：A \notin B</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子集：-subet-sub"><span class="nav-number">1.3.16.</span> <span class="nav-text">子集：\subet \sub</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#希腊字母"><span class="nav-number">1.4.</span> <span class="nav-text">希腊字母</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#alpha"><span class="nav-number">1.4.1.</span> <span class="nav-text">\alpha</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beta"><span class="nav-number">1.4.2.</span> <span class="nav-text">\beta</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#theta"><span class="nav-number">1.4.3.</span> <span class="nav-text">theta</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pi"><span class="nav-number">1.4.4.</span> <span class="nav-text">\pi</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量矩阵"><span class="nav-number">1.5.</span> <span class="nav-text">向量矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#向量：-vec-v"><span class="nav-number">1.5.1.</span> <span class="nav-text">向量：\vec{v}</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单Matrix："><span class="nav-number">1.5.2.</span> <span class="nav-text">简单Matrix：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带括号的Matrix"><span class="nav-number">1.5.3.</span> <span class="nav-text">带括号的Matrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带参数的Matrix"><span class="nav-number">1.5.4.</span> <span class="nav-text">带参数的Matrix</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

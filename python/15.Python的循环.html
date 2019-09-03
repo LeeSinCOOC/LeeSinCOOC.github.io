@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="书接上文Python 循环语句循环是什么？循环就是重复地去做同一件事情，社会的进步一定是解放了生产力。这个知识点你可以在政治课本或者近代工业革命的历史书中了解到。机械代替人类去做一些繁重的工作由来已久，比如用板车代替肩扛运输货物，那么那种循环重复的事情怎么利用机器替代人力呢？像步枪上膛一样，传统机械通过精心的设计可以完成简单的循环，机械上的确实现了往复运动构件，那么每一个任务都要费时费力进行设计。">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15.Python的循环">
+<meta property="og:url" content="http://leesin.cc/python/15.Python的循环.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="书接上文Python 循环语句循环是什么？循环就是重复地去做同一件事情，社会的进步一定是解放了生产力。这个知识点你可以在政治课本或者近代工业革命的历史书中了解到。机械代替人类去做一些繁重的工作由来已久，比如用板车代替肩扛运输货物，那么那种循环重复的事情怎么利用机器替代人力呢？像步枪上膛一样，传统机械通过精心的设计可以完成简单的循环，机械上的确实现了往复运动构件，那么每一个任务都要费时费力进行设计。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-03T12:05:06.243Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="15.Python的循环">
+<meta name="twitter:description" content="书接上文Python 循环语句循环是什么？循环就是重复地去做同一件事情，社会的进步一定是解放了生产力。这个知识点你可以在政治课本或者近代工业革命的历史书中了解到。机械代替人类去做一些繁重的工作由来已久，比如用板车代替肩扛运输货物，那么那种循环重复的事情怎么利用机器替代人力呢？像步枪上膛一样，传统机械通过精心的设计可以完成简单的循环，机械上的确实现了往复运动构件，那么每一个任务都要费时费力进行设计。">
+  <link rel="canonical" href="http://leesin.cc/python/15.Python的循环">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>15.Python的循环 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/15.Python的循环.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">15.Python的循环
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-03 19:55:19 / 修改时间：20:05:06" itemprop="dateCreated datePublished" datetime="2019-09-03T19:55:19+08:00">2019-09-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><h3 id="Python-循环语句"><a href="#Python-循环语句" class="headerlink" title="Python 循环语句"></a>Python 循环语句</h3><p>循环是什么？</p><p>循环就是重复地去做同一件事情，社会的进步一定是解放了生产力。这个知识点你可以在政治课本或者近代工业革命的历史书中了解到。机械代替人类去做一些繁重的工作由来已久，比如用板车代替肩扛运输货物，那么那种循环重复的事情怎么利用机器替代人力呢？像步枪上膛一样，传统机械通过精心的设计可以完成简单的循环，机械上的确实现了往复运动构件，那么每一个任务都要费时费力进行设计。我们不但想让机器代替人类来做体力活，简单的智力活也想让它来做，甚至更复杂的智力工作，这就是人工智能，后面我会用其他篇章来教学。那么我们有了这个思路，我们可以设计让它能够做加法运算，然后在硬件上设置它可以做一个暂时存储，并可以重复这段流程，那么它就可以做所有的加法工作了。</p><a id="more"></a>
+
+<p>本章节就向大家介绍Python的循环语句，程序在一般情况下是按顺序执行的。</p>
+<p>编程语言提供了各种控制结构，允许更复杂的执行路径。循环语句允许我们执行一个语句或语句组多次，有了条件判断和循环，你就可以实现任意负责的执行流程了。听起来是不是很简单，这是因为人的判断本来就很简单，是或者否，然后重复的事情让机器做，设定好你的判断，就不用担心出问题了。下面是在大多数编程语言中的循环语句的一般形式：</p>
+<p>Python提供了for循环和while循环，python中的循环简化了很多，这对我们学习而言是很有帮助的，假如你去学C++现在恐怕还在看数据类型，，，，严格的语言让机器利用率更高，轻松的语言让人更轻松。</p>
+<table>
+<thead>
+<tr>
+<th align="left">循环类型</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">while 循环</td>
+<td align="left">在给定的判断条件为 true 时执行循环体，否则退出循环体。</td>
+</tr>
+<tr>
+<td align="left">for 循环</td>
+<td align="left">重复执行语句</td>
+</tr>
+<tr>
+<td align="left">嵌套循环</td>
+<td align="left">你可以在while循环体中嵌套for循环</td>
+</tr>
+</tbody></table>
+<h3 id="循环控制语句"><a href="#循环控制语句" class="headerlink" title="循环控制语句"></a>循环控制语句</h3><p>循环控制语句可以更改语句执行的顺序。Python支持以下循环控制语句：</p>
+<table>
+<thead>
+<tr>
+<th align="left">控制语句</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">break 语句</td>
+<td align="left">在语句块执行过程中终止循环，并且跳出整个循环</td>
+</tr>
+<tr>
+<td align="left">continue 语句</td>
+<td align="left">在语句块执行过程中终止当前循环，跳出该次循环，执行下一次循环。</td>
+</tr>
+<tr>
+<td align="left">pass 语句</td>
+<td align="left">pass是空语句，是为了保持程序结构的完整性。</td>
+</tr>
+</tbody></table>
+<p>接下来，让我们进行循环的代码学习</p>
+<h3 id="Python-while-循环语句"><a href="#Python-while-循环语句" class="headerlink" title="Python while 循环语句"></a>Python while 循环语句</h3><h4 id="while-简单循环"><a href="#while-简单循环" class="headerlink" title="while 简单循环"></a>while 简单循环</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = <span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">while</span> n &lt; <span class="number">10</span>:</span><br><span class="line">	print(n)</span><br><span class="line">	n += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="while-无限循环"><a href="#while-无限循环" class="headerlink" title="while 无限循环"></a>while 无限循环</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">	a = input(<span class="string">'请输入：'</span>)</span><br><span class="line">	<span class="keyword">if</span> a == <span class="string">'q'</span>:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line">请输入：<span class="number">1</span></span><br><span class="line">请输入：<span class="number">2</span></span><br><span class="line">请输入：<span class="number">3</span></span><br><span class="line">请输入：q</span><br></pre></td></tr></table></figure>
+
+<p>到这里好像忘了讲 input 了 ，不过它很简单，这里的代码就是让你输入的的意思，不妨试试，假如去掉判断，那么它就会一直让你输入，成了一个死循环。无限循环一定要加判断，工作中很多糟糕的事情都是循环的锅，比如你想循环剪切一个文件夹到目标文件夹，后来发现没加判断导致所有的内容都剪切过去了，更可怕的是所有的剪切过去没有增量命名，导致所有文件归一，变成一个文件。这些都是我亲身遭遇的。</p>
+<p>刚刚好，这里遇到的一个 break ,一个循环控制语句。</p>
+<p>还有两个也顺带 过了吧，continue 和 pass</p>
+<p>其实这三个语义上都很好理解，我们来试试代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">	a = input(<span class="string">'请输入：'</span>)</span><br><span class="line">	<span class="keyword">if</span> a == <span class="string">'c'</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">		print(a)</span><br><span class="line">	<span class="keyword">if</span> a == <span class="string">'p'</span>:</span><br><span class="line">		<span class="keyword">pass</span></span><br><span class="line">		print(a)</span><br><span class="line">	<span class="keyword">if</span> a == <span class="string">'b'</span>:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">		print(a)</span><br><span class="line">		</span><br><span class="line">请输入：<span class="number">1</span></span><br><span class="line">请输入：<span class="number">2</span></span><br><span class="line">请输入：<span class="number">3</span></span><br><span class="line">请输入：c</span><br><span class="line">请输入：p</span><br><span class="line">p</span><br><span class="line">请输入：b</span><br></pre></td></tr></table></figure>
+
+<p>看到三者的区别了吧，我们只聊 pass  和 continue , pass就是过啊，过了之后该怎么运行就怎么运行，continue 就是滚回去排队，这次不让你往下走，直接就运行下一个循环了。</p>
+<h3 id="Python-for-循环语句"><a href="#Python-for-循环语句" class="headerlink" title="Python for 循环语句"></a>Python for 循环语句</h3><p>Python for循环可以遍历任何序列的项目，如一个列表或者一个字符串。</p>
+<p>我没记错的话，前面我们谈过一点 for循环，那么我们开始学习代码的编写吧</p>
+<h4 id="for-简单循环"><a href="#for-简单循环" class="headerlink" title="for 简单循环"></a>for 简单循环</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [chr(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">97</span>,<span class="number">107</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>, <span class="string">'h'</span>, <span class="string">'i'</span>, <span class="string">'j'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">	print(i)</span><br><span class="line">	</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">d</span><br><span class="line">e</span><br><span class="line">f</span><br><span class="line">g</span><br><span class="line">h</span><br><span class="line">i</span><br><span class="line">j</span><br></pre></td></tr></table></figure>
+
+<p>还有一种简单常用的的语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">	print(i)</span><br><span class="line">	</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p>你会发现循环执行了10次，这要比 while 判断循环次数简单许多，这里的 range 其实并不属于序列结构，更准确来说是个生成器，这个概念以后再说。这里你只需要简单知道，生成器就是每次给你一个，这就避免了你想循环100万次，要弄一个长度为100万的列表可不好。就是有了生成器才让 for 几乎可以完全代替while</p>
+<hr>
+<p>通常学完循环以后，老师就会用几道 ACM 来虐虐你了，让你严重怀疑你的智商，然后放弃。我觉得这是不人道的，我曾经也是这样然后放弃学编程，直到几年后自学入手才发现妙不可言。如果后面的题让你觉得超过讲解的难度过多，请不要悲伤，没办法，网上都是出这些题，我已经尽力挑简单的了。</p>
+<h5 id="1-python-打印等腰直角三角形（记得一本小说，一会儿等腰直角三角形）"><a href="#1-python-打印等腰直角三角形（记得一本小说，一会儿等腰直角三角形）" class="headerlink" title="1.python 打印等腰直角三角形（记得一本小说，一会儿等腰直角三角形）"></a>1.python 打印等腰直角三角形（记得一本小说，一会儿等腰直角三角形）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">s = int(input(<span class="string">'输入列数：'</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(s,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">    print(<span class="string">'*'</span> * i)</span><br><span class="line">    </span><br><span class="line">输入列数：<span class="number">4</span></span><br><span class="line">****</span><br><span class="line">***</span><br><span class="line">**</span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-打印斐波那契数列"><a href="#2-打印斐波那契数列" class="headerlink" title="2.打印斐波那契数列"></a>2.打印斐波那契数列</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">斐波那契数列（Fibonacci sequence），又称黄金分割数列、因数学家列昂纳多·斐波那契（Leonardoda Fibonacci）以兔子繁殖为例子而引入，故又称为“兔子数列”，指的是这样一个数列：<span class="number">1</span>、<span class="number">1</span>、<span class="number">2</span>、<span class="number">3</span>、<span class="number">5</span>、<span class="number">8</span>、<span class="number">13</span>、<span class="number">21</span>、<span class="number">34</span>、……在数学上，斐波纳契数列以如下被以递推的方法定义：F(<span class="number">1</span>)=<span class="number">1</span>，F(<span class="number">2</span>)=<span class="number">1</span>, F(n)=F(n<span class="number">-1</span>)+F(n<span class="number">-2</span>)（n&gt;=<span class="number">3</span>，n∈N*）</span><br><span class="line"></span><br><span class="line">Fibonacci = [<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line">s = int(input(<span class="string">'循环多少次：'</span>))</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> i &lt; s:</span><br><span class="line">    Fibonacci.append(</span><br><span class="line">            Fibonacci[<span class="number">-1</span>] + Fibonacci[<span class="number">-2</span>])</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">print(Fibonacci)</span><br><span class="line"></span><br><span class="line">循环多少次：<span class="number">10</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>, <span class="number">89</span>, <span class="number">144</span>]</span><br></pre></td></tr></table></figure>
+
+<p>列表的可变性好用就在这里，你都不需要考虑其他的，直接后面两个加起来就可以了，简单快捷</p>
+<p>打印九九乘法表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,i+<span class="number">1</span>):</span><br><span class="line">        print(<span class="string">"%d*%d=%d\t"</span>%(i,j,i*j),end=<span class="string">" "</span>)</span><br><span class="line">    print(<span class="string">""</span>)</span><br><span class="line">    </span><br><span class="line"><span class="number">1</span>*<span class="number">1</span>=<span class="number">1</span>    </span><br><span class="line"><span class="number">2</span>*<span class="number">1</span>=<span class="number">2</span>    <span class="number">2</span>*<span class="number">2</span>=<span class="number">4</span>   </span><br><span class="line"><span class="number">3</span>*<span class="number">1</span>=<span class="number">3</span>    <span class="number">3</span>*<span class="number">2</span>=<span class="number">6</span>   <span class="number">3</span>*<span class="number">3</span>=<span class="number">9</span>   </span><br><span class="line"><span class="number">4</span>*<span class="number">1</span>=<span class="number">4</span>    <span class="number">4</span>*<span class="number">2</span>=<span class="number">8</span>   <span class="number">4</span>*<span class="number">3</span>=<span class="number">12</span>  <span class="number">4</span>*<span class="number">4</span>=<span class="number">16</span>  </span><br><span class="line"><span class="number">5</span>*<span class="number">1</span>=<span class="number">5</span>    <span class="number">5</span>*<span class="number">2</span>=<span class="number">10</span>  <span class="number">5</span>*<span class="number">3</span>=<span class="number">15</span>  <span class="number">5</span>*<span class="number">4</span>=<span class="number">20</span>  <span class="number">5</span>*<span class="number">5</span>=<span class="number">25</span>  </span><br><span class="line"><span class="number">6</span>*<span class="number">1</span>=<span class="number">6</span>    <span class="number">6</span>*<span class="number">2</span>=<span class="number">12</span>  <span class="number">6</span>*<span class="number">3</span>=<span class="number">18</span>  <span class="number">6</span>*<span class="number">4</span>=<span class="number">24</span>  <span class="number">6</span>*<span class="number">5</span>=<span class="number">30</span>  <span class="number">6</span>*<span class="number">6</span>=<span class="number">36</span>  </span><br><span class="line"><span class="number">7</span>*<span class="number">1</span>=<span class="number">7</span>    <span class="number">7</span>*<span class="number">2</span>=<span class="number">14</span>  <span class="number">7</span>*<span class="number">3</span>=<span class="number">21</span>  <span class="number">7</span>*<span class="number">4</span>=<span class="number">28</span>  <span class="number">7</span>*<span class="number">5</span>=<span class="number">35</span>  <span class="number">7</span>*<span class="number">6</span>=<span class="number">42</span>  <span class="number">7</span>*<span class="number">7</span>=<span class="number">49</span>  </span><br><span class="line"><span class="number">8</span>*<span class="number">1</span>=<span class="number">8</span>    <span class="number">8</span>*<span class="number">2</span>=<span class="number">16</span>  <span class="number">8</span>*<span class="number">3</span>=<span class="number">24</span>  <span class="number">8</span>*<span class="number">4</span>=<span class="number">32</span>  <span class="number">8</span>*<span class="number">5</span>=<span class="number">40</span>  <span class="number">8</span>*<span class="number">6</span>=<span class="number">48</span>  <span class="number">8</span>*<span class="number">7</span>=<span class="number">56</span>  <span class="number">8</span>*<span class="number">8</span>=<span class="number">64</span>  </span><br><span class="line"><span class="number">9</span>*<span class="number">1</span>=<span class="number">9</span>    <span class="number">9</span>*<span class="number">2</span>=<span class="number">18</span>  <span class="number">9</span>*<span class="number">3</span>=<span class="number">27</span>  <span class="number">9</span>*<span class="number">4</span>=<span class="number">36</span>  <span class="number">9</span>*<span class="number">5</span>=<span class="number">45</span>  <span class="number">9</span>*<span class="number">6</span>=<span class="number">54</span>  <span class="number">9</span>*<span class="number">7</span>=<span class="number">63</span>  <span class="number">9</span>*<span class="number">8</span>=<span class="number">72</span>  <span class="number">9</span>*<span class="number">9</span>=<span class="number">81</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="—欲知后事如何，且听下回分解"><a href="#—欲知后事如何，且听下回分解" class="headerlink" title="—欲知后事如何，且听下回分解"></a>—欲知后事如何，且听下回分解</h2>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/python/15.Python的循环.html" title="15.Python的循环">http://leesin.cc/python/15.Python的循环.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/python/14.Python条件判断.html" rel="next" title="14.Python条件判断">
+                  <i class="fa fa-chevron-left"></i> 14.Python条件判断
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/python/16.Python的函数.html" rel="prev" title="16.Python的函数">
+                  16.Python的函数 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#书接上文"><span class="nav-number">1.</span> <span class="nav-text">书接上文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-循环语句"><span class="nav-number">1.1.</span> <span class="nav-text">Python 循环语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环控制语句"><span class="nav-number">1.2.</span> <span class="nav-text">循环控制语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-while-循环语句"><span class="nav-number">1.3.</span> <span class="nav-text">Python while 循环语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#while-简单循环"><span class="nav-number">1.3.1.</span> <span class="nav-text">while 简单循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#while-无限循环"><span class="nav-number">1.3.2.</span> <span class="nav-text">while 无限循环</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-for-循环语句"><span class="nav-number">1.4.</span> <span class="nav-text">Python for 循环语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#for-简单循环"><span class="nav-number">1.4.1.</span> <span class="nav-text">for 简单循环</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-python-打印等腰直角三角形（记得一本小说，一会儿等腰直角三角形）"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">1.python 打印等腰直角三角形（记得一本小说，一会儿等腰直角三角形）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-打印斐波那契数列"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">2.打印斐波那契数列</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#—欲知后事如何，且听下回分解"><span class="nav-number">2.</span> <span class="nav-text">—欲知后事如何，且听下回分解</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

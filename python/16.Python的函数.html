@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="书接上文Python 函数函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。函数能提高应用的模块性，和代码的重复利用率。你已经知道Python提供了许多内建函数，比如print()。但你也可以自己创建函数，这被叫做用户自定义函数。注意：这一节属于重难点，务必吃透。这是进阶为高级程序员的必经之路，想让别人用你的代码？不想一段代码反复编写？那就一定要会写函数。之前我们也提到过你使用别人">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.Python的函数">
+<meta property="og:url" content="http://leesin.cc/python/16.Python的函数.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="书接上文Python 函数函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。函数能提高应用的模块性，和代码的重复利用率。你已经知道Python提供了许多内建函数，比如print()。但你也可以自己创建函数，这被叫做用户自定义函数。注意：这一节属于重难点，务必吃透。这是进阶为高级程序员的必经之路，想让别人用你的代码？不想一段代码反复编写？那就一定要会写函数。之前我们也提到过你使用别人">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-03T12:06:23.700Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="16.Python的函数">
+<meta name="twitter:description" content="书接上文Python 函数函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。函数能提高应用的模块性，和代码的重复利用率。你已经知道Python提供了许多内建函数，比如print()。但你也可以自己创建函数，这被叫做用户自定义函数。注意：这一节属于重难点，务必吃透。这是进阶为高级程序员的必经之路，想让别人用你的代码？不想一段代码反复编写？那就一定要会写函数。之前我们也提到过你使用别人">
+  <link rel="canonical" href="http://leesin.cc/python/16.Python的函数">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>16.Python的函数 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/16.Python的函数.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">16.Python的函数
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-03 19:55:20 / 修改时间：20:06:23" itemprop="dateCreated datePublished" datetime="2019-09-03T19:55:20+08:00">2019-09-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><h2 id="Python-函数"><a href="#Python-函数" class="headerlink" title="Python 函数"></a>Python 函数</h2><p>函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。函数能提高应用的模块性，和代码的重复利用率。你已经知道Python提供了许多内建函数，比如print()。但你也可以自己创建函数，这被叫做用户自定义函数。</p><p><strong>注意：</strong>这一节属于重难点，务必吃透。这是进阶为高级程序员的必经之路，想让别人用你的代码？不想一段代码反复编写？那就一定要会写函数。之前我们也提到过你使用别人的函数，只关心功能，输入输出就可以了，那么你也要这样设计你的函数。</p><a id="more"></a>
+
+<p>函数的思想就是化繁为简，每个函数只负责一个功能，通过功能的组合才能形成各种复杂的程序结构。编程语言已经为你设计了很多高效方便的基础函数，其实加法功能就是一个函数，你可以在任何需要加法的地方使用它。</p>
+<h3 id="定义一个函数"><a href="#定义一个函数" class="headerlink" title="定义一个函数"></a>定义一个函数</h3><p>你可以定义一个由自己想要功能的函数，以下是简单的规则：</p>
+<ul>
+<li>函数代码块以 <strong>def</strong> 关键词开头，后接函数标识符名称和圆括号<strong>()</strong>。</li>
+<li>任何传入参数和自变量必须放在圆括号中间。圆括号之间可以用于定义参数。</li>
+<li>函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。</li>
+<li>函数内容以冒号起始，并且缩进。</li>
+<li><strong>return [表达式]</strong> 结束函数，选择性地返回一个值给调用方。不带表达式的return相当于返回 None。</li>
+</ul>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">functionname</span><span class="params">( parameters )</span>:</span></span><br><span class="line">   <span class="string">"函数_文档字符串"</span></span><br><span class="line">   function_suite</span><br><span class="line">   <span class="keyword">return</span> [expression]</span><br></pre></td></tr></table></figure>
+
+<p>文档字符串说明你函数的主要作用，输入输出的解释，通常可以用三引号表述</p>
+<p>我们写一个自己的打印函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chen_print</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    我自己的打印函数，在系统打印的字符串前面加我的名字</span></span><br><span class="line"><span class="string">    输入：一个输入字符串</span></span><br><span class="line"><span class="string">    输出：我的字符串</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    print(<span class="string">'chenjian:'</span> + s)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">'hello'</span></span><br><span class="line"></span><br><span class="line">a = chen_print(s)</span><br><span class="line"></span><br><span class="line">chenjian:hello</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h4><p>定义一个函数只给了函数一个名称，指定了函数里包含的参数，和代码块结构。仔细观察我们上面的代码会了解到我们是怎么调用自己的函数呢？</p>
+<p>你要注意我们定义了函数 def 程序运行到这里其实并没有进入函数内部，而是直接走过 s = ‘hello’ 下一句就<strong>关键</strong>了，它看到我们要将 chen_print(s) 绑定到 a 变量身上，可是系统没有这个函数啊，咦，它发现我们自己定义了这个函数，所以它抱着 s 去找我们的自定义函数，自定义函数一看 s 实打实的真s ，再看看自己手上的模型假 s ，表示愿意接受。就进入函数内部运行，完了之后 return 返回一个东西给系统好给 a 交差啊，但是这里的函数就是我什么都不给，默认也是这样。这整个过程就是函数的调用和参数传递</p>
+<h4 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h4><p>我们再聊五毛钱的参数传递</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chen_print</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    我自己的打印函数，在系统打印的字符串前面加我的名字</span></span><br><span class="line"><span class="string">    输入：一个输入字符串</span></span><br><span class="line"><span class="string">    输出：我的字符串</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    print(<span class="string">'chenjian:'</span> + s)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">'hello'</span></span><br><span class="line">ss = <span class="string">'[1,2,3]'</span></span><br><span class="line">sss = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">a = chen_print(s)</span><br><span class="line">b = chen_print(ss)</span><br><span class="line">c = chen_print(sss)</span><br><span class="line"></span><br><span class="line">chenjian:hello</span><br><span class="line">chenjian:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"></span><br><span class="line">  File <span class="string">"&lt;ipython-input-8-82b1c8879221&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    runfile(<span class="string">'C:/Users/CC/Desktop/for.py'</span>, wdir=<span class="string">'C:/Users/CC/Desktop'</span>)</span><br><span class="line"></span><br><span class="line">  File <span class="string">"H:\Anaconda\lib\site-packages\spyder_kernels\customize\spydercustomize.py"</span>, line <span class="number">786</span>, <span class="keyword">in</span> runfile</span><br><span class="line">    execfile(filename, namespace)</span><br><span class="line"></span><br><span class="line">  File <span class="string">"H:\Anaconda\lib\site-packages\spyder_kernels\customize\spydercustomize.py"</span>, line <span class="number">110</span>, <span class="keyword">in</span> execfile</span><br><span class="line">    exec(compile(f.read(), filename, <span class="string">'exec'</span>), namespace)</span><br><span class="line"></span><br><span class="line">  File <span class="string">"C:/Users/CC/Desktop/for.py"</span>, line <span class="number">16</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    c = chen_print(sss)</span><br><span class="line"></span><br><span class="line">  File <span class="string">"C:/Users/CC/Desktop/for.py"</span>, line <span class="number">7</span>, <span class="keyword">in</span> chen_print</span><br><span class="line">    print(<span class="string">'chenjian:'</span> + s)</span><br><span class="line"></span><br><span class="line">TypeError: can only concatenate str (<span class="keyword">not</span> <span class="string">"int"</span>) to str</span><br></pre></td></tr></table></figure>
+
+<p>看报错信息就知道是类型出了问题，这也正好暴露了python的一个问题，那就是动态类型，我们可能根本不知道到底输入什么类型，输出什么类型。解决办法也不是没有，只不过都太繁琐了违背了简约的思想，所以，花时间完善你的文档字符串吧，至少让你自己能够看懂你的函数想干嘛。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chen_print</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    我自己的打印函数，在系统打印的字符串前面加我的名字</span></span><br><span class="line"><span class="string">    输入：一个输入字符串</span></span><br><span class="line"><span class="string">    输出：我的字符串</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    print(<span class="string">'chenjian:'</span> + s)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">'hello'</span></span><br><span class="line">a = chen_print(s)</span><br><span class="line">print(a)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chenjian:hello</span><br><span class="line"><span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<p>在 python 中，类型属于对象，变量是没有类型的：</p>
+<p>怎么理解？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">a = <span class="string">'sss'</span></span><br></pre></td></tr></table></figure>
+
+<p>这里看其实对象[1,2,3] 是列表类型，‘sss’就是字符串类型，a只是一个便利贴，开始它贴在列表上，你想访问列表，找便利贴就可以了，后来它又贴在字符串上，之前的列表怎么办？如果没有其他的标签，系统会认为这货是垃圾，干脆回收算了。</p>
+<h3 id="可更改-mutable-与不可更改-immutable-对象"><a href="#可更改-mutable-与不可更改-immutable-对象" class="headerlink" title="可更改(mutable)与不可更改(immutable)对象"></a>可更改(mutable)与不可更改(immutable)对象</h3><p>在 python 中，strings, tuples, 和 numbers 是不可更改的对象，而 list,dict 等则是可以修改的对象。</p>
+<ul>
+<li><strong>不可变类型：</strong>变量赋值 <strong>a=5</strong> 后再赋值 <strong>a=10</strong>，这里实际是新生成一个 int 值对象 10，再让 a 指向它，而 5 被丢弃，不是改变a的值，相当于新生成了a。</li>
+<li><strong>可变类型：</strong>变量赋值 <strong>la=[1,2,3,4]</strong> 后再赋值 <strong>la[2]=5</strong> 则是将 list la 的第三个元素值更改，本身la没有动，只是其内部的一部分值被修改了。</li>
+</ul>
+<p>python 函数的参数传递：</p>
+<ul>
+<li><strong>不可变类型：</strong>类似 c++ 的值传递，如 整数、字符串、元组。如fun（a），传递的只是a的值，没有影响a对象本身。比如在 fun（a）内部修改 a 的值，只是修改另一个复制的对象，不会影响 a 本身。</li>
+<li><strong>可变类型：</strong>类似 c++ 的引用传递，如 列表，字典。如 fun（la），则是将 la 真正的传过去，修改后fun外部的la也会受影响</li>
+</ul>
+<p>python 中一切都是对象，严格意义我们不能说值传递还是引用传递，我们应该说传不可变对象和传可变对象。</p>
+<p>上面的话如果听起来比较懵逼，尤其C++只是听说过。那就看看下面的代码，我们详细看看他们之间的区别</p>
+<h4 id="python-传不可变对象实例"><a href="#python-传不可变对象实例" class="headerlink" title="python 传不可变对象实例"></a>python 传不可变对象实例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changeint</span><span class="params">(a)</span>:</span></span><br><span class="line">    print(<span class="string">'我进来了哦，看看我是谁:'</span>,a)</span><br><span class="line">    a = <span class="number">10</span></span><br><span class="line">    print(<span class="string">'我改变了哦，看看我是谁:'</span>,a)</span><br><span class="line">    </span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">print(<span class="string">'我没使用函数前:'</span>,b)</span><br><span class="line">changeint(b)</span><br><span class="line">print(<span class="string">'我使用了函数后:'</span>,b)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">我没使用函数前: <span class="number">1</span></span><br><span class="line">我进来了哦，看看我是谁: <span class="number">1</span></span><br><span class="line">我改变了哦，看看我是谁: <span class="number">10</span></span><br><span class="line">我使用了函数后: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>先甭管它可变不可变，函数的调用和传参这个例子是不是表现的明明白白，安排！再来看，刚进去的时候是把a这个标签贴在了1上面，然后创建了 10 这个对象 ，把a这个标签又贴到了10上面。</p>
+<h4 id="python-传可变对象实例"><a href="#python-传可变对象实例" class="headerlink" title="python 传可变对象实例"></a>python 传可变对象实例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changelist</span><span class="params">(a)</span>:</span></span><br><span class="line">    print(<span class="string">'我进来了哦，看看我是谁:'</span>,a)</span><br><span class="line">    a[<span class="number">0</span>] = <span class="string">'chen'</span></span><br><span class="line">    print(<span class="string">'我改变了哦，看看我是谁:'</span>,a)</span><br><span class="line">    </span><br><span class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">print(<span class="string">'我没使用函数前:'</span>,b)</span><br><span class="line">changelist(b)</span><br><span class="line">print(<span class="string">'我使用了函数后:'</span>,b)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">我没使用函数前: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">我进来了哦，看看我是谁: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">我改变了哦，看看我是谁: [<span class="string">'chen'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">我使用了函数后: [<span class="string">'chen'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>看到区别了吗，b本身也发生的变化，初学很难理解的话，你就当作不可变的对象只是给你我的值，你的权限只能贴贴标签，反正我借给你的东西，别人再问我要你要还我当初的模样。而可变类型就不一样了，你借出去的就是篮球了，用一次脏一次，每次的图画印记都能看到，说不定还你的看样子成了足球也说不定，总之，你要是正好想要一个涂鸦篮球，或者签名篮球，倒也正合你意。</p>
+<p>我们再看个例子终结这个话题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changetuple</span><span class="params">(a)</span>:</span></span><br><span class="line">    print(<span class="string">'我进来了哦，看看我是谁:'</span>,a)</span><br><span class="line">    a[<span class="number">0</span>][<span class="number">0</span>] = <span class="string">'chen'</span></span><br><span class="line">    print(<span class="string">'我改变了哦，看看我是谁:'</span>,a)</span><br><span class="line">    </span><br><span class="line">b = ([<span class="number">1</span>],[<span class="number">2</span>])</span><br><span class="line">print(<span class="string">'我没使用函数前:'</span>,b)</span><br><span class="line">changetuple(b)</span><br><span class="line">print(<span class="string">'我使用了函数后:'</span>,b)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">我没使用函数前: ([<span class="number">1</span>], [<span class="number">2</span>])</span><br><span class="line">我进来了哦，看看我是谁: ([<span class="number">1</span>], [<span class="number">2</span>])</span><br><span class="line">我改变了哦，看看我是谁: ([<span class="string">'chen'</span>], [<span class="number">2</span>])</span><br><span class="line">我使用了函数后: ([<span class="string">'chen'</span>], [<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+
+<p>元组不是不可变吗？仔细体会，注意里面的元素是列表属于可变类型。</p>
+<hr>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>以下是调用函数时可使用的正式参数类型：</p>
+<ul>
+<li>必备参数</li>
+<li>关键字参数</li>
+<li>默认参数</li>
+<li>不定长参数</li>
+</ul>
+<p>参数是至关重要的，它是函数的输入口，口都没找到，怎么进行下去呢？</p>
+<p>而且，我们前面谈过了参数类型的问题，还有就是参数数目一定要能对应得上，否则就不是自己人，密码位数都输错，进门的资格都没有。</p>
+<h4 id="关键字参数"><a href="#关键字参数" class="headerlink" title="关键字参数"></a>关键字参数</h4><p>关键字参数和函数调用关系紧密，函数调用使用关键字参数来确定传入的参数值。使用关键字参数允许函数调用时参数的顺序与声明时不一致，因为 Python 解释器能够用参数名匹配参数值。</p>
+<p>就是说门上直接写明白只有谁能进门，而默认的方式是排队进对应的门，第一个进第一个门，关键字的话，基本就是各找各家，举个栗子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">keyword</span><span class="params">(name,password)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'please:&#123;&#125;.&#123;&#125;'</span>.format(name,password)</span><br><span class="line"></span><br><span class="line">a = keyword(password=<span class="string">'123'</span>，name=<span class="string">'chen'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">Out[<span class="number">16</span>]: <span class="string">'please:chen.123'</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h4><p>调用函数时，默认参数的值如果没有传入，则被认为是默认值</p>
+<p>举个栗子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">keyword</span><span class="params">(name=<span class="string">'chen'</span>,password=<span class="string">'123'</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'please:&#123;&#125;.&#123;&#125;'</span>.format(name,password)</span><br><span class="line"></span><br><span class="line">a = keyword()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">Out[<span class="number">18</span>]: <span class="string">'please:chen.123'</span></span><br></pre></td></tr></table></figure>
+
+<p>这种写法可以极大避免程序报错情况的发生，设置很多习惯上的默认值可以简化用户繁重的输入工作</p>
+<h4 id="不定长参数"><a href="#不定长参数" class="headerlink" title="不定长参数"></a>不定长参数</h4><p>你可能需要一个函数能处理比当初声明时更多的参数。这些参数叫做不定长参数，和上述2种参数不同，声明时不会命名。基本语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">functionname</span><span class="params">([formal_args,] *var_args_tuple )</span>:</span></span><br><span class="line">   <span class="string">"函数_文档字符串"</span></span><br><span class="line">   function_suite</span><br><span class="line">   <span class="keyword">return</span> [expression]</span><br></pre></td></tr></table></figure>
+
+<p>加了星号（*）的变量名会存放所有未命名的变量参数。星号的意思表达的就是通配符的意思，这样就可以对参数组进行解包，获取所有的参数了</p>
+<p>举个栗子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">args</span><span class="params">(arg1,*args)</span>:</span></span><br><span class="line">	print(arg1)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> args:</span><br><span class="line">		print(i)</span><br><span class="line"></span><br><span class="line">		</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>args(<span class="string">'1'</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>args(<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>args((<span class="string">'1'</span>,<span class="string">'2'</span>),<span class="string">'3'</span>)</span><br><span class="line">(<span class="string">'1'</span>, <span class="string">'2'</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>args(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>首先匹配第一个参数，然后把剩下的参数都打包成元组给args</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">(a, b, c=<span class="number">0</span>, *args, **kw)</span>:</span></span><br><span class="line">    print(<span class="string">'a ='</span>, a, <span class="string">'b ='</span>, b, <span class="string">'c ='</span>, c, <span class="string">'args ='</span>, args, <span class="string">'kw ='</span>, kw)</span><br><span class="line">a = <span class="number">1</span></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line">c = <span class="number">3</span></span><br><span class="line">args = (<span class="string">'a'</span>, <span class="string">'b'</span>)</span><br><span class="line">kw = &#123;<span class="string">'x'</span>: <span class="number">99</span>&#125;</span><br><span class="line"></span><br><span class="line">f1(a,b,c,args,kw)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">a</span> = <span class="number">1</span> <span class="selector-tag">b</span> = <span class="number">2</span> c = <span class="number">3</span> args = ((<span class="string">'a'</span>, <span class="string">'b'</span>), &#123;<span class="string">'x'</span>: <span class="number">99</span>&#125;) kw = &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在Python中定义函数，可以用必选参数、默认参数、可变参数、关键字参数和命名关键字参数，这5种参数都可以组合使用。但是请注意，参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。</p>
+<p>对于任意函数，都可以通过类似<code>func(*args, **kw)</code>的形式调用它</p>
+<h3 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h3><p>在函数内部，可以调用其他函数。如果一个函数在内部调用自身本身，这个函数就是递归函数。递归是一种思想，它让一些循环处理的复杂问题变得简单。看下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 实现一个从1加到100的递归函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_n</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> sum_n(n<span class="number">-1</span>) + n</span><br><span class="line"></span><br><span class="line">a = sum_n(<span class="number">100</span>)</span><br><span class="line">print(a)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5050</span></span><br></pre></td></tr></table></figure>
+
+<p>大家都听说过高斯大神的故事吧，相信大家也熟知了头尾相加的高效算法，当然你也可以使用比较传统的等差数列求和公式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_n_fuc</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> ((n+<span class="number">1</span>)*n)/<span class="number">2</span></span><br><span class="line"></span><br><span class="line">a = sum_n_fuc(<span class="number">100</span>)</span><br><span class="line">print(a)</span><br></pre></td></tr></table></figure>
+
+<p>我们还是先看一看第一个递归函数，其实求1加到100的和，不妨拆解成前99个数的和加100，所以我们调用sum_n(n-1),那么这个函数调用自身的时候发现不满足n==1的条件，那就自身再减1加上当前的n值，这样一直循环下去，终于到了满足条件然后返回结果。这样就可以将问题简化成前99，前98，直到前1个数和，当然了，递归的思想虽然让人简单，机器可不好做了，首先，它要记住每一次的调用吗，就好像什么情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">程序：sum_n(<span class="number">100</span>)你等于多少啊？</span><br><span class="line">sum_n(<span class="number">100</span>):我不知道，我给你<span class="number">100</span>，你带着去找sum_n(<span class="number">99</span>)问问,然后加起来就可以了</span><br><span class="line">程序：sum_n(<span class="number">99</span>)你等于多少啊？我兜里有<span class="number">100</span></span><br><span class="line">sum_n(<span class="number">99</span>):我不知道，我给你<span class="number">99</span>，你带着去找sum_n(<span class="number">98</span>)问问,然后加起来就可以了</span><br><span class="line">程序：sum_n(<span class="number">98</span>)你等于多少啊？我兜里有<span class="number">100</span>,<span class="number">99</span></span><br><span class="line">sum_n(<span class="number">98</span>):我不知道，我给你<span class="number">98</span>，你带着去找sum_n(<span class="number">97</span>)问问,然后加起来就可以了</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">sum_n(<span class="number">1</span>):我等于<span class="number">1</span>啊</span><br><span class="line"></span><br><span class="line">程序：卧槽，我兜里有<span class="number">100</span>，<span class="number">99</span>，..<span class="number">.1</span>，我加起来看看，咦<span class="number">5050</span></span><br></pre></td></tr></table></figure>
+
+<p>所以说，递归通常是很占用内存空间的，很多程序也有递归层数限制。那么有没有什么办法来优化递归呢？我们顺序递归就可以了，这样我们加一个存一个，就不会存在递归层数太多内存爆掉了。</p>
+<hr>
+<p>我们总结一下，函数式的编程比较简单，无非就是在我们想要实现的某代码块前加def就可以了，我们告诉它，要给它什么东西，通过函数的功能进行加工，最终return出我们想要的东西进行接收。那么有哪些必须要注意的呢？输入参数我们要注意，必选参数、默认参数、可变参数、命名关键字参数和关键字参数位置不能变，必选参数用的比较多，就是按位置排队往里放嘛，默认参数是门上有名字，指定的才能进，还要注意默认参数必须指向不变对象可变就是可以传几个参数，函数对它进行解包操作，关键字参数就是调用的时候我指定给哪个参数进行传，命名关键字参数就是可以向函数传递很多带名字的参数，函数内部可以对其进行解包。初学者，看上面的内容可能比较难以理解，虽然上面的示例已经讲过一遍，不妨我们再看一点示例：</p>
+<p>我们想要自定义一个pow函数实现和内置函数一样的功能，我们看看pow是怎么使用的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(pow)</span><br><span class="line">Help on built-<span class="keyword">in</span> function pow <span class="keyword">in</span> module builtins:</span><br><span class="line"></span><br><span class="line">pow(x, y, z=<span class="literal">None</span>, /)</span><br><span class="line">    Equivalent to x**y (<span class="keyword">with</span> two arguments) <span class="keyword">or</span> x**y % z (<span class="keyword">with</span> three arguments)</span><br><span class="line">    </span><br><span class="line">    Some types, such <span class="keyword">as</span> ints, are able to use a more efficient algorithm when</span><br><span class="line">    invoked using the three argument form.</span><br></pre></td></tr></table></figure>
+
+<p>我们利用<strong>位置参数</strong>，也就是必选参数来实现第一个功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_pow</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a**b</span><br><span class="line"></span><br><span class="line">c = my_pow(<span class="number">2</span>,<span class="number">5</span>)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
+
+<p>很多文章中将a,b叫做形式参数，就是装样子，占位置的，2，5是实际参数，实实在在的参数，有实际意义的。它们必须位置对应才能没有歧义嘛。这就是位置参数。那么我们同样很容易实现第二个功能求对z的余数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_pow</span><span class="params">(a,b,z)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a**b%z</span><br><span class="line"></span><br><span class="line">c = my_pow(<span class="number">2</span>,<span class="number">5</span>,<span class="number">3</span>)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
+
+<p>可是内置函数中是不需要传入z这个参数的，不传入就是求幂，传入就是求幂余。我们不得不使用默认参数的选项了。</p>
+<p><strong>位置参数，默认参数</strong>实现两个功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_pow</span><span class="params">(a,b,z=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> z == <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> a**b</span><br><span class="line">    <span class="keyword">return</span> a**b%z</span><br><span class="line"></span><br><span class="line">c = my_pow(<span class="number">2</span>,<span class="number">5</span>)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
+
+<p>这样你就完全实现了pow的功能呢，那么要是有更刁难的用户说，他们不习惯 a的b次方这种读法，更喜欢 b次方的a呢？如果调换顺序，那就违背了位置参数的约束，不如这样吧，你干脆告诉我 a 等于多少，b等于多少吧。</p>
+<p>那么，我们用<strong>关键字参数</strong>实现了这个需求</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_pow</span><span class="params">(a,b,z=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> z == <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> a**b</span><br><span class="line">    <span class="keyword">return</span> a**b%z</span><br><span class="line"></span><br><span class="line">c = my_pow(b=<span class="number">5</span>,a=<span class="number">2</span>) //这里就是关键字，直接告诉它，a,b的值，那就不用在乎位置了</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
+
+<p>我们还想实现一个不限制用户输入多少个参数，我们都一直求和下去，这里就用到了<strong>不定长参数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_pow</span><span class="params">(*var)</span>:</span></span><br><span class="line">    print(var)</span><br><span class="line">    _sum = <span class="number">0</span></span><br><span class="line">    _len = len(var)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> var:</span><br><span class="line">        _sum += i</span><br><span class="line">    <span class="keyword">return</span> _sum</span><br><span class="line"></span><br><span class="line">c = my_pow(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p>注意这里是元组，我们得到了这个未知个数的参数，通过解包循环得到所有的值</p>
+<p>那么我们还想把这些值的具体含义也传给函数呢？对吧，万一给他了，他不知道含义瞎解包岂不麻烦</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_pow</span><span class="params">(**var)</span>:</span></span><br><span class="line">    print(var)</span><br><span class="line">    <span class="keyword">if</span> var[<span class="string">'height'</span>] &lt; <span class="number">200</span>:</span><br><span class="line">        print(<span class="string">'矮'</span>)</span><br><span class="line">    <span class="keyword">if</span> var[<span class="string">'weight'</span>] &gt; <span class="number">50</span>:</span><br><span class="line">        print(<span class="string">'挫'</span>)</span><br><span class="line">    <span class="keyword">if</span> var[<span class="string">'money'</span>] &lt; <span class="number">1000000000</span>:</span><br><span class="line">        print(<span class="string">'穷'</span>)  </span><br><span class="line"></span><br><span class="line">my_pow(height=<span class="number">170</span>, weight=<span class="number">62</span>, money = <span class="number">30</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'height'</span>: <span class="number">170</span>, <span class="string">'weight'</span>: <span class="number">62</span>, <span class="string">'money'</span>: <span class="number">30</span>&#125;</span><br><span class="line">矮</span><br><span class="line">挫</span><br><span class="line">穷</span><br></pre></td></tr></table></figure>
+
+<p>泪！！~，以身教学最为致命。函数的辛酸暂时结束。我们下一节介绍文件处理，就算没学编程，文件大家也都是见过的，如何使用编程语言对文件进行编辑操作才是真正进入工作实用的阶段。再谈递归，如果你是学生，要面试递归就必须掌握的很透，很多面试题用递归都是可以达到简化的效果，工作中倒使用的少，主要就是搬砖嘛。</p>
+<hr>
+<h2 id="—欲知后事如何，且听下回分解"><a href="#—欲知后事如何，且听下回分解" class="headerlink" title="—欲知后事如何，且听下回分解"></a>—欲知后事如何，且听下回分解</h2>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/python/16.Python的函数.html" title="16.Python的函数">http://leesin.cc/python/16.Python的函数.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/python/15.Python的循环.html" rel="next" title="15.Python的循环">
+                  <i class="fa fa-chevron-left"></i> 15.Python的循环
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/python/17.Python的模块.html" rel="prev" title="17.Python的模块">
+                  17.Python的模块 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#书接上文"><span class="nav-number">1.</span> <span class="nav-text">书接上文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-函数"><span class="nav-number">2.</span> <span class="nav-text">Python 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义一个函数"><span class="nav-number">2.1.</span> <span class="nav-text">定义一个函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">2.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数调用"><span class="nav-number">2.1.2.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参数传递"><span class="nav-number">2.1.3.</span> <span class="nav-text">参数传递</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可更改-mutable-与不可更改-immutable-对象"><span class="nav-number">2.2.</span> <span class="nav-text">可更改(mutable)与不可更改(immutable)对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python-传不可变对象实例"><span class="nav-number">2.2.1.</span> <span class="nav-text">python 传不可变对象实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-传可变对象实例"><span class="nav-number">2.2.2.</span> <span class="nav-text">python 传可变对象实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数"><span class="nav-number">2.3.</span> <span class="nav-text">参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关键字参数"><span class="nav-number">2.3.1.</span> <span class="nav-text">关键字参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认参数"><span class="nav-number">2.3.2.</span> <span class="nav-text">默认参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不定长参数"><span class="nav-number">2.3.3.</span> <span class="nav-text">不定长参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归函数"><span class="nav-number">2.4.</span> <span class="nav-text">递归函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#—欲知后事如何，且听下回分解"><span class="nav-number">3.</span> <span class="nav-text">—欲知后事如何，且听下回分解</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
