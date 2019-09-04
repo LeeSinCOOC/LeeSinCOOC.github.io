@@ -1,11 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://leesin.cc/reading/%E5%9F%BA%E4%BA%8EOpenCVh%E5%92%8CYOLO-V3%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%AE%9E%E7%8E%B0.html</loc>
+    <loc>http://leesin.cc/tensorflow/21.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AD%96%E7%95%A5%E6%A2%AF%E5%BA%A6%E7%AE%97%E6%B3%95.html</loc>
     <lastmod>2019-09-04</lastmod>
   </url>  <url>
-    <loc>http://leesin.cc/tensorflow/1.tensorflow%E4%BB%8B%E7%BB%8D.html</loc>
-    <lastmod>2019-09-03</lastmod>
+    <loc>http://leesin.cc/tensorflow/8.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8BGAN%E4%B8%8EDCGAN%E5%85%A5%E9%97%A8.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/7.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%9B%BE%E5%83%8F%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/6.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%BA%BA%E8%84%B8%E6%A3%80%E6%B5%8B%E4%B8%8E%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/9.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8Bpip2pix%E6%A8%A1%E5%9E%8B%E4%B8%8E%E8%87%AA%E5%8A%A8%E4%B8%8A%E8%89%B2%E6%8A%80%E6%9C%AF.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/3.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/10.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B6%85%E5%88%86%E8%BE%A8%E8%AE%A9%E5%9B%BE%E5%83%8F%E5%8F%98%E5%BE%97%E6%9B%B4%E6%B8%85%E6%99%B0.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/11.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8BCycleGAN%E4%B8%8E%E9%9D%9E%E9%85%8D%E5%AF%B9%E5%9B%BE%E5%83%8F%E8%BD%AC%E6%8D%A2.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/12.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8BRNN%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%E4%B8%8EChar_RNN%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/13.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%BA%8F%E5%88%97%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/14.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/15.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%9C%A8Tensorflow%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E9%A2%84%E6%B5%8B.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/16.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91%E6%8A%80%E6%9C%AF.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/17.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%9C%8B%E5%9B%BE%E8%AF%B4%E8%AF%9D.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/18.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8%E4%B9%8BQ_Learning.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/19.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8%E4%B9%8BSARSA%E7%AE%97%E6%B3%95.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/20.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8%E4%B9%8BDeep_Q_Learning.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/5.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/4.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8BDeep_Dream%E6%A8%A1%E5%9E%8B.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/1.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8BMNIST%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/0.tensorflow%E4%BB%8B%E7%BB%8D.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/tensorflow/2.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8BCIFAR10%E4%B8%8EImageNet%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB.html</loc>
+    <lastmod>2019-09-04</lastmod>
+  </url>  <url>
+    <loc>http://leesin.cc/reading/%E5%9F%BA%E4%BA%8EOpenCVh%E5%92%8CYOLO-V3%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%AE%9E%E7%8E%B0.html</loc>
+    <lastmod>2019-09-04</lastmod>
   </url>  <url>
     <loc>http://leesin.cc/python/20.Python%E7%9A%84%E9%9D%A2%E5%AF%B9%E5%AF%B9%E8%B1%A1.html</loc>
     <lastmod>2019-09-03</lastmod>
