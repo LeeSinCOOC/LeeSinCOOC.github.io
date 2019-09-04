@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="本文翻译自Deep Learning based Object Detection using YOLOv3 with OpenCV ( Python / C++ ) 本文搬运自：https://blog.csdn.net/qq_27158179/article/details/81915740 基于OpenCV和YOLOv3深度学习的目标检测">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="page">
+<meta property="og:url" content="http://leesin.cc/reading/基于OpenCVh和YOLO-V3的目标检测实现.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="本文翻译自Deep Learning based Object Detection using YOLOv3 with OpenCV ( Python / C++ ) 本文搬运自：https://blog.csdn.net/qq_27158179/article/details/81915740 基于OpenCV和YOLOv3深度学习的目标检测">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-04T13:11:49.425Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="page">
+<meta name="twitter:description" content="本文翻译自Deep Learning based Object Detection using YOLOv3 with OpenCV ( Python / C++ ) 本文搬运自：https://blog.csdn.net/qq_27158179/article/details/81915740 基于OpenCV和YOLOv3深度学习的目标检测">
+  <link rel="canonical" href="http://leesin.cc/reading/基于OpenCVh和YOLO-V3的目标检测实现">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>page | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/基于OpenCVh和YOLO-V3的目标检测实现.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">page
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 20:07:36 / 修改时间：21:11:49" itemprop="dateCreated datePublished" datetime="2019-09-04T20:07:36+08:00">2019-09-04</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>本文翻译自<a href="https://www.learnopencv.com/deep-learning-based-object-detection-using-yolov3-with-opencv-python-c/" target="_blank" rel="noopener">Deep Learning based Object Detection using YOLOv3 with OpenCV ( Python / C++ )</a></p>
+<p>本文搬运自：<a href="https://blog.csdn.net/qq_27158179/article/details/81915740" target="_blank" rel="noopener">https://blog.csdn.net/qq_27158179/article/details/81915740</a></p>
+</blockquote><h1 id="基于OpenCV和YOLOv3深度学习的目标检测"><a href="#基于OpenCV和YOLOv3深度学习的目标检测" class="headerlink" title="基于OpenCV和YOLOv3深度学习的目标检测"></a>基于OpenCV和YOLOv3深度学习的目标检测</h1><a id="more"></a>
+<p>从OpenCV 3.4.2开始，我们可以很容易的在OpenCV应用中使用YOLOv3模型（即OpemCV-3.4.2开始支持YOLOv3这网络框架）。</p>
+<h2 id="YOLO是什么原理？"><a href="#YOLO是什么原理？" class="headerlink" title="YOLO是什么原理？"></a>YOLO是什么原理？</h2><p>我们可以把目标检测看成是目标定位和目标识别的结合。</p>
+<p>在传统的计算机视觉方法中，采用滑动窗口查找不同区域和大小的目标。因为这是消耗量较大的算法，通常假定目标的纵横比是固定的。</p>
+<p>早期的基于深度学习的目标检测算法，如R-CNN和快速R-CNN，采用选择型搜索（Selective Search）来缩小必须测试的边界框的数量（本文的边界框指的是，在预测到疑似所识别到的目标后，在图片上把对象框出的一个矩形）。</p>
+<p>另外一种称为Overfeat的方法，通过卷积地计算滑动窗口，以多个尺度扫描了图像。</p>
+<p>然后有人提出了快速R-CNN算法，使用Region Proposal Network(RPN)区别将要测试的边界框。通过巧妙的设计，用于目标识别的特征点，也被RPN用于提出潜在的边界框，因此节省了大量的计算。</p>
+<p>然而，YOLO使用了完全不同的方法解决目标检测问题。它将图像进行神经网络的一次性正向处理。SSD是另外一种将图像进行神经网络一次性正向处理的方法，但是YOLOv3比SSD实现了更高的精度，同时又较快的运算速度。YOLOv3在M40，TitanX和1080Ti这类GPU上实时效果更好。</p>
+<p>让我们看看YOLO如何在一张图片中检测目标。</p>
+<p>首先，它把原图按比例平均分解成一张有13x13网格的图片。这169个单元会根据原图的大小而改变。对于一张416x416像素的图片，每个图片单元的大小是32x32像素。处理图片时，会以图片单元为单位，预测单位中的多个边界框。</p>
+<p> 对于每个边界框，这个网络会计算所包含物体的边界框的置信度，同时计算所包含的目标是属于一个特定类别的可能性大小。</p>
+<p>非最大抑制（non-maximum suppression）可以消除低置信度的边界框，以及把同时包围着单个物体的多个高置信度的边界框消除到只剩下一个。</p>
+<p>YOLOv3的作者，Joseph Redmon和Ali Farhadi，让YOLOv3比前一代YOLOv2更加精确和快速。YOLOv3在处理多个不同尺寸图片的场合中得到了优化。他们还通过加大了网络，并添加快捷链接将其引入剩余网络来改进网络。</p>
+<h2 id="为什么选择OpenCV的YOLO"><a href="#为什么选择OpenCV的YOLO" class="headerlink" title="为什么选择OpenCV的YOLO"></a>为什么选择OpenCV的YOLO</h2><p> 这里有三个理由。</p>
+<ol>
+<li>容易整合到现有的OpenCV程序中：如果应用程序已经使用了OpenCV，并想简单地使用YOLOv3，完全不需要担心Darknet源代码的编译和建立。</li>
+<li>OpenCV的CPU版本的运算速度比Darknet+OpenMP快9倍：OpenCV的DNN模块，其CPU运行是十分快的。举个例子，当用了OpenMP的Darknet在CPU上处理一张图片消耗2秒，OpenCV的实现只需要0.22秒。具体请看下面的表格。</li>
+<li>支持Python。Darknet是用C语言写的，因此并不支持Python。相反，OpenCV是支持Python的。会有支持Darknet的编程接口。</li>
+</ol>
+<h2 id="在Darknet和OpenCV上跑YOLOv3的速度测试"><a href="#在Darknet和OpenCV上跑YOLOv3的速度测试" class="headerlink" title="在Darknet和OpenCV上跑YOLOv3的速度测试"></a>在Darknet和OpenCV上跑YOLOv3的速度测试</h2><p>下面的表格展示了在Darknet和OpenCV上YOLOv3的性能差距，输入图片的尺寸是416x416。不出所料，GPU版本的Darknet在性能上比其他方式优越。同时，理所当然的Darknet配合OpenMP会好于没有OpenMP的Darknet，因为OpenMP支持多核的CPU。</p>
+<p>意外的是，CPU版本的OpenCV在执行DNN的运算速度，是9倍的快过Darknet和OpenML</p>
+<table>
+<thead>
+<tr>
+<th align="left">OS</th>
+<th align="left">Framework</th>
+<th align="left">CPU/GPU</th>
+<th align="left">Time(ms)/Frame</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Linux 16.04</td>
+<td align="left">Darknet</td>
+<td align="left">12x Intel Core i7-6850K CPU @ 3.60GHz</td>
+<td align="left">9370</td>
+</tr>
+<tr>
+<td align="left">Linux 16.04</td>
+<td align="left">Darknet + OpenMP</td>
+<td align="left">12x Intel Core i7-6850K CPU @ 3.60GHz</td>
+<td align="left">1942</td>
+</tr>
+<tr>
+<td align="left">Linux 16.04</td>
+<td align="left">OpenCV [CPU]</td>
+<td align="left">12x Intel Core i7-6850K CPU @ 3.60GHz</td>
+<td align="left">220</td>
+</tr>
+<tr>
+<td align="left">Linux 16.04</td>
+<td align="left">Darknet</td>
+<td align="left">NVIDIA GeForce 1080 Ti GPU</td>
+<td align="left">23</td>
+</tr>
+<tr>
+<td align="left">macOS</td>
+<td align="left">DarkNet</td>
+<td align="left">2.5 GHz Intel Core i7 CPU</td>
+<td align="left">7260</td>
+</tr>
+<tr>
+<td align="left">macOS</td>
+<td align="left">OpenCV [CPU]</td>
+<td align="left">2.5 GHz Intel Core i7 CPU</td>
+<td align="left">400</td>
+</tr>
+</tbody></table>
+<h2 id="采用YOLOv3的目标检测，C-Python两种语言"><a href="#采用YOLOv3的目标检测，C-Python两种语言" class="headerlink" title="采用YOLOv3的目标检测，C++/Python两种语言"></a>采用YOLOv3的目标检测，C++/Python两种语言</h2><h3 id="第1步：下载模型"><a href="#第1步：下载模型" class="headerlink" title="第1步：下载模型"></a>第1步：下载模型</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd 到wget安装目录，执行</span><br><span class="line">wget https://pjreddie.com/media/files/yolov3.weights</span><br><span class="line">wget https://github.com/pjreddie/darknet/blob/master/cfg/yolov3.cfg?raw=true -O ./yolov3.cfg</span><br><span class="line">wget https://github.com/pjreddie/darknet/blob/master/data/coco.names?raw=true -O ./coco.names</span><br></pre></td></tr></table></figure>
+
+<p>执行命令后开始下载yolov3.weights文件（包括了提前训练好的网络的权值），和yolov3.cfg文件（包含了网络的配置方式）和coco.names（包括了COCO数据库中使用的80种不同的目标种类名字）。</p>
+<p>所以如果是自己训练的模型，也就同样把：<strong>权重文件</strong>，<strong>网络配置文件</strong>，<strong>标签文件</strong>拷贝过来就可以了</p>
+<h3 id="第2步：初始化参数"><a href="#第2步：初始化参数" class="headerlink" title="第2步：初始化参数"></a>第2步：初始化参数</h3><p>YOLOv3算法的预测结果就是边界框。每一个边界框都旁随着一个置信值。第一阶段中，全部低于置信度阀值的都会排除掉。</p>
+<p>对剩余的边界框执行非最大抑制算法，以去除重叠的边界框。非最大抑制由一个参数nmsThrehold控制。读者可以尝试改变这个数值，观察输出的边界框的改变。</p>
+<p>接下来，设置输入图片的宽度（inpWidth）和高度（inpHeight）。我们设置他们为416，以便对比YOLOv3作者提供的Darknets的C代码。如果想要更快的速度，读者可以把宽度和高度设置为320。如果想要更准确的结果，改变他们到608。</p>
+<h4 id="Python代码："><a href="#Python代码：" class="headerlink" title="Python代码："></a>Python代码：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Initialize the parameters</span></span><br><span class="line">confThreshold = <span class="number">0.5</span>  <span class="comment">#Confidence threshold</span></span><br><span class="line">nmsThreshold = <span class="number">0.4</span>   <span class="comment">#Non-maximum suppression threshold</span></span><br><span class="line">inpWidth = <span class="number">416</span>       <span class="comment">#Width of network's input image</span></span><br><span class="line">inpHeight = <span class="number">416</span>      <span class="comment">#Height of network's input image</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="C-代码："><a href="#C-代码：" class="headerlink" title="C++代码："></a>C++代码：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize the parameters</span></span><br><span class="line"><span class="keyword">float</span> confThreshold = <span class="number">0.5</span>; <span class="comment">// Confidence threshold</span></span><br><span class="line"><span class="keyword">float</span> nmsThreshold = <span class="number">0.4</span>;  <span class="comment">// Non-maximum suppression threshold</span></span><br><span class="line"><span class="keyword">int</span> inpWidth = <span class="number">416</span>;        <span class="comment">// Width of network's input image</span></span><br><span class="line"><span class="keyword">int</span> inpHeight = <span class="number">416</span>;       <span class="comment">// Height of network's input image</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第3步：读取模型和类别"><a href="#第3步：读取模型和类别" class="headerlink" title="第3步：读取模型和类别"></a>第3步：读取模型和类别</h3><p>文件coco.names包含了训练好的模型能识别的所有目标名字。我们读出各个类别的名字。</p>
+<p>接着，我们读取了网络，其包含两个部分：</p>
+<ol>
+<li>yolov3.weights: 预训练得到的权重。</li>
+<li>yolov3.cfg：配置文件</li>
+</ol>
+<p>我们把DNN的后端设置为OpenCV，目标设置为CPU。可以通过使cv.dnn.DNN_TARGET_OPENCL置为GPU，尝试设定偏好的运行目标为GPU。但是要记住当前的OpenCV版本只在Intel的GPU上测试，如果没有Intel的GPU则程序会自动设置为CPU。</p>
+<h4 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load names of classes</span></span><br><span class="line">classesFile = <span class="string">"coco.names"</span>;</span><br><span class="line">classes = <span class="literal">None</span></span><br><span class="line"><span class="keyword">with</span> open(classesFile, <span class="string">'rt'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    classes = f.read().rstrip(<span class="string">'\n'</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Give the configuration and weight files for the model and load the network using them.</span></span><br><span class="line">modelConfiguration = <span class="string">"yolov3.cfg"</span>;</span><br><span class="line">modelWeights = <span class="string">"yolov3.weights"</span>;</span><br><span class="line"> </span><br><span class="line">net = cv.dnn.readNetFromDarknet(modelConfiguration, modelWeights)</span><br><span class="line">net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)</span><br><span class="line">net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)</span><br></pre></td></tr></table></figure>
+
+<h4 id="C"><a href="#C" class="headerlink" title="C++:"></a>C++:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Load names of classes</span></span><br><span class="line"><span class="built_in">string</span> classesFile = <span class="string">"coco.names"</span>;</span><br><span class="line"><span class="function">ifstream <span class="title">ifs</span><span class="params">(classesFile.c_str())</span></span>;</span><br><span class="line"><span class="built_in">string</span> line;</span><br><span class="line"><span class="keyword">while</span> (getline(ifs, line)) classes.push_back(line);</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Give the configuration and weight files for the model</span></span><br><span class="line">String modelConfiguration = <span class="string">"yolov3.cfg"</span>;</span><br><span class="line">String modelWeights = <span class="string">"yolov3.weights"</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Load the network</span></span><br><span class="line">Net net = readNetFromDarknet(modelConfiguration, modelWeights);</span><br><span class="line">net.setPreferableBackend(DNN_BACKEND_OPENCV);</span><br><span class="line">net.setPreferableTarget(DNN_TARGET_CPU);</span><br></pre></td></tr></table></figure>
+
+<h3 id="第4步：读取输入"><a href="#第4步：读取输入" class="headerlink" title="第4步：读取输入"></a>第4步：读取输入</h3><p>这一步我们读取图像，视频流或者网络摄像头。另外，我们也使用Videowriter（OpenCV里的一个类）以视频方式保存带有输出边界框的每一帧图片。</p>
+<h4 id="Python-1"><a href="#Python-1" class="headerlink" title="Python:"></a>Python:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">outputFile = <span class="string">"yolo_out_py.avi"</span></span><br><span class="line"><span class="keyword">if</span> (args.image):</span><br><span class="line">    <span class="comment"># Open the image file</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.isfile(args.image):</span><br><span class="line">        print(<span class="string">"Input image file "</span>, args.image, <span class="string">" doesn't exist"</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    cap = cv.VideoCapture(args.image)</span><br><span class="line">    outputFile = args.image[:<span class="number">-4</span>]+<span class="string">'_yolo_out_py.jpg'</span></span><br><span class="line"><span class="keyword">elif</span> (args.video):</span><br><span class="line">    <span class="comment"># Open the video file</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.isfile(args.video):</span><br><span class="line">        print(<span class="string">"Input video file "</span>, args.video, <span class="string">" doesn't exist"</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    cap = cv.VideoCapture(args.video)</span><br><span class="line">    outputFile = args.video[:<span class="number">-4</span>]+<span class="string">'_yolo_out_py.avi'</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># Webcam input</span></span><br><span class="line">    cap = cv.VideoCapture(<span class="number">0</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Get the video writer initialized to save the output video</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">not</span> args.image):</span><br><span class="line">    vid_writer = cv.VideoWriter</span><br><span class="line">    (</span><br><span class="line">        outputFile, 			          					         cv.VideoWriter_fourcc(<span class="string">'M'</span>,<span class="string">'J'</span>,<span class="string">'P'</span>,<span class="string">'G'</span>), </span><br><span class="line">        <span class="number">30</span>, (round(cap.get(cv.CAP_PROP_FRAME_WIDTH)),</span><br><span class="line">             round(cap.get(cv.CAP_PROP_FRAME_HEIGHT)),)</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h4 id="C-1"><a href="#C-1" class="headerlink" title="C++:"></a>C++:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">outputFile = <span class="string">"yolo_out_cpp.avi"</span>;</span><br><span class="line"><span class="keyword">if</span> (parser.has(<span class="string">"image"</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Open the image file</span></span><br><span class="line">    str = parser.get&lt;String&gt;(<span class="string">"image"</span>);</span><br><span class="line">    <span class="function">ifstream <span class="title">ifile</span><span class="params">(str)</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (!ifile) <span class="keyword">throw</span>(<span class="string">"error"</span>);</span><br><span class="line">    cap.open(str);</span><br><span class="line">    str.replace(str.end()<span class="number">-4</span>, str.end(), <span class="string">"_yolo_out.jpg"</span>);</span><br><span class="line">    outputFile = str;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (parser.has(<span class="string">"video"</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Open the video file</span></span><br><span class="line">    str = parser.get&lt;String&gt;(<span class="string">"video"</span>);</span><br><span class="line">    <span class="function">ifstream <span class="title">ifile</span><span class="params">(str)</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (!ifile) <span class="keyword">throw</span>(<span class="string">"error"</span>);</span><br><span class="line">    cap.open(str);</span><br><span class="line">    str.replace(str.end()<span class="number">-4</span>, str.end(), <span class="string">"_yolo_out.avi"</span>);</span><br><span class="line">    outputFile = str;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Open the webcaom</span></span><br><span class="line"><span class="keyword">else</span> cap.open(parser.get&lt;<span class="keyword">int</span>&gt;(<span class="string">"device"</span>));</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Get the video writer initialized to save the output video</span></span><br><span class="line"><span class="keyword">if</span> (!parser.has(<span class="string">"image"</span>)) </span><br><span class="line">&#123;</span><br><span class="line">   video.open(</span><br><span class="line">       outputFile, </span><br><span class="line">       VideoWriter::fourcc(<span class="string">'M'</span>,<span class="string">'J'</span>,<span class="string">'P'</span>,<span class="string">'G'</span>), </span><br><span class="line">       <span class="number">28</span>, </span><br><span class="line">       Size(</span><br><span class="line">           cap.get(CAP_PROP_FRAME_WIDTH),       					</span><br><span class="line">           cap.get(CAP_PROP_FRAME_HEIGHT)</span><br><span class="line">       		)</span><br><span class="line">			  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第5步：处理每一帧"><a href="#第5步：处理每一帧" class="headerlink" title="第5步：处理每一帧"></a>第5步：处理每一帧</h3><p>输入到神经网络的图像需要以一种叫bolb的格式保存。</p>
+<p>读取了输入图片或者视频流的一帧图像后，这帧图像需要经过bolbFromImage()函数处理为神经网络的输入类型bolb。在这个过程中，图像像素以一个1/255的比例因子，被缩放到0到1之间。同时，图像在不裁剪的情况下，大小调整到416x416。注意我们没有降低图像平均值，因此传递[0,0,0]到函数的平均值输入，保持swapRB参数到默认值1。</p>
+<p>输出的bolb传递到网络，经过网络正向处理，网络输出了所预测到的一个边界框清单。这些边界框通过后处理，滤除了低置信值的。我们随后再详细的说明后处理的步骤。我们在每一帧的左上方打印出了推断时间。伴随着最后的边界框的完成，图像保存到硬盘中，之后可以作为图像输入或者通过Videowriter作为视频流输入。</p>
+<h4 id="Python："><a href="#Python：" class="headerlink" title="Python："></a>Python：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> cv.waitKey(<span class="number">1</span>) &lt; <span class="number">0</span>:</span><br><span class="line">     </span><br><span class="line">    <span class="comment"># get frame from the video</span></span><br><span class="line">    hasFrame, frame = cap.read()</span><br><span class="line">     </span><br><span class="line">    <span class="comment"># Stop the program if reached end of video</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasFrame:</span><br><span class="line">        print(<span class="string">"Done processing !!!"</span>)</span><br><span class="line">        print(<span class="string">"Output file is stored as "</span>, outputFile)</span><br><span class="line">        cv.waitKey(<span class="number">3000</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Create a 4D blob from a frame.</span></span><br><span class="line">    blob = cv.dnn.blobFromImage(</span><br><span class="line">        	frame, </span><br><span class="line">        	<span class="number">1</span>/<span class="number">255</span>,</span><br><span class="line">        	(inpWidth, inpHeight),</span><br><span class="line">        	[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>], </span><br><span class="line">        	<span class="number">1</span>, </span><br><span class="line">        	crop=<span class="literal">False</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Sets the input to the network</span></span><br><span class="line">    net.setInput(blob)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Runs the forward pass to get output of the output layers</span></span><br><span class="line">    outs = net.forward(getOutputsNames(net))</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Remove the bounding boxes with low confidence</span></span><br><span class="line">    postprocess(frame, outs)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Put efficiency information. The function getPerfProfile returns the</span></span><br><span class="line">    <span class="comment"># overall time for inference(t) and the timings for each of the layers(in layersTimes)</span></span><br><span class="line">    t, _ = net.getPerfProfile()</span><br><span class="line">    label = <span class="string">'Inference time: %.2f ms'</span> % (</span><br><span class="line">        t * <span class="number">1000.0</span> / cv.getTickFrequency())</span><br><span class="line">    </span><br><span class="line">    cv.putText(frame, label, (<span class="number">0</span>, <span class="number">15</span>), </span><br><span class="line">               cv.FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Write the frame with the detection boxes</span></span><br><span class="line">    <span class="keyword">if</span> (args.image):</span><br><span class="line">        cv.imwrite(outputFile, frame.astype(np.uint8));</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        vid_writer.write(frame.astype(np.uint8))</span><br></pre></td></tr></table></figure>
+
+<h4 id="c"><a href="#c" class="headerlink" title="c++:"></a>c++:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Process frames.</span></span><br><span class="line"><span class="keyword">while</span> (waitKey(<span class="number">1</span>) &lt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// get frame from the video</span></span><br><span class="line">    cap &gt;&gt; frame;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Stop the program if reached end of video</span></span><br><span class="line">    <span class="keyword">if</span> (frame.empty()) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Done processing !!!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output file is stored as "</span> &lt;&lt; outputFile &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        waitKey(<span class="number">3000</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Create a 4D blob from a frame.</span></span><br><span class="line">    blobFromImage(frame, blob, <span class="number">1</span>/<span class="number">255.0</span>, </span><br><span class="line">                  cvSize(inpWidth, inpHeight), </span><br><span class="line">                  Scalar(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>), <span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line">     </span><br><span class="line">    <span class="comment">//Sets the input to the network</span></span><br><span class="line">    net.setInput(blob);</span><br><span class="line">     </span><br><span class="line">    <span class="comment">// Runs the forward pass to get output of the output layers</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Mat&gt; outs;</span><br><span class="line">    net.forward(outs, getOutputsNames(net));</span><br><span class="line">     </span><br><span class="line">    <span class="comment">// Remove the bounding boxes with low confidence</span></span><br><span class="line">    postprocess(frame, outs);</span><br><span class="line">     </span><br><span class="line">    <span class="comment">// Put efficiency information. The function getPerfProfile returns the</span></span><br><span class="line">    <span class="comment">// overall time for inference(t) and the timings for each of the layers(in layersTimes)</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; layersTimes;</span><br><span class="line">    <span class="keyword">double</span> freq = getTickFrequency() / <span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">double</span> t = net.getPerfProfile(layersTimes) / freq;</span><br><span class="line">    <span class="built_in">string</span> label = format(<span class="string">"Inference time for a frame : %.2f ms"</span>, t);</span><br><span class="line">    putText(frame, label, Point(<span class="number">0</span>, <span class="number">15</span>), FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, Scalar(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>));</span><br><span class="line">     </span><br><span class="line">    <span class="comment">// Write the frame with the detection boxes</span></span><br><span class="line">    Mat detectedFrame;</span><br><span class="line">    frame.convertTo(detectedFrame, CV_8U);</span><br><span class="line">    <span class="keyword">if</span> (parser.has(<span class="string">"image"</span>)) imwrite(outputFile, detectedFrame);</span><br><span class="line">    <span class="keyword">else</span> video.write(detectedFrame);</span><br><span class="line">     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，让我们详细分析一下上面调用的函数。</p>
+<h3 id="第5a步：得到输出层的名字"><a href="#第5a步：得到输出层的名字" class="headerlink" title="第5a步：得到输出层的名字"></a>第5a步：得到输出层的名字</h3><p>OpenCV的网络类中的前向功能需要结束层，直到它在网络中运行。因为我们需要运行整个网络，所以我们需要识别网络中的最后一层。我们通过使用getUnconnectedOutLayers()获得未连接的输出层的名字，该层基本就是网络的最后层。然后我们运行前向网络，得到输出，如前面的代码片段<code>（net.forward(getOutputsNames(net))）</code>。</p>
+<h4 id="python"><a href="#python" class="headerlink" title="python:"></a>python:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Get the names of the output layers</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getOutputsNames</span><span class="params">(net)</span>:</span></span><br><span class="line">    <span class="comment"># Get the names of all the layers in the network</span></span><br><span class="line">    layersNames = net.getLayerNames()</span><br><span class="line">    <span class="comment"># Get the names of the output layers, i.e. the layers with unconnected outputs</span></span><br><span class="line">    <span class="keyword">return</span> [layersNames[i[<span class="number">0</span>] - <span class="number">1</span>] </span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> net.getUnconnectedOutLayers()]</span><br></pre></td></tr></table></figure>
+
+<h4 id="C-2"><a href="#C-2" class="headerlink" title="C++:"></a>C++:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get the names of the output layers</span></span><br><span class="line"><span class="built_in">vector</span>&lt;String&gt; getOutputsNames(<span class="keyword">const</span> Net&amp; net)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">vector</span>&lt;String&gt; names;</span><br><span class="line">    <span class="keyword">if</span> (names.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//Get the indices of the output layers, i.e. the layers with unconnected outputs</span></span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; outLayers = net.getUnconnectedOutLayers();</span><br><span class="line">         </span><br><span class="line">        <span class="comment">//get the names of all the layers in the network</span></span><br><span class="line">        <span class="built_in">vector</span>&lt;String&gt; layersNames = net.getLayerNames();</span><br><span class="line">         </span><br><span class="line">        <span class="comment">// Get the names of the output layers in names</span></span><br><span class="line">        names.resize(outLayers.size());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; outLayers.size(); ++i)</span><br><span class="line">        names[i] = layersNames[outLayers[i] - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> names;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第5b步：后处理网络输出"><a href="#第5b步：后处理网络输出" class="headerlink" title="第5b步：后处理网络输出"></a>第5b步：后处理网络输出</h3><p>网络输出的每个边界框都分别由一个包含着类别名字和5个元素的向量表示。</p>
+<p>头四个元素代表center_x, center_y, width和height。第五个元素表示包含着目标的边界框的置信度。</p>
+<p>其余的元素是和每个类别（如目标种类）有关的置信度。边界框分配给最高分数对应的那一种类。</p>
+<p>一个边界框的最高分数也叫做它的置信度（confidence）。如果边界框的置信度低于规定的阀值，算法上不再处理这个边界框。</p>
+<p>置信度大于或等于置信度阀值的边界框，将进行非最大抑制。这会减少重叠的边界框数目。</p>
+<h4 id="Python-2"><a href="#Python-2" class="headerlink" title="Python:"></a>Python:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Remove the bounding boxes with low confidence using non-maxima suppression</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">postprocess</span><span class="params">(frame, outs)</span>:</span></span><br><span class="line">    frameHeight = frame.shape[<span class="number">0</span>]</span><br><span class="line">    frameWidth = frame.shape[<span class="number">1</span>]</span><br><span class="line"> </span><br><span class="line">    classIds = []</span><br><span class="line">    confidences = []</span><br><span class="line">    boxes = []</span><br><span class="line">    <span class="comment"># Scan through all the bounding boxes output from the network and keep only the</span></span><br><span class="line">    <span class="comment"># ones with high confidence scores. Assign the box's class label as the class with the highest score.</span></span><br><span class="line">    classIds = []</span><br><span class="line">    confidences = []</span><br><span class="line">    boxes = []</span><br><span class="line">    <span class="keyword">for</span> out <span class="keyword">in</span> outs:</span><br><span class="line">        <span class="keyword">for</span> detection <span class="keyword">in</span> out:</span><br><span class="line">            scores = detection[<span class="number">5</span>:]</span><br><span class="line">            classId = np.argmax(scores)</span><br><span class="line">            confidence = scores[classId]</span><br><span class="line">            <span class="keyword">if</span> confidence &gt; confThreshold:</span><br><span class="line">                center_x = int(detection[<span class="number">0</span>] * frameWidth)</span><br><span class="line">                center_y = int(detection[<span class="number">1</span>] * frameHeight)</span><br><span class="line">                width = int(detection[<span class="number">2</span>] * frameWidth)</span><br><span class="line">                height = int(detection[<span class="number">3</span>] * frameHeight)</span><br><span class="line">                left = int(center_x - width / <span class="number">2</span>)</span><br><span class="line">                top = int(center_y - height / <span class="number">2</span>)</span><br><span class="line">                classIds.append(classId)</span><br><span class="line">                confidences.append(float(confidence))</span><br><span class="line">                boxes.append([left, top, width, height])</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Perform non maximum suppression to eliminate redundant overlapping boxes with</span></span><br><span class="line">    <span class="comment"># lower confidences.</span></span><br><span class="line">    indices = cv.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> indices:</span><br><span class="line">        i = i[<span class="number">0</span>]</span><br><span class="line">        box = boxes[i]</span><br><span class="line">        left = box[<span class="number">0</span>]</span><br><span class="line">        top = box[<span class="number">1</span>]</span><br><span class="line">        width = box[<span class="number">2</span>]</span><br><span class="line">        height = box[<span class="number">3</span>]</span><br><span class="line">        drawPred(classIds[i], confidences[i], left, top, left + width, top + height)</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-1"><a href="#c-1" class="headerlink" title="c++:"></a>c++:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Remove the bounding boxes with low confidence using non-maxima suppression</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">postprocess</span><span class="params">(Mat&amp; frame, <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Mat&gt;&amp; outs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; classIds;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; confidences;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Rect&gt; boxes;</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; outs.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Scan through all the bounding boxes output from the network and keep only the</span></span><br><span class="line">        <span class="comment">// ones with high confidence scores. Assign the box's class label as the class</span></span><br><span class="line">        <span class="comment">// with the highest score for the box.</span></span><br><span class="line">        <span class="keyword">float</span>* data = (<span class="keyword">float</span>*)outs[i].data;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; outs[i].rows; ++j, data += outs[i].cols)</span><br><span class="line">        &#123;</span><br><span class="line">            Mat scores = outs[i].row(j).colRange(<span class="number">5</span>, outs[i].cols);</span><br><span class="line">            Point classIdPoint;</span><br><span class="line">            <span class="keyword">double</span> confidence;</span><br><span class="line">            <span class="comment">// Get the value and location of the maximum score</span></span><br><span class="line">            minMaxLoc(scores, <span class="number">0</span>, &amp;confidence, <span class="number">0</span>, &amp;classIdPoint);</span><br><span class="line">            <span class="keyword">if</span> (confidence &gt; confThreshold)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> centerX = (<span class="keyword">int</span>)(data[<span class="number">0</span>] * frame.cols);</span><br><span class="line">                <span class="keyword">int</span> centerY = (<span class="keyword">int</span>)(data[<span class="number">1</span>] * frame.rows);</span><br><span class="line">                <span class="keyword">int</span> width = (<span class="keyword">int</span>)(data[<span class="number">2</span>] * frame.cols);</span><br><span class="line">                <span class="keyword">int</span> height = (<span class="keyword">int</span>)(data[<span class="number">3</span>] * frame.rows);</span><br><span class="line">                <span class="keyword">int</span> left = centerX - width / <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">int</span> top = centerY - height / <span class="number">2</span>;</span><br><span class="line">                 </span><br><span class="line">                classIds.push_back(classIdPoint.x);</span><br><span class="line">                confidences.push_back((<span class="keyword">float</span>)confidence);</span><br><span class="line">                boxes.push_back(Rect(left, top, width, height));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="comment">// Perform non maximum suppression to eliminate redundant overlapping boxes with</span></span><br><span class="line">    <span class="comment">// lower confidences</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; indices;</span><br><span class="line">    NMSBoxes(boxes, confidences, confThreshold, nmsThreshold, indices);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; indices.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> idx = indices[i];</span><br><span class="line">        Rect box = boxes[idx];</span><br><span class="line">        drawPred(classIds[idx], confidences[idx], box.x, box.y,</span><br><span class="line">                 box.x + box.width, box.y + box.height, frame);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>非最大抑制由参数nmsThreshold控制。如果nmsThreshold设置太少，比如0.1，我们可能检测不到相同或不同种类的重叠目标。如果设置得太高，比如1，可能出现一个目标有多个边界框包围。</p>
+<h3 id="第5c步：画出计算得到的边界框"><a href="#第5c步：画出计算得到的边界框" class="headerlink" title="第5c步：画出计算得到的边界框"></a>第5c步：画出计算得到的边界框</h3><p> 最后，经过非最大抑制后，得到了边界框。我们把边界框在输入帧上画出，并标出种类名和置信值。</p>
+<h4 id="Python-3"><a href="#Python-3" class="headerlink" title="Python:"></a>Python:</h4><p> 最后，经过非最大抑制后，得到了边界框。我们把边界框在输入帧上画出，并标出种类名和置信值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Draw the predicted bounding box</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">drawPred</span><span class="params">(classId, conf, left, top, right, bottom)</span>:</span></span><br><span class="line">    <span class="comment"># Draw a bounding box.</span></span><br><span class="line">    cv.rectangle(frame, (left, top), (right, bottom), (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line">     </span><br><span class="line">    label = <span class="string">'%.2f'</span> % conf</span><br><span class="line">         </span><br><span class="line">    <span class="comment"># Get the label for the class name and its confidence</span></span><br><span class="line">    <span class="keyword">if</span> classes:</span><br><span class="line">        <span class="keyword">assert</span>(classId &lt; len(classes))</span><br><span class="line">        label = <span class="string">'%s:%s'</span> % (classes[classId], label)</span><br><span class="line"> </span><br><span class="line">    <span class="comment">#Display the label at the top of the bounding box</span></span><br><span class="line">    labelSize, baseLine = cv.getTextSize(</span><br><span class="line">        label, cv.FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, <span class="number">1</span>)</span><br><span class="line">    top = max(top, labelSize[<span class="number">1</span>])</span><br><span class="line">    cv.putText(frame, label, (left, top), cv.FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, (<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-2"><a href="#c-2" class="headerlink" title="c++:"></a>c++:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Draw the predicted bounding box</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">drawPred</span><span class="params">(<span class="keyword">int</span> classId, <span class="keyword">float</span> conf, <span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> right, <span class="keyword">int</span> bottom, Mat&amp; frame)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//Draw a rectangle displaying the bounding box</span></span><br><span class="line">    rectangle(frame, Point(left, top), Point(right, bottom), Scalar(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>));</span><br><span class="line">     </span><br><span class="line">    <span class="comment">//Get the label for the class name and its confidence</span></span><br><span class="line">    <span class="built_in">string</span> label = format(<span class="string">"%.2f"</span>, conf);</span><br><span class="line">    <span class="keyword">if</span> (!classes.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        CV_Assert(classId &lt; (<span class="keyword">int</span>)classes.size());</span><br><span class="line">        label = classes[classId] + <span class="string">":"</span> + label;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="comment">//Display the label at the top of the bounding box</span></span><br><span class="line">    <span class="keyword">int</span> baseLine;</span><br><span class="line">    Size labelSize = getTextSize(label, FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, <span class="number">1</span>, &amp;baseLine);</span><br><span class="line">    top = max(top, labelSize.height);</span><br><span class="line">    putText(frame, label, Point(left, top), FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, Scalar(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>));</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="附上Python完整代码，方便搬运"><a href="#附上Python完整代码，方便搬运" class="headerlink" title="附上Python完整代码，方便搬运"></a>附上Python完整代码，方便搬运</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">######################## 使用示例 ##############################</span></span><br><span class="line"><span class="comment">##		python3 object_detection_yolo.py --video=run.mp4	##</span></span><br><span class="line"><span class="comment">##		python3 object_detection_yolo.py --image=bird.jpg	##</span></span><br><span class="line"><span class="comment">##############################################################</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os.path</span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize the parameters</span></span><br><span class="line">confThreshold = <span class="number">0.5</span>  <span class="comment">#Confidence threshold</span></span><br><span class="line">nmsThreshold = <span class="number">0.4</span>   <span class="comment">#Non-maximum suppression threshold</span></span><br><span class="line">inpWidth = <span class="number">416</span>       <span class="comment">#Width of network's input image</span></span><br><span class="line">inpHeight = <span class="number">416</span>      <span class="comment">#Height of network's input image</span></span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser(</span><br><span class="line">    description=<span class="string">'Object Detection using YOLO in OPENCV'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'--image'</span>, help=<span class="string">'Path to image file.'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'--video'</span>, help=<span class="string">'Path to video file.'</span>)</span><br><span class="line">args = parser.parse_args()</span><br><span class="line">        </span><br><span class="line"><span class="comment"># Load names of classes</span></span><br><span class="line">classesFile = <span class="string">"voc_MLH.names"</span></span><br><span class="line">classes = <span class="literal">None</span></span><br><span class="line"><span class="keyword">with</span> open(classesFile, <span class="string">'rt'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    classes = f.read().rstrip(<span class="string">'\n'</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Give the configuration and weight files for the model and load the network using them.</span></span><br><span class="line">modelConfiguration = <span class="string">"yolov3.cfg"</span></span><br><span class="line">modelWeights = <span class="string">"yolov3.weights"</span></span><br><span class="line"></span><br><span class="line">net = cv.dnn.readNetFromDarknet(modelConfiguration, modelWeights)</span><br><span class="line"><span class="comment">#net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)</span></span><br><span class="line"><span class="comment">#net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Get the names of the output layers</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getOutputsNames</span><span class="params">(net)</span>:</span></span><br><span class="line">    <span class="comment"># Get the names of all the layers in the network</span></span><br><span class="line">    layersNames = net.getLayerNames()</span><br><span class="line">    <span class="comment"># Get the names of the output layers, i.e. the layers with unconnected outputs</span></span><br><span class="line">    <span class="keyword">return</span> [layersNames[i[<span class="number">0</span>] - <span class="number">1</span>] </span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> net.getUnconnectedOutLayers()]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Draw the predicted bounding box</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">drawPred</span><span class="params">(classId, conf, left, top, right, bottom)</span>:</span></span><br><span class="line">    <span class="comment"># Draw a bounding box.</span></span><br><span class="line">    cv.rectangle(</span><br><span class="line">        frame, (left, top), (right, bottom), (<span class="number">255</span>, <span class="number">178</span>, <span class="number">50</span>), <span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line">    label = <span class="string">'%.2f'</span> % conf</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># Get the label for the class name and its confidence</span></span><br><span class="line">    <span class="keyword">if</span> classes:</span><br><span class="line">        <span class="keyword">assert</span>(classId &lt; len(classes))</span><br><span class="line">        label = <span class="string">'%s:%s'</span> % (classes[classId], label)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Display the label at the top of the bounding box</span></span><br><span class="line">    labelSize, baseLine = cv.getTextSize(</span><br><span class="line">        label, cv.FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, <span class="number">1</span>)</span><br><span class="line">    top = max(top, labelSize[<span class="number">1</span>])</span><br><span class="line">    cv.rectangle(</span><br><span class="line">        frame, (left, top - round(<span class="number">3.5</span>*labelSize[<span class="number">1</span>])), </span><br><span class="line">        (left + round(<span class="number">3.5</span>*labelSize[<span class="number">0</span>]), top + baseLine), </span><br><span class="line">        (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>), cv.FILLED)</span><br><span class="line">    </span><br><span class="line">    cv.putText(frame, label, (left, top), </span><br><span class="line">               cv.FONT_HERSHEY_SIMPLEX, <span class="number">0.75</span>, (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>), <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Remove the bounding boxes with low confidence using non-maxima suppression</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">postprocess</span><span class="params">(frame, outs)</span>:</span></span><br><span class="line">    frameHeight = frame.shape[<span class="number">0</span>]</span><br><span class="line">    frameWidth = frame.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Scan through all the bounding boxes output from the network and keep only the</span></span><br><span class="line">    <span class="comment"># ones with high confidence scores. Assign the box's class label as the class with the highest score.</span></span><br><span class="line">    classIds = []</span><br><span class="line">    confidences = []</span><br><span class="line">    boxes = []</span><br><span class="line">    <span class="keyword">for</span> out <span class="keyword">in</span> outs:</span><br><span class="line">        <span class="keyword">for</span> detection <span class="keyword">in</span> out:</span><br><span class="line">            scores = detection[<span class="number">5</span>:]</span><br><span class="line">            classId = np.argmax(scores)</span><br><span class="line">            confidence = scores[classId]</span><br><span class="line">            <span class="keyword">if</span> confidence &gt; confThreshold:</span><br><span class="line">                center_x = int(detection[<span class="number">0</span>] * frameWidth)</span><br><span class="line">                center_y = int(detection[<span class="number">1</span>] * frameHeight)</span><br><span class="line">                width = int(detection[<span class="number">2</span>] * frameWidth)</span><br><span class="line">                height = int(detection[<span class="number">3</span>] * frameHeight)</span><br><span class="line">                left = int(center_x - width / <span class="number">2</span>)</span><br><span class="line">                top = int(center_y - height / <span class="number">2</span>)</span><br><span class="line">                classIds.append(classId)</span><br><span class="line">                confidences.append(float(confidence))</span><br><span class="line">                boxes.append([left, top, width, height])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Perform non maximum suppression to eliminate redundant overlapping boxes with</span></span><br><span class="line">    <span class="comment"># lower confidences.</span></span><br><span class="line">    indices = cv.dnn.NMSBoxes(</span><br><span class="line">        boxes, confidences, confThreshold, nmsThreshold)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> indices:</span><br><span class="line">        i = i[<span class="number">0</span>]</span><br><span class="line">        box = boxes[i]</span><br><span class="line">        left = box[<span class="number">0</span>]</span><br><span class="line">        top = box[<span class="number">1</span>]</span><br><span class="line">        width = box[<span class="number">2</span>]</span><br><span class="line">        height = box[<span class="number">3</span>]</span><br><span class="line">        drawPred(</span><br><span class="line">            classIds[i], confidences[i], </span><br><span class="line">            left, top, left + width, top + height)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Process inputs</span></span><br><span class="line">winName = <span class="string">'Deep learning object detection in OpenCV'</span></span><br><span class="line">cv.namedWindow(winName, cv.WINDOW_NORMAL)</span><br><span class="line"></span><br><span class="line">outputFile = <span class="string">"yolo_out_py.avi"</span></span><br><span class="line"><span class="keyword">if</span> (args.image):</span><br><span class="line">    <span class="comment"># Open the image file</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.isfile(args.image):</span><br><span class="line">        print(<span class="string">"Input image file "</span>, args.image, <span class="string">" doesn't exist"</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    cap = cv.VideoCapture(args.image)</span><br><span class="line">    outputFile = args.image[:<span class="number">-4</span>]+<span class="string">'_out.jpg'</span></span><br><span class="line"><span class="keyword">elif</span> (args.video):</span><br><span class="line">    <span class="comment"># Open the video file</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.isfile(args.video):</span><br><span class="line">        print(<span class="string">"Input video file "</span>, args.video, <span class="string">" doesn't exist"</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    cap = cv.VideoCapture(args.video)</span><br><span class="line">    outputFile = args.video[:<span class="number">-4</span>]+<span class="string">'_yolo_out_py.avi'</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># Webcam input</span></span><br><span class="line">    cap = cv.VideoCapture(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get the video writer initialized to save the output video</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">not</span> args.image):</span><br><span class="line">    vid_writer = cv.VideoWriter(outputFile, cv.VideoWriter_fourcc(<span class="string">'M'</span>,<span class="string">'J'</span>,<span class="string">'P'</span>,<span class="string">'G'</span>), <span class="number">30</span>, (round(cap.get(cv.CAP_PROP_FRAME_WIDTH)),round(cap.get(cv.CAP_PROP_FRAME_HEIGHT))))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> cv.waitKey(<span class="number">1</span>) &lt; <span class="number">0</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># get frame from the video</span></span><br><span class="line">    hasFrame, frame = cap.read()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Stop the program if reached end of video</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasFrame:</span><br><span class="line">        print(<span class="string">"Done processing !!!"</span>)</span><br><span class="line">        print(<span class="string">"Output file is stored as "</span>, outputFile)</span><br><span class="line">        cv.waitKey(<span class="number">3000</span>)</span><br><span class="line">        <span class="comment"># Release device</span></span><br><span class="line">        cap.release()</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Create a 4D blob from a frame.</span></span><br><span class="line">    blob = cv.dnn.blobFromImage(</span><br><span class="line">        frame, <span class="number">1</span>/<span class="number">255</span>, </span><br><span class="line">        (inpWidth, inpHeight), [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>], <span class="number">1</span>, crop=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Sets the input to the network</span></span><br><span class="line">    net.setInput(blob)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Runs the forward pass to get output of the output layers</span></span><br><span class="line">    outs = net.forward(getOutputsNames(net))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Remove the bounding boxes with low confidence</span></span><br><span class="line">    postprocess(frame, outs)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Put efficiency information. The function getPerfProfile returns the overall time for inference(t) and the timings for each of the layers(in layersTimes)</span></span><br><span class="line">    t, _ = net.getPerfProfile()</span><br><span class="line">    label = <span class="string">'Inference time: %.2f ms'</span> % (</span><br><span class="line">        t * <span class="number">1000.0</span> / cv.getTickFrequency())</span><br><span class="line">    </span><br><span class="line">    cv.putText(frame, label, (<span class="number">0</span>, <span class="number">15</span>), cv.FONT_HERSHEY_SIMPLEX, </span><br><span class="line">               <span class="number">0.5</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Write the frame with the detection boxes</span></span><br><span class="line">    <span class="keyword">if</span> (args.image):</span><br><span class="line">        cv.imwrite(outputFile, frame.astype(np.uint8))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        vid_writer.write(frame.astype(np.uint8))</span><br><span class="line"></span><br><span class="line">    cv.imshow(winName, frame)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="扩展内容"><a href="#扩展内容" class="headerlink" title="扩展内容"></a>扩展内容</h2><p>OpenCV自3.1版本其就在contrib中加入了DNN模块</p>
+<p>该DNN模块除了libprotobuf，不依赖任何第三方库；并且libprotobuf已经包含在了OpenCV的ThirdParty，安装OpenCV时会一并安装</p>
+<p>目前，该DNN模块支持加载训练好的模型</p>
+<h3 id="支持的深度学习库："><a href="#支持的深度学习库：" class="headerlink" title="支持的深度学习库："></a>支持的深度学习库：</h3><ol>
+<li>Caffe 1</li>
+<li>TensorFlow</li>
+<li>Torch/PyTorch</li>
+</ol>
+<h3 id="主要的层及函数："><a href="#主要的层及函数：" class="headerlink" title="主要的层及函数："></a>主要的层及函数：</h3><ol>
+<li>AbsVal（caffe/layers/absval_layer.hpp这一层比较简单：主要就是求绝对值）</li>
+<li>AveragePooling（平均值池化）</li>
+<li>BatchNormalization（就像激活函数层、卷积层、全连接层、池化层一样，BN也属于网络的一层；在网络中间层数据做一个归一化处理）</li>
+<li>Concatenation（Caffe中通过Concatenation层，可以把多个的blobs链接成一个blob）</li>
+<li>Convolution (including dilated convolution)</li>
+<li>Crop</li>
+<li>Deconvolution, a.k.a. transposed convolution or full convolution</li>
+<li>DetectionOutput (SSD-specific layer)</li>
+<li>Dropout</li>
+<li>Eltwise (+, *, max)（caffe提供的按元素操作层。它支持3种基本操作：PROD按元素乘积；SUM按元素求和；MAX保存最大元素 ）</li>
+<li>Flatten（Caffe中Flattening层是把一个输入的大小为n * c * h * w变成一个简单的向量，其大小为 n * (c<em>h</em>w) * 1 * 1）</li>
+<li>FullyConnected</li>
+<li>LRN（Local Response Normalization，caffe中LRN是对一个局部的输入区域进行的归一化）</li>
+<li>LSTM</li>
+<li>MaxPooling（最大池化）</li>
+<li>MaxUnpooling</li>
+<li>MVN</li>
+<li>NormalizeBBox (SSD-specific layer)</li>
+<li>Padding</li>
+<li>Permute</li>
+<li>Power</li>
+<li>PReLU (including ChannelPReLU with channel-specific slopes)</li>
+<li>PriorBox (SSD-specific layer)</li>
+<li>ReLU</li>
+<li>RNN</li>
+<li>Scale</li>
+<li>Shift</li>
+<li>Sigmoid</li>
+<li>Slice（Caffe中Slice layer 的作用是将bottom按照需要分解成多个tops）</li>
+<li>Softmax（激活函数）</li>
+<li>Split（Caffe中Splitting层可以把一个输入blob分离成多个输出blobs）</li>
+<li>TanH（激活函数）</li>
+</ol>
+<h3 id="一些已经经过测试的网络："><a href="#一些已经经过测试的网络：" class="headerlink" title="一些已经经过测试的网络："></a>一些已经经过测试的网络：</h3><ol>
+<li>AlexNet</li>
+<li>GoogLeNet v1 (also referred to as Inception-5h)</li>
+<li>ResNet-34/50/…</li>
+<li>SqueezeNet v1.1</li>
+<li>VGG-based FCN (semantical segmentation network)</li>
+<li>ENet (lightweight semantical segmentation network)</li>
+<li>VGG-based SSD (object detection network)</li>
+<li>MobileNet-based SSD (light-weight object detection network</li>
+</ol>
+<h3 id="官方示例"><a href="#官方示例" class="headerlink" title="官方示例"></a><a href="https://github.com/opencv/opencv/tree/master/samples/dnn" target="_blank" rel="noopener">官方示例</a></h3>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/基于OpenCVh和YOLO-V3的目标检测实现.html" title="page">http://leesin.cc/reading/基于OpenCVh和YOLO-V3的目标检测实现.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/tensorflow/1.tensorflow介绍.html" rel="next" title="1.tensorflow介绍">
+                  <i class="fa fa-chevron-left"></i> 1.tensorflow介绍
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基于OpenCV和YOLOv3深度学习的目标检测"><span class="nav-number">1.</span> <span class="nav-text">基于OpenCV和YOLOv3深度学习的目标检测</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLO是什么原理？"><span class="nav-number">1.1.</span> <span class="nav-text">YOLO是什么原理？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择OpenCV的YOLO"><span class="nav-number">1.2.</span> <span class="nav-text">为什么选择OpenCV的YOLO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Darknet和OpenCV上跑YOLOv3的速度测试"><span class="nav-number">1.3.</span> <span class="nav-text">在Darknet和OpenCV上跑YOLOv3的速度测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#采用YOLOv3的目标检测，C-Python两种语言"><span class="nav-number">1.4.</span> <span class="nav-text">采用YOLOv3的目标检测，C++/Python两种语言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第1步：下载模型"><span class="nav-number">1.4.1.</span> <span class="nav-text">第1步：下载模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第2步：初始化参数"><span class="nav-number">1.4.2.</span> <span class="nav-text">第2步：初始化参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python代码："><span class="nav-number">1.4.2.1.</span> <span class="nav-text">Python代码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-代码："><span class="nav-number">1.4.2.2.</span> <span class="nav-text">C++代码：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第3步：读取模型和类别"><span class="nav-number">1.4.3.</span> <span class="nav-text">第3步：读取模型和类别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">Python:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">C++:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第4步：读取输入"><span class="nav-number">1.4.4.</span> <span class="nav-text">第4步：读取输入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-1"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">Python:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-1"><span class="nav-number">1.4.4.2.</span> <span class="nav-text">C++:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第5步：处理每一帧"><span class="nav-number">1.4.5.</span> <span class="nav-text">第5步：处理每一帧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python："><span class="nav-number">1.4.5.1.</span> <span class="nav-text">Python：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">c++:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第5a步：得到输出层的名字"><span class="nav-number">1.4.6.</span> <span class="nav-text">第5a步：得到输出层的名字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">1.4.6.1.</span> <span class="nav-text">python:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-2"><span class="nav-number">1.4.6.2.</span> <span class="nav-text">C++:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第5b步：后处理网络输出"><span class="nav-number">1.4.7.</span> <span class="nav-text">第5b步：后处理网络输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-2"><span class="nav-number">1.4.7.1.</span> <span class="nav-text">Python:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-1"><span class="nav-number">1.4.7.2.</span> <span class="nav-text">c++:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第5c步：画出计算得到的边界框"><span class="nav-number">1.4.8.</span> <span class="nav-text">第5c步：画出计算得到的边界框</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-3"><span class="nav-number">1.4.8.1.</span> <span class="nav-text">Python:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-2"><span class="nav-number">1.4.8.2.</span> <span class="nav-text">c++:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附上Python完整代码，方便搬运"><span class="nav-number">1.5.</span> <span class="nav-text">附上Python完整代码，方便搬运</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展内容"><span class="nav-number">1.6.</span> <span class="nav-text">扩展内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#支持的深度学习库："><span class="nav-number">1.6.1.</span> <span class="nav-text">支持的深度学习库：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要的层及函数："><span class="nav-number">1.6.2.</span> <span class="nav-text">主要的层及函数：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些已经经过测试的网络："><span class="nav-number">1.6.3.</span> <span class="nav-text">一些已经经过测试的网络：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#官方示例"><span class="nav-number">1.6.4.</span> <span class="nav-text">官方示例</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
