@@ -265,6 +265,878 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html" class="post-title-link" itemprop="url">配置深度学习GPU环境</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-16 19:41:38 / 修改时间：20:12:54" itemprop="dateCreated datePublished" datetime="2019-09-16T19:41:38+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ubuntu16-04装机系列/" itemprop="url" rel="index"><span itemprop="name">Ubuntu16.04装机系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="配置深度学习GPU环境"><a href="#配置深度学习GPU环境" class="headerlink" title="配置深度学习GPU环境"></a>配置深度学习GPU环境</h1><p>若想配置GPU环境，首先，<a href="https://developer.nvidia.com/cuda-gpus" target="_blank" rel="noopener">点击这里</a>，选择 CUDA-Enabled GeForce Products ，查看你的GPU的计算能力，最好要大于3.0再配置GPU环境。<br>如果你的电脑和服务器支持GPU环境，那么你就可以使用GPU来训练和测试模型。一般来说使用Nvidia显卡用于深度学习，在N卡上我们需要安装Nvidia显卡驱动、cuda、（cuDNN）三个东西，其中cuDNN可选安装。<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">显卡驱动</a>这里就不过多说明。<a href="https://www.nvidia.cn/" target="_blank" rel="noopener">官网</a><br><a href="https://developer.nvidia.com/cuda-zone" target="_blank" rel="noopener">CUDA</a>(Compute Unified Device Architecture)是Nvidia推出的用于图像处理单元（GPU）通用计算的并行计算平台和编程模型，借助CUDA，开发人员可以通过利用GPU的强大功能大幅提高计算应用的速度。<br><a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">cuDNN</a>(The NVIDIA CUDA Deep Neural Network library)是用于深度神经网络的GPU计算加速库。它提供了高度优化的标准程序，例如前向卷积反向卷积(forward and backward convolution)、池化(pooling)、标准化(normalization)、激活层(activation layers)等等。cuDNN是Nvidia深度学习软件开发工具包（SDK）的一部分。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-5.编译安装OpenCV.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/Ubuntu/Ubuntu16.04装机系列-5.编译安装OpenCV.html" class="post-title-link" itemprop="url">编译安装OpenCV</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-16 19:16:59 / 修改时间：19:34:24" itemprop="dateCreated datePublished" datetime="2019-09-16T19:16:59+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ubuntu16-04装机系列/" itemprop="url" rel="index"><span itemprop="name">Ubuntu16.04装机系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="编译安装OpenCV"><a href="#编译安装OpenCV" class="headerlink" title="编译安装OpenCV"></a>编译安装OpenCV</h1><p>OpenCV是一个基于BSD许可（开源）发行的跨平台计算机视觉库，可以运行在Linux、Windows、Android和Mac OS操作系统上。它轻量级而且高效——由一系列 C 函数和少量 C++ 类构成，同时提供了Python、Ruby、MATLAB等语言的接口，实现了图像处理和计算机视觉方面的很多通用算法。<br>OpenCV用C++语言编写，它的主要接口也是C++语言，但是依然保留了大量的C语言接口。该库也有大量的Python、Java and MATLAB/OCTAVE（版本2.5）的接口。这些语言的API接口函数可以通过在线文档获得。如今也提供对于C#、Ch、Ruby,GO的支持。<br>所有新的开发和算法都是用C++接口。一个使用CUDA的GPU接口也于2010年9月开始实现。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/Ubuntu/Ubuntu16.04装机系列-5.编译安装OpenCV.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/English/七年级上册.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/English/七年级上册.html" class="post-title-link" itemprop="url">七年级上册</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-16 00:00:00 / 修改时间：19:06:50" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/从头开始学英语/" itemprop="url" rel="index"><span itemprop="name">从头开始学英语</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Module-1-My-teacher-and-my-friends"><a href="#Module-1-My-teacher-and-my-friends" class="headerlink" title="Module 1 My teacher and my friends"></a>Module 1 My teacher and my friends</h1><h2 id="word"><a href="#word" class="headerlink" title="word"></a>word</h2><table>
+<thead>
+<tr>
+<th>hello</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class</td>
+</tr>
+<tr>
+<td>my</td>
+</tr>
+<tr>
+<td>is</td>
+</tr>
+<tr>
+<td>Miss</td>
+</tr>
+<tr>
+<td>good</td>
+</tr>
+<tr>
+<td>morning</td>
+</tr>
+<tr>
+<td>good morning</td>
+</tr>
+<tr>
+<td>afternoon</td>
+</tr>
+<tr>
+<td>good afternoon</td>
+</tr>
+<tr>
+<td>goodbye</td>
+</tr>
+<tr>
+<td>I</td>
+</tr>
+<tr>
+<td>am</td>
+</tr>
+<tr>
+<td>Mr</td>
+</tr>
+<tr>
+<td>what</td>
+</tr>
+<tr>
+<td>your</td>
+</tr>
+<tr>
+<td>please</td>
+</tr>
+<tr>
+<td>sorry</td>
+</tr>
+<tr>
+<td>can</td>
+</tr>
+<tr>
+<td>you</td>
+</tr>
+<tr>
+<td>spell</td>
+</tr>
+<tr>
+<td>it</td>
+</tr>
+<tr>
+<td>yes</td>
+</tr>
+<tr>
+<td>thank</td>
+</tr>
+<tr>
+<td>how</td>
+</tr>
+<tr>
+<td>are</td>
+</tr>
+<tr>
+<td>fine</td>
+</tr>
+<tr>
+<td>thanks</td>
+</tr>
+<tr>
+<td>Mrs</td>
+</tr>
+<tr>
+<td>too</td>
+</tr>
+<tr>
+<td>this</td>
+</tr>
+<tr>
+<td>she</td>
+</tr>
+<tr>
+<td>teacher</td>
+</tr>
+<tr>
+<td>friend</td>
+</tr>
+<tr>
+<td>her</td>
+</tr>
+<tr>
+<td>his</td>
+</tr>
+<tr>
+<td>nice</td>
+</tr>
+<tr>
+<td>to</td>
+</tr>
+<tr>
+<td>meet</td>
+</tr>
+<tr>
+<td>time</td>
+</tr>
+<tr>
+<td>go</td>
+</tr>
+<tr>
+<td>now</td>
+</tr>
+<tr>
+<td>bye</td>
+</tr>
+<tr>
+<td>see</td>
+</tr>
+<tr>
+<td>tomorrow</td>
+</tr>
+</tbody></table>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/English/七年级上册.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-4.pip安装虚拟环境.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/Ubuntu/Ubuntu16.04装机系列-4.pip安装虚拟环境.html" class="post-title-link" itemprop="url">pip安装虚拟环境</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-14 21:47:30" itemprop="dateCreated datePublished" datetime="2019-09-14T21:47:30+08:00">2019-09-14</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-16 20:15:44" itemprop="dateModified" datetime="2019-09-16T20:15:44+08:00">2019-09-16</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ubuntu16-04装机系列/" itemprop="url" rel="index"><span itemprop="name">Ubuntu16.04装机系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="pip安装虚拟环境"><a href="#pip安装虚拟环境" class="headerlink" title="pip安装虚拟环境"></a>pip安装虚拟环境</h1><p>软件行业最蛋疼的莫过于版本问题，很遭心，各个依赖包的版本问题，解决起来相当麻烦，能理清楚版本问题已经算是大牛了。团队协作开发，版本更为重要，同样的代码不同环境不能通用是很常见的事情。所以大家统一安装版本，开辟一个独立空间进行项目管理，这就是虚拟环境。</p><h2 id="1-pip安装virtualenv"><a href="#1-pip安装virtualenv" class="headerlink" title="1.pip安装virtualenv"></a>1.pip安装virtualenv</h2>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/Ubuntu/Ubuntu16.04装机系列-4.pip安装虚拟环境.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-3.更改pip源.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/Ubuntu/Ubuntu16.04装机系列-3.更改pip源.html" class="post-title-link" itemprop="url">Ubuntu和Windows改pip源</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-14 21:47:29" itemprop="dateCreated datePublished" datetime="2019-09-14T21:47:29+08:00">2019-09-14</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-16 20:15:44" itemprop="dateModified" datetime="2019-09-16T20:15:44+08:00">2019-09-16</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ubuntu16-04装机系列/" itemprop="url" rel="index"><span itemprop="name">Ubuntu16.04装机系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Ubuntu和Windows改pip源"><a href="#Ubuntu和Windows改pip源" class="headerlink" title="Ubuntu和Windows改pip源"></a>Ubuntu和Windows改pip源</h1><p>如果使用Python开发较多，那么pip安装方式一定不会陌生，和Ubuntu改源的原因一样，也是为了提高装包速度，下面介绍pip的改源方法</p><h2 id="Ubuntu-改pip源"><a href="#Ubuntu-改pip源" class="headerlink" title="Ubuntu 改pip源"></a>Ubuntu 改pip源</h2><h3 id="1-临时使用"><a href="#1-临时使用" class="headerlink" title="1.临时使用"></a>1.临时使用</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install [package] -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/Ubuntu/Ubuntu16.04装机系列-3.更改pip源.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-2.更改Ubuntu源为国内源.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/Ubuntu/Ubuntu16.04装机系列-2.更改Ubuntu源为国内源.html" class="post-title-link" itemprop="url">Ubuntu16.04改源</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-14 21:47:28" itemprop="dateCreated datePublished" datetime="2019-09-14T21:47:28+08:00">2019-09-14</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-16 20:15:44" itemprop="dateModified" datetime="2019-09-16T20:15:44+08:00">2019-09-16</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ubuntu16-04装机系列/" itemprop="url" rel="index"><span itemprop="name">Ubuntu16.04装机系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Ubuntu16-04改源"><a href="#Ubuntu16-04改源" class="headerlink" title="Ubuntu16.04改源"></a>Ubuntu16.04改源</h1><p>为了后续安装的快捷，装好系统的第一件事就是改源，通常我们选择国内的源</p><h2 id="1-编辑源文件"><a href="#1-编辑源文件" class="headerlink" title="1.编辑源文件"></a>1.编辑源文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/apt/sources.list</span><br></pre></td></tr></table></figure><h2 id="2-删除内容，粘贴以下源内容，可任意选择"><a href="#2-删除内容，粘贴以下源内容，可任意选择" class="headerlink" title="2.删除内容，粘贴以下源内容，可任意选择"></a>2.删除内容，粘贴以下源内容，可任意选择</h2><ul>
+<li><p>清华源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>阿里云源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>网易源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.163.com/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb http://mirrors.163.com/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line">deb http://mirrors.163.com/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb http://mirrors.163.com/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line">deb http://mirrors.163.com/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.163.com/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.163.com/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.163.com/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.163.com/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.163.com/ubuntu/ xenial-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>浙大源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.zju.edu.cn/ubuntu xenial main universe restricted multiverse</span><br><span class="line">deb http://mirrors.zju.edu.cn/ubuntu xenial-security main universe restricted multiverse</span><br><span class="line">deb http://mirrors.zju.edu.cn/ubuntu xenial-updates main universe restricted multiverse</span><br><span class="line">deb http://mirrors.zju.edu.cn/ubuntu xenial-proposed main universe restricted multiverse</span><br><span class="line">deb http://mirrors.zju.edu.cn/ubuntu xenial-backports main universe restricted multiverse</span><br><span class="line">deb-src http://mirrors.zju.edu.cn/ubuntu xenial main universe restricted multiverse</span><br><span class="line">deb-src http://mirrors.zju.edu.cn/ubuntu xenial-security main universe restricted multiverse</span><br><span class="line">deb-src http://mirrors.zju.edu.cn/ubuntu xenial-updates main universe restricted multiverse</span><br><span class="line">deb-src http://mirrors.zju.edu.cn/ubuntu xenial-proposed main universe restricted multiverse</span><br><span class="line">deb-src http://mirrors.zju.edu.cn/ubuntu xenial-backports main universe restricted multiverse</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>中科大源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line">deb http://mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>东北大学</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">deb-src http://mirror.neu.edu.cn/ubuntu/ xenial main restricted #Added by software-properties</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial main restricted</span><br><span class="line">deb-src http://mirror.neu.edu.cn/ubuntu/ xenial restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial-updates main restricted</span><br><span class="line">deb-src http://mirror.neu.edu.cn/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial universe</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial-updates universe</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial multiverse</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial-updates multiverse</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirror.neu.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties</span><br><span class="line">deb http://archive.canonical.com/ubuntu xenial partner</span><br><span class="line">deb-src http://archive.canonical.com/ubuntu xenial partner</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial-security main restricted</span><br><span class="line">deb-src http://mirror.neu.edu.cn/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial-security universe</span><br><span class="line">deb http://mirror.neu.edu.cn/ubuntu/ xenial-security multiverse</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>西电源（只有校内网网线使用，但是不限制流量）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span><span class="bash">deb-src http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial main restricted universe multiverse</span></span><br><span class="line">deb http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span><span class="bash">deb-src http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-security main restricted universe multiverse</span></span><br><span class="line">deb http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span><span class="bash">deb-src http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-updates main restricted universe multiverse</span></span><br><span class="line"><span class="meta">#</span><span class="bash">deb http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-backports main restricted universe multiverse</span></span><br><span class="line"><span class="meta">#</span><span class="bash">deb-src http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-backports main restricted universe multiverse</span></span><br><span class="line"><span class="meta">#</span><span class="bash">deb http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br><span class="line"><span class="meta">#</span><span class="bash">deb-src http://linux.xidian.edu.cn/mirrors/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/Ubuntu/Ubuntu16.04装机系列-2.更改Ubuntu源为国内源.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-1.系统安装.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/Ubuntu/Ubuntu16.04装机系列-1.系统安装.html" class="post-title-link" itemprop="url">Ubuntu 16.04 系统安装</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-14 21:47:27" itemprop="dateCreated datePublished" datetime="2019-09-14T21:47:27+08:00">2019-09-14</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-16 20:15:44" itemprop="dateModified" datetime="2019-09-16T20:15:44+08:00">2019-09-16</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ubuntu16-04装机系列/" itemprop="url" rel="index"><span itemprop="name">Ubuntu16.04装机系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Ubuntu-16-04-系统安装"><a href="#Ubuntu-16-04-系统安装" class="headerlink" title="Ubuntu 16.04 系统安装"></a>Ubuntu 16.04 系统安装</h1><h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li>一个Ubuntu16.04的系统</li>
+<li>一台破电脑</li>
+<li>一个破启动盘</li>
+<li>一根破网线</li>
+</ul><blockquote>
+<p>启动盘可以用<a href="https://www.ultraiso.com/" target="_blank" rel="noopener">软碟通</a>进行制作<br>系统可以上Ubuntu<a href="https://ubuntu.com/" target="_blank" rel="noopener">官网</a>，或者<a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/16.04/" target="_blank" rel="noopener">清华源镜像</a>进行下载</p>
+</blockquote><h2 id="装机过程"><a href="#装机过程" class="headerlink" title="装机过程"></a>装机过程</h2><h3 id="1-插入U盘"><a href="#1-插入U盘" class="headerlink" title="1.插入U盘"></a>1.插入U盘</h3><h3 id="2-启动电脑，出现品牌图样时，狂按bios键，选择U盘启动，进入装机界面"><a href="#2-启动电脑，出现品牌图样时，狂按bios键，选择U盘启动，进入装机界面" class="headerlink" title="2.启动电脑，出现品牌图样时，狂按bios键，选择U盘启动，进入装机界面"></a>2.启动电脑，出现品牌图样时，狂按bios键，选择U盘启动，进入装机界面</h3><h3 id="3-进行安装，不要联网，点完重启，拔掉U盘"><a href="#3-进行安装，不要联网，点完重启，拔掉U盘" class="headerlink" title="3.进行安装，不要联网，点完重启，拔掉U盘"></a>3.进行安装，不要联网，点完重启，拔掉U盘</h3>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/Ubuntu/Ubuntu16.04装机系列-1.系统安装.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/21.21个项目玩转深度学习之策略梯度算法.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -493,615 +1365,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/18.21个项目玩转深度学习之强化学习入门之Q_Learning.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/18.21个项目玩转深度学习之强化学习入门之Q_Learning.html" class="post-title-link" itemprop="url">18.21个项目玩转深度学习之强化学习入门之Q_Learning</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:33:24 / 修改时间：21:46:34" itemprop="dateCreated datePublished" datetime="2019-09-04T21:33:24+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/17.21个项目玩转深度学习之看图说话.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/17.21个项目玩转深度学习之看图说话.html" class="post-title-link" itemprop="url">17.21个项目玩转深度学习之看图说话</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:32:52 / 修改时间：21:46:47" itemprop="dateCreated datePublished" datetime="2019-09-04T21:32:52+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/16.21个项目玩转深度学习之神经网络机器翻译技术.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/16.21个项目玩转深度学习之神经网络机器翻译技术.html" class="post-title-link" itemprop="url">16.21个项目玩转深度学习之神经网络机器翻译技术</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:32:34 / 修改时间：21:47:01" itemprop="dateCreated datePublished" datetime="2019-09-04T21:32:34+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测.html" class="post-title-link" itemprop="url">15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:32:09 / 修改时间：21:47:17" itemprop="dateCreated datePublished" datetime="2019-09-04T21:32:09+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/14.21个项目玩转深度学习之词的向量表示.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/14.21个项目玩转深度学习之词的向量表示.html" class="post-title-link" itemprop="url">14.21个项目玩转深度学习之词的向量表示</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:31:28 / 修改时间：21:47:33" itemprop="dateCreated datePublished" datetime="2019-09-04T21:31:28+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/13.21个项目玩转深度学习之序列分类问题详解.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/13.21个项目玩转深度学习之序列分类问题详解.html" class="post-title-link" itemprop="url">13.21个项目玩转深度学习之序列分类问题详解</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:30:54 / 修改时间：21:47:50" itemprop="dateCreated datePublished" datetime="2019-09-04T21:30:54+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成.html" class="post-title-link" itemprop="url">12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:30:33 / 修改时间：21:48:03" itemprop="dateCreated datePublished" datetime="2019-09-04T21:30:33+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1142,7 +1405,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1165,7 +1428,11 @@
         
           
         
-        <span class="site-state-item-count">4</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>

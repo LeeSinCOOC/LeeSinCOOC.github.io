@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="配置深度学习GPU环境若想配置GPU环境，首先，点击这里，选择 CUDA-Enabled GeForce Products ，查看你的GPU的计算能力，最好要大于3.0再配置GPU环境。如果你的电脑和服务器支持GPU环境，那么你就可以使用GPU来训练和测试模型。一般来说使用Nvidia显卡用于深度学习，在N卡上我们需要安装Nvidia显卡驱动、cuda、（cuDNN）三个东西，其中cuDNN可选安">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="配置深度学习GPU环境">
+<meta property="og:url" content="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="配置深度学习GPU环境若想配置GPU环境，首先，点击这里，选择 CUDA-Enabled GeForce Products ，查看你的GPU的计算能力，最好要大于3.0再配置GPU环境。如果你的电脑和服务器支持GPU环境，那么你就可以使用GPU来训练和测试模型。一般来说使用Nvidia显卡用于深度学习，在N卡上我们需要安装Nvidia显卡驱动、cuda、（cuDNN）三个东西，其中cuDNN可选安">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/images/cuda.png">
+<meta property="og:image" content="http://leesin.cc/images/cuda_cuDNN.png">
+<meta property="og:image" content="http://leesin.cc/images/N_test.png">
+<meta property="og:image" content="http://leesin.cc/images/cuda_install.png">
+<meta property="og:image" content="http://leesin.cc/images/cuda_version.png">
+<meta property="og:updated_time" content="2019-09-16T12:12:54.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="配置深度学习GPU环境">
+<meta name="twitter:description" content="配置深度学习GPU环境若想配置GPU环境，首先，点击这里，选择 CUDA-Enabled GeForce Products ，查看你的GPU的计算能力，最好要大于3.0再配置GPU环境。如果你的电脑和服务器支持GPU环境，那么你就可以使用GPU来训练和测试模型。一般来说使用Nvidia显卡用于深度学习，在N卡上我们需要安装Nvidia显卡驱动、cuda、（cuDNN）三个东西，其中cuDNN可选安">
+<meta name="twitter:image" content="http://leesin.cc/images/cuda.png">
+  <link rel="canonical" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>配置深度学习GPU环境 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">配置深度学习GPU环境
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-16 19:41:38 / 修改时间：20:12:54" itemprop="dateCreated datePublished" datetime="2019-09-16T19:41:38+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ubuntu16-04装机系列/" itemprop="url" rel="index"><span itemprop="name">Ubuntu16.04装机系列</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="配置深度学习GPU环境"><a href="#配置深度学习GPU环境" class="headerlink" title="配置深度学习GPU环境"></a>配置深度学习GPU环境</h1><p>若想配置GPU环境，首先，<a href="https://developer.nvidia.com/cuda-gpus" target="_blank" rel="noopener">点击这里</a>，选择 CUDA-Enabled GeForce Products ，查看你的GPU的计算能力，最好要大于3.0再配置GPU环境。<br>如果你的电脑和服务器支持GPU环境，那么你就可以使用GPU来训练和测试模型。一般来说使用Nvidia显卡用于深度学习，在N卡上我们需要安装Nvidia显卡驱动、cuda、（cuDNN）三个东西，其中cuDNN可选安装。<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">显卡驱动</a>这里就不过多说明。<a href="https://www.nvidia.cn/" target="_blank" rel="noopener">官网</a><br><a href="https://developer.nvidia.com/cuda-zone" target="_blank" rel="noopener">CUDA</a>(Compute Unified Device Architecture)是Nvidia推出的用于图像处理单元（GPU）通用计算的并行计算平台和编程模型，借助CUDA，开发人员可以通过利用GPU的强大功能大幅提高计算应用的速度。<br><a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">cuDNN</a>(The NVIDIA CUDA Deep Neural Network library)是用于深度神经网络的GPU计算加速库。它提供了高度优化的标准程序，例如前向卷积反向卷积(forward and backward convolution)、池化(pooling)、标准化(normalization)、激活层(activation layers)等等。cuDNN是Nvidia深度学习软件开发工具包（SDK）的一部分。</p><a id="more"></a>
+<h2 id="下载说明"><a href="#下载说明" class="headerlink" title="下载说明"></a>下载说明</h2><p>为了在多框架下的兼容性考虑（比如 Tensorflow 1.4目前不支持cuda 9 和 cuDNN 7），Nvidia显卡驱动版本要为官网上提供的与显卡对应的最新版本，cuda版本(当前最新版本是9.0）最好选择8.0(<a href="https://developer.nvidia.com/cuda-80-ga2-download-archive" target="_blank" rel="noopener">下载地址</a>），cuDNN版本(当前最新版本是7）选择cuDNN 6版本与cuda 8.0对应的版本(<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">下载地址</a>）。<br>注意：cuda安装包下载时最好选择runfile下载:<br><img src="/images/cuda.png" alt><br>cuDNN需要先注册账号后再填一个调查文件方可下载<br>选择cuDNN v6.0 Library for Linux下载：<br><img src="/images/cuda_cuDNN.png" alt><br>若下载时显示不出页面，或显示正在维护，则换个浏览器或是翻墙访问<br>附：<a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">CUDA其他版本下载地址</a></p>
+<h2 id="Nvidia显卡驱动安装"><a href="#Nvidia显卡驱动安装" class="headerlink" title="Nvidia显卡驱动安装"></a>Nvidia显卡驱动安装</h2><p>在安装CUDA的过程中可以选择安装CUDA中自带的显卡驱动，这样的好处是与cuda兼容，简便，但是有可能它自带的不是最新版本的，这样可能会发生掉驱动的问题，我推荐还是先装N卡驱动后再装CUDA。<br>在正式安装N卡驱动前，必须将nouveau（Ubuntu系统集成的显卡驱动程序）禁用，它是第三方为NVIDIA开发的开源驱动</p>
+<p><strong>第一步</strong>：我们需要先将其屏蔽才能安装NVIDIA官方驱动，两者不兼容,执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+
+<p>若无结果输出，则直接进入第二步；<br>若有结果输出，则说明当前的驱动是nouveau，执行如下程序命令禁用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/modprobe.d/blacklist.conf</span><br></pre></td></tr></table></figure>
+
+<p>在文本中添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
+
+<p>保存后执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>重启后再执行第一步的第一条命令，若无结果输出，则禁用nouveau成功。</p>
+<p><strong>第二步：</strong> 关闭X-Window服务，进入命令行模式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br></pre></td></tr></table></figure>
+
+<p>输入后图形界面会消失，按Ctrl+Alt+F1进入tty1<br><strong>第三步：</strong> 在tty1登录后在驱动对应目录下执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod a+x NVIDIA-linux-x86_64-&lt;version&gt;.run</span><br><span class="line">sudo ./NVIDIA-linux-x86_64-&lt;version&gt;.run –no-opengl-files –no-x-check –no-nouveau-check</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>-no-opengl-files：表示只安装驱动文件，不安装OpenGL文件。这个参数不可省略，否则会导致登陆界面死循环(”login loop”或者”stuck in login”)</p>
+</blockquote>
+<blockquote>
+<p>–no-x-check：表示安装驱动时不检查X服务，非必须。</p>
+</blockquote>
+<blockquote>
+<p>–no-nouveau-check：表示安装驱动时不检查nouveau,非必须，但必须保证nouveau已经禁用。</p>
+</blockquote>
+<p>在安装过程中，需先同意协议，若出现警告，则忽视即可。<br>若安装失败，则可以关闭X-Window服务进入tty1，输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./NVIDIA-linux-x86_64-&lt;version&gt;.run –-uninstall</span><br></pre></td></tr></table></figure>
+
+<p>即可卸载，查找错误原因后重新安装。<br><strong>第四步：</strong> 安装完成后，打开X-Window服务，恢复GUI模式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br></pre></td></tr></table></figure>
+
+<p>按Ctrl+Alt+F7进入GUI界面。<br>至此N卡驱动安装完成。</p>
+<h2 id="Nvidia显卡驱动测试"><a href="#Nvidia显卡驱动测试" class="headerlink" title="Nvidia显卡驱动测试"></a>Nvidia显卡驱动测试</h2><p>在安装完驱动后，在命令行输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br><span class="line">nvidia-settings</span><br></pre></td></tr></table></figure>
+
+<p>若列出GPU的信息列表和设置对话框，表示驱动安装成功<br><img src="/images/N_test.png" alt></p>
+<p>此外，也可以输入如下命令查看当前驱动版本信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/driver/nvidia/version</span><br></pre></td></tr></table></figure>
+
+<h2 id="CUDA安装"><a href="#CUDA安装" class="headerlink" title="CUDA安装"></a>CUDA安装</h2><p>CUDA的详细安装方法可以查看官网：<a href="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="noopener">链接</a><br><strong>第一步</strong>：我们这里只需要在当前目录下运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh cuda_&lt;version&gt;_linux.run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/cuda_install.png" alt><br>在安装过程中，每个选项依次为：<br>接受协议<br>不安装自带驱动，<br>安装cuda8.0，<br>同意默认安装位置，<br>同意创建链接，<br>同意安装样例，<br>同意默认安装位置，<br>即可完成。<br><strong>第二步:</strong> 配置环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在文件末尾添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CUDA_HOME=/usr/<span class="built_in">local</span>/cuda-8.0</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/cuda-8.0/lib64:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/cuda-8.0/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>保存退出后刷新</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：</strong> 动态链接库设置<br>创建文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/ld.so.conf.d/cuda.conf</span><br></pre></td></tr></table></figure>
+
+<p>写入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/cuda/lib64</span><br></pre></td></tr></table></figure>
+
+<p>保存后，执行命令，立即生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ldconfig -v</span><br></pre></td></tr></table></figure>
+
+<h2 id="CUDA测试"><a href="#CUDA测试" class="headerlink" title="CUDA测试"></a>CUDA测试</h2><p>执行命令查看cuda版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc --version</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/cuda_version.png" alt></p>
+<h2 id="cuDNN安装"><a href="#cuDNN安装" class="headerlink" title="cuDNN安装"></a>cuDNN安装</h2><p>cnDNN的详细安装方法可以查看官网：<a href="https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#prerequisites" target="_blank" rel="noopener">链接</a><br>在下载完cuDNN文件后解压(其他版本方法一致）,进入到解压的cuda目录下,执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这里以v5.1版本举例，其他版本步骤具体版本号需要有微幅变动</span></span><br><span class="line">tar -zxvf cudnn-8.0-linux-x64-v5.1-ga.tgz</span><br><span class="line"><span class="built_in">cd</span> cuda</span><br><span class="line">sudo cp include/cudnn.h /usr/<span class="built_in">local</span>/cuda/include/</span><br><span class="line">sudo cp lib64/lib* /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/include/cudnn.h /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn*</span><br></pre></td></tr></table></figure>
+
+<p>接下来更新cuDNN库文件的软链接，注意顺序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line">sudo rm -rf libcudnn.so libcudnn.so.5</span><br><span class="line">sudo ln -s libcudnn.so.5.1.10 libcudnn.so.5</span><br><span class="line">sudo ln -s libcudnn.so.5 libcudnn.so</span><br><span class="line">sudo ldconfig</span><br></pre></td></tr></table></figure>
+
+<h2 id="cuDNN测试"><a href="#cuDNN测试" class="headerlink" title="cuDNN测试"></a>cuDNN测试</h2><p>在下载cuDNN的网址，下载对应cuDNN版本的测试程序cuDNN v5 Code Samples，解压后切换到mnistCUDNN做测试，<br>编译后执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf cudnn-sample-v5.tgz</span><br><span class="line"><span class="built_in">cd</span> mnistCUDNN</span><br><span class="line">make clean &amp;&amp; make</span><br><span class="line">./mnistCUDNN</span><br></pre></td></tr></table></figure>
+
+<p>如果结果为：Test passed! ，则cuDNN安装成功。</p>
+<blockquote>
+<p>参考博客：<a href="http://journeyfu.com/yolo_env/" target="_blank" rel="noopener">Yolo v2——Darknet框架搭建教程（含GPU安装）</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html" title="配置深度学习GPU环境">http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/Ubuntu/Ubuntu16.04装机系列-5.编译安装OpenCV.html" rel="next" title="编译安装OpenCV">
+                  <i class="fa fa-chevron-left"></i> 编译安装OpenCV
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置深度学习GPU环境"><span class="nav-number">1.</span> <span class="nav-text">配置深度学习GPU环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载说明"><span class="nav-number">1.1.</span> <span class="nav-text">下载说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nvidia显卡驱动安装"><span class="nav-number">1.2.</span> <span class="nav-text">Nvidia显卡驱动安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nvidia显卡驱动测试"><span class="nav-number">1.3.</span> <span class="nav-text">Nvidia显卡驱动测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA安装"><span class="nav-number">1.4.</span> <span class="nav-text">CUDA安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA测试"><span class="nav-number">1.5.</span> <span class="nav-text">CUDA测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cuDNN安装"><span class="nav-number">1.6.</span> <span class="nav-text">cuDNN安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cuDNN测试"><span class="nav-number">1.7.</span> <span class="nav-text">cuDNN测试</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

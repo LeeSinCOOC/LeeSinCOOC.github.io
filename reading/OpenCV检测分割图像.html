@@ -371,7 +371,7 @@
 <p>我们可以得到这两张图，第一张是灰度图，第二张是去噪之后的，另外说一下，去噪咱们有很多种方法，均值滤波器、高斯滤波器、中值滤波器、双边滤波器等。</p>
 <p>这里取高斯是因为高斯去噪效果是最好的。</p>
 <p><img src="/images%5C20171217171641843.png" alt></p>
-<h4 id="3-提取图像的梯度"><a href="#3-提取图像的梯度" class="headerlink" title="3.提取图像的梯度"></a><strong>3.提取图像的梯度</strong></h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gradX = cv2.Sobel(gray, <span class="attribute">ddepth</span>=cv2.CV_32F, <span class="attribute">dx</span>=1, <span class="attribute">dy</span>=0)</span><br><span class="line">gradY = cv2.Sobel(gray, <span class="attribute">ddepth</span>=cv2.CV_32F, <span class="attribute">dx</span>=0, <span class="attribute">dy</span>=1)</span><br><span class="line"></span><br><span class="line">gradient = cv2.subtract(gradX, gradY)</span><br><span class="line">gradient = cv2.convertScaleAbs(gradient)</span><br></pre></td></tr></table></figure>
+<h4 id="3-提取图像的梯度"><a href="#3-提取图像的梯度" class="headerlink" title="3.提取图像的梯度"></a><strong>3.提取图像的梯度</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gradX = cv2.Sobel(gray, ddepth=cv2.CV_32F, dx=1, dy=0)</span><br><span class="line">gradY = cv2.Sobel(gray, ddepth=cv2.CV_32F, dx=0, dy=1)</span><br><span class="line"></span><br><span class="line">gradient = cv2.subtract(gradX, gradY)</span><br><span class="line">gradient = cv2.convertScaleAbs(gradient)</span><br></pre></td></tr></table></figure>
 
 <p>以Sobel算子计算x，y方向上的梯度，之后在x方向上减去y方向上的梯度，通过这个减法，我们留下具有高水平梯度和低垂直梯度的图像区域。</p>
 <p>此时，我们会得到</p>
@@ -386,12 +386,12 @@
 <p><img src="images%5C20171217173611986.png" alt></p>
 <p>其实就算手动分割我们也是需要找到一个边界吧，可以看到轮廓出来了，但是我们最终要的是整个轮廓，所以内部小区域就不要了</p>
 <h4 id="5-图像形态学（牛逼吧、唬人的）"><a href="#5-图像形态学（牛逼吧、唬人的）" class="headerlink" title="5.图像形态学（牛逼吧、唬人的）"></a><strong>5.图像形态学（牛逼吧、唬人的）</strong></h4><p>在这里我们选取ELLIPSE核，采用CLOSE操作，具体细节你依旧可以参考我的附录文档，及拓展。</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kernel</span> = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (<span class="number">25</span>, <span class="number">25</span>))</span><br><span class="line"><span class="attr">closed</span> = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (25, 25))</span><br><span class="line">closed = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)</span><br></pre></td></tr></table></figure>
 
 <p>此时，我们会得到</p>
 <p><img src="/images%5C20171217174137392.png" alt></p>
 <h4 id="6-细节刻画"><a href="#6-细节刻画" class="headerlink" title="6.细节刻画"></a>6.细节刻画</h4><p>从上图我们可以发现和原图对比，发现有细节丢失，这会干扰之后的昆虫轮廓的检测，要把它们扩充，分别执行4次形态学腐蚀与膨胀（附录文档）</p>
-<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">closed</span> = cv2.erode(<span class="keyword">closed</span>, None, iterations=4)</span><br><span class="line"><span class="keyword">closed</span> = cv2.dilate(<span class="keyword">closed</span>, None, iterations=4)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">closed = cv2.erode(closed, None, iterations=4)</span><br><span class="line">closed = cv2.dilate(closed, None, iterations=4)</span><br></pre></td></tr></table></figure>
 
 <p>此时，我们会得到</p>
 <p><img src="/images%5C20171217174357314.png" alt></p>
@@ -483,8 +483,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/homework/number.html" rel="next" title="数值类型作业">
-                  <i class="fa fa-chevron-left"></i> 数值类型作业
+                <a href="/reading/卷积神经网络.html" rel="next" title="几种经典的卷积神经网络模型">
+                  <i class="fa fa-chevron-left"></i> 几种经典的卷积神经网络模型
                 </a>
               
             </div>
@@ -552,7 +552,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -575,7 +575,11 @@
         
           
         
-        <span class="site-state-item-count">4</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>

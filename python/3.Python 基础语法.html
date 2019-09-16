@@ -409,7 +409,7 @@
 <p>那么，一定要记住这些关键字吗？答案是：不用的，你只要使用比较明显表达含义的单词来写程序，一般是很难遇到使用关键字命名的情况，何况我们用自动补全的编辑器，要么高亮要么会有提示，这不是个问题，只是学到一定程度可以来看看，有哪些关键字你没有用到，高级程序员的话，基本上花里胡哨地用这些。加油吧。</p>
 <h2 id="多行语句"><a href="#多行语句" class="headerlink" title="多行语句"></a>多行语句</h2><p>Python语句中一般以新行作为语句的结束符。</p>
 <p>但是我们可以使用斜杠（ \）将一行的语句分为多行显示，如下所示：</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">total</span> = <span class="keyword">item_one </span>+ \</span><br><span class="line">        <span class="keyword">item_two </span>+ \</span><br><span class="line">        <span class="keyword">item_three</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">total = item_one + \</span><br><span class="line">        item_two + \</span><br><span class="line">        item_three</span><br></pre></td></tr></table></figure>
 
 <p>后续的学习中，但凡是带括号的，[],{},(),直接换行也是可以的</p>
 <h2 id="Python引号"><a href="#Python引号" class="headerlink" title="Python引号"></a>Python引号</h2><p>Python 可以使用引号( <strong>‘</strong> )、双引号( <strong>“</strong> )、三引号( <strong>‘’’</strong> 或 <strong>“””</strong> ) 来表示字符串，引号的开始与结束必须的相同类型的。</p>
@@ -418,10 +418,10 @@
 <h2 id="Python注释"><a href="#Python注释" class="headerlink" title="Python注释"></a>Python注释</h2><p>python中单行注释采用 # 开头。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第一个注释</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"Hello, Python!"</span>)  <span class="comment"># 第二个注释</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">第三个</span></span><br><span class="line"><span class="string">多行注释</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">第四个</span></span><br><span class="line"><span class="string">多行注释</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="多个语句构成代码组"><a href="#多个语句构成代码组" class="headerlink" title="多个语句构成代码组"></a>多个语句构成代码组</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> expression : </span><br><span class="line">   suite </span><br><span class="line">elif expression :  </span><br><span class="line">   suite  </span><br><span class="line"><span class="keyword">else</span> :  </span><br><span class="line">   suite</span><br></pre></td></tr></table></figure>
+<h2 id="多个语句构成代码组"><a href="#多个语句构成代码组" class="headerlink" title="多个语句构成代码组"></a>多个语句构成代码组</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if expression : </span><br><span class="line">   suite </span><br><span class="line">elif expression :  </span><br><span class="line">   suite  </span><br><span class="line">else :  </span><br><span class="line">   suite</span><br></pre></td></tr></table></figure>
 
 <h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><p>很多程序可以执行一些操作来查看一些基本信息，Python 可以使用 <strong>-h</strong> 参数查看各参数帮助信息：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">python</span> -h </span><br><span class="line">usage: <span class="keyword">python</span> [option] ... [-<span class="keyword">c</span> cmd | -<span class="keyword">m</span> <span class="keyword">mod</span> | <span class="keyword">file</span> | -] [arg] ... </span><br><span class="line">Options <span class="built_in">and</span> arguments (<span class="built_in">and</span> corresponding environment variables): </span><br><span class="line">-<span class="keyword">c</span> cmd : program passed in <span class="keyword">as</span> <span class="built_in">string</span> (terminates option <span class="keyword">list</span>) </span><br><span class="line">-d     : <span class="keyword">debug</span> output from parser (also PYTHONDEBUG=<span class="keyword">x</span>) </span><br><span class="line">-E     : ignore environment variables (such <span class="keyword">as</span> PYTHONPATH) </span><br><span class="line">-h     : <span class="keyword">print</span> this <span class="keyword">help</span> message <span class="built_in">and</span> <span class="keyword">exit</span> </span><br><span class="line"> </span><br><span class="line">[ etc. ]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ python -h </span><br><span class="line">usage: python [option] ... [-c cmd | -m mod | file | -] [arg] ... </span><br><span class="line">Options and arguments (and corresponding environment variables): </span><br><span class="line">-c cmd : program passed in as string (terminates option list) </span><br><span class="line">-d     : debug output from parser (also PYTHONDEBUG=x) </span><br><span class="line">-E     : ignore environment variables (such as PYTHONPATH) </span><br><span class="line">-h     : print this help message and exit </span><br><span class="line"> </span><br><span class="line">[ etc. ]</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h2 id="—-欲知后事是如何，且听下回分解"><a href="#—-欲知后事是如何，且听下回分解" class="headerlink" title="— 欲知后事是如何，且听下回分解"></a>— 欲知后事是如何，且听下回分解</h2>
@@ -548,7 +548,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -571,7 +571,11 @@
         
           
         
-        <span class="site-state-item-count">4</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
