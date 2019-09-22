@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="Python与C++相互调用 参考博客：Python实例浅谈之三Python与C/C++相互调用 问题Python模块和C/C++的动态库间相互调用在实际的应用中会有所涉及，在此作一总结。Python调用C/C++Python调用C动态链接库Python调用C库比较简单，不经过任何封装打包成so，再使用python的ctypes调用即可">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="page">
+<meta property="og:url" content="http://leesin.cc/reading/Python与C++相互调用.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="Python与C++相互调用 参考博客：Python实例浅谈之三Python与C/C++相互调用 问题Python模块和C/C++的动态库间相互调用在实际的应用中会有所涉及，在此作一总结。Python调用C/C++Python调用C动态链接库Python调用C库比较简单，不经过任何封装打包成so，再使用python的ctypes调用即可">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-22T09:10:32.099Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="page">
+<meta name="twitter:description" content="Python与C++相互调用 参考博客：Python实例浅谈之三Python与C/C++相互调用 问题Python模块和C/C++的动态库间相互调用在实际的应用中会有所涉及，在此作一总结。Python调用C/C++Python调用C动态链接库Python调用C库比较简单，不经过任何封装打包成so，再使用python的ctypes调用即可">
+  <link rel="canonical" href="http://leesin.cc/reading/Python与C++相互调用">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>page | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/Python与C++相互调用.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">page
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-22 17:09:15 / 修改时间：17:10:32" itemprop="dateCreated datePublished" datetime="2019-09-22T17:09:15+08:00">2019-09-22</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python与C-相互调用"><a href="#Python与C-相互调用" class="headerlink" title="Python与C++相互调用"></a>Python与C++相互调用</h1><blockquote>
+<p>参考博客：<a href="https://www.cnblogs.com/apexchu/p/5015961.html" target="_blank" rel="noopener">Python实例浅谈之三Python与C/C++相互调用</a></p>
+</blockquote><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>Python模块和C/C++的动态库间相互调用在实际的应用中会有所涉及，在此作一总结。</p><h2 id="Python调用C-C"><a href="#Python调用C-C" class="headerlink" title="Python调用C/C++"></a>Python调用C/C++</h2><h3 id="Python调用C动态链接库"><a href="#Python调用C动态链接库" class="headerlink" title="Python调用C动态链接库"></a>Python调用C动态链接库</h3><p>Python调用C库比较简单，不经过任何封装打包成so，再使用python的ctypes调用即可</p><a id="more"></a>
+
+
+<ol>
+<li>C语言文件：<code>pycall.c</code></li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/***gcc -o libpycall.so -shared -fPIC pycall.c*/</span>  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;  </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"you input %d and %d\n"</span>, a, b);  </span><br><span class="line">  <span class="keyword">return</span> a+b;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.gcc编译生成动态库<code>libpycall.so</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o libpycall.so -shared -fPIC pycall.c</span><br></pre></td></tr></table></figure>
+
+<p>使用g++编译生成C动态库的代码中的函数或者方法时，需要使用extern “C”来进行编译。</p>
+<p>3.Python调用动态库的文件：<code>pycall.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes  </span><br><span class="line">ll = ctypes.cdll.LoadLibrary   </span><br><span class="line">lib = ll(<span class="string">"./libpycall.so"</span>)    </span><br><span class="line">result = lib.foo(<span class="number">1</span>, <span class="number">3</span>)  </span><br><span class="line">print(<span class="string">'***start***'</span>)</span><br><span class="line">print(result)</span><br><span class="line">print(<span class="string">'***finish***'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>4.运行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">c@j:~/Desktop/BLOG$ python3 pycall.py </span><br><span class="line">you input 1 and 3</span><br><span class="line">***start***</span><br><span class="line">4</span><br><span class="line">***finish***</span><br></pre></td></tr></table></figure>
+
+<h3 id="Python调用C-类-动态链接库"><a href="#Python调用C-类-动态链接库" class="headerlink" title="Python调用C++(类)动态链接库"></a>Python调用C++(类)动态链接库</h3><p>需要extern “C”来辅助，也就是说还是只能调用C函数，不能直接调用方法，但是能解析C++方法。不是用extern “C”，构建后的动态链接库没有这些函数的符号表。</p>
+<p>1.C++类文件：<code>pycallclass.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;  </span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestLib</span>  </span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">    <span class="keyword">public</span>:  </span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;  </span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">(<span class="keyword">int</span> a)</span></span>;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="keyword">void</span> TestLib::display() &#123;  </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"First display"</span>&lt;&lt;<span class="built_in">endl</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">void</span> TestLib::display(<span class="keyword">int</span> a) &#123;  </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Second display:"</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> &#123;  </span><br><span class="line">    TestLib obj;  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        obj.display();   </span><br><span class="line">      &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display_int</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        obj.display(<span class="number">2</span>);   </span><br><span class="line">      &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.g++编译生成动态库<code>libpycall.so</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -o libpycallclass.so -shared -fPIC pycallclass.cpp</span><br></pre></td></tr></table></figure>
+
+<p>3.Python调用动态库的文件：<code>pycallclass.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes  </span><br><span class="line">so = ctypes.cdll.LoadLibrary   </span><br><span class="line">lib = so(<span class="string">"./libpycallclass.so"</span>)   </span><br><span class="line">print(<span class="string">'display()'</span>)</span><br><span class="line">lib.display()  </span><br><span class="line">print(<span class="string">'display(100)'</span>)  </span><br><span class="line">lib.display_int(<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+
+<p>4.运行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">c@j:~/Desktop/BLOG$ python3 pycallclass.py </span><br><span class="line">display()</span><br><span class="line">First display</span><br><span class="line">display(100)</span><br><span class="line">Second display:2</span><br></pre></td></tr></table></figure>
+
+<h3 id="Python调用C-C-可执行程序"><a href="#Python调用C-C-可执行程序" class="headerlink" title="Python调用C/C++可执行程序"></a>Python调用C/C++可执行程序</h3><p>1.C/C++程序：<code>main.cpp</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;  </span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>, b = <span class="number">5</span>;  </span><br><span class="line">    <span class="keyword">return</span> a+b;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"---begin---"</span>&lt;&lt;<span class="built_in">endl</span>;  </span><br><span class="line">    <span class="keyword">int</span> num = test();  </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"num="</span>&lt;&lt;num&lt;&lt;<span class="built_in">endl</span>;  </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"---end---"</span>&lt;&lt;<span class="built_in">endl</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.编译成二进制可执行文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -o testmain main.cpp</span><br></pre></td></tr></table></figure>
+
+<p>3.Python调用程序：<code>main.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess </span><br><span class="line">//commands是python2版本的，这里用python3所以用subprocess进行替换</span><br><span class="line"><span class="keyword">import</span> os  </span><br><span class="line">main = <span class="string">"./testmain"</span>  </span><br><span class="line"><span class="keyword">if</span> os.path.exists(main):  </span><br><span class="line">    rc, out = subprocess.getstatusoutput(main)  </span><br><span class="line">    print(<span class="string">'rc = %d, \nout =\n%s'</span> % (rc, out))  </span><br><span class="line">  </span><br><span class="line">print(<span class="string">'*'</span>*<span class="number">10</span>)  </span><br><span class="line">f = os.popen(main)    </span><br><span class="line">data = f.readlines()    </span><br><span class="line">f.close()    </span><br><span class="line">print(data)  </span><br><span class="line">  </span><br><span class="line">print(<span class="string">'*'</span>*<span class="number">10</span>)  </span><br><span class="line">os.system(main) //这句话是调用</span><br></pre></td></tr></table></figure>
+
+<p>4.运行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">c@j:~/Desktop/BLOG$ python3 main.py </span><br><span class="line">rc = 0, </span><br><span class="line">out =</span><br><span class="line">---begin---</span><br><span class="line">num=15</span><br><span class="line">---end---</span><br><span class="line">**********</span><br><span class="line">['---begin---\n', 'num=15\n', '---end---\n']</span><br><span class="line">**********</span><br><span class="line">---begin---</span><br><span class="line">num=15</span><br><span class="line">---end---</span><br></pre></td></tr></table></figure>
+
+<hr>
+<blockquote>
+<p>附：这里用到了一些函数，细说起来篇幅很多，不如单独写一篇解释一下，命名暂时叫：<code>Python与C++相互调用_附录</code></p>
+</blockquote>
+<hr>
+<h3 id="扩展Python（C-为Python编写扩展模块）"><a href="#扩展Python（C-为Python编写扩展模块）" class="headerlink" title="扩展Python（C++为Python编写扩展模块）"></a>扩展Python（C++为Python编写扩展模块）</h3><p>为 Python 创建扩展需要三个主要的步骤：</p>
+<ul>
+<li>创建应用程序代码</li>
+<li>利用样板来包装代码</li>
+<li>编译与测试</li>
+</ul>
+<p>1.创建应用程序代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;  </span></span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fac</span><span class="params">(<span class="keyword">int</span> n)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">2</span>) <span class="keyword">return</span>(<span class="number">1</span>); <span class="comment">/* 0! == 1! == 1 */</span>  </span><br><span class="line">    <span class="keyword">return</span> (n)*fac(n<span class="number">-1</span>); <span class="comment">/* n! == n*(n-1)! */</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">reverse</span><span class="params">(<span class="keyword">char</span> *s)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">char</span> t,                    <span class="comment">/* tmp */</span>  </span><br><span class="line">            *p = s,                     <span class="comment">/* fwd */</span>  </span><br><span class="line">            *q = (s + (<span class="built_in">strlen</span>(s) - <span class="number">1</span>)); <span class="comment">/* bwd */</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">while</span> (p &lt; q)               <span class="comment">/* if p &lt; q */</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        t = *p;         <span class="comment">/* swap &amp; move ptrs */</span>  </span><br><span class="line">        *p++ = *q;  </span><br><span class="line">        *q-- = t;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span>(s);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">char</span> s[BUFSIZ];  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"4! == %d\n"</span>, fac(<span class="number">4</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"8! == %d\n"</span>, fac(<span class="number">8</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"12! == %d\n"</span>, fac(<span class="number">12</span>));  </span><br><span class="line">    <span class="built_in">strcpy</span>(s, <span class="string">"abcdef"</span>);  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"reversing 'abcdef', we get '%s'\n"</span>, \  </span><br><span class="line">        reverse(s));  </span><br><span class="line">    <span class="built_in">strcpy</span>(s, <span class="string">"madam"</span>);  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"reversing 'madam', we get '%s'\n"</span>, \  </span><br><span class="line">        reverse(s));  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码中有两个函数，一个是递归求阶乘的函数<code>fac()</code>；另一个<code>reverse()</code>函数实现了一个简单的字符串反转算法，<br>其主要目的是修改传入的字符串，使其内容完全反转，但不需要申请内存后反着复制的方法。</p>
+<p>2.用样板来包装代码</p>
+<p>接口的代码被称为“样板”代码，它是应用程序代码与Python解释器之间进行交互所必不可少的一部分。<br>样板主要分为4步：</p>
+<ul>
+<li>包含Python的头文件</li>
+<li>为每个模块的每一个函数增加一个型如PyObject* Module_func()的包装函数</li>
+<li>为每个模块增加一个型如PyMethodDef ModuleMethods[]的数组</li>
+<li>增加模块初始化函数void initModule()</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;  </span></span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fac</span><span class="params">(<span class="keyword">int</span> n)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">2</span>) <span class="keyword">return</span>(<span class="number">1</span>);  </span><br><span class="line">    <span class="keyword">return</span> (n)*fac(n<span class="number">-1</span>);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">reverse</span><span class="params">(<span class="keyword">char</span> *s)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">char</span> t,  </span><br><span class="line">            *p = s,  </span><br><span class="line">            *q = (s + (<span class="built_in">strlen</span>(s) - <span class="number">1</span>));  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">while</span> (s &amp;&amp; (p &lt; q))  </span><br><span class="line">    &#123;  </span><br><span class="line">        t = *p;  </span><br><span class="line">        *p++ = *q;  </span><br><span class="line">        *q-- = t;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span>(s);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">char</span> s[BUFSIZ];  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"4! == %d\n"</span>, fac(<span class="number">4</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"8! == %d\n"</span>, fac(<span class="number">8</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"12! == %d\n"</span>, fac(<span class="number">12</span>));  </span><br><span class="line">    <span class="built_in">strcpy</span>(s, <span class="string">"abcdef"</span>);  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"reversing 'abcdef', we get '%s'\n"</span>, \  </span><br><span class="line">        reverse(s));  </span><br><span class="line">    <span class="built_in">strcpy</span>(s, <span class="string">"madam"</span>);  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"reversing 'madam', we get '%s'\n"</span>, \  </span><br><span class="line">        reverse(s));  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Python.h"</span>  </span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">static</span> PyObject *  </span><br><span class="line">Extest_fac(PyObject *self, PyObject *args)  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="keyword">int</span> num;  </span><br><span class="line">    <span class="keyword">if</span> (!PyArg_ParseTuple(args, <span class="string">"i"</span>, &amp;num))  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;  </span><br><span class="line">    <span class="keyword">return</span> (PyObject*)Py_BuildValue(<span class="string">"i"</span>, fac(num));  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">static</span> PyObject *  </span><br><span class="line">Extest_doppel(PyObject *self, PyObject *args)  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="keyword">char</span> *orig_str;  </span><br><span class="line">    <span class="keyword">char</span> *dupe_str;  </span><br><span class="line">    PyObject* retval;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (!PyArg_ParseTuple(args, <span class="string">"s"</span>, &amp;orig_str))  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;  </span><br><span class="line">    retval = (PyObject*)Py_BuildValue(<span class="string">"ss"</span>, orig_str,  </span><br><span class="line">        dupe_str=reverse(strdup(orig_str)));  </span><br><span class="line">    <span class="built_in">free</span>(dupe_str);             #防止内存泄漏  </span><br><span class="line">    <span class="keyword">return</span> retval;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">static</span> PyObject *  </span><br><span class="line">Extest_test(PyObject *self, PyObject *args)  </span><br><span class="line">&#123;  </span><br><span class="line">    test();  </span><br><span class="line">    <span class="keyword">return</span> (PyObject*)Py_BuildValue(<span class="string">""</span>);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">static</span> PyMethodDef  </span><br><span class="line">ExtestMethods[] =  </span><br><span class="line">&#123;  </span><br><span class="line">    &#123; <span class="string">"fac"</span>, Extest_fac, METH_VARARGS &#125;,  </span><br><span class="line">    &#123; <span class="string">"doppel"</span>, Extest_doppel, METH_VARARGS &#125;,  </span><br><span class="line">    &#123; <span class="string">"test"</span>, Extest_test, METH_VARARGS &#125;,  </span><br><span class="line">    &#123; <span class="literal">NULL</span>, <span class="literal">NULL</span> &#125;,  </span><br><span class="line">&#125;;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initExtest</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    Py_InitModule(<span class="string">"Extest"</span>, ExtestMethods);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Python.h头文件在大多数类Unix系统中会在/usr/local/include/python2.x或/usr/include/python2.x目录中，系统一般都会知道文件安装的路径</p>
+</blockquote>
+<p>增加包装函数，所在模块名为<code>Extest</code>，那么创建一个包装函数叫<code>Extest_fac()</code>，在Python脚本中使用是先<code>import Extest</code><br>，然后调用<code>Extest.fac()</code>，当<code>Extest.fac()</code>被调用时，包装函数<code>Extest_fac()</code>会被调用，包装函数接受一个 Python的整<br>数参数，把它转为C的整数，然后调用C的<code>fac()</code>函数，得到一个整型的返回值，最后把这个返回值转为Python的整型数做为整个函数<br>调用的结果返回回去。其他两个包装函数<code>Extest_doppel()</code>和<code>Extest_test()</code>类似。<br>从Python到C的转换用<code>PyArg_Parse*</code>系列函数，<code>int PyArg_ParseTuple()</code>：把Python传过来的参数转为C；<br><code>int PyArg_ParseTupleAndKeywords()</code>与<code>PyArg_ParseTuple()</code>作用相同，但是同时解析关键字参数；它们的用法跟C的<br><code>sscanf</code>函数很像，都接受一个字符串流，并根据一个指定的格式字符串进行解析，把结果放入到相应的指针所指的变量中去，<br>它们的返回值为1表示解析成功，返回值为0表示失败。从C到Python的转换函数是<code>PyObject* Py_BuildValue()</code>：把C的数据转<br>为Python的一个对象或一组对象，然后返回之；<code>Py_BuildValue</code>的用法跟<code>sprintf</code>很像，把所有的参数按格式字符串所指定的<br>格式转换成一个Python的对象。</p>
+<p>为每个模块增加一个型如<code>PyMethodDef ModuleMethods[]</code>的数组，以便于Python解释器能够导入并调用它们，每一个数组都<br>包含了函数在Python中的名字，相应的包装函数的名字以及一个<code>METH_VARARGS</code>常量，<code>METH_VARARGS</code>表示参数以tuple形式<br>传入。 若需要使用<code>PyArg_ParseTupleAndKeywords()</code>函数来分析命名参数的话，还需要让这个标志常量与<code>METH_KEYWORDS</code><br>常量进行逻辑与运算常量 。数组最后用两个NULL来表示函数信息列表的结束。<br>所有工作的最后一部分就是模块的初始化函数，调用<code>Py_InitModule()</code>函数，并把模块名和<code>ModuleMethods[]</code>数组的名字传递进去，以便于解释器能正确的调用模块中的函数。</p>
+<p>3.编译</p>
+<p>为了让新Python的扩展能被创建，需要把它们与Python库放在一起编译，<code>distutils</code>包被用来编译、安装和分发这些模块、扩展和包。<br>创建一个<code>setup.py</code>文件，编译最主要的工作由<code>setup()</code>函数来完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python  </span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup, Extension  </span><br><span class="line">  </span><br><span class="line">MOD = <span class="string">'Extest'</span>  </span><br><span class="line">setup(name=MOD, ext_modules=[Extension(MOD, sources=[<span class="string">'Extest2.c'</span>])])</span><br></pre></td></tr></table></figure>
+
+<p><code>Extension()</code>第一个参数是(完整的)扩展的名字，如果模块是包的一部分的话，还要加上用’.’分隔的完整的包的名字。<br>上述的扩展是独立的，所以名字只要写”Extest”就行；<code>sources</code>参数是所有源代码的文件列表，只有一个文件<br><code>Extest2.c</code>。<code>setup</code>需要两个参数：一个名字参数表示要编译哪个内容；另一个列表参数列出要编译的对象，<br>上述要编译的是一个扩展，故把<code>ext_modules</code>参数的值设为扩展模块的列表。</p>
+<p>4.运行setup.py build命令就可以开始编译我们的扩展了，提示部分信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">creating build/lib.linux-x86_64-2.6  </span><br><span class="line">gcc -pthread -shared build/temp.linux-x86_64-2.6/Extest2.o -L/usr/lib64 -lpython2.6 -o build/lib.linux-x86_64-2.6/Extest.so</span><br></pre></td></tr></table></figure>
+
+<p>5.导入和测试</p>
+<p>6.引用计数和线程安全</p>
+<p>Python对象引用计数的宏：<code>Py_INCREF(obj)</code>增加对象obj的引用计数，<br><code>Py_DECREF(obj)</code>减少对象obj的引用计数。<code>Py_INCREF()</code>和<code>Py_DECREF()</code>两个函数也有一个先检查对象是否为空的版本，<br>分别为<code>Py_XINCREF()</code>和<code>Py_XDECREF()</code>。编译扩展的程序员必须要注意，代码有可能会被运行在一个多线程的Python环境中<br>。这些线程使用了两个C宏<code>Py_BEGIN_ALLOW_THREADS</code>和<code>Py_END_ALLOW_THREADS</code>，通过将代码和线程隔离，保证了运行和<br>非运行时的安全性，由这些宏包裹的代码将会允许其他线程的运行。</p>
+<h2 id="C-C-调用Python"><a href="#C-C-调用Python" class="headerlink" title="C/C++调用Python"></a>C/C++调用Python</h2><p>C++可以调用Python脚本，那么就可以写一些Python的脚本接口供C++调用了，至少可以把Python当成文本形式的动态链接库，需要的时候还可以改一改，只要不改变接口。缺点是C++的程序一旦编译好了，再改就没那么方便了。</p>
+<p>1.Python脚本：<code>pytest.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#test function  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a,b)</span>:</span>  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"in python function add"</span>  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"a = "</span> + str(a)  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"b = "</span> + str(b)  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"ret = "</span> + str(a+b)  </span><br><span class="line">    <span class="keyword">return</span>  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(a)</span>:</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"in python function foo"</span>  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"a = "</span> + str(a)  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">"ret = "</span> + str(a * a)  </span><br><span class="line">    <span class="keyword">return</span>   </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">guestlist</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">print</span> <span class="string">"aaaa"</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">p</span><span class="params">()</span>:</span>  </span><br><span class="line">      <span class="keyword">print</span> <span class="string">"bbbbb"</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, id)</span>:</span>  </span><br><span class="line">      <span class="keyword">return</span> <span class="string">"ccccc"</span>  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">()</span>:</span>  </span><br><span class="line">    guest = guestlist()  </span><br><span class="line">    <span class="keyword">print</span> guest[<span class="string">'aa'</span>]  </span><br><span class="line">  </span><br><span class="line"><span class="comment">#update()</span></span><br></pre></td></tr></table></figure>
+
+<p>2.C++代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**g++ -o callpy callpy.cpp -I/usr/include/python2.6 -L/usr/lib64/python2.6/config -lpython2.6**/</span>  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Python.h&gt;  </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="comment">// 初始化Python  </span></span><br><span class="line">    <span class="comment">//在使用Python系统前，必须使用Py_Initialize对其  </span></span><br><span class="line">    <span class="comment">//进行初始化。它会载入Python的内建模块并添加系统路  </span></span><br><span class="line">    <span class="comment">//径到模块搜索路径中。这个函数没有返回值，检查系统  </span></span><br><span class="line">    <span class="comment">//是否初始化成功需要使用Py_IsInitialized。  </span></span><br><span class="line">    Py_Initialize();  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 检查初始化是否成功  </span></span><br><span class="line">    <span class="keyword">if</span> ( !Py_IsInitialized() ) &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 添加当前路径  </span></span><br><span class="line">    <span class="comment">//把输入的字符串作为Python代码直接运行，返回0  </span></span><br><span class="line">    <span class="comment">//表示成功，-1表示有错。大多时候错误都是因为字符串  </span></span><br><span class="line">    <span class="comment">//中有语法错误。  </span></span><br><span class="line">    PyRun_SimpleString(<span class="string">"import sys"</span>);  </span><br><span class="line">    PyRun_SimpleString(<span class="string">"print '---import sys---'"</span>);   </span><br><span class="line">    PyRun_SimpleString(<span class="string">"sys.path.append('./')"</span>);  </span><br><span class="line">    PyObject *pName,*pModule,*pDict,*pFunc,*pArgs;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 载入名为pytest的脚本  </span></span><br><span class="line">    pName = PyString_FromString(<span class="string">"pytest"</span>);  </span><br><span class="line">    pModule = PyImport_Import(pName);  </span><br><span class="line">    <span class="keyword">if</span> ( !pModule ) &#123;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"can't find pytest.py"</span>);  </span><br><span class="line">        getchar();  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    pDict = PyModule_GetDict(pModule);  </span><br><span class="line">    <span class="keyword">if</span> ( !pDict ) &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 找出函数名为add的函数  </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"----------------------\n"</span>);  </span><br><span class="line">    pFunc = PyDict_GetItemString(pDict, <span class="string">"add"</span>);  </span><br><span class="line">    <span class="keyword">if</span> ( !pFunc || !PyCallable_Check(pFunc) ) &#123;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"can't find function [add]"</span>);  </span><br><span class="line">        getchar();  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;  </span><br><span class="line">     &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 参数进栈  </span></span><br><span class="line">    *pArgs;  </span><br><span class="line">    pArgs = PyTuple_New(<span class="number">2</span>);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//  PyObject* Py_BuildValue(char *format, ...)  </span></span><br><span class="line">    <span class="comment">//  把C++的变量转换成一个Python对象。当需要从  </span></span><br><span class="line">    <span class="comment">//  C++传递变量到Python时，就会使用这个函数。此函数  </span></span><br><span class="line">    <span class="comment">//  有点类似C的printf，但格式不同。常用的格式有  </span></span><br><span class="line">    <span class="comment">//  s 表示字符串，  </span></span><br><span class="line">    <span class="comment">//  i 表示整型变量，  </span></span><br><span class="line">    <span class="comment">//  f 表示浮点数，  </span></span><br><span class="line">    <span class="comment">//  O 表示一个Python对象。  </span></span><br><span class="line">  </span><br><span class="line">    PyTuple_SetItem(pArgs, <span class="number">0</span>, Py_BuildValue(<span class="string">"l"</span>,<span class="number">3</span>));  </span><br><span class="line">    PyTuple_SetItem(pArgs, <span class="number">1</span>, Py_BuildValue(<span class="string">"l"</span>,<span class="number">4</span>));  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 调用Python函数  </span></span><br><span class="line">    PyObject_CallObject(pFunc, pArgs);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//下面这段是查找函数foo 并执行foo  </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"----------------------\n"</span>);  </span><br><span class="line">    pFunc = PyDict_GetItemString(pDict, <span class="string">"foo"</span>);  </span><br><span class="line">    <span class="keyword">if</span> ( !pFunc || !PyCallable_Check(pFunc) ) &#123;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"can't find function [foo]"</span>);  </span><br><span class="line">        getchar();  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;  </span><br><span class="line">     &#125;  </span><br><span class="line">  </span><br><span class="line">    pArgs = PyTuple_New(<span class="number">1</span>);  </span><br><span class="line">    PyTuple_SetItem(pArgs, <span class="number">0</span>, Py_BuildValue(<span class="string">"l"</span>,<span class="number">2</span>));   </span><br><span class="line">  </span><br><span class="line">    PyObject_CallObject(pFunc, pArgs);  </span><br><span class="line">       </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"----------------------\n"</span>);  </span><br><span class="line">    pFunc = PyDict_GetItemString(pDict, <span class="string">"update"</span>);  </span><br><span class="line">    <span class="keyword">if</span> ( !pFunc || !PyCallable_Check(pFunc) ) &#123;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"can't find function [update]"</span>);  </span><br><span class="line">        getchar();  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;  </span><br><span class="line">     &#125;  </span><br><span class="line">    pArgs = PyTuple_New(<span class="number">0</span>);  </span><br><span class="line">    PyTuple_SetItem(pArgs, <span class="number">0</span>, Py_BuildValue(<span class="string">""</span>));  </span><br><span class="line">    PyObject_CallObject(pFunc, pArgs);       </span><br><span class="line">  </span><br><span class="line">    Py_DECREF(pName);  </span><br><span class="line">    Py_DECREF(pArgs);  </span><br><span class="line">    Py_DECREF(pModule);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 关闭Python  </span></span><br><span class="line">    Py_Finalize();  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.C++编译成二进制可执行文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -o callpy callpy.cpp -I/usr/include/python3.6 -L/usr/lib64/python3.6/config -lpython3.6</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编译选项需要手动指定Python的include路径和链接接路径（Python版本号根据具体情况而定）</p>
+</blockquote>
+<p>4.运行结果：</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/Python与C++相互调用.html" title="page">http://leesin.cc/reading/Python与C++相互调用.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/Ubuntu/Ubuntu16.04装机系列-7.谷歌输入法.html" rel="next" title="page">
+                  <i class="fa fa-chevron-left"></i> page
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/reading/Python与C++相互调用_附录.html" rel="prev" title="page">
+                  page <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python与C-相互调用"><span class="nav-number">1.</span> <span class="nav-text">Python与C++相互调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python调用C-C"><span class="nav-number">1.2.</span> <span class="nav-text">Python调用C/C++</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python调用C动态链接库"><span class="nav-number">1.2.1.</span> <span class="nav-text">Python调用C动态链接库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python调用C-类-动态链接库"><span class="nav-number">1.2.2.</span> <span class="nav-text">Python调用C++(类)动态链接库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python调用C-C-可执行程序"><span class="nav-number">1.2.3.</span> <span class="nav-text">Python调用C/C++可执行程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展Python（C-为Python编写扩展模块）"><span class="nav-number">1.2.4.</span> <span class="nav-text">扩展Python（C++为Python编写扩展模块）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-C-调用Python"><span class="nav-number">1.3.</span> <span class="nav-text">C/C++调用Python</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

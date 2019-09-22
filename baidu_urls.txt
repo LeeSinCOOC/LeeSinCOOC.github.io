@@ -1,3 +1,6 @@
+http://leesin.cc/reading/Python与C++相互调用_附录.html
+http://leesin.cc/reading/Python与C++相互调用.html
+http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-7.谷歌输入法.html
 http://leesin.cc/reading/hexo报错.html
 http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-6.配置深度学习GPU环境.html
 http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-5.编译安装OpenCV.html
@@ -37,20 +40,20 @@ http://leesin.cc/python/18.Python的文件.html
 http://leesin.cc/python/17.Python的模块.html
 http://leesin.cc/python/16.Python的函数.html
 http://leesin.cc/python/15.Python的循环.html
-http://leesin.cc/python/13.Python运算符.html
 http://leesin.cc/python/14.Python条件判断.html
+http://leesin.cc/python/13.Python运算符.html
 http://leesin.cc/python/11.Python的字典.html
 http://leesin.cc/python/10.Python的元组.html
 http://leesin.cc/python/12.复习.html
 http://leesin.cc/python/9.Python 的列表.html
+http://leesin.cc/reading/如何使用SVM训练自己的数据.html
+http://leesin.cc/python/8.Python的字符串.html
 http://leesin.cc/python/7.Python的随机数模块.html
 http://leesin.cc/reading/卷积神经网络.html
-http://leesin.cc/python/8.Python的字符串.html
-http://leesin.cc/reading/如何使用SVM训练自己的数据.html
 http://leesin.cc/reading/OpenCV检测分割图像.html
 http://leesin.cc/homework/number.html
-http://leesin.cc/python/6.Python的math模块.html
 http://leesin.cc/python/5.Python的数字类型.html
+http://leesin.cc/python/6.Python的math模块.html
 http://leesin.cc/reading/OpenCV调用摄像头拍照.html
 http://leesin.cc/python/3.Python 基础语法.html
 http://leesin.cc/python/4.Python 的变量类型.html

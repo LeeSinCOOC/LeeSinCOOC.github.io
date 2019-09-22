@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="加载DLL访问dll，首先需引入ctypes库from ctypes import *假设你已经有了一个的DLL（名字是add.dll)，且该DLL有一个符合cdecl（这里强调调用约定是因为，stdcall调用约定和cdecl调用约定声明的导出函数，在使用python加载时使用的加载函数是不同的，后面会有说明）调用约定的导出函数Add。stdcall调用约定： 两种加载方式">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="page">
+<meta property="og:url" content="http://leesin.cc/reading/Python与C++相互调用_附录.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="加载DLL访问dll，首先需引入ctypes库from ctypes import *假设你已经有了一个的DLL（名字是add.dll)，且该DLL有一个符合cdecl（这里强调调用约定是因为，stdcall调用约定和cdecl调用约定声明的导出函数，在使用python加载时使用的加载函数是不同的，后面会有说明）调用约定的导出函数Add。stdcall调用约定： 两种加载方式">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-22T09:10:52.911Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="page">
+<meta name="twitter:description" content="加载DLL访问dll，首先需引入ctypes库from ctypes import *假设你已经有了一个的DLL（名字是add.dll)，且该DLL有一个符合cdecl（这里强调调用约定是因为，stdcall调用约定和cdecl调用约定声明的导出函数，在使用python加载时使用的加载函数是不同的，后面会有说明）调用约定的导出函数Add。stdcall调用约定： 两种加载方式">
+  <link rel="canonical" href="http://leesin.cc/reading/Python与C++相互调用_附录">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>page | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/Python与C++相互调用_附录.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">page
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-22 17:09:26 / 修改时间：17:10:52" itemprop="dateCreated datePublished" datetime="2019-09-22T17:09:26+08:00">2019-09-22</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="加载DLL"><a href="#加载DLL" class="headerlink" title="加载DLL"></a>加载DLL</h2><p>访问dll，首先需引入ctypes库<br><code>from ctypes import *</code></p><p>假设你已经有了一个的DLL（名字是add.dll)，且该DLL有一个符合cdecl（这里强调调用约定是因为，stdcall调用约定和cdecl调用约定声明的导出函数，在使用python加载时使用的加载函数是不同的，后面会有说明）调用约定的导出函数Add。<br><strong>stdcall调用约定：</strong> 两种加载方式</p><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Objdll = ctypes.windll.LoadLibrary("dllpath")  </span><br><span class="line">Objdll = ctypes.WinDLL("dllpath")</span><br></pre></td></tr></table></figure>
+
+<p><strong>cdecl调用约定：</strong> 也有两种加载方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Objdll = ctypes.cdll.LoadLibrary("dllpath")  </span><br><span class="line">Objdll = ctypes.CDLL("dllpath")</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其实windll和cdll分别是WinDLL类和CDll类的对象</p>
+</blockquote>
+<p>调用DLL方法</p>
+<p>加载dll后会返回一个DLL对象，使用其中的函数方法则相当于操作该对象的对应属性。</p>
+<p>注意，经过stdcall声明的方法，如果不是用def文件声明的导出函数或者extern “C” 声明的话，编译器会对函数名进行修改</p>
+<p>函数参数申明，通过设置函数的argtypes属性</p>
+<p>函数返回类型，函数默认返回c_int类型，如果需要返回其他类型，需要设置函数的restype属性</p>
+<h2 id="python3-获得shell的输出"><a href="#python3-获得shell的输出" class="headerlink" title="python3 获得shell的输出"></a>python3 获得shell的输出</h2><p>python3 获得shell的输出内容<code>subprocess.getstatusoutput</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">PIDS=subprocess.getstatusoutput(<span class="string">'ps -ef |grep appium '</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 返回的数据结果是一个元组，第一位为shell运行结果的状态（0通过），第二位是输出的内容（string类型）<br>所以如果想用值，使用PIDS[1]<br><strong>举个例子</strong>:比如我想杀appium的进程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">PIDS=subprocess.getstatusoutput(<span class="string">'ps -ef |grep appium '</span>)</span><br><span class="line"></span><br><span class="line">pidlist=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> PIDS[<span class="number">1</span>].split(<span class="string">"\n"</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        pidlist.append(i.split()[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">print(pidlist)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> pidlist:</span><br><span class="line">    os.system(<span class="string">"kill -9 "</span>+i)</span><br></pre></td></tr></table></figure>
+
+<h2 id="调用系统命令-os-system-和os-popen"><a href="#调用系统命令-os-system-和os-popen" class="headerlink" title="调用系统命令 os.system()和os.popen()"></a>调用系统命令 os.system()和os.popen()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(os)</span><br><span class="line">[<span class="string">'CLD_CONTINUED'</span>, <span class="string">'CLD_DUMPED'</span>, <span class="string">'CLD_EXITED'</span>, <span class="string">'CLD_TRAPPED'</span>, </span><br><span class="line"><span class="string">'DirEntry'</span>, <span class="string">'EX_CANTCREAT'</span>, <span class="string">'EX_CONFIG'</span>, <span class="string">'EX_DATAERR'</span>, <span class="string">'EX_IOERR'</span>,</span><br><span class="line"><span class="string">'EX_NOHOST'</span>, <span class="string">'EX_NOINPUT'</span>, <span class="string">'EX_NOPERM'</span>, <span class="string">'EX_NOUSER'</span>, <span class="string">'EX_OK'</span>, </span><br><span class="line"><span class="string">'EX_OSERR'</span>, <span class="string">'EX_OSFILE'</span>, <span class="string">'EX_PROTOCOL'</span>, <span class="string">'EX_SOFTWARE'</span>,</span><br><span class="line"><span class="string">'EX_TEMPFAIL'</span>, <span class="string">'EX_UNAVAILABLE'</span>, <span class="string">'EX_USAGE'</span>, <span class="string">'F_LOCK'</span>, <span class="string">'F_OK'</span>,</span><br><span class="line"><span class="string">'F_TEST'</span>, <span class="string">'F_TLOCK'</span>, <span class="string">'F_ULOCK'</span>, <span class="string">'GRND_NONBLOCK'</span>, <span class="string">'GRND_RANDOM'</span>,</span><br><span class="line"><span class="string">'MutableMapping'</span>, <span class="string">'NGROUPS_MAX'</span>, <span class="string">'O_ACCMODE'</span>, <span class="string">'O_APPEND'</span>, </span><br><span class="line"><span class="string">'O_ASYNC'</span>, <span class="string">'O_CLOEXEC'</span>, <span class="string">'O_CREAT'</span>, <span class="string">'O_DIRECT'</span>, <span class="string">'O_DIRECTORY'</span>, </span><br><span class="line"><span class="string">'O_DSYNC'</span>, <span class="string">'O_EXCL'</span>, <span class="string">'O_LARGEFILE'</span>, <span class="string">'O_NDELAY'</span>, <span class="string">'O_NOATIME'</span>, </span><br><span class="line"><span class="string">'O_NOCTTY'</span>, <span class="string">'O_NOFOLLOW'</span>, <span class="string">'O_NONBLOCK'</span>, <span class="string">'O_PATH'</span>, <span class="string">'O_RDONLY'</span>, </span><br><span class="line"><span class="string">'O_RDWR'</span>, <span class="string">'O_RSYNC'</span>, <span class="string">'O_SYNC'</span>, <span class="string">'O_TMPFILE'</span>, <span class="string">'O_TRUNC'</span>, <span class="string">'O_WRONLY'</span>, </span><br><span class="line"><span class="string">'POSIX_FADV_DONTNEED'</span>, <span class="string">'POSIX_FADV_NOREUSE'</span>, <span class="string">'POSIX_FADV_NORMAL'</span>, </span><br><span class="line"><span class="string">'POSIX_FADV_RANDOM'</span>, <span class="string">'POSIX_FADV_SEQUENTIAL'</span>, <span class="string">'POSIX_FADV_WILLNEED'</span>, </span><br><span class="line"><span class="string">'PRIO_PGRP'</span>, <span class="string">'PRIO_PROCESS'</span>, <span class="string">'PRIO_USER'</span>, <span class="string">'P_ALL'</span>, <span class="string">'P_NOWAIT'</span>,</span><br><span class="line"><span class="string">'P_NOWAITO'</span>, <span class="string">'P_PGID'</span>, <span class="string">'P_PID'</span>, <span class="string">'P_WAIT'</span>, <span class="string">'PathLike'</span>, <span class="string">'RTLD_DEEPBIND'</span>, </span><br><span class="line"><span class="string">'RTLD_GLOBAL'</span>, <span class="string">'RTLD_LAZY'</span>, <span class="string">'RTLD_LOCAL'</span>, <span class="string">'RTLD_NODELETE'</span>, <span class="string">'RTLD_NOLOAD'</span>,</span><br><span class="line"><span class="string">'RTLD_NOW'</span>, <span class="string">'R_OK'</span>, <span class="string">'SCHED_BATCH'</span>, <span class="string">'SCHED_FIFO'</span>, <span class="string">'SCHED_IDLE'</span>,</span><br><span class="line"><span class="string">'SCHED_OTHER'</span>, <span class="string">'SCHED_RESET_ON_FORK'</span>, <span class="string">'SCHED_RR'</span>, <span class="string">'SEEK_CUR'</span>, </span><br><span class="line"><span class="string">'SEEK_DATA'</span>, <span class="string">'SEEK_END'</span>, <span class="string">'SEEK_HOLE'</span>, <span class="string">'SEEK_SET'</span>, <span class="string">'ST_APPEND'</span>, </span><br><span class="line"><span class="string">'ST_MANDLOCK'</span>, <span class="string">'ST_NOATIME'</span>, <span class="string">'ST_NODEV'</span>, <span class="string">'ST_NODIRATIME'</span>, <span class="string">'ST_NOEXEC'</span>,</span><br><span class="line"><span class="string">'ST_NOSUID'</span>, <span class="string">'ST_RDONLY'</span>, <span class="string">'ST_RELATIME'</span>, <span class="string">'ST_SYNCHRONOUS'</span>, <span class="string">'ST_WRITE'</span>,</span><br><span class="line"><span class="string">'TMP_MAX'</span>, <span class="string">'WCONTINUED'</span>, <span class="string">'WCOREDUMP'</span>, <span class="string">'WEXITED'</span>, <span class="string">'WEXITSTATUS'</span>,</span><br><span class="line"><span class="string">'WIFCONTINUED'</span>, <span class="string">'WIFEXITED'</span>, <span class="string">'WIFSIGNALED'</span>, <span class="string">'WIFSTOPPED'</span>, <span class="string">'WNOHANG'</span>,</span><br><span class="line"><span class="string">'WNOWAIT'</span>, <span class="string">'WSTOPPED'</span>, <span class="string">'WSTOPSIG'</span>, <span class="string">'WTERMSIG'</span>, <span class="string">'WUNTRACED'</span>, </span><br><span class="line"><span class="string">'W_OK'</span>, <span class="string">'XATTR_CREATE'</span>, <span class="string">'XATTR_REPLACE'</span>, <span class="string">'XATTR_SIZE_MAX'</span>, <span class="string">'X_OK'</span>,</span><br><span class="line"><span class="string">'_Environ'</span>, <span class="string">'__all__'</span>, <span class="string">'__builtins__'</span>, <span class="string">'__cached__'</span>, <span class="string">'__doc__'</span>,</span><br><span class="line"><span class="string">'__file__'</span>, <span class="string">'__loader__'</span>, <span class="string">'__name__'</span>, <span class="string">'__package__'</span>, <span class="string">'__spec__'</span>, </span><br><span class="line"><span class="string">'_execvpe'</span>, <span class="string">'_exists'</span>, <span class="string">'_exit'</span>, <span class="string">'_fspath'</span>, <span class="string">'_fwalk'</span>, <span class="string">'_get_exports_list'</span>, </span><br><span class="line"><span class="string">'_putenv'</span>, <span class="string">'_spawnvef'</span>, <span class="string">'_unsetenv'</span>, <span class="string">'_wrap_close'</span>, <span class="string">'abc'</span>, <span class="string">'abort'</span>, </span><br><span class="line"><span class="string">'access'</span>, <span class="string">'altsep'</span>, <span class="string">'chdir'</span>, <span class="string">'chmod'</span>, <span class="string">'chown'</span>, <span class="string">'chroot'</span>, <span class="string">'close'</span>,</span><br><span class="line"> <span class="string">'closerange'</span>, <span class="string">'confstr'</span>, <span class="string">'confstr_names'</span>, <span class="string">'cpu_count'</span>, <span class="string">'ctermid'</span>, </span><br><span class="line"> <span class="string">'curdir'</span>, <span class="string">'defpath'</span>, <span class="string">'device_encoding'</span>, <span class="string">'devnull'</span>, <span class="string">'dup'</span>, <span class="string">'dup2'</span>, </span><br><span class="line"> <span class="string">'environ'</span>, <span class="string">'environb'</span>, <span class="string">'errno'</span>, <span class="string">'error'</span>, <span class="string">'execl'</span>, <span class="string">'execle'</span>, <span class="string">'execlp'</span>, </span><br><span class="line"> <span class="string">'execlpe'</span>, <span class="string">'execv'</span>, <span class="string">'execve'</span>, <span class="string">'execvp'</span>, <span class="string">'execvpe'</span>, <span class="string">'extsep'</span>, <span class="string">'fchdir'</span>, </span><br><span class="line"> <span class="string">'fchmod'</span>, <span class="string">'fchown'</span>, <span class="string">'fdatasync'</span>, <span class="string">'fdopen'</span>, <span class="string">'fork'</span>, <span class="string">'forkpty'</span>, </span><br><span class="line"> <span class="string">'fpathconf'</span>, <span class="string">'fsdecode'</span>, <span class="string">'fsencode'</span>, <span class="string">'fspath'</span>, <span class="string">'fstat'</span>, <span class="string">'fstatvfs'</span>, </span><br><span class="line"> <span class="string">'fsync'</span>, <span class="string">'ftruncate'</span>, <span class="string">'fwalk'</span>, <span class="string">'get_blocking'</span>, <span class="string">'get_exec_path'</span>, </span><br><span class="line"> <span class="string">'get_inheritable'</span>, <span class="string">'get_terminal_size'</span>, <span class="string">'getcwd'</span>, <span class="string">'getcwdb'</span>, <span class="string">'getegid'</span>, </span><br><span class="line"> <span class="string">'getenv'</span>, <span class="string">'getenvb'</span>, <span class="string">'geteuid'</span>, <span class="string">'getgid'</span>, <span class="string">'getgrouplist'</span>, <span class="string">'getgroups'</span>, </span><br><span class="line"> <span class="string">'getloadavg'</span>, <span class="string">'getlogin'</span>, <span class="string">'getpgid'</span>, <span class="string">'getpgrp'</span>, <span class="string">'getpid'</span>, <span class="string">'getppid'</span>, </span><br><span class="line"> <span class="string">'getpriority'</span>, <span class="string">'getrandom'</span>, <span class="string">'getresgid'</span>, <span class="string">'getresuid'</span>, <span class="string">'getsid'</span>, </span><br><span class="line"> <span class="string">'getuid'</span>, <span class="string">'getxattr'</span>, <span class="string">'initgroups'</span>, <span class="string">'isatty'</span>, <span class="string">'kill'</span>, <span class="string">'killpg'</span>, </span><br><span class="line"> <span class="string">'lchown'</span>, <span class="string">'linesep'</span>, <span class="string">'link'</span>, <span class="string">'listdir'</span>, <span class="string">'listxattr'</span>, <span class="string">'lockf'</span>, </span><br><span class="line"> <span class="string">'lseek'</span>, <span class="string">'lstat'</span>, <span class="string">'major'</span>, <span class="string">'makedev'</span>, <span class="string">'makedirs'</span>, <span class="string">'minor'</span>, <span class="string">'mkdir'</span>, </span><br><span class="line"> <span class="string">'mkfifo'</span>, <span class="string">'mknod'</span>, <span class="string">'name'</span>, <span class="string">'nice'</span>, <span class="string">'open'</span>, <span class="string">'openpty'</span>, <span class="string">'pardir'</span>, <span class="string">'path'</span>, </span><br><span class="line"> <span class="string">'pathconf'</span>, <span class="string">'pathconf_names'</span>, <span class="string">'pathsep'</span>, <span class="string">'pipe'</span>, <span class="string">'pipe2'</span>, <span class="string">'popen'</span>, </span><br><span class="line"> <span class="string">'posix_fadvise'</span>, <span class="string">'posix_fallocate'</span>, <span class="string">'pread'</span>, <span class="string">'putenv'</span>, <span class="string">'pwrite'</span>, <span class="string">'read'</span>,</span><br><span class="line"><span class="string">'readlink'</span>, <span class="string">'readv'</span>, <span class="string">'remove'</span>, <span class="string">'removedirs'</span>, <span class="string">'removexattr'</span>, <span class="string">'rename'</span>,</span><br><span class="line"><span class="string">'renames'</span>, <span class="string">'replace'</span>, <span class="string">'rmdir'</span>, <span class="string">'scandir'</span>, <span class="string">'sched_get_priority_max'</span>, </span><br><span class="line"><span class="string">'sched_get_priority_min'</span>, <span class="string">'sched_getaffinity'</span>, <span class="string">'sched_getparam'</span>, </span><br><span class="line"><span class="string">'sched_getscheduler'</span>, <span class="string">'sched_param'</span>, <span class="string">'sched_rr_get_interval'</span>, </span><br><span class="line"><span class="string">'sched_setaffinity'</span>, <span class="string">'sched_setparam'</span>, <span class="string">'sched_setscheduler'</span>, <span class="string">'sched_yield'</span>, </span><br><span class="line"><span class="string">'sendfile'</span>, <span class="string">'sep'</span>, <span class="string">'set_blocking'</span>, <span class="string">'set_inheritable'</span>, <span class="string">'setegid'</span>,</span><br><span class="line"><span class="string">'seteuid'</span>, <span class="string">'setgid'</span>, <span class="string">'setgroups'</span>, <span class="string">'setpgid'</span>, <span class="string">'setpgrp'</span>, <span class="string">'setpriority'</span>,</span><br><span class="line"><span class="string">'setregid'</span>, <span class="string">'setresgid'</span>, <span class="string">'setresuid'</span>, <span class="string">'setreuid'</span>, <span class="string">'setsid'</span>, <span class="string">'setuid'</span>, </span><br><span class="line"><span class="string">'setxattr'</span>, <span class="string">'spawnl'</span>, <span class="string">'spawnle'</span>, <span class="string">'spawnlp'</span>, <span class="string">'spawnlpe'</span>, <span class="string">'spawnv'</span>, </span><br><span class="line"><span class="string">'spawnve'</span>, <span class="string">'spawnvp'</span>, <span class="string">'spawnvpe'</span>, <span class="string">'st'</span>, <span class="string">'stat'</span>, <span class="string">'stat_float_times'</span>,</span><br><span class="line"><span class="string">'stat_result'</span>, <span class="string">'statvfs'</span>, <span class="string">'statvfs_result'</span>, <span class="string">'strerror'</span>, </span><br><span class="line"><span class="string">'supports_bytes_environ'</span>, <span class="string">'supports_dir_fd'</span>, <span class="string">'supports_effective_ids'</span>, </span><br><span class="line"><span class="string">'supports_fd'</span>, <span class="string">'supports_follow_symlinks'</span>, <span class="string">'symlink'</span>, <span class="string">'sync'</span>, <span class="string">'sys'</span>, </span><br><span class="line"><span class="string">'sysconf'</span>, <span class="string">'sysconf_names'</span>, <span class="string">'system'</span>, <span class="string">'tcgetpgrp'</span>, <span class="string">'tcsetpgrp'</span>,</span><br><span class="line"><span class="string">'terminal_size'</span>, <span class="string">'times'</span>, <span class="string">'times_result'</span>, <span class="string">'truncate'</span>, <span class="string">'ttyname'</span>, <span class="string">'umask'</span>, </span><br><span class="line"><span class="string">'uname'</span>, <span class="string">'uname_result'</span>, <span class="string">'unlink'</span>, <span class="string">'unsetenv'</span>, <span class="string">'urandom'</span>, <span class="string">'utime'</span>,</span><br><span class="line"><span class="string">'wait'</span>, <span class="string">'wait3'</span>, <span class="string">'wait4'</span>, <span class="string">'waitid'</span>, <span class="string">'waitid_result'</span>, <span class="string">'waitpid'</span>, <span class="string">'walk'</span>,</span><br><span class="line"><span class="string">'write'</span>, <span class="string">'writev'</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="os-system"><a href="#os-system" class="headerlink" title="os.system()"></a>os.system()</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(os.system)</span><br><span class="line">Help on built-<span class="keyword">in</span> function system <span class="keyword">in</span> module nt:</span><br><span class="line"></span><br><span class="line">system(command)</span><br><span class="line">    Execute the command <span class="keyword">in</span> a subshell.</span><br></pre></td></tr></table></figure>
+
+<p>从字面意思上看，<code>os.system()</code>是在当前进程中打开一个子shell（子进程）来执行系统命令。</p>
+<p>官方说法：</p>
+<blockquote>
+<p>On Unix, the return value is the exit status of the process encoded in the format specified for wait().</p>
+</blockquote>
+<blockquote>
+<p>The subprocess module provides more powerful facilities for spawning new processes and retrieving their results; using that module is preferable to using this function.</p>
+</blockquote>
+<p>这个方法只返回状态码，执行结果会输出到stdout，也就是输出到终端。不过官方建议使用<code>subprocess</code>模块来生成新进程并获取结果是更好的选择。</p>
+<h3 id="os-popen"><a href="#os-popen" class="headerlink" title="os.popen()"></a>os.popen()</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(os.popen)</span><br><span class="line">Help on function popen <span class="keyword">in</span> module os:</span><br><span class="line"></span><br><span class="line">popen(cmd, mode=<span class="string">'r'</span>, buffering=<span class="number">-1</span>)</span><br><span class="line">    <span class="comment"># Supply os.popen()</span></span><br></pre></td></tr></table></figure>
+
+<p>cmd：要执行的命令。<br>mode：打开文件的模式，默认为’r’，用法与open()相同。<br>buffering：0意味着无缓冲；1意味着行缓冲；其它正值表示使用参数大小的缓冲。负的bufsize意味着使用系统的默认值，一般来说，对于tty设备，它是行缓冲；对于其它文件，它是全缓冲。</p>
+<p>官方说法：</p>
+<blockquote>
+<p>Open a pipe to or from command cmd. The return value is an open file object connected to the pipe, which can be read or written depending on whether mode is ‘r’ (default) or ‘w’. </p>
+</blockquote>
+<blockquote>
+<p>The close method returns None if the subprocess exited successfully, or the subprocess’s return code if there was an error. </p>
+</blockquote>
+<blockquote>
+<p>This is implemented using subprocess.Popen;</p>
+</blockquote>
+<p>这个方法会打开一个管道，返回结果是一个连接管道的文件对象，该文件对象的操作方法同open()，<br>可以从该文件对象中读取返回结果。如果执行成功，不会返回状态码，如果执行失败，则会将错误信息<br>输出到stdout，并返回一个空字符串。这里官方也表示<code>subprocess</code>模块已经实现了更为强大的<br><code>subprocess.Popen()</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.popen(<span class="string">'ls'</span>)</span><br><span class="line">&lt;os._wrap_close object at <span class="number">0x7f93c5a2d780</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.popen(<span class="string">'la'</span>)</span><br><span class="line">&lt;os._wrap_close object at <span class="number">0x7f93c5a37588</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>/bin/sh: la: command <span class="keyword">not</span> found</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = os.popen(<span class="string">'ls'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(f)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">os</span>.<span class="title">_wrap_close</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>读取执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.readlines()</span><br><span class="line">[<span class="string">'access.log\n'</span>,  <span class="string">'douban.py\n'</span>, <span class="string">'import_test.py\n'</span>, </span><br><span class="line"><span class="string">'mail.py\n'</span>, <span class="string">'myapp.py\n'</span>, <span class="string">'polipo\n'</span>, <span class="string">'proxychains\n'</span>,</span><br><span class="line"> <span class="string">'__pycache__\n'</span>, <span class="string">'spider.py\n'</span>, <span class="string">'test.py\n'</span>, <span class="string">'users.txt\n'</span>]</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/Python与C++相互调用_附录.html" title="page">http://leesin.cc/reading/Python与C++相互调用_附录.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/Python与C++相互调用.html" rel="next" title="page">
+                  <i class="fa fa-chevron-left"></i> page
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#加载DLL"><span class="nav-number">1.</span> <span class="nav-text">加载DLL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python3-获得shell的输出"><span class="nav-number">2.</span> <span class="nav-text">python3 获得shell的输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用系统命令-os-system-和os-popen"><span class="nav-number">3.</span> <span class="nav-text">调用系统命令 os.system()和os.popen()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#os-system"><span class="nav-number">3.1.</span> <span class="nav-text">os.system()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#os-popen"><span class="nav-number">3.2.</span> <span class="nav-text">os.popen()</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
