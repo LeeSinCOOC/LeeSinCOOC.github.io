@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="使用Flask调用百度接口实现自己的图像分类应用使用flask这个轻量级的web框架可以实现一些简单的应用，一开始我们会做一些比较简单的功能，例如总结自己的所学写一个博客网站，或者收集爬取一些免费的文档资料，音乐视频，做一个小说，教程，音频分享的网站应用。老夫作为一个算法攻城狮，按照项目需求，常常也需要将自己的算法进行封装上线测试，那么老夫如何在网页中看到自己算法的实现效果呢，于是于是乎就诞生了这">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Flask调用百度接口实现自己的图像分类应用">
+<meta property="og:url" content="http://leesin.cc/reading/使用Flask调用百度接口实现自己的图像分类应用.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="使用Flask调用百度接口实现自己的图像分类应用使用flask这个轻量级的web框架可以实现一些简单的应用，一开始我们会做一些比较简单的功能，例如总结自己的所学写一个博客网站，或者收集爬取一些免费的文档资料，音乐视频，做一个小说，教程，音频分享的网站应用。老夫作为一个算法攻城狮，按照项目需求，常常也需要将自己的算法进行封装上线测试，那么老夫如何在网页中看到自己算法的实现效果呢，于是于是乎就诞生了这">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-24T05:22:29.991Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Flask调用百度接口实现自己的图像分类应用">
+<meta name="twitter:description" content="使用Flask调用百度接口实现自己的图像分类应用使用flask这个轻量级的web框架可以实现一些简单的应用，一开始我们会做一些比较简单的功能，例如总结自己的所学写一个博客网站，或者收集爬取一些免费的文档资料，音乐视频，做一个小说，教程，音频分享的网站应用。老夫作为一个算法攻城狮，按照项目需求，常常也需要将自己的算法进行封装上线测试，那么老夫如何在网页中看到自己算法的实现效果呢，于是于是乎就诞生了这">
+  <link rel="canonical" href="http://leesin.cc/reading/使用Flask调用百度接口实现自己的图像分类应用">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>使用Flask调用百度接口实现自己的图像分类应用 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>杂记</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/使用Flask调用百度接口实现自己的图像分类应用.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">使用Flask调用百度接口实现自己的图像分类应用
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-24 13:21:56 / 修改时间：13:22:29" itemprop="dateCreated datePublished" datetime="2019-09-24T13:21:56+08:00">2019-09-24</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="使用Flask调用百度接口实现自己的图像分类应用"><a href="#使用Flask调用百度接口实现自己的图像分类应用" class="headerlink" title="使用Flask调用百度接口实现自己的图像分类应用"></a>使用Flask调用百度接口实现自己的图像分类应用</h1><p>使用flask这个轻量级的web框架可以实现一些简单的应用，一开始我们会做一些比较简单的功能，例如总结自己的所学写一个博客网站，或者收集爬取一些免费的文档资料，音乐视频，做一个小说，教程，音频分享的网站应用。老夫作为一个算法攻城狮，按照项目需求，常常也需要将自己的算法进行封装上线测试，那么老夫如何在网页中看到自己算法的实现效果呢，于是于是乎就诞生了这篇博客，为了让大多数非专业人士也能够轻松实现，这里采用了百度的算法接口。话不多说，进入正文。</p><a id="more"></a>
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="编程基础"><a href="#编程基础" class="headerlink" title="编程基础"></a>编程基础</h3><ul>
+<li>略懂Python</li>
+<li>略懂Flask(会装flask,能实现官方的hello world示例即可)</li>
+</ul>
+<h3 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h3><ul>
+<li>你自己的分类数据</li>
+<li>百度帐号一枚</li>
+</ul>
+<h2 id="使用百度的EasyDL训练数据"><a href="#使用百度的EasyDL训练数据" class="headerlink" title="使用百度的EasyDL训练数据"></a>使用百度的EasyDL训练数据</h2><p>百度EasyDL操作文档：<a href="https://ai.baidu.com/docs#/EasyDL_VIS_Classification_Intro/dc6d85fe" target="_blank" rel="noopener">https://ai.baidu.com/docs#/EasyDL_VIS_Classification_Intro/dc6d85fe</a><br>看着文档进行操作就好了，让它训练着吧，我们先补充后面的代码部分</p>
+<h2 id="编写调用API"><a href="#编写调用API" class="headerlink" title="编写调用API"></a>编写调用API</h2><p>文件名称：<code>api.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">api</span><span class="params">(img_path)</span>:</span></span><br><span class="line">       host = <span class="string">'https://aip.baidubce.com/oauth/2.0/token?grant_type='</span>\</span><br><span class="line">                <span class="string">'client_credentials&amp;client_id=你的API Key'</span>\</span><br><span class="line">                <span class="string">'&amp;client_secret=你的Secret Key'</span></span><br><span class="line">       response = requests.get(host)</span><br><span class="line">       content = response.json()</span><br><span class="line">       access_token = content[<span class="string">"access_token"</span>]</span><br><span class="line">       image = open(img_path, <span class="string">'rb'</span>).read()</span><br><span class="line">       data = &#123;<span class="string">'image'</span>: base64.b64encode(image).decode()&#125;</span><br><span class="line"></span><br><span class="line">       request_url = <span class="string">"https://aip.baidubce.com/rpc/2.0/ai_custom/v1/classification/teaeyes"</span> + <span class="string">"?access_token="</span> + access_token</span><br><span class="line">       response = requests.post(request_url, data=json.dumps(data))</span><br><span class="line">       content = response.json()</span><br><span class="line">       <span class="keyword">return</span> content</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">       img_path =<span class="string">'static/test.jpg'</span></span><br><span class="line">       content = api(img_path)</span><br><span class="line">       print(content)</span><br><span class="line">       print(type(content))</span><br></pre></td></tr></table></figure>
+
+<p>等你训练结束，申请发布之后会得到你的密钥，填写到<code>host</code> 就可以了，可以拿<code>test</code>文件测试一下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;'log_id': 6512631446211722547, 'results': [&#123;'name': '2', 'score': 0.9987852573394775&#125;, &#123;'name': '4', 'score': 0.00020876689814031124&#125;, &#123;'name': '7', 'score': 0.0001958562934305519&#125;, &#123;'name': '1', 'score': 0.0001313904213020578&#125;, &#123;'name': '3', 'score': 0.0001222034334205091&#125;, &#123;'name': '6', 'score': 0.00011624570470303297&#125;]&#125;</span><br><span class="line">&lt;class 'dict'&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写Flask应用"><a href="#编写Flask应用" class="headerlink" title="编写Flask应用"></a>编写Flask应用</h2><p>这里已经可以返回我们想要的东西，接下来开始编写flask应用吧<br>先测一个官方示例确保我们的flask是没有问题的<br>文件名称：<code>app_blog.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+
+<p>网页中应该给你正确返回：<code>Hello World!</code>，详细的教程参见<a href="http://docs.jinkan.org/docs/flask/" target="_blank" rel="noopener">官方文档</a></p>
+<p>我们模仿这个简单的应用开始编写自己的应用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template</span><br><span class="line"><span class="keyword">from</span> werkzeug.utils <span class="keyword">import</span> secure_filename <span class="comment"># 使用这个是为了确保filename是安全的</span></span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> api <span class="keyword">import</span> api</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">@app.route('/api',methods=['GET','POST']) #设置路由地址</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_tea_easy</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">        f = request.files[<span class="string">'file'</span>]</span><br><span class="line">        base_path = path.abspath(path.dirname(__file__))</span><br><span class="line">        upload_path = path.join(base_path, <span class="string">'static/images'</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#把用户上传的图片先保存起来，为了防止重名覆盖，用了时间来避免</span></span><br><span class="line">        file_name = path.join(upload_path,str(time.time()).replace(<span class="string">'.'</span>,<span class="string">'blog'</span>) + <span class="string">'.jpg'</span>)</span><br><span class="line">        f.save(file_name)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ------------------把图片裁剪成正方形，可以不需要-------------</span></span><br><span class="line">        im = Image.open(file_name)</span><br><span class="line">        w, h = im.size</span><br><span class="line">        cro = abs(w - h) // <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> w &gt; h:</span><br><span class="line">            im = im.crop((cro, <span class="number">0</span>, w - cro, h))</span><br><span class="line">            im.save(file_name, <span class="string">'JPEG'</span>)</span><br><span class="line">        <span class="keyword">if</span> w &lt; h:</span><br><span class="line">            im = im.crop((<span class="number">0</span>, cro, w, h - cro))</span><br><span class="line">            im = im.save(file_name)</span><br><span class="line">        <span class="keyword">if</span> w == h:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="comment"># -------------------------------------------------------</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 调用api进行预测，这里给它匹配了一些类别名称</span></span><br><span class="line">        pred = api(file_name)</span><br><span class="line">        dic = &#123;<span class="string">'0'</span>: <span class="string">'大红袍'</span>, <span class="string">'1'</span>: <span class="string">'太平猴魁'</span>, <span class="string">'2'</span>: <span class="string">'松针滇红'</span>,</span><br><span class="line">               <span class="string">'3'</span>: <span class="string">'白毫银针'</span>, <span class="string">'4'</span>: <span class="string">'碧螺春'</span>, <span class="string">'5'</span>: <span class="string">'祁门红茶'</span>,</span><br><span class="line">               <span class="string">'6'</span>: <span class="string">'铁观音'</span>, <span class="string">'7'</span>: <span class="string">'雅安毛峰'</span>, <span class="string">'8'</span>: <span class="string">'雅安甘露'</span>,</span><br><span class="line">               <span class="string">'9'</span>: <span class="string">'雅安竹叶青'</span>, <span class="string">'10'</span>: <span class="string">'雅安龙井'</span>&#125;</span><br><span class="line">        names = []</span><br><span class="line">        scores = []</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> pred[<span class="string">'results'</span>]:</span><br><span class="line">            names.append(dic[line[<span class="string">'name'</span>]])</span><br><span class="line">            scores.append(round(line[<span class="string">'score'</span>]*<span class="number">100</span>,<span class="number">3</span>))</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 处理完成之后将数据传给show.html页面进行显示</span></span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">'show.html'</span>,ziped=zip(names,scores),img=file_name.split(<span class="string">'/'</span>)[<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">'select_file.html'</span>) <span class="comment"># 如果用户不是post请求，就返回这个选择文件的页面</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写网页模板"><a href="#编写网页模板" class="headerlink" title="编写网页模板"></a>编写网页模板</h2><p>数据已经处理完成送发给<code>html</code>页面了，我们上面涉及的页面应该如何编写呢？<br>这里主要是涉及到<code>html</code>,<code>css</code>,<code>bootstrap</code>,如果没有基础可以到<a href="https://www.w3cschool.cn/" target="_blank" rel="noopener">w3cschool</a>进行学习<br>文件名称：<code>select_file.html</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>选择你的文件<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row clearfix"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-md-12 column"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"padd"</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">form</span> <span class="attr">role</span>=<span class="string">"form"</span> <span class="attr">class</span>=<span class="string">"form-inline"</span> <span class="attr">action</span>=<span class="string">""</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group span12"</span>&gt;</span></span><br><span class="line">					 <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-primary"</span> <span class="attr">name</span>=<span class="string">"file"</span> &gt;</span></span><br><span class="line">                         <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">placeholder</span>=<span class="string">"请选择你的文件"</span> &gt;</span></span><br><span class="line">                     <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn btn-success"</span> <span class="attr">type</span>=<span class="string">"submit"</span> &gt;</span></span><br><span class="line">                     <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"glyphicon glyphicon-cloud-upload"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">    button&#123;</span><br><span class="line">        font-size: 60px;</span><br><span class="line">        height: 50px;</span><br><span class="line">    &#125;</span><br><span class="line">    #padd&#123;</span><br><span class="line">        &#123;#background-color: #3e88f1;#&#125;</span><br><span class="line">        height: 50%;</span><br><span class="line">        width: 50%;</span><br><span class="line">        padding-top: 10%;</span><br><span class="line">        margin-top: 10%;</span><br><span class="line">        margin-left: 20%;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件名称：<code>show.html</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/1999/html"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>预测结果<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container-fluid"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row-fluid"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"span12"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span> <span class="attr">class</span>=<span class="string">"text-center"</span>&gt;</span></span><br><span class="line">				智能分析</span><br><span class="line">			<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        &#123;% if ziped %&#125;</span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;&#123;</span> <span class="attr">url_for</span>('<span class="attr">static</span>',<span class="attr">filename</span>=<span class="string">'images/'</span>+<span class="attr">img</span>)&#125;&#125; <span class="attr">class</span>=<span class="string">"img-rounded"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"pred"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">table</span> <span class="attr">class</span>=<span class="string">"table table-hover"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">thead</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">th</span>&gt;</span></span><br><span class="line">							预测种类</span><br><span class="line">						<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">th</span>&gt;</span></span><br><span class="line">							估计得分</span><br><span class="line">						<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">thead</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">                    &#123;% for n in ziped %&#125;</span><br><span class="line">                        <span class="tag">&lt;<span class="name">tr</span> <span class="attr">class</span>=<span class="string">"success"</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123; n[0] &#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123; n[1] &#125;&#125;%<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                    &#123;% endfor %&#125;</span><br><span class="line">				<span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        &#123;% else %&#125;</span><br><span class="line">            <span class="tag">&lt;<span class="name">h3</span> <span class="attr">style</span>=<span class="string">"text-align: center"</span>&gt;</span>&#123;&#123; name &#125;&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;&#123;</span> <span class="attr">url_for</span>('<span class="attr">static</span>',<span class="attr">filename</span>=<span class="string">'images/'</span>+<span class="attr">img</span>)&#125;&#125; <span class="attr">class</span>=<span class="string">"img-rounded"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">    h3&#123;</span><br><span class="line">        color: seagreen;</span><br><span class="line">    &#125;</span><br><span class="line">    img&#123;</span><br><span class="line">        height: 60%;</span><br><span class="line">        width: 80%;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个展示的网页重点是什么？它可以随着输入数据的不同显示不同的网页，所以它叫做模板，模板使用 <a href="https://palletsprojects.com/p/jinja/" target="_blank" rel="noopener">Jinja2</a> 语法并默认开启自动转义<br>关于Jinja2的东西，我后面做Django教程的时候再单独写一篇博客吧。<br>其实，理解了模板，就理解了动态网页。无非就是数据库存放数据，用这些框架写处理函数，函数访问数据库，再将处理后的数据送给模板进行显示。说起数据库，我先立个flag，空了再写个数据库教程，暂时<br>定一个关系型<code>mysql</code>和非关系型<code>mongodb</code>吧</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>做一个调用算法的服务需要几步？<br>1.算法包装</p>
+<p>2.调用算法</p>
+<p>3.进行显示</p>
+<p>好像也没啥说的，整个应用还是比较简单</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/使用Flask调用百度接口实现自己的图像分类应用.html" title="使用Flask调用百度接口实现自己的图像分类应用">http://leesin.cc/reading/使用Flask调用百度接口实现自己的图像分类应用.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/Python与C++相互调用_附录.html" rel="next" title="Python与C++相互调用_附录">
+                  <i class="fa fa-chevron-left"></i> Python与C++相互调用_附录
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Flask调用百度接口实现自己的图像分类应用"><span class="nav-number">1.</span> <span class="nav-text">使用Flask调用百度接口实现自己的图像分类应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.1.</span> <span class="nav-text">前期准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编程基础"><span class="nav-number">1.1.1.</span> <span class="nav-text">编程基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工具准备"><span class="nav-number">1.1.2.</span> <span class="nav-text">工具准备</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用百度的EasyDL训练数据"><span class="nav-number">1.2.</span> <span class="nav-text">使用百度的EasyDL训练数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写调用API"><span class="nav-number">1.3.</span> <span class="nav-text">编写调用API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写Flask应用"><span class="nav-number">1.4.</span> <span class="nav-text">编写Flask应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写网页模板"><span class="nav-number">1.5.</span> <span class="nav-text">编写网页模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
