@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="当时明月在，曾照彩云归">
+  <meta name="description" content="图像风格迁移VGGNet 的本意是输入图像 ， 提取特征，并输出图像类别 。 图像风格迁移正好与它相反输入的是特征，输出对应这种特征的图片 利用内容损失还原图像内容 利用风格损失还原图像风格 原始图像风格迁移和快速图像风格迁移的比较   类型 损失定义 是否需要训练新网络 生成图像的方法    原始图像风格迁移 组合内容损失Ｌ_content与风格损失Ｌ_style 否。只需要预训练好的VGGNe">
 <meta name="keywords" content="python,tensorflow,pytorch,人工智能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="7.21个项目玩转深度学习之图像风格迁移">
 <meta property="og:url" content="http://leesin.cc/tensorflow/7.21个项目玩转深度学习之图像风格迁移.html">
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
-<meta property="og:description" content="当时明月在，曾照彩云归">
+<meta property="og:description" content="图像风格迁移VGGNet 的本意是输入图像 ， 提取特征，并输出图像类别 。 图像风格迁移正好与它相反输入的是特征，输出对应这种特征的图片 利用内容损失还原图像内容 利用风格损失还原图像风格 原始图像风格迁移和快速图像风格迁移的比较   类型 损失定义 是否需要训练新网络 生成图像的方法    原始图像风格迁移 组合内容损失Ｌ_content与风格损失Ｌ_style 否。只需要预训练好的VGGNe">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-04T13:49:39.465Z">
+<meta property="og:updated_time" content="2019-09-26T03:21:50.395Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="7.21个项目玩转深度学习之图像风格迁移">
-<meta name="twitter:description" content="当时明月在，曾照彩云归">
+<meta name="twitter:description" content="图像风格迁移VGGNet 的本意是输入图像 ， 提取特征，并输出图像类别 。 图像风格迁移正好与它相反输入的是特征，输出对应这种特征的图片 利用内容损失还原图像内容 利用风格损失还原图像风格 原始图像风格迁移和快速图像风格迁移的比较   类型 损失定义 是否需要训练新网络 生成图像的方法    原始图像风格迁移 组合内容损失Ｌ_content与风格损失Ｌ_style 否。只需要预训练好的VGGNe">
   <link rel="canonical" href="http://leesin.cc/tensorflow/7.21个项目玩转深度学习之图像风格迁移">
 
 
@@ -295,11 +295,19 @@
                 
               
 
-              <time title="创建时间：2019-09-04 21:26:36 / 修改时间：21:49:39" itemprop="dateCreated datePublished" datetime="2019-09-04T21:26:36+08:00">2019-09-04</time>
+              <time title="创建时间：2019-09-04 21:26:36" itemprop="dateCreated datePublished" datetime="2019-09-04T21:26:36+08:00">2019-09-04</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-26 11:21:50" itemprop="dateModified" datetime="2019-09-26T11:21:50+08:00">2019-09-26</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -335,7 +343,103 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="图像风格迁移"><a href="#图像风格迁移" class="headerlink" title="图像风格迁移"></a>图像风格迁移</h1><p>VGGNet 的本意是输入图像 ， 提取特征，并输出图像类别 。 图像风格迁<br>移正好与它相反输入的是特征，输出对应这种特征的图片</p><ul>
+<li>利用内容损失还原图像内容</li>
+<li>利用风格损失还原图像风格</li>
+</ul><p>原始图像风格迁移和快速图像风格迁移的比较</p><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>损失定义</th>
+<th>是否需要训练新网络</th>
+<th>生成图像的方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原始图像风格迁移</td>
+<td>组合内容损失Ｌ_content与风格损失Ｌ_style</td>
+<td>否。只需要预训练好的VGGNet</td>
+<td>利用损失，通过梯度下降法计算适合的图像</td>
+</tr>
+<tr>
+<td>快速图像风格迁移</td>
+<td>组合内容损失Ｌ_content与风格损失Ｌ_style</td>
+<td>是。除了预训练好的VGGNet，还需要训练图像生成网络</td>
+<td>利用训练好的图像生成网络直接生成</td>
+</tr>
+</tbody></table><a id="more"></a>
+
+
+
+<h2 id="在-TensorFlow-中实现快速凤格迁移"><a href="#在-TensorFlow-中实现快速凤格迁移" class="headerlink" title="在 TensorFlow 中实现快速凤格迁移"></a>在 TensorFlow 中实现快速凤格迁移</h2><p>快速图像风格迁移的项目结构</p>
+<table>
+<thead>
+<tr>
+<th>文件／文件夹名</th>
+<th>用 途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>conf/</td>
+<td>文件夹中训练模型时的配置文件。每个生成模型都对应一个配置文件，配置文件中包含原始图像风格图像的位置、各个损失的平衡项、最大训练步数等</td>
+</tr>
+<tr>
+<td>img/</td>
+<td>保存了一些原始图像风格图像。也有一些用于测试的图像</td>
+</tr>
+<tr>
+<td>nets/<br>preprocessing/</td>
+<td>复制自 TensorFlow Slim 项目的原始文件。 TensorFlow Slim 中定义了一些lmageNet 预训练模型，在本项目中主要使用其中的 VGGI6 模型</td>
+</tr>
+<tr>
+<td>eval.py</td>
+<td>用于使用已经训练好的模型进行图像的快速风格转移。 提供 7 个预训练的模型</td>
+</tr>
+<tr>
+<td>losses.py</td>
+<td>用于定义风格损失、内容损失</td>
+</tr>
+<tr>
+<td>model.py</td>
+<td>用于定义图像生成网络。</td>
+</tr>
+<tr>
+<td>reader.py</td>
+<td>IO 接口 。将训练图片读入 TensorFlow</td>
+</tr>
+<tr>
+<td>train.py</td>
+<td>用于训练模型</td>
+</tr>
+<tr>
+<td>utils.py</td>
+<td>定义了其他一些方便使用的函数</td>
+</tr>
+<tr>
+<td>export.py</td>
+<td>将模型导出为.pb 文件。初学者可以不用关注 export.py 的用途。</td>
+</tr>
+<tr>
+<td>README.md</td>
+<td>说明文件</td>
+</tr>
+</tbody></table>
+<h3 id="使用预训练模型"><a href="#使用预训练模型" class="headerlink" title="使用预训练模型"></a>使用预训练模型</h3><p>在chapter_7_data/ 中提供了7 个预训练模型： <code>wave.ckpt-done</code>、<code>cubist.ckpt-done</code>、<code>denoised_starry.ckpt-done</code>、<code>mosaic.ckpt-done</code>、<code>scream.ckpt-done</code>、<code>feathers.ckpt-done</code>。</p>
+<p>以<code>wave.ckpt-done</code>的为例，在chapter_7/中新建一个<code>models</code>文件夹， 然后<code>wave.ckpt-done</code>复制到这个文件夹下，运行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python eval.py --model_file models/wave.ckpt-done --image_file img/test.jpg</span><br></pre></td></tr></table></figure>
+
+<p>成功风格化的图像会被写到<code>generated/res.jpg</code>。</p>
+<h3 id="训练自己的模型"><a href="#训练自己的模型" class="headerlink" title="训练自己的模型"></a>训练自己的模型</h3><h4 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h4><p><a href="http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz" target="_blank" rel="noopener">下载VGG16模型</a>将下载到的压缩包解压后会得到一个<code>vgg16.ckpt</code> 文件。在<code>chapter_7/</code>中新建一个文件夹<code>pretrained</code>，并将<code>vgg16.ckpt</code>复制到<code>pretrained</code>文件夹中。最后的文件路径是<code>pretrained/vgg16.ckpt</code>。这个<code>vgg16.ckpt</code>文件在<code>chapter_7_data/</code>中也有提供。</p>
+<p><a href="http://msvocds.blob.core.windows.net/coco2014/train2014.zip" target="_blank" rel="noopener">下载COCO数据集</a>将该数据集解压后会得到一个<code>train2014</code>文件夹，其中应该含有大量<code>jpg</code>格式的图片。在<code>chapter_7</code>中建立到这个文件夹的符号链接：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln –s &lt;到train2014 文件夹的路径&gt; train2014</span><br></pre></td></tr></table></figure>
+
+<p>ln –s &lt;到train2014 文件夹的路径&gt; train2014</p>
+<h4 id="训练wave模型："><a href="#训练wave模型：" class="headerlink" title="训练wave模型："></a>训练wave模型：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py -c conf/wave.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="打开TensorBoard："><a href="#打开TensorBoard：" class="headerlink" title="打开TensorBoard："></a>打开TensorBoard：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir models/wave/</span><br></pre></td></tr></table></figure>
+
+<p>训练中保存的模型在文件夹<code>models/wave/</code>中。</p>
+
     </div>
 
     
@@ -434,8 +538,17 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -450,7 +563,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -525,6 +638,23 @@
 
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图像风格迁移"><span class="nav-number">1.</span> <span class="nav-text">图像风格迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在-TensorFlow-中实现快速凤格迁移"><span class="nav-number">1.1.</span> <span class="nav-text">在 TensorFlow 中实现快速凤格迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用预训练模型"><span class="nav-number">1.1.1.</span> <span class="nav-text">使用预训练模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练自己的模型"><span class="nav-number">1.1.2.</span> <span class="nav-text">训练自己的模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作："><span class="nav-number">1.1.2.1.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练wave模型："><span class="nav-number">1.1.2.2.</span> <span class="nav-text">训练wave模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打开TensorBoard："><span class="nav-number">1.1.2.3.</span> <span class="nav-text">打开TensorBoard：</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
     </div>
   </aside>

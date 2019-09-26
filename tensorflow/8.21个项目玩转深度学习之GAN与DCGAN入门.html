@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="当时明月在，曾照彩云归">
+  <meta name="description" content="GAN与DCGAN入门GAN 的全称为 Generative Adversarial Networks ，意为对抗生成网络，一旦训练完成后可以生成全新的数据样本，DCGAN 将 GAN 的概念扩展到卷积神经网络中，可以生成质量较高的图片样本GAN 的原理假设有两个网络 ， 生成网络 G( Generator ）和判别网络Ｄ( Discriminator ）">
 <meta name="keywords" content="python,tensorflow,pytorch,人工智能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="8.21个项目玩转深度学习之GAN与DCGAN入门">
 <meta property="og:url" content="http://leesin.cc/tensorflow/8.21个项目玩转深度学习之GAN与DCGAN入门.html">
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
-<meta property="og:description" content="当时明月在，曾照彩云归">
+<meta property="og:description" content="GAN与DCGAN入门GAN 的全称为 Generative Adversarial Networks ，意为对抗生成网络，一旦训练完成后可以生成全新的数据样本，DCGAN 将 GAN 的概念扩展到卷积神经网络中，可以生成质量较高的图片样本GAN 的原理假设有两个网络 ， 生成网络 G( Generator ）和判别网络Ｄ( Discriminator ）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-04T13:49:47.069Z">
+<meta property="og:updated_time" content="2019-09-26T03:21:56.330Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="8.21个项目玩转深度学习之GAN与DCGAN入门">
-<meta name="twitter:description" content="当时明月在，曾照彩云归">
+<meta name="twitter:description" content="GAN与DCGAN入门GAN 的全称为 Generative Adversarial Networks ，意为对抗生成网络，一旦训练完成后可以生成全新的数据样本，DCGAN 将 GAN 的概念扩展到卷积神经网络中，可以生成质量较高的图片样本GAN 的原理假设有两个网络 ， 生成网络 G( Generator ）和判别网络Ｄ( Discriminator ）">
   <link rel="canonical" href="http://leesin.cc/tensorflow/8.21个项目玩转深度学习之GAN与DCGAN入门">
 
 
@@ -295,11 +295,19 @@
                 
               
 
-              <time title="创建时间：2019-09-04 21:27:23 / 修改时间：21:49:47" itemprop="dateCreated datePublished" datetime="2019-09-04T21:27:23+08:00">2019-09-04</time>
+              <time title="创建时间：2019-09-04 21:27:23" itemprop="dateCreated datePublished" datetime="2019-09-04T21:27:23+08:00">2019-09-04</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-26 11:21:56" itemprop="dateModified" datetime="2019-09-26T11:21:56+08:00">2019-09-26</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -335,7 +343,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="GAN与DCGAN入门"><a href="#GAN与DCGAN入门" class="headerlink" title="GAN与DCGAN入门"></a>GAN与DCGAN入门</h1><p>GAN 的全称为 Generative Adversarial Networks ，意为对抗生成网络，一旦训练完成后可以生成全新的数据样本，DCGAN 将 GAN 的概念扩展到卷积神经网络中，可以生成质量较高的图片样本</p><h2 id="GAN-的原理"><a href="#GAN-的原理" class="headerlink" title="GAN 的原理"></a>GAN 的原理</h2><p>假设有两个网络 ， 生成网络 G( Generator ）和判别网络Ｄ( Discriminator ）</p><a id="more"></a>
+
+<ul>
+<li><p>G 负责生成图片 ，接收一个随机的噪声</p>
+</li>
+<li><p>D 负责判别一张图片是不是“真实的”</p>
+</li>
+</ul>
+<h2 id="DCGAN-的原理"><a href="#DCGAN-的原理" class="headerlink" title="DCGAN 的原理"></a>DCGAN 的原理</h2><p>DCGAN 的全称是 Deep Convolutional Generative Adversarial Networks ,意即深度卷积对抗生成网络</p>
+<p>G 、D 还有一些其他的实现细节：</p>
+<ul>
+<li><p>不采用任何池化层（ Pooling Layer ），在判别器 D 中，用带有步长（ Stride)<br>的卷积来代替池化层。</p>
+</li>
+<li><p>在 G 、D 中均使用 Batch Normalization 帮助模型收敛 。</p>
+</li>
+<li><p>在 G 中，激活函数除了最后一层都使用 ReLU 函数，而最后一层使用 tanh函数。使用 tanh 函数的原因在于最后一层要输出图像 ，而图像的像素值是高一个取值范围的，如 0～255 。 ReLU 函数的输出可能会很大，而 tanh函数的输出是在-1～1 之间的，只要将 tanh 函数的输出加 l 再乘以 127.5可以得到 0～255 的像素值。</p>
+</li>
+</ul>
+<h2 id="生成MNIST图像"><a href="#生成MNIST图像" class="headerlink" title="生成MNIST图像"></a>生成MNIST图像</h2><h3 id="下载MNIST数据集："><a href="#下载MNIST数据集：" class="headerlink" title="下载MNIST数据集："></a>下载MNIST数据集：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python download.py mnist</span><br></pre></td></tr></table></figure>
+
+<h3 id="训练："><a href="#训练：" class="headerlink" title="训练："></a>训练：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py --dataset mnist --input_height=28 --output_height=28 --train</span><br></pre></td></tr></table></figure>
+
+<p>生成图像保存在<code>samples</code>文件夹中。</p>
+<h2 id="使用自己的数据集训练"><a href="#使用自己的数据集训练" class="headerlink" title="使用自己的数据集训练"></a>使用自己的数据集训练</h2><p>在数据目录<code>chapter_8_data/</code>中已经准备好了一个动漫人物头像数据集<code>faces.zip</code>。在源代码的data目录中再新建一个<code>anime</code>目录（如果没有<code>data</code>目录可以自行新建），并将<code>faces.zip</code>中所有的图像文件解压到<code>anime</code>目录中。</p>
+<h3 id="训练命令："><a href="#训练命令：" class="headerlink" title="训练命令："></a>训练命令：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">python main.py --input_height 96 --input_width 96 \</span><br><span class="line"></span><br><span class="line">  --output_height 48 --output_width 48 \</span><br><span class="line"></span><br><span class="line">  --dataset anime --crop -–train \</span><br><span class="line"></span><br><span class="line">  --epoch 300 --input_fname_pattern "*.jpg"</span><br></pre></td></tr></table></figure>
+
+<p>生成图像保存在<code>samples</code>文件夹中。</p>
+<p>依赖一个名为<code>moviepy</code>的库 。 可以使用 <code>pip install moviepy</code>安装</p>
+<p>相比一般的神经网络，训练GAN 往往会更加困难。Github 用户 Soumith Chintala 收集了一份训练GAN 的<a href="https://github.com/soumith/ganhacks" target="_blank" rel="noopener">技巧清单</a></p>
+
     </div>
 
     
@@ -434,8 +471,17 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -450,7 +496,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -525,6 +571,23 @@
 
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GAN与DCGAN入门"><span class="nav-number">1.</span> <span class="nav-text">GAN与DCGAN入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GAN-的原理"><span class="nav-number">1.1.</span> <span class="nav-text">GAN 的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DCGAN-的原理"><span class="nav-number">1.2.</span> <span class="nav-text">DCGAN 的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成MNIST图像"><span class="nav-number">1.3.</span> <span class="nav-text">生成MNIST图像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载MNIST数据集："><span class="nav-number">1.3.1.</span> <span class="nav-text">下载MNIST数据集：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练："><span class="nav-number">1.3.2.</span> <span class="nav-text">训练：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用自己的数据集训练"><span class="nav-number">1.4.</span> <span class="nav-text">使用自己的数据集训练</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#训练命令："><span class="nav-number">1.4.1.</span> <span class="nav-text">训练命令：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
     </div>
   </aside>
