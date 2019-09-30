@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://leesin.cc/reading/hexo%E6%8A%A5%E9%94%99.html</loc>
+    
+    <lastmod>2019-09-30T11:00:28.779Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://leesin.cc/reading/Hexo+Next+Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</loc>
     
-    <lastmod>2019-09-30T10:53:34.625Z</lastmod>
+    <lastmod>2019-09-30T11:00:28.748Z</lastmod>
     
   </url>
   
@@ -124,13 +131,6 @@
     <loc>http://leesin.cc/reading/Python%E4%B8%8EC++%E7%9B%B8%E4%BA%92%E8%B0%83%E7%94%A8.html</loc>
     
     <lastmod>2019-09-22T09:14:38.850Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://leesin.cc/reading/hexo%E6%8A%A5%E9%94%99.html</loc>
-    
-    <lastmod>2019-09-22T09:14:23.280Z</lastmod>
     
   </url>
   
