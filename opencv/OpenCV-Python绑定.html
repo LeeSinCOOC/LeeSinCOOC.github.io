@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="目标学习： OpenCV-Python绑定如何生成？ 如何将新的OpenCV模块扩展到Python？ OpenCV-Python绑定如何生成？在OpenCV中，所有算法均以C++实现。但是这些算法可以从不同的语言（例如Python，Java等）中使用。绑定生成器使这成为可能。这些生成器在C++和Python之间建立了桥梁，使用户能够从Python调用C++函数。为了全面了解后台发生的事情，需要对P">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV-Python绑定">
+<meta property="og:url" content="http://leesin.cc/opencv/OpenCV-Python绑定.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="目标学习： OpenCV-Python绑定如何生成？ 如何将新的OpenCV模块扩展到Python？ OpenCV-Python绑定如何生成？在OpenCV中，所有算法均以C++实现。但是这些算法可以从不同的语言（例如Python，Java等）中使用。绑定生成器使这成为可能。这些生成器在C++和Python之间建立了桥梁，使用户能够从Python调用C++函数。为了全面了解后台发生的事情，需要对P">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-08T12:06:12.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV-Python绑定">
+<meta name="twitter:description" content="目标学习： OpenCV-Python绑定如何生成？ 如何将新的OpenCV模块扩展到Python？ OpenCV-Python绑定如何生成？在OpenCV中，所有算法均以C++实现。但是这些算法可以从不同的语言（例如Python，Java等）中使用。绑定生成器使这成为可能。这些生成器在C++和Python之间建立了桥梁，使用户能够从Python调用C++函数。为了全面了解后台发生的事情，需要对P">
+  <link rel="canonical" href="http://leesin.cc/opencv/OpenCV-Python绑定">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>OpenCV-Python绑定 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/OpenCV-Python绑定.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">OpenCV-Python绑定
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-08 15:11:00 / 修改时间：20:06:12" itemprop="dateCreated datePublished" datetime="2019-10-08T15:11:00+08:00">2019-10-08</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>学习：</p><ul>
+<li>OpenCV-Python绑定如何生成？</li>
+<li>如何将新的OpenCV模块扩展到Python？</li>
+</ul><h2 id="OpenCV-Python绑定如何生成？"><a href="#OpenCV-Python绑定如何生成？" class="headerlink" title="OpenCV-Python绑定如何生成？"></a>OpenCV-Python绑定如何生成？</h2><p>在OpenCV中，所有算法均以C++实现。但是这些算法可以从不同的语言（例如Python，Java等）中使用。绑定生成器使这成为可能。这些生成器在C++和Python之间建立了桥梁，使用户能够从Python调用C++函数。为了全面了解后台发生的事情，需要对Python/C API有充分的了解。在官方Python文档中可以找到一个有关将C++函数扩展到Python的简单示例。因此，通过手动编写包装函数将OpenCV中的所有函数扩展到Python是一项耗时的任务。因此，OpenCV以更智能的方式进行操作。OpenCV使用位于中的某些Python脚本，从C++头自动生成这些包装器函数<code>modules/python/src2</code>。我们将调查他们的工作。</p><a id="more"></a>
+
+
+<p>首先，<code>modules/python/CMakeFiles.txt</code>是一个CMake脚本，它检查要扩展到Python的模块。它将自动检查所有要扩展的模块并获取其头文件。这些头文件包含该特定模块的所有类，函数，常量等的列表。</p>
+<p>其次，将这些头文件传递给Python脚本<code>modules/python/src2/gen2.py</code>。这是Python绑定生成器脚本。它调用另一个Python脚本<code>modules/python/src2/hdr_parser.py</code>。这是标头解析器脚本。此标头解析器将完整的标头文件拆分为较小的Python列表。因此，这些列表包含有关特定函数，类等的所有详细信息。例如，将对一个函数进行解析以获取一个包含函数名称，返回类型，输入参数，参数类型等的列表。最终列表包含所有函数，枚举的详细信息，头文件中的structs，classs等。</p>
+<p>但是标头解析器不会解析标头文件中的所有函数/类。开发人员必须指定应将哪些函数导出到Python。为此，在这些声明的开头添加了某些宏，这些宏使标头解析器可以标识要解析的函数。这些宏由对特定功能进行编程的开发人员添加。简而言之，开发人员决定哪些功能应该扩展到Python，哪些不应该。这些宏的详细信息将在下一个会话中给出。</p>
+<p>因此头解析器将返回已解析函数的最终大列表。我们的生成器脚本（gen2.py）将为标头解析器解析的所有函数/类/枚举/结构创建包装函数（在编译期间，您可以在<code>build/modules/python/</code>文件夹中找到这些标头文件为<code>pyopencv_genic _ *h</code>文件）。但是可能会有一些基本的OpenCV数据类型，例如Mat，Vec4i，Size。它们需要手动扩展。例如，Mat类型应扩展为Numpy数组，Size应扩展为两个整数的元组，等等。类似地，可能会有一些复杂的结构/类/函数等需要手动扩展。所有此类手动包装功能都放在中<code>modules/python/src2/cv2.cpp</code>。</p>
+<p>所以现在剩下的就是这些包装文件的编译了，这给了我们cv2模块。因此，当您使用<code>res = equalizeHist(img1,img2)</code>Python 调用函数时，您传递了两个numpy数组，并且期望另一个numpy数组作为输出。因此，将这些numpy数组转换为<code>cv::Mat</code>，然后在C++中调用<code>equalizeHist()</code>函数。最终结果将res转换回Numpy数组。简而言之，几乎所有操作都是在C++中完成的，这给了我们几乎与C++相同的速度。</p>
+<p>因此，这是OpenCV-Python绑定生成方式的基本版本。</p>
+<h2 id="如何将新模块扩展到Python？"><a href="#如何将新模块扩展到Python？" class="headerlink" title="如何将新模块扩展到Python？"></a>如何将新模块扩展到Python？</h2><p>头解析器根据添加到函数声明中的一些包装宏来解析头文件。枚举常量不需要任何包装宏。它们会自动包装。但是其余的函数，类等需要包装宏。</p>
+<p>使用<code>CV_EXPORTS_W</code>宏扩展功能。一个例子如下所示。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CV_EXPORTS_W <span class="keyword">void</span> <span class="title">equalizeHist</span><span class="params">( InputArray src, OutputArray dst )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>标头解析器可以理解诸如<code>InputArray</code>，<code>OutputArray</code>等关键字的输入和输出参数。但是有时，我们可能需要对输入和输出进行硬编码。为此，像宏<code>CV_OUT</code>，<code>CV_IN_OUT</code>使用等。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CV_EXPORTS_W <span class="keyword">void</span> <span class="title">minEnclosingCircle</span><span class="params">( InputArray points,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     CV_OUT Point2f&amp; center, CV_OUT <span class="keyword">float</span>&amp; radius )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对于大类，`CV_EXPORTS_W`也使用。使用扩展类方法`CV_WRAP`。同样，`CV_PROP`用于类字段。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CV_EXPORTS_W</span> <span class="title">CLAHE</span> :</span> <span class="keyword">public</span> Algorithm</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">CV_WRAP <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(InputArray src, OutputArray dst)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function">CV_WRAP <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setClipLimit</span><span class="params">(<span class="keyword">double</span> clipLimit)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function">CV_WRAP <span class="keyword">virtual</span> <span class="keyword">double</span> <span class="title">getClipLimit</span><span class="params">()</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用重载功能<code>CV_EXPORTS_AS</code>。但是我们需要传递一个新名称，以便在Python中使用该名称调用每个函数。以下面的积分函数为例。提供了三个函数，因此每个函数在Python中都带有一个后缀。同样<code>CV_WRAP_AS</code>可以用于包装重载方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CV_EXPORTS_W <span class="keyword">void</span> <span class="title">integral</span><span class="params">( InputArray src, OutputArray sum, <span class="keyword">int</span> sdepth = <span class="number">-1</span> )</span></span>;</span><br><span class="line">CV_EXPORTS_AS(integral2) <span class="function"><span class="keyword">void</span> <span class="title">integral</span><span class="params">( InputArray src, OutputArray sum,</span></span></span><br><span class="line"><span class="function"><span class="params">                                        OutputArray sqsum, <span class="keyword">int</span> sdepth = <span class="number">-1</span>, <span class="keyword">int</span> sqdepth = <span class="number">-1</span> )</span></span>;</span><br><span class="line">CV_EXPORTS_AS(integral3) <span class="function"><span class="keyword">void</span> <span class="title">integral</span><span class="params">( InputArray src, OutputArray sum,</span></span></span><br><span class="line"><span class="function"><span class="params">                                        OutputArray sqsum, OutputArray tilted,</span></span></span><br><span class="line"><span class="function"><span class="params">                                        <span class="keyword">int</span> sdepth = <span class="number">-1</span>, <span class="keyword">int</span> sqdepth = <span class="number">-1</span> )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>小类/结构使用扩展<code>CV_EXPORTS_W_SIMPLE</code>。这些结构按值传递给C++函数。例子是<code>KeyPoint</code>，<code>Match</code>等他们的方法是通过扩展<code>CV_WRAP</code>和领域被扩展<code>CV_PROP_RW</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CV_EXPORTS_W_SIMPLE</span> <span class="title">DMatch</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">CV_WRAP <span class="title">DMatch</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">CV_WRAP <span class="title">DMatch</span><span class="params">(<span class="keyword">int</span> _queryIdx, <span class="keyword">int</span> _trainIdx, <span class="keyword">float</span> _distance)</span></span>;</span><br><span class="line">    <span class="function">CV_WRAP <span class="title">DMatch</span><span class="params">(<span class="keyword">int</span> _queryIdx, <span class="keyword">int</span> _trainIdx, <span class="keyword">int</span> _imgIdx, <span class="keyword">float</span> _distance)</span></span>;</span><br><span class="line">    CV_PROP_RW <span class="keyword">int</span> queryIdx; <span class="comment">// query descriptor index</span></span><br><span class="line">    CV_PROP_RW <span class="keyword">int</span> trainIdx; <span class="comment">// train descriptor index</span></span><br><span class="line">    CV_PROP_RW <span class="keyword">int</span> imgIdx;   <span class="comment">// train image index</span></span><br><span class="line">    CV_PROP_RW <span class="keyword">float</span> distance;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用<code>CV_EXPORTS_W_MAP</code>导出到Python本机字典的位置来导出其他一些小类/结构。<code>Moments()</code>是一个例子。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CV_EXPORTS_W_MAP</span> <span class="title">Moments</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    CV_PROP_RW <span class="keyword">double</span>  m00, m10, m01, m20, m11, m02, m30, m21, m12, m03;</span><br><span class="line">    CV_PROP_RW <span class="keyword">double</span>  mu20, mu11, mu02, mu30, mu21, mu12, mu03;</span><br><span class="line">    CV_PROP_RW <span class="keyword">double</span>  nu20, nu11, nu02, nu30, nu21, nu12, nu03;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>因此，这些是OpenCV中可用的主要扩展宏。通常，开发人员必须将适当的宏放在适当的位置。其余的由生成器脚本完成。有时，在某些特殊情况下，生成器脚本无法创建包装。此类功能需要手动处理，为此，您需要编写自己的<code>pyopencv_*.hpp</code>扩展标头并将其放入模块的<code>misc/python</code>子目录中。但是在大多数情况下，根据OpenCV编码指南编写的代码将由生成器脚本自动包装。</p>
+<p>更高级的情况涉及为Python提供C++接口中不存在的其他功能，例如额外的方法，类型映射或提供默认参数。稍后我们将以UMat数据类型为例。首先，提供特定于Python的方法的方法<code>CV_WRAP_PHANTOM</code>与相似<code>CV_WRAP</code>，除了使用方法标头作为其参数，而且您需要在自己的<code>pyopencv_*.hpp</code>扩展名中提供方法主体。<code>UMat::queue()</code>并且<code>UMat::context()</code>是C ++接口中不存在的此类幻影方法的示例，但在Python端处理OpenCL功能是必需的。其次，如果一个已经存在的数据类型可以映射到您的类，则最好使用<code>CV_WRAP_MAPPABLE</code>以源类型为参数，而不是设计自己的绑定函数。这是UMat来自的映射的情况Mat。最后，如果需要默认参数，但本机C++接口中未提供默认参数，则可以在Python端将其作为参数提供<code>CV_WRAP_DEFAULT</code>。按照以下<code>UMat::getMat</code>示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CV_EXPORTS_W</span> <span class="title">UMat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// You would need to provide `static bool cv_mappable_to(const Ptr&lt;Mat&gt;&amp; src, Ptr&lt;UMat&gt;&amp; dst)`</span></span><br><span class="line">    CV_WRAP_MAPPABLE(Ptr&lt;Mat&gt;);</span><br><span class="line">    /! returns the OpenCL <span class="built_in">queue</span> used by OpenCV UMat.</span><br><span class="line">    <span class="comment">// You would need to provide the method body in the binder code</span></span><br><span class="line">    CV_WRAP_PHANTOM(<span class="keyword">static</span> <span class="keyword">void</span>* <span class="built_in">queue</span>());</span><br><span class="line">    <span class="comment">// You would need to provide the method body in the binder code</span></span><br><span class="line">    CV_WRAP_PHANTOM(<span class="keyword">static</span> <span class="keyword">void</span>* context());</span><br><span class="line">    CV_WRAP_AS(get) <span class="function">Mat <span class="title">getMat</span><span class="params">(<span class="keyword">int</span> flags CV_WRAP_DEFAULT(ACCESS_RW))</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/opencv/OpenCV-Python绑定.html" title="OpenCV-Python绑定">http://leesin.cc/opencv/OpenCV-Python绑定.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/opencv/对象检测（objdetect模块）.html" rel="next" title="对象检测（objdetect模块）">
+                  <i class="fa fa-chevron-left"></i> 对象检测（objdetect模块）
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenCV-Python绑定如何生成？"><span class="nav-number">2.</span> <span class="nav-text">OpenCV-Python绑定如何生成？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何将新模块扩展到Python？"><span class="nav-number">3.</span> <span class="nav-text">如何将新模块扩展到Python？</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

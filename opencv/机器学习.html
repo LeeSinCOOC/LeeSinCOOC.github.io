@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="K最近邻了解k最近邻居目标 在本章中，我们将了解k最近邻（kNN）算法的概念。 理论kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为Class。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习">
+<meta property="og:url" content="http://leesin.cc/opencv/机器学习.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="K最近邻了解k最近邻居目标 在本章中，我们将了解k最近邻（kNN）算法的概念。 理论kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为Class。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/opencv/images/knn_theory.png">
+<meta property="og:image" content="http://leesin.cc/opencv/images/knn_simple.png">
+<meta property="og:image" content="http://leesin.cc/opencv/images/svm_basics1.png">
+<meta property="og:image" content="http://leesin.cc/opencv/images/svm_basics2.png">
+<meta property="og:image" content="http://leesin.cc/opencv/images/deskew.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/tshirt.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/tshirt_grouped.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/testdata.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/initial_labelling.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/update_centroid.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/final_clusters.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/oc_1d_testdata.png">
+<meta property="og:image" content="http://leesin.cc/opencv/images/oc_1d_clustered.png">
+<meta property="og:image" content="http://leesin.cc/opencv/images/oc_feature_representation.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/oc_2d_clustered.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/oc_color_quantization.jpg">
+<meta property="og:updated_time" content="2019-10-08T12:04:46.363Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习">
+<meta name="twitter:description" content="K最近邻了解k最近邻居目标 在本章中，我们将了解k最近邻（kNN）算法的概念。 理论kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为Class。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。">
+<meta name="twitter:image" content="http://leesin.cc/opencv/images/knn_theory.png">
+  <link rel="canonical" href="http://leesin.cc/opencv/机器学习">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>机器学习 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/机器学习.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">机器学习
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-08 13:11:00 / 修改时间：20:04:46" itemprop="dateCreated datePublished" datetime="2019-10-08T13:11:00+08:00">2019-10-08</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="K最近邻"><a href="#K最近邻" class="headerlink" title="K最近邻"></a>K最近邻</h1><h2 id="了解k最近邻居"><a href="#了解k最近邻居" class="headerlink" title="了解k最近邻居"></a>了解k最近邻居</h2><h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><ul>
+<li>在本章中，我们将了解k最近邻（kNN）算法的概念。</li>
+</ul><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><p>kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。</p><p><img src="images/knn_theory.png" alt></p><p>在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为<code>Class</code>。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。<em>（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。每个数据都有两个要素x和y坐标。您可以在2D坐标空间中表示此数据，对吧？现在假设如果有三个要素，则需要3D空间，现在考虑N个要素，需要N维空间，对吗？这个N维空间就是其要素空间，在我们的图像中，您可以将其视为2D情况有两个功能）</em>。</p><a id="more"></a>
+
+
+
+<p>现在有一个新成员进入城镇并创建了一个新房屋，显示为绿色圆圈。他应该被添加到这些蓝色/红色家族之一中。我们称该过程为分类。我们所做的？由于我们正在处理kNN，因此让我们应用此算法。</p>
+<p>一种方法是检查谁是他的最近邻居。从图像中可以明显看出它是红色三角形家族。因此，他也被添加到了<code>Red Triangle</code>中。此方法简称为<code>Nearest Neighbor</code>，因为分类仅取决于最近的邻居。</p>
+<p>但这是有问题的。红色三角可能是最近的。但是，如果附近有很多蓝色广场怎么办？然后，蓝色方块在该地区的实力比红色三角更大。因此，仅检查最接近的一个是不够的。相反，我们检查一些k最近的家庭。那么，无论谁占多数，新人都属于那个家庭。在我们的图像中，让我们取k = 3，即3个最近的家庭。他有两个红色和一个蓝色（有两个等距的蓝色，但是由于k = 3，我们只取其中一个），所以他又应该加入红色家族。但是，如果我们取k = 7怎么办？然后，他有5个蓝色家庭和2个红色家庭。大！！现在，他应该被加入Blue家族。因此，所有这些都随k的值而变化。更有趣的是，如果k = 4怎么办？他有2个红色邻居和2个蓝色邻居。这是一条领带！因此最好将k作为奇数。k最近邻，因为分类取决于k最近邻。</p>
+<p>同样，在kNN中，我们确实在考虑k个邻居，但我们对所有人都给予同等的重视，对吗？是正义吗？例如，以k ＝ 4的情况为例。我们说这是平局。但是请注意，这两个红色家庭比其他两个蓝色家庭离他更近。因此，他更有资格被添加到Red。那么我们如何用数学解释呢？我们根据每个家庭到新来者的距离来给他们一些权重。对于那些靠近他的人，权重增加，而那些远离他的人，权重减轻。然后，我们分别添加每个家庭的总权重。谁得到的总权重最高，新人就去那个家庭。这称为修改的kNN。</p>
+<p>那么您在这里看到的一些重要内容是什么？</p>
+<p>您需要了解镇上所有房屋的信息，对吗？因为，我们必须检查从新移民到所有现有房屋的距离，以找到最近的邻居。如果有很多房屋和家庭，则需要大量的内存，并且需要更多的时间进行计算。<br>几乎没有时间进行任何形式的培训或准备。<br>现在让我们在OpenCV中看到它。</p>
+<h3 id="OpenCV中的kNN"><a href="#OpenCV中的kNN" class="headerlink" title="OpenCV中的kNN"></a>OpenCV中的kNN</h3><p>就像上面一样，我们将在这里做一个简单的例子，有两个家庭（类）。然后在下一章中，我们将做一个更好的例子。</p>
+<p>因此，在这里，我们将红色系列标记为<code>Class-0</code>（因此用0表示），将蓝色系列标记为<code>Class-1</code>（用1表示）。我们创建25个家庭或25个训练数据，并将它们标记为0类或1类。我们借助Numpy中的<code>Random Number Generator</code>来完成所有这些工作。</p>
+<p>然后我们在<code>Matplotlib</code>的帮助下对其进行绘制。红色系列显示为红色三角形，蓝色系列显示为蓝色正方形。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># Feature set containing (x,y) values of 25 known/training data</span></span><br><span class="line">trainData = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,(<span class="number">25</span>,<span class="number">2</span>)).astype(np.float32)</span><br><span class="line"><span class="comment"># Labels each one either Red or Blue with numbers 0 and 1</span></span><br><span class="line">responses = np.random.randint(<span class="number">0</span>,<span class="number">2</span>,(<span class="number">25</span>,<span class="number">1</span>)).astype(np.float32)</span><br><span class="line"><span class="comment"># Take Red families and plot them</span></span><br><span class="line">red = trainData[responses.ravel()==<span class="number">0</span>]</span><br><span class="line">plt.scatter(red[:,<span class="number">0</span>],red[:,<span class="number">1</span>],<span class="number">80</span>,<span class="string">'r'</span>,<span class="string">'^'</span>)</span><br><span class="line"><span class="comment"># Take Blue families and plot them</span></span><br><span class="line">blue = trainData[responses.ravel()==<span class="number">1</span>]</span><br><span class="line">plt.scatter(blue[:,<span class="number">0</span>],blue[:,<span class="number">1</span>],<span class="number">80</span>,<span class="string">'b'</span>,<span class="string">'s'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>您会得到与我们的第一张图片相似的东西。由于您使用的是随机数生成器，因此每次运行代码都将获得不同的数据。</p>
+<p>接下来启动kNN算法，并传递<code>trainData</code>和响应以训练kNN（它会构建搜索树）。</p>
+<p>然后，我们将在OpenCV中的kNN的帮助下将一个新人带入一个家庭并将其分类。在进入kNN之前，我们需要了解测试数据（新手的数据）上的知识。我们的数据应该是大小为$number of testdata×number of features$,然后我们找到新来者的最近邻居。我们可以指定我们想要多少个邻居。它返回：</p>
+<ul>
+<li>给新人的标签取决于我们之前看到的kNN理论。如果要使用“最近邻居”算法，只需指定k = 1即可，其中k是邻居数。</li>
+<li>k最近邻居的标签。</li>
+<li>从新来者到每个最近邻居的相应距离。<br>因此，让我们看看它是如何工作的。新角标记为绿色。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">newcomer = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,(<span class="number">1</span>,<span class="number">2</span>)).astype(np.float32)</span><br><span class="line">plt.scatter(newcomer[:,<span class="number">0</span>],newcomer[:,<span class="number">1</span>],<span class="number">80</span>,<span class="string">'g'</span>,<span class="string">'o'</span>)</span><br><span class="line">knn = cv.ml.KNearest_create()</span><br><span class="line">knn.train(trainData, cv.ml.ROW_SAMPLE, responses)</span><br><span class="line">ret, results, neighbours ,dist = knn.findNearest(newcomer, <span class="number">3</span>)</span><br><span class="line">print( <span class="string">"result:  &#123;&#125;\n"</span>.format(results) )</span><br><span class="line">print( <span class="string">"neighbours:  &#123;&#125;\n"</span>.format(neighbours) )</span><br><span class="line">print( <span class="string">"distance:  &#123;&#125;\n"</span>.format(dist) )</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>我得到的结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result:  [[ <span class="number">1.</span>]]</span><br><span class="line">neighbours:  [[ <span class="number">1.</span>  <span class="number">1.</span>  <span class="number">1.</span>]]</span><br><span class="line">distance:  [[ <span class="number">53.</span>  <span class="number">58.</span>  <span class="number">61.</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>它说我们的新来者有3个邻居，全部来自Blue家族。因此，他被标记为蓝色家庭。从下面的图可以明显看出：<br><img src="images/knn_simple.png" alt></p>
+<p>如果您有大量数据，则可以将其作为数组传递。还获得了相应的结果作为数组。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 10 new comers</span></span><br><span class="line">newcomers = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,(<span class="number">10</span>,<span class="number">2</span>)).astype(np.float32)</span><br><span class="line">ret, results,neighbours,dist = knn.findNearest(newcomer, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># The results also will contain 10 labels.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用kNN的OCR手写数据"><a href="#使用kNN的OCR手写数据" class="headerlink" title="使用kNN的OCR手写数据"></a>使用kNN的OCR手写数据</h2><h3 id="目标-1"><a href="#目标-1" class="headerlink" title="目标"></a>目标</h3><p>在这一章当中</p>
+<ul>
+<li>我们将使用有关kNN的知识来构建基本的OCR应用程序。</li>
+<li>我们将尝试使用OpenCV随附的数字和字母数据。</li>
+</ul>
+<h3 id="手写数字的OCR"><a href="#手写数字的OCR" class="headerlink" title="手写数字的OCR"></a>手写数字的OCR</h3><p>我们的目标是构建一个可以读取手写数字的应用程序。为此，我们需要一些<code>train_data</code>和<code>test_data</code>。OpenCV带有一个图片<code>digits.png</code>（在文件夹<code>opencv/samples/data/</code>中），其中包含5000个手写数字（每个数字500个）。每个数字都是20x20的图像。因此，我们的第一步是将图像分割成5000个不同的数字。对于每个数字，我们将其展平为400像素的一行。那就是我们的功能集，即所有像素的强度值。这是我们可以创建的最简单的功能集。我们将每个数字的前250个样本用作<code>train_data</code>，然后将250个样本用作<code>test_data</code>。因此，让我们先准备它们。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line">img = cv.imread(<span class="string">'digits.png'</span>)</span><br><span class="line">gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)</span><br><span class="line"><span class="comment"># Now we split the image to 5000 cells, each 20x20 size</span></span><br><span class="line">cells = [np.hsplit(row,<span class="number">100</span>) <span class="keyword">for</span> row <span class="keyword">in</span> np.vsplit(gray,<span class="number">50</span>)]</span><br><span class="line"><span class="comment"># Make it into a Numpy array. It size will be (50,100,20,20)</span></span><br><span class="line">x = np.array(cells)</span><br><span class="line"><span class="comment"># Now we prepare train_data and test_data.</span></span><br><span class="line">train = x[:,:<span class="number">50</span>].reshape(<span class="number">-1</span>,<span class="number">400</span>).astype(np.float32) <span class="comment"># Size = (2500,400)</span></span><br><span class="line">test = x[:,<span class="number">50</span>:<span class="number">100</span>].reshape(<span class="number">-1</span>,<span class="number">400</span>).astype(np.float32) <span class="comment"># Size = (2500,400)</span></span><br><span class="line"><span class="comment"># Create labels for train and test data</span></span><br><span class="line">k = np.arange(<span class="number">10</span>)</span><br><span class="line">train_labels = np.repeat(k,<span class="number">250</span>)[:,np.newaxis]</span><br><span class="line">test_labels = train_labels.copy()</span><br><span class="line"><span class="comment"># Initiate kNN, train the data, then test it with test data for k=1</span></span><br><span class="line">knn = cv.ml.KNearest_create()</span><br><span class="line">knn.train(train, cv.ml.ROW_SAMPLE, train_labels)</span><br><span class="line">ret,result,neighbours,dist = knn.findNearest(test,k=<span class="number">5</span>)</span><br><span class="line"><span class="comment"># Now we check the accuracy of classification</span></span><br><span class="line"><span class="comment"># For that, compare the result with test_labels and check which are wrong</span></span><br><span class="line">matches = result==test_labels</span><br><span class="line">correct = np.count_nonzero(matches)</span><br><span class="line">accuracy = correct*<span class="number">100.0</span>/result.size</span><br><span class="line">print( accuracy )</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们的基本OCR应用程序已准备就绪。这个特定的例子给我的准确性是91％。一种提高准确性的选择是添加更多数据进行训练，尤其是错误的数据。因此，与其每次启动应用程序时都找不到该培训数据，不如将其保存，以便下次我直接从文件中读取此数据并开始分类。您可以借助一些Numpy函数（例如<code>np.savetxt</code>，<code>np.savez</code>，<code>np.load</code>等）来完成此操作。请查看其文档以获取更多详细信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># save the data</span></span><br><span class="line">np.savez(<span class="string">'knn_data.npz'</span>,train=train, train_labels=train_labels)</span><br><span class="line"><span class="comment"># Now load the data</span></span><br><span class="line"><span class="keyword">with</span> np.load(<span class="string">'knn_data.npz'</span>) <span class="keyword">as</span> data:</span><br><span class="line">    print( data.files )</span><br><span class="line">    train = data[<span class="string">'train'</span>]</span><br><span class="line">    train_labels = data[<span class="string">'train_labels'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>在我的系统中，它需要大约4.4 MB的内存。由于我们使用强度值（<code>uint8</code>数据）作为特征，因此最好先将数据转换为<code>np.uint8</code>，然后保存。在这种情况下，仅占用1.1 MB。然后在加载时，您可以转换回float32。</p>
+<h3 id="英文字母的OCR"><a href="#英文字母的OCR" class="headerlink" title="英文字母的OCR"></a>英文字母的OCR</h3><p>接下来，我们将对英语字母执行相同的操作，但是数据和功能集会稍有变化。在这里，OpenCV除了图像以外，还带有一个数据文件，即<code>opencv/samples/cpp/</code>文件夹中的<code>letter-recognitiontion.data</code>。如果打开它，您将看到20000行，乍一看可能看起来像垃圾。实际上，在每一行中，第一列是一个字母，这是我们的标签。接下来的16个数字是它的不同功能。这些功能可从<a href="http://archive.ics.uci.edu/ml/index.php" target="_blank" rel="noopener">UCI机器学习存储库获得</a>。您可以<a href="http://archive.ics.uci.edu/ml/datasets/Letter+Recognition" target="_blank" rel="noopener">在此页面</a>中找到这些功能的详细信息。</p>
+<p>现有20000个样本，因此我们将前10000个数据作为训练样本，其余10000个作为测试样本。我们应该将字母更改为ASCII字符，因为我们不能直接使用字母。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># Load the data, converters convert the letter to a number</span></span><br><span class="line">data= np.loadtxt(<span class="string">'letter-recognition.data'</span>, dtype= <span class="string">'float32'</span>, delimiter = <span class="string">','</span>,</span><br><span class="line">                    converters= &#123;<span class="number">0</span>: <span class="keyword">lambda</span> ch: ord(ch)-ord(<span class="string">'A'</span>)&#125;)</span><br><span class="line"><span class="comment"># split the data to two, 10000 each for train and test</span></span><br><span class="line">train, test = np.vsplit(data,<span class="number">2</span>)</span><br><span class="line"><span class="comment"># split trainData and testData to features and responses</span></span><br><span class="line">responses, trainData = np.hsplit(train,[<span class="number">1</span>])</span><br><span class="line">labels, testData = np.hsplit(test,[<span class="number">1</span>])</span><br><span class="line"><span class="comment"># Initiate the kNN, classify, measure accuracy.</span></span><br><span class="line">knn = cv.ml.KNearest_create()</span><br><span class="line">knn.train(trainData, cv.ml.ROW_SAMPLE, responses)</span><br><span class="line">ret, result, neighbours, dist = knn.findNearest(testData, k=<span class="number">5</span>)</span><br><span class="line">correct = np.count_nonzero(result == labels)</span><br><span class="line">accuracy = correct*<span class="number">100.0</span>/<span class="number">10000</span></span><br><span class="line">print( accuracy )</span><br></pre></td></tr></table></figure>
+
+<p>它给我的准确性为93.22％。同样，如果要提高准确性，则可以迭代地在每个级别中添加错误数据。</p>
+<h1 id="支持向量机（SVM）"><a href="#支持向量机（SVM）" class="headerlink" title="支持向量机（SVM）"></a>支持向量机（SVM）</h1><h2 id="了解SVM"><a href="#了解SVM" class="headerlink" title="了解SVM"></a>了解SVM</h2><h3 id="目标-2"><a href="#目标-2" class="headerlink" title="目标"></a>目标</h3><p>在这一章当中</p>
+<ul>
+<li>我们将看到对SVM的直观了解</li>
+</ul>
+<h3 id="理论-1"><a href="#理论-1" class="headerlink" title="理论"></a>理论</h3><h3 id="线性可分离数据"><a href="#线性可分离数据" class="headerlink" title="线性可分离数据"></a>线性可分离数据</h3><p>考虑下面的图像，它具有两种数据类型，红色和蓝色。在kNN中，对于测试数据，我们用来测量其与所有训练样本的距离，并以最小的距离作为样本。测量所有距离都需要花费大量时间，并且需要大量内存来存储所有训练样本。但是考虑到图像中给出的数据，我们是否需要那么多？</p>
+<p><img src="images/svm_basics1.png" alt></p>
+<p>您可以看到很多这样的行都是可能的。我们会选哪一个？非常直观地，我们可以说直线应该从所有点尽可能远地经过。为什么？因为传入的数据中可能会有噪音。此数据不应影响分类准确性。因此，走最远的线将提供更大的抗干扰能力。因此，SVM要做的是找到到训练样本的最小距离最大的直线（或超平面）。请参阅下面图像中穿过中心的粗线。</p>
+<p><img src="images/svm_basics2.png" alt><br>因此，要找到此决策边界，您需要训练数据。需要全部吗？没有。仅接近相反组的那些就足够了。在我们的图像中，它们是一个蓝色填充的圆圈和两个红色填充的正方形。我们可以称它们为支持向量，而通过它们的线称为支持平面。它们足以找到我们的决策边界。我们不必担心所有数据。它有助于减少数据量。</p>
+<h3 id="非线性可分离数据"><a href="#非线性可分离数据" class="headerlink" title="非线性可分离数据"></a>非线性可分离数据</h3><p>可以使用二维空间中的平方点积来实现三维空间中的点积。这可以应用于更高维度的空间。因此，我们可以从较低尺寸本身计算较高尺寸的特征。一旦将它们映射，我们将获得更高的空间。</p>
+<p>除了所有这些概念之外，还存在分类错误的问题。因此，仅找到具有最大余量的决策边界是不够的。我们还需要考虑分类错误的问题。有时，可能会找到裕度较小但分类错误减少的决策边界。无论如何，我们需要修改我们的模型，以便它应该找到具有最大裕度但分类错误较少的决策边界。</p>
+<p>如何选择参数C？显然，这个问题的答案取决于训练数据的分布方式。尽管没有一般性的答案，但考虑以下规则会很有用：</p>
+<ul>
+<li>C的值越大，解决方案的分类错误越少，但裕度也越小。考虑到在这种情况下，进行错误分类错误是昂贵的。由于优化的目的是使参数最小化，因此几乎没有错误分类错误。</li>
+<li>C的值越小，解决方案的裕度就越大，分类误差也越大。在这种情况下，最小化对总和项的考虑不多，因此它更多地关注于找到具有大余量的超平面。</li>
+</ul>
+<h2 id="使用SVM的手写数据的OCR"><a href="#使用SVM的手写数据的OCR" class="headerlink" title="使用SVM的手写数据的OCR"></a>使用SVM的手写数据的OCR</h2><h3 id="目标-3"><a href="#目标-3" class="headerlink" title="目标"></a>目标</h3><p>在这一章当中</p>
+<ul>
+<li>我们将重新访问手写数据OCR，但是使用SVM而不是kNN。</li>
+<li>手写数字的OCR</li>
+<li>在kNN中，我们直接使用像素强度作为特征向量。这次我们将使用定向梯度直方图（HOG）作为特征向量。</li>
+</ul>
+<p>在这里，在找到HOG之前，我们使用其二阶矩对图像进行去偏斜。因此，我们首先定义一个函数<code>deskew()</code>，该函数获取一个数字图像并将其校正。下面是<code>deskew()</code>函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">deskew</span><span class="params">(img)</span>:</span></span><br><span class="line">    m = cv.moments(img)</span><br><span class="line">    <span class="keyword">if</span> abs(m[<span class="string">'mu02'</span>]) &lt; <span class="number">1e-2</span>:</span><br><span class="line">        <span class="keyword">return</span> img.copy()</span><br><span class="line">    skew = m[<span class="string">'mu11'</span>]/m[<span class="string">'mu02'</span>]</span><br><span class="line">    M = np.float32([[<span class="number">1</span>, skew, <span class="number">-0.5</span>*SZ*skew], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">    img = cv.warpAffine(img,M,(SZ, SZ),flags=affine_flags)</span><br><span class="line">    <span class="keyword">return</span> img</span><br></pre></td></tr></table></figure>
+
+<p>下图显示了应用于零图像的上偏移校正功能。左图像是原始图像，右图像是去歪斜图像。<br><img src="images/deskew.jpg" alt></p>
+<p>接下来，我们必须找到每个单元格的HOG描述符。为此，我们找到了每个单元在X和Y方向上的Sobel导数。然后在每个像素处找到它们的大小和梯度方向。该梯度被量化为16个整数值。将此图像划分为四个子正方形。对于每个子正方形，计算权重大小方向的直方图（16个bin）。因此，每个子正方形为您提供了一个包含16个值的向量。（四个子正方形的）四个这样的向量共同为我们提供了一个包含64个值的特征向量。这是我们用于训练数据的特征向量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hog</span><span class="params">(img)</span>:</span></span><br><span class="line">    gx = cv.Sobel(img, cv.CV_32F, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    gy = cv.Sobel(img, cv.CV_32F, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">    mag, ang = cv.cartToPolar(gx, gy)</span><br><span class="line">    bins = np.int32(bin_n*ang/(<span class="number">2</span>*np.pi))    <span class="comment"># quantizing binvalues in (0...16)</span></span><br><span class="line">    bin_cells = bins[:<span class="number">10</span>,:<span class="number">10</span>], bins[<span class="number">10</span>:,:<span class="number">10</span>], bins[:<span class="number">10</span>,<span class="number">10</span>:], bins[<span class="number">10</span>:,<span class="number">10</span>:]</span><br><span class="line">    mag_cells = mag[:<span class="number">10</span>,:<span class="number">10</span>], mag[<span class="number">10</span>:,:<span class="number">10</span>], mag[:<span class="number">10</span>,<span class="number">10</span>:], mag[<span class="number">10</span>:,<span class="number">10</span>:]</span><br><span class="line">    hists = [np.bincount(b.ravel(), m.ravel(), bin_n) <span class="keyword">for</span> b, m <span class="keyword">in</span> zip(bin_cells, mag_cells)]</span><br><span class="line">    hist = np.hstack(hists)     <span class="comment"># hist is a 64 bit vector</span></span><br><span class="line">    <span class="keyword">return</span> hist</span><br></pre></td></tr></table></figure>
+
+<p>最后，与前面的情况一样，我们首先将大数据集拆分为单个单元格。对于每个数字，保留250个单元用于训练数据，其余250个数据保留用于测试。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">SZ=<span class="number">20</span></span><br><span class="line">bin_n = <span class="number">16</span> <span class="comment"># Number of bins</span></span><br><span class="line">affine_flags = cv.WARP_INVERSE_MAP|cv.INTER_LINEAR</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">deskew</span><span class="params">(img)</span>:</span></span><br><span class="line">    m = cv.moments(img)</span><br><span class="line">    <span class="keyword">if</span> abs(m[<span class="string">'mu02'</span>]) &lt; <span class="number">1e-2</span>:</span><br><span class="line">        <span class="keyword">return</span> img.copy()</span><br><span class="line">    skew = m[<span class="string">'mu11'</span>]/m[<span class="string">'mu02'</span>]</span><br><span class="line">    M = np.float32([[<span class="number">1</span>, skew, <span class="number">-0.5</span>*SZ*skew], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">    img = cv.warpAffine(img,M,(SZ, SZ),flags=affine_flags)</span><br><span class="line">    <span class="keyword">return</span> img</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hog</span><span class="params">(img)</span>:</span></span><br><span class="line">    gx = cv.Sobel(img, cv.CV_32F, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    gy = cv.Sobel(img, cv.CV_32F, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">    mag, ang = cv.cartToPolar(gx, gy)</span><br><span class="line">    bins = np.int32(bin_n*ang/(<span class="number">2</span>*np.pi))    <span class="comment"># quantizing binvalues in (0...16)</span></span><br><span class="line">    bin_cells = bins[:<span class="number">10</span>,:<span class="number">10</span>], bins[<span class="number">10</span>:,:<span class="number">10</span>], bins[:<span class="number">10</span>,<span class="number">10</span>:], bins[<span class="number">10</span>:,<span class="number">10</span>:]</span><br><span class="line">    mag_cells = mag[:<span class="number">10</span>,:<span class="number">10</span>], mag[<span class="number">10</span>:,:<span class="number">10</span>], mag[:<span class="number">10</span>,<span class="number">10</span>:], mag[<span class="number">10</span>:,<span class="number">10</span>:]</span><br><span class="line">    hists = [np.bincount(b.ravel(), m.ravel(), bin_n) <span class="keyword">for</span> b, m <span class="keyword">in</span> zip(bin_cells, mag_cells)]</span><br><span class="line">    hist = np.hstack(hists)     <span class="comment"># hist is a 64 bit vector</span></span><br><span class="line">    <span class="keyword">return</span> hist</span><br><span class="line">img = cv.imread(<span class="string">'digits.png'</span>,<span class="number">0</span>)</span><br><span class="line"><span class="keyword">if</span> img <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">raise</span> Exception(<span class="string">"we need the digits.png image from samples/data here !"</span>)</span><br><span class="line">cells = [np.hsplit(row,<span class="number">100</span>) <span class="keyword">for</span> row <span class="keyword">in</span> np.vsplit(img,<span class="number">50</span>)]</span><br><span class="line"><span class="comment"># First half is trainData, remaining is testData</span></span><br><span class="line">train_cells = [ i[:<span class="number">50</span>] <span class="keyword">for</span> i <span class="keyword">in</span> cells ]</span><br><span class="line">test_cells = [ i[<span class="number">50</span>:] <span class="keyword">for</span> i <span class="keyword">in</span> cells]</span><br><span class="line">deskewed = [list(map(deskew,row)) <span class="keyword">for</span> row <span class="keyword">in</span> train_cells]</span><br><span class="line">hogdata = [list(map(hog,row)) <span class="keyword">for</span> row <span class="keyword">in</span> deskewed]</span><br><span class="line">trainData = np.float32(hogdata).reshape(<span class="number">-1</span>,<span class="number">64</span>)</span><br><span class="line">responses = np.repeat(np.arange(<span class="number">10</span>),<span class="number">250</span>)[:,np.newaxis]</span><br><span class="line">svm = cv.ml.SVM_create()</span><br><span class="line">svm.setKernel(cv.ml.SVM_LINEAR)</span><br><span class="line">svm.setType(cv.ml.SVM_C_SVC)</span><br><span class="line">svm.setC(<span class="number">2.67</span>)</span><br><span class="line">svm.setGamma(<span class="number">5.383</span>)</span><br><span class="line">svm.train(trainData, cv.ml.ROW_SAMPLE, responses)</span><br><span class="line">svm.save(<span class="string">'svm_data.dat'</span>)</span><br><span class="line">deskewed = [list(map(deskew,row)) <span class="keyword">for</span> row <span class="keyword">in</span> test_cells]</span><br><span class="line">hogdata = [list(map(hog,row)) <span class="keyword">for</span> row <span class="keyword">in</span> deskewed]</span><br><span class="line">testData = np.float32(hogdata).reshape(<span class="number">-1</span>,bin_n*<span class="number">4</span>)</span><br><span class="line">result = svm.predict(testData)[<span class="number">1</span>]</span><br><span class="line">mask = result==responses</span><br><span class="line">correct = np.count_nonzero(mask)</span><br><span class="line">print(correct*<span class="number">100.0</span>/result.size)</span><br></pre></td></tr></table></figure>
+
+<p>这种特殊的技术给了我近94％的准确性。您可以为SVM的各种参数尝试不同的值，以检查是否可以实现更高的精度。或者，您可以阅读有关此领域的技术论文并尝试实施它们。</p>
+<h1 id="K均值聚类"><a href="#K均值聚类" class="headerlink" title="K均值聚类"></a>K均值聚类</h1><h2 id="了解K均值聚类"><a href="#了解K均值聚类" class="headerlink" title="了解K均值聚类"></a>了解K均值聚类</h2><h3 id="目标-4"><a href="#目标-4" class="headerlink" title="目标"></a>目标</h3><ul>
+<li>在本章中，我们将了解K-Means聚类的概念，其工作原理等。</li>
+</ul>
+<h3 id="理论-2"><a href="#理论-2" class="headerlink" title="理论"></a>理论</h3><p>我们将用一个常用的例子来处理这个问题。</p>
+<h3 id="T恤尺寸问题"><a href="#T恤尺寸问题" class="headerlink" title="T恤尺寸问题"></a>T恤尺寸问题</h3><p>考虑一家公司，该公司将向市场发布新型号的T恤。显然，他们将不得不制造不同尺寸的模型，以满足各种规模的人们的需求。因此，该公司会记录人们的身高和体重数据，并将其绘制到图形上，如下所示：<br><img src="images/tshirt.jpg" alt></p>
+<p>公司无法制作所有尺寸的T恤。取而代之的是，他们将人划分为小，中和大，并仅制造这三种适合所有人的模型。可以通过k均值聚类将人员分为三组，并且算法可以为我们提供最佳的3种尺寸，这将满足所有人员的需求。如果不是这样，公司可以将人员分为更多的组，可能是五个，依此类推。查看下面的图片：</p>
+<p><img src="images/tshirt_grouped.jpg" alt></p>
+<h4 id="它是如何工作的-？"><a href="#它是如何工作的-？" class="headerlink" title="它是如何工作的 ？"></a>它是如何工作的 ？</h4><p>该算法是一个迭代过程。我们将在图像的帮助下逐步解释它。</p>
+<p>考虑如下数据（您可以将其视为T恤问题）。我们需要将此数据分为两类。<br><img src="images/testdata.jpg" alt></p>
+<p><strong>步骤1</strong>-算法随机选择两个质心$C1$个和$C2$ （有时，将任何两个数据作为质心）。</p>
+<p><strong>步骤2</strong>-计算每个点到两个质心的距离。如果测试数据更接近$C1$个，然后将该数据标记为“ 0”。如果更接近$C2$，然后标记为“ 1”（如果存在更多质心，则标记为“ 2”，“ 3”等）。</p>
+<p>在我们的示例中，我们将为所有标记为红色的“ 0”和标记为蓝色的所有“ 1”着色。因此，经过以上操作，我们得到以下图像。<br><img src="images/initial_labelling.jpg" alt><br><strong>步骤3</strong>-接下来，我们分别计算所有蓝点和红点的平均值，这将成为我们的新质心。那是$C1$个和$C2$转移到新计算的质心。（请记住，显示的图像不是真实值，也不是真实比例，仅用于演示）。</p>
+<p>再次，使用新的质心执行步骤2，并将标签数据设置为’0’和’1’。</p>
+<p>因此我们得到如下结果：<br><img src="images/update_centroid.jpg" alt><br>现在，迭代步骤2和步骤3，直到两个质心都收敛到固定点</p>
+<p>最终结果几乎如下所示：<br><img src="images/final_clusters.jpg" alt></p>
+<h2 id="OpenCV中的K-均值聚类"><a href="#OpenCV中的K-均值聚类" class="headerlink" title="OpenCV中的K-均值聚类"></a>OpenCV中的K-均值聚类</h2><h3 id="目标-5"><a href="#目标-5" class="headerlink" title="目标"></a>目标</h3><ul>
+<li>了解如何在OpenCV中使用<code>cv.kmeans()</code>函数进行数据聚类</li>
+</ul>
+<h3 id="了解参数"><a href="#了解参数" class="headerlink" title="了解参数"></a>了解参数</h3><h4 id="输入参数"><a href="#输入参数" class="headerlink" title="输入参数"></a>输入参数</h4><ul>
+<li><code>sample</code>：它应该是np.float32数据类型，并且每个功能都应该放在单个列中。</li>
+<li><code>nclusters(K)</code>：结束时所需的集群数</li>
+<li><code>criteria</code>：这是迭代终止准则。满足此条件后，算法迭代将停止。实际上，它应该是3个参数的元组。它们是<code>（type，max_iter，epsilon）</code>：<br>a.终止条件的类型。它具有3个标志，如下所示：<br>1.<code>cv.TERM_CRITERIA_EPS</code>-如果达到指定的精度epsilon，则停止算法迭代。<br>2.<code>cv.TERM_CRITERIA_MAX_ITER</code>-在指定的迭代次数max_iter之后停止算法。<br>3.<code>cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER</code>-满足以上任何条件时，停止迭代。<br>b.<code>max_iter</code>-一个整数，指定最大迭代次数。<br>c.<code>epsilon</code>-要求的精度</li>
+<li><code>attempts</code>：标志来指定的算法是使用不同的初始labellings执行次数。该算法返回产生最佳紧密度的标签。该紧凑性作为输出返回。</li>
+<li><code>flags</code>：此标志用于指定初始中心的获取方式。通常，为此使用两个标志：<code>cv.KMEANS_PP_CENTERS</code>和<code>cv.KMEANS_RANDOM_CENTERS</code>。</li>
+</ul>
+<h4 id="输出参数"><a href="#输出参数" class="headerlink" title="输出参数"></a>输出参数</h4><ul>
+<li><code>compactness</code>：是每个点到其对应中心的平方距离的总和。</li>
+<li><code>labels</code>：这是标签数组（与上一篇文章中的“代码”相同），其中每个元素标记为“ 0”，“ 1” …..</li>
+<li><code>centers</code>：这是群集中心的阵列。<br>现在，我们将通过三个示例了解如何应用K-Means算法。</li>
+</ul>
+<h2 id="1-仅具有一维的数据"><a href="#1-仅具有一维的数据" class="headerlink" title="1.仅具有一维的数据"></a>1.仅具有一维的数据</h2><p>考虑一下，您有一组仅具有一个特征（即一维）的数据。例如，我们可以解决我们的T恤问题，您只用身高来决定T恤的尺寸。</p>
+<p>因此，我们首先创建数据并将其绘制在Matplotlib</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">x = np.random.randint(<span class="number">25</span>,<span class="number">100</span>,<span class="number">25</span>)</span><br><span class="line">y = np.random.randint(<span class="number">175</span>,<span class="number">255</span>,<span class="number">25</span>)</span><br><span class="line">z = np.hstack((x,y))</span><br><span class="line">z = z.reshape((<span class="number">50</span>,<span class="number">1</span>))</span><br><span class="line">z = np.float32(z)</span><br><span class="line">plt.hist(z,<span class="number">256</span>,[<span class="number">0</span>,<span class="number">256</span>]),plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们有一个“ z”，它是一个大小为50的数组，值的范围是0到255。我已经将“ z”重塑为列向量。如果存在多个功能，它将更加有用。然后我制作了np.float32类型的数据。</p>
+<p>我们得到以下图像：<br><img src="images/oc_1d_testdata.png" alt><br>现在我们应用KMeans函数。在此之前，我们需要指定标准。我的标准是，每当运行10次算法迭代或达到epsilon = 1.0的精度时，就停止算法并返回答案。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define criteria = ( type, max_iter = 10 , epsilon = 1.0 )</span></span><br><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">10</span>, <span class="number">1.0</span>)</span><br><span class="line"><span class="comment"># Set flags (Just to avoid line break in the code)</span></span><br><span class="line">flags = cv.KMEANS_RANDOM_CENTERS</span><br><span class="line"><span class="comment"># Apply KMeans</span></span><br><span class="line">compactness,labels,centers = cv.kmeans(z,<span class="number">2</span>,<span class="literal">None</span>,criteria,<span class="number">10</span>,flags)</span><br></pre></td></tr></table></figure>
+
+<p>这为我们提供了紧凑性，标签和中心。在这种情况下，我得到的中心分别为60和207。标签的大小将与测试数据的大小相同，其中每个数据的质心都将标记为“ 0”，“ 1”，“ 2”等。现在，我们根据标签将数据分为不同的群集。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A = z[labels==<span class="number">0</span>]</span><br><span class="line">B = z[labels==<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>现在我们以红色绘制A，以蓝色绘制B，以黄色绘制其质心。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Now plot 'A' in red, 'B' in blue, 'centers' in yellow</span></span><br><span class="line">plt.hist(A,<span class="number">256</span>,[<span class="number">0</span>,<span class="number">256</span>],color = <span class="string">'r'</span>)</span><br><span class="line">plt.hist(B,<span class="number">256</span>,[<span class="number">0</span>,<span class="number">256</span>],color = <span class="string">'b'</span>)</span><br><span class="line">plt.hist(centers,<span class="number">32</span>,[<span class="number">0</span>,<span class="number">256</span>],color = <span class="string">'y'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>以下是我们得到的输出：<br><img src="images/oc_1d_clustered.png" alt></p>
+<h2 id="2-具有多种功能的数据"><a href="#2-具有多种功能的数据" class="headerlink" title="2.具有多种功能的数据"></a>2.具有多种功能的数据</h2><p>在前面的示例中，我们仅考虑了T恤问题的身高。在这里，我们将同时考虑身高和体重，即两个特征。</p>
+<p>请记住，在以前的情况下，我们将数据制作为单个列向量。每个特征排列在一列中，而每一行对应于一个输入测试样本。</p>
+<p>例如，在这种情况下，我们设置了一个大小为50x2的测试数据，即50人的身高和体重。第一列对应于全部50个人的身高，第二列对应于他们的体重。第一行包含两个元素，其中第一个是第一人称的身高，第二个是他的体重。类似地，剩余的行对应于其他人的身高和体重。查看下面的图片：<br><img src="images/oc_feature_representation.jpg" alt><br>现在，我直接转到代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">X = np.random.randint(<span class="number">25</span>,<span class="number">50</span>,(<span class="number">25</span>,<span class="number">2</span>))</span><br><span class="line">Y = np.random.randint(<span class="number">60</span>,<span class="number">85</span>,(<span class="number">25</span>,<span class="number">2</span>))</span><br><span class="line">Z = np.vstack((X,Y))</span><br><span class="line"><span class="comment"># convert to np.float32</span></span><br><span class="line">Z = np.float32(Z)</span><br><span class="line"><span class="comment"># define criteria and apply kmeans()</span></span><br><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">10</span>, <span class="number">1.0</span>)</span><br><span class="line">ret,label,center=cv.kmeans(Z,<span class="number">2</span>,<span class="literal">None</span>,criteria,<span class="number">10</span>,cv.KMEANS_RANDOM_CENTERS)</span><br><span class="line"><span class="comment"># Now separate the data, Note the flatten()</span></span><br><span class="line">A = Z[label.ravel()==<span class="number">0</span>]</span><br><span class="line">B = Z[label.ravel()==<span class="number">1</span>]</span><br><span class="line"><span class="comment"># Plot the data</span></span><br><span class="line">plt.scatter(A[:,<span class="number">0</span>],A[:,<span class="number">1</span>])</span><br><span class="line">plt.scatter(B[:,<span class="number">0</span>],B[:,<span class="number">1</span>],c = <span class="string">'r'</span>)</span><br><span class="line">plt.scatter(center[:,<span class="number">0</span>],center[:,<span class="number">1</span>],s = <span class="number">80</span>,c = <span class="string">'y'</span>, marker = <span class="string">'s'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Height'</span>),plt.ylabel(<span class="string">'Weight'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>下面是我们得到的输出：<br><img src="images/oc_2d_clustered.jpg" alt></p>
+<h2 id="3-颜色量化"><a href="#3-颜色量化" class="headerlink" title="3.颜色量化"></a>3.颜色量化</h2><p>颜色量化是减少图像中颜色数量的过程。这样做的原因之一是减少内存。有时，某些设备可能会受到限制，因此只能产生有限数量的颜色。同样在那些情况下，执行颜色量化。在这里，我们使用k均值聚类进行颜色量化。</p>
+<p>这里没有新内容要解释。有3个功能，例如R，G，B。因此，我们需要将图像重塑为Mx3大小的数组（M是图像中的像素数）。在聚类之后，我们将质心值（也是R，G，B）应用于所有像素，这样生成的图像将具有指定的颜色数。再一次，我们需要将其重塑为原始图像的形状。下面是代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line">img = cv.imread(<span class="string">'home.jpg'</span>)</span><br><span class="line">Z = img.reshape((<span class="number">-1</span>,<span class="number">3</span>))</span><br><span class="line"><span class="comment"># convert to np.float32</span></span><br><span class="line">Z = np.float32(Z)</span><br><span class="line"><span class="comment"># define criteria, number of clusters(K) and apply kmeans()</span></span><br><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">10</span>, <span class="number">1.0</span>)</span><br><span class="line">K = <span class="number">8</span></span><br><span class="line">ret,label,center=cv.kmeans(Z,K,<span class="literal">None</span>,criteria,<span class="number">10</span>,cv.KMEANS_RANDOM_CENTERS)</span><br><span class="line"><span class="comment"># Now convert back into uint8, and make original image</span></span><br><span class="line">center = np.uint8(center)</span><br><span class="line">res = center[label.flatten()]</span><br><span class="line">res2 = res.reshape((img.shape))</span><br><span class="line">cv.imshow(<span class="string">'res2'</span>,res2)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<p>K = 8，请参见以下结果：<br><img src="images/oc_color_quantization.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/opencv/机器学习.html" title="机器学习">http://leesin.cc/opencv/机器学习.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/opencv/计算摄影.html" rel="next" title="计算摄影">
+                  <i class="fa fa-chevron-left"></i> 计算摄影
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/opencv/对象检测（objdetect模块）.html" rel="prev" title="对象检测（objdetect模块）">
+                  对象检测（objdetect模块） <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#K最近邻"><span class="nav-number">1.</span> <span class="nav-text">K最近邻</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#了解k最近邻居"><span class="nav-number">1.1.</span> <span class="nav-text">了解k最近邻居</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标"><span class="nav-number">1.1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理论"><span class="nav-number">1.1.2.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCV中的kNN"><span class="nav-number">1.1.3.</span> <span class="nav-text">OpenCV中的kNN</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用kNN的OCR手写数据"><span class="nav-number">1.2.</span> <span class="nav-text">使用kNN的OCR手写数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手写数字的OCR"><span class="nav-number">1.2.2.</span> <span class="nav-text">手写数字的OCR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#英文字母的OCR"><span class="nav-number">1.2.3.</span> <span class="nav-text">英文字母的OCR</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持向量机（SVM）"><span class="nav-number">2.</span> <span class="nav-text">支持向量机（SVM）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#了解SVM"><span class="nav-number">2.1.</span> <span class="nav-text">了解SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标-2"><span class="nav-number">2.1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理论-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性可分离数据"><span class="nav-number">2.1.3.</span> <span class="nav-text">线性可分离数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非线性可分离数据"><span class="nav-number">2.1.4.</span> <span class="nav-text">非线性可分离数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用SVM的手写数据的OCR"><span class="nav-number">2.2.</span> <span class="nav-text">使用SVM的手写数据的OCR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标-3"><span class="nav-number">2.2.1.</span> <span class="nav-text">目标</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#K均值聚类"><span class="nav-number">3.</span> <span class="nav-text">K均值聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#了解K均值聚类"><span class="nav-number">3.1.</span> <span class="nav-text">了解K均值聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标-4"><span class="nav-number">3.1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理论-2"><span class="nav-number">3.1.2.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T恤尺寸问题"><span class="nav-number">3.1.3.</span> <span class="nav-text">T恤尺寸问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#它是如何工作的-？"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">它是如何工作的 ？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenCV中的K-均值聚类"><span class="nav-number">3.2.</span> <span class="nav-text">OpenCV中的K-均值聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标-5"><span class="nav-number">3.2.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#了解参数"><span class="nav-number">3.2.2.</span> <span class="nav-text">了解参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入参数"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">输入参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出参数"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">输出参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-仅具有一维的数据"><span class="nav-number">3.3.</span> <span class="nav-text">1.仅具有一维的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-具有多种功能的数据"><span class="nav-number">3.4.</span> <span class="nav-text">2.具有多种功能的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-颜色量化"><span class="nav-number">3.5.</span> <span class="nav-text">3.颜色量化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

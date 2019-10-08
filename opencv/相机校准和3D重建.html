@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="相机校准目标在本节中，我们将学习 相机造成的失真类型 如何找到相机的内在和外在特性 如何根据这些属性使图像不失真 基础一些针孔相机会给图像带来明显的失真。两种主要的变形是径向变形和切向变形。径向变形会导致直线出现弯曲。距图像中心越远，径向畸变越大。例如，下面显示一个图像，其中棋盘的两个边缘用红线标记。但是，您会看到国际象棋棋盘的边框不是直线，并且与红线不匹配。所有预期的直线都凸出。有关更多详细信息">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="相机校准和3D重建">
+<meta property="og:url" content="http://leesin.cc/opencv/相机校准和3D重建.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="相机校准目标在本节中，我们将学习 相机造成的失真类型 如何找到相机的内在和外在特性 如何根据这些属性使图像不失真 基础一些针孔相机会给图像带来明显的失真。两种主要的变形是径向变形和切向变形。径向变形会导致直线出现弯曲。距图像中心越远，径向畸变越大。例如，下面显示一个图像，其中棋盘的两个边缘用红线标记。但是，您会看到国际象棋棋盘的边框不是直线，并且与红线不匹配。所有预期的直线都凸出。有关更多详细信息">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/opencv/images/calib_pattern.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/calib_result.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/pose_1.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/pose_2.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/epipolar.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/essential_matrix.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/epiresult.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/stereo_depth.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/disparity_map.jpg">
+<meta property="og:updated_time" content="2019-10-08T12:04:03.676Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="相机校准和3D重建">
+<meta name="twitter:description" content="相机校准目标在本节中，我们将学习 相机造成的失真类型 如何找到相机的内在和外在特性 如何根据这些属性使图像不失真 基础一些针孔相机会给图像带来明显的失真。两种主要的变形是径向变形和切向变形。径向变形会导致直线出现弯曲。距图像中心越远，径向畸变越大。例如，下面显示一个图像，其中棋盘的两个边缘用红线标记。但是，您会看到国际象棋棋盘的边框不是直线，并且与红线不匹配。所有预期的直线都凸出。有关更多详细信息">
+<meta name="twitter:image" content="http://leesin.cc/opencv/images/calib_pattern.jpg">
+  <link rel="canonical" href="http://leesin.cc/opencv/相机校准和3D重建">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>相机校准和3D重建 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/相机校准和3D重建.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">相机校准和3D重建
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-07 23:11:00" itemprop="dateCreated datePublished" datetime="2019-10-07T23:11:00+08:00">2019-10-07</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-08 20:04:03" itemprop="dateModified" datetime="2019-10-08T20:04:03+08:00">2019-10-08</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="相机校准"><a href="#相机校准" class="headerlink" title="相机校准"></a>相机校准</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在本节中，我们将学习</p><ul>
+<li>相机造成的失真类型</li>
+<li>如何找到相机的内在和外在特性</li>
+<li>如何根据这些属性使图像不失真</li>
+</ul><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>一些针孔相机会给图像带来明显的失真。两种主要的变形是<strong>径向变形</strong>和<strong>切向变形</strong>。</p><p>径向变形会导致直线出现弯曲。距图像中心越远，径向畸变越大。例如，下面显示一个图像，其中棋盘的两个边缘用红线标记。但是，您会看到国际象棋棋盘的边框不是直线，并且与红线不匹配。所有预期的直线都凸出。有关更多详细信息，请访问“ <a href="http://en.wikipedia.org/wiki/Distortion_%28optics%29" target="_blank" rel="noopener">失真（光学）</a> ”。</p><a id="more"></a>
+
+
+
+<p>同样，由于摄像镜头未完全平行于成像平面对齐，因此会发生切向畸变。因此，图像中的某些区域看起来可能比预期的要近。</p>
+<p>简而言之，我们需要找到五个参数，称为失真系数，公式如下：<br>$$<br>Distortioncoefficients=(k1 k2 p1 p2 k3)<br>$$<br>除此之外，我们还需要其他一些信息，例如摄像机的内在和外在参数。内部参数特定于摄像机。它们包括像焦距和光学中心,焦距光学中心可用于创建相机矩阵，该相机矩阵可用于消除由于特定相机镜头而引起的畸变。相机矩阵对于特定相机而言是唯一的，因此一旦计算出，就可以在同一相机拍摄的其他图像上重复使用。它表示为3x3矩阵：<br>$$<br>\quad<br>camera matrix = \begin{bmatrix} f_x &amp; 0 &amp; c_x \<br>                      0 &amp; f_y &amp; c_y \<br>                      0 &amp; 0 &amp; 1\end{bmatrix}<br>\quad<br>$$<br>外在参数对应于旋转和平移矢量，其将3D点的坐标平移为坐标系。</p>
+<p>对于立体声应用，首先需要纠正这些失真。为了找到这些参数，我们必须提供一些定义良好的图案的示例图像（例如国际象棋棋盘）。我们找到一些已经知道相对位置的特定点（例如，国际象棋棋盘中的四角）。我们知道现实世界中这些点的坐标，也知道图像中的坐标，因此我们可以求解失真系数。为了获得更好的结果，我们至少需要10个测试模式。</p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p>如上所述，相机校准至少需要10个测试图案。OpenCV附带了一些国际象棋棋盘的图像（请参见<code>samples/data/left01.jpg –left14.jpg）</code>，因此我们将利用这些图像。考虑棋盘的图像。相机校准所需的重要输入数据是3D现实世界点集以及图像中这些点的相应2D坐标。可以从图像中轻松找到2D图像点。（这些图像点是棋盘上两个黑色正方形相互接触的位置）</p>
+<p>现实世界中的3D点呢？这些图像是从静态相机拍摄的，而国际象棋棋盘放置在不同的位置和方向。所以我们需要知道（X，Y，Z）价值观。但是为简单起见，我们可以说棋盘在XY平面上保持静止（因此Z始终为0），并且照相机也相应地移动了。这种考虑有助于我们仅找到X，Y值。现在对于X，Y值，我们可以简单地将点传递为（0,0），（1,0），（2,0），…，这表示点的位置。在这种情况下，我们得到的结果将是棋盘正方形的大小比例。但是，如果我们知道正方形大小（例如30毫米），则可以将值传递为（0,0），（30,0），（60,0），…。因此，我们得到的结果以毫米为单位。（在这种情况下，我们不知道正方形尺寸，因为我们没有拍摄那些图像，因此我们以正方形尺寸表示）。</p>
+<p>3D点称为<strong>对象点</strong>，而2D图像点称为<strong>图像点</strong>。</p>
+<h3 id="设定"><a href="#设定" class="headerlink" title="设定"></a>设定</h3><p>因此，要在国际象棋棋盘中查找图案，我们可以使用函数<code>cv.findChessboardCorners()</code>。我们还需要传递所需的图案，例如8x8网格，5x5网格等。在此示例中，我们使用7x6网格。（通常，棋盘有8x8的正方形和7x7的内部角）。它返回角点和retval，如果获得图案，则为True。这些角将按顺序放置（从左到右，从上到下）</p>
+<h3 id="也可以看看"><a href="#也可以看看" class="headerlink" title="也可以看看"></a>也可以看看</h3><p>此功能可能无法在所有图像中找到所需的图案。因此，一个不错的选择是编写代码，使它启动相机并检查每帧所需的图案。获得图案后，找到角并将其存储在列表中。另外，在阅读下一帧之前请提供一些时间间隔，以便我们可以在不同方向上调整棋盘。继续此过程，直到获得所需数量的良好图案为止。即使在此处提供的示例中，我们也不确定给出的14张图像中有多少张是好的。因此，我们必须阅读所有图像并仅拍摄好图像。<br>除了棋盘，我们还可以使用圆形网格。在这种情况下，我们必须使用函数<code>cv.findCirclesGrid()</code>来找到模式。较少的图像足以使用圆形网格执行相机校准。<br>找到角点后，可以使用<code>cv.cornerSubPix()</code>来提高其精度。我们还可以使用<code>cv.drawChessboardCorners()</code>绘制图案。所有这些步骤都包含在以下代码中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="comment"># termination criteria</span></span><br><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">30</span>, <span class="number">0.001</span>)</span><br><span class="line"><span class="comment"># prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)</span></span><br><span class="line">objp = np.zeros((<span class="number">6</span>*<span class="number">7</span>,<span class="number">3</span>), np.float32)</span><br><span class="line">objp[:,:<span class="number">2</span>] = np.mgrid[<span class="number">0</span>:<span class="number">7</span>,<span class="number">0</span>:<span class="number">6</span>].T.reshape(<span class="number">-1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment"># Arrays to store object points and image points from all the images.</span></span><br><span class="line">objpoints = [] <span class="comment"># 3d point in real world space</span></span><br><span class="line">imgpoints = [] <span class="comment"># 2d points in image plane.</span></span><br><span class="line">images = glob.glob(<span class="string">'*.jpg'</span>)</span><br><span class="line"><span class="keyword">for</span> fname <span class="keyword">in</span> images:</span><br><span class="line">    img = cv.imread(fname)</span><br><span class="line">    gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)</span><br><span class="line">    <span class="comment"># Find the chess board corners</span></span><br><span class="line">    ret, corners = cv.findChessboardCorners(gray, (<span class="number">7</span>,<span class="number">6</span>), <span class="literal">None</span>)</span><br><span class="line">    <span class="comment"># If found, add object points, image points (after refining them)</span></span><br><span class="line">    <span class="keyword">if</span> ret == <span class="literal">True</span>:</span><br><span class="line">        objpoints.append(objp)</span><br><span class="line">        corners2 = cv.cornerSubPix(gray,corners, (<span class="number">11</span>,<span class="number">11</span>), (<span class="number">-1</span>,<span class="number">-1</span>), criteria)</span><br><span class="line">        imgpoints.append(corners)</span><br><span class="line">        <span class="comment"># Draw and display the corners</span></span><br><span class="line">        cv.drawChessboardCorners(img, (<span class="number">7</span>,<span class="number">6</span>), corners2, ret)</span><br><span class="line">        cv.imshow(<span class="string">'img'</span>, img)</span><br><span class="line">        cv.waitKey(<span class="number">500</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<p>一张上面画有图案的图像如下所示：<br><img src="images/calib_pattern.jpg" alt></p>
+<h2 id="校准"><a href="#校准" class="headerlink" title="校准"></a>校准</h2><p>现在我们有了目标点和图像点，现在可以进行校准了。我们可以使用函数<code>cv.calibrateCamera()</code>返回相机矩阵，失真系数，旋转和平移矢量等。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::<span class="number">-1</span>], <span class="literal">None</span>, <span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="不失真"><a href="#不失真" class="headerlink" title="不失真"></a>不失真</h2><p>现在，我们可以拍摄图像并对其进行扭曲。OpenCV提供了两种方法来执行此操作。但是，首先，我们可以使用<code>cv.getOptimalNewCameraMatrix()</code>基于自由缩放参数来优化相机矩阵。如果缩放参数alpha = 0，则返回具有最少不需要像素的未失真图像。因此，它甚至可能会删除图像角落的一些像素。如果alpha = 1，则所有像素都保留有一些额外的黑色图像。此函数还返回可用于裁剪结果的图像ROI。</p>
+<p>因此，我们拍摄一张新图像（在本例中为left12.jpg。这是本章的第一张图像）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">img = cv.imread(<span class="string">'left12.jpg'</span>)</span><br><span class="line">h,  w = img.shape[:<span class="number">2</span>]</span><br><span class="line">newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w,h), <span class="number">1</span>, (w,h))</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-使用cv-undistort"><a href="#1-使用cv-undistort" class="headerlink" title="1.使用cv.undistort()"></a>1.使用cv.undistort()</h3><p>这是最简单的方法。只需调用该函数并使用上面获得的ROI裁剪结果即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># undistort</span></span><br><span class="line">dst = cv.undistort(img, mtx, dist, <span class="literal">None</span>, newcameramtx)</span><br><span class="line"><span class="comment"># crop the image</span></span><br><span class="line">x, y, w, h = roi</span><br><span class="line">dst = dst[y:y+h, x:x+w]</span><br><span class="line">cv.imwrite(<span class="string">'calibresult.png'</span>, dst)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用重映射"><a href="#2-使用重映射" class="headerlink" title="2.使用重映射"></a>2.使用重映射</h3><p>这样比较困难。首先，找到从扭曲图像到未扭曲图像的映射函数。然后使用重映射功能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># undistort</span></span><br><span class="line">mapx, mapy = cv.initUndistortRectifyMap(mtx, dist, <span class="literal">None</span>, newcameramtx, (w,h), <span class="number">5</span>)</span><br><span class="line">dst = cv.remap(img, mapx, mapy, cv.INTER_LINEAR)</span><br><span class="line"><span class="comment"># crop the image</span></span><br><span class="line">x, y, w, h = roi</span><br><span class="line">dst = dst[y:y+h, x:x+w]</span><br><span class="line">cv.imwrite(<span class="string">'calibresult.png'</span>, dst)</span><br></pre></td></tr></table></figure>
+
+<p>尽管如此，两种方法都给出相同的结果。看到下面的结果：<br><img src="images/calib_result.jpg" alt></p>
+<p>您可以看到所有边缘都是笔直的。</p>
+<p>现在，您可以使用NumPy中的写入功能（<code>np.savez</code>，<code>np.savetxt</code>等）存储相机矩阵和失真系数，以备将来使用。</p>
+<h2 id="重投影误差"><a href="#重投影误差" class="headerlink" title="重投影误差"></a>重投影误差</h2><p>重投影误差可以很好地估计找到的参数的精确度。重投影误差越接近零，我们发现的参数越准确。给定固有，失真，旋转和平移矩阵，我们必须首先使用<code>cv.projectPoints()</code>将对象点转换为图像点。然后，我们可以计算出通过变换得到的绝对值和拐角发现算法之间的绝对范数。为了找到平均误差，我们计算为所有校准图像计算的误差的算术平均值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mean_error = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(objpoints)):</span><br><span class="line">    imgpoints2, _ = cv.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)</span><br><span class="line">    error = cv.norm(imgpoints[i], imgpoints2, cv.NORM_L2)/len(imgpoints2)</span><br><span class="line">    mean_error += error</span><br><span class="line">print( <span class="string">"total error: &#123;&#125;"</span>.format(mean_error/len(objpoints)) )</span><br></pre></td></tr></table></figure>
+
+<h1 id="姿势估计"><a href="#姿势估计" class="headerlink" title="姿势估计"></a>姿势估计</h1><h2 id="目标-1"><a href="#目标-1" class="headerlink" title="目标"></a>目标</h2><p>在这个部分，</p>
+<ul>
+<li>我们将学习利用calib3d模块在图像中创建一些3D效果。</li>
+</ul>
+<h2 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h2><p>这将是一小部分。在上一次相机校准的过程中，您发现了相机矩阵，失真系数等。给定图案图像，我们可以利用以上信息来计算其姿势或物体在空间中的位置，例如其旋转方式，对于平面物体，我们可以假设Z = 0，这样，问题就变成了如何将相机放置在空间中以查看我们的图案图像。因此，如果我们知道对象在空间中的位置，则可以在其中绘制一些2D图以模拟3D效果。让我们来看看如何做。</p>
+<p>我们的问题是，我们想在棋盘的第一个角上绘制3D坐标轴（X，Y，Z轴）。X轴为蓝色，Y轴为绿色，Z轴为红色。因此，实际上Z轴应该感觉像它垂直于我们的棋盘平面。</p>
+<p>首先，让我们从先前的校准结果中加载相机矩阵和失真系数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="comment"># Load previously saved data</span></span><br><span class="line"><span class="keyword">with</span> np.load(<span class="string">'B.npz'</span>) <span class="keyword">as</span> X:</span><br><span class="line">    mtx, dist, _, _ = [X[i] <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="string">'mtx'</span>,<span class="string">'dist'</span>,<span class="string">'rvecs'</span>,<span class="string">'tvecs'</span>)]</span><br></pre></td></tr></table></figure>
+
+<p>现在，让我们创建一个函数，绘制，该函数将棋盘上的角（使用<code>cv.findChessboardCorners()</code>获得）和轴点绘制为一个3D轴。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(img, corners, imgpts)</span>:</span></span><br><span class="line">    corner = tuple(corners[<span class="number">0</span>].ravel())</span><br><span class="line">    img = cv.line(img, corner, tuple(imgpts[<span class="number">0</span>].ravel()), (<span class="number">255</span>,<span class="number">0</span>,<span class="number">0</span>), <span class="number">5</span>)</span><br><span class="line">    img = cv.line(img, corner, tuple(imgpts[<span class="number">1</span>].ravel()), (<span class="number">0</span>,<span class="number">255</span>,<span class="number">0</span>), <span class="number">5</span>)</span><br><span class="line">    img = cv.line(img, corner, tuple(imgpts[<span class="number">2</span>].ravel()), (<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">5</span>)</span><br><span class="line">    <span class="keyword">return</span> img</span><br></pre></td></tr></table></figure>
+
+<p>然后，与前面的情况一样，我们创建终止条件，对象点（棋盘角的3D点）和轴点。轴点是3D空间中用于绘制轴的点。我们绘制长度为3的轴（由于我们基于该尺寸进行校准，因此单位将以国际象棋正方形的尺寸为单位）。因此我们的X轴从（0,0,0）绘制为（3,0,0），因此对于Y轴。对于Z轴，从（0,0,0）绘制为（0,0，-3）。负号表示它被拉向相机。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">30</span>, <span class="number">0.001</span>)</span><br><span class="line">objp = np.zeros((<span class="number">6</span>*<span class="number">7</span>,<span class="number">3</span>), np.float32)</span><br><span class="line">objp[:,:<span class="number">2</span>] = np.mgrid[<span class="number">0</span>:<span class="number">7</span>,<span class="number">0</span>:<span class="number">6</span>].T.reshape(<span class="number">-1</span>,<span class="number">2</span>)</span><br><span class="line">axis = np.float32([[<span class="number">3</span>,<span class="number">0</span>,<span class="number">0</span>], [<span class="number">0</span>,<span class="number">3</span>,<span class="number">0</span>], [<span class="number">0</span>,<span class="number">0</span>,<span class="number">-3</span>]]).reshape(<span class="number">-1</span>,<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>现在，像往常一样，我们加载每个图像。搜索7x6网格。如果找到，我们将使用子角像素对其进行优化。然后，使用函数<code>cv.solvePnPRansac()</code>计算旋转和平移。一旦有了这些变换矩阵，就可以使用它们将轴点投影到图像平面上。简而言之，我们在图像平面上找到与3D空间中（3,0,0），（0,3,0），（0,0,3）中的每一个相对应的点。一旦获得它们，就可以使用<code>draw()</code>函数从第一个角到这些点中的每个点绘制线条。做完!!!</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> fname <span class="keyword">in</span> glob.glob(<span class="string">'left*.jpg'</span>):</span><br><span class="line">    img = cv.imread(fname)</span><br><span class="line">    gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)</span><br><span class="line">    ret, corners = cv.findChessboardCorners(gray, (<span class="number">7</span>,<span class="number">6</span>),<span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> ret == <span class="literal">True</span>:</span><br><span class="line">        corners2 = cv.cornerSubPix(gray,corners,(<span class="number">11</span>,<span class="number">11</span>),(<span class="number">-1</span>,<span class="number">-1</span>),criteria)</span><br><span class="line">        <span class="comment"># Find the rotation and translation vectors.</span></span><br><span class="line">        ret,rvecs, tvecs = cv.solvePnP(objp, corners2, mtx, dist)</span><br><span class="line">        <span class="comment"># project 3D points to image plane</span></span><br><span class="line">        imgpts, jac = cv.projectPoints(axis, rvecs, tvecs, mtx, dist)</span><br><span class="line">        img = draw(img,corners2,imgpts)</span><br><span class="line">        cv.imshow(<span class="string">'img'</span>,img)</span><br><span class="line">        k = cv.waitKey(<span class="number">0</span>) &amp; <span class="number">0xFF</span></span><br><span class="line">        <span class="keyword">if</span> k == ord(<span class="string">'s'</span>):</span><br><span class="line">            cv.imwrite(fname[:<span class="number">6</span>]+<span class="string">'.png'</span>, img)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<p>请参阅下面的一些结果。请注意，每个轴长3个正方形。</p>
+<p><img src="images/pose_1.jpg" alt></p>
+<h2 id="渲染立方体"><a href="#渲染立方体" class="headerlink" title="渲染立方体"></a>渲染立方体</h2><p>如果要绘制立方体，请如下修改<code>draw()</code>函数和轴点。</p>
+<p>修改后的<code>draw()</code>函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(img, corners, imgpts)</span>:</span></span><br><span class="line">    imgpts = np.int32(imgpts).reshape(<span class="number">-1</span>,<span class="number">2</span>)</span><br><span class="line">    <span class="comment"># draw ground floor in green</span></span><br><span class="line">    img = cv.drawContours(img, [imgpts[:<span class="number">4</span>]],<span class="number">-1</span>,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">0</span>),<span class="number">-3</span>)</span><br><span class="line">    <span class="comment"># draw pillars in blue color</span></span><br><span class="line">    <span class="keyword">for</span> i,j <span class="keyword">in</span> zip(range(<span class="number">4</span>),range(<span class="number">4</span>,<span class="number">8</span>)):</span><br><span class="line">        img = cv.line(img, tuple(imgpts[i]), tuple(imgpts[j]),(<span class="number">255</span>),<span class="number">3</span>)</span><br><span class="line">    <span class="comment"># draw top layer in red color</span></span><br><span class="line">    img = cv.drawContours(img, [imgpts[<span class="number">4</span>:]],<span class="number">-1</span>,(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>),<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">return</span> img</span><br></pre></td></tr></table></figure>
+
+<p>修改的轴点。它们是3D空间中多维数据集的8个角：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">axis = np.float32([[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>], [<span class="number">0</span>,<span class="number">3</span>,<span class="number">0</span>], [<span class="number">3</span>,<span class="number">3</span>,<span class="number">0</span>], [<span class="number">3</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">                   [<span class="number">0</span>,<span class="number">0</span>,<span class="number">-3</span>],[<span class="number">0</span>,<span class="number">3</span>,<span class="number">-3</span>],[<span class="number">3</span>,<span class="number">3</span>,<span class="number">-3</span>],[<span class="number">3</span>,<span class="number">0</span>,<span class="number">-3</span>] ])</span><br></pre></td></tr></table></figure>
+
+<p>查看以下结果：<br><img src="images/pose_2.jpg" alt></p>
+<p>如果您对图形，增强现实等感兴趣，则可以使用OpenGL渲染更复杂的图形。</p>
+<h1 id="对极几何"><a href="#对极几何" class="headerlink" title="对极几何"></a>对极几何</h1><h2 id="目标-2"><a href="#目标-2" class="headerlink" title="目标"></a>目标</h2><p>在这个部分，</p>
+<ul>
+<li>我们将学习多视图几何的基础知识</li>
+<li>我们将看到什么是极线，极线，极线约束等。</li>
+</ul>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>当我们使用针孔相机拍摄图像时，我们失去了重要信息，即图像深度。或者图像中的每个点距相机多远，因为它是3D到2D转换。因此，是否能够使用这些摄像机找到深度信息是一个重要的问题。答案是使用不止一台摄像机。在使用两台相机（两只眼睛）的情况下，我们的眼睛以类似的方式工作，这称为立体视觉。因此，让我们看看OpenCV在此字段中提供了什么。</p>
+<p>（通过Gary Bradsky 学习OpenCV在该领域有很多信息。）</p>
+<p>在深入图像之前，让我们首先了解多视图几何中的一些基本概念。在本节中，我们将讨论对极几何。请参见下图，该图显示了使用两台摄像机拍摄同一场景的图像的基本设置。</p>
+<p><img src="images/epipolar.jpg" alt></p>
+<p>如果仅使用左摄像机，则找不到与点x对应的3D点在图像中，因为线$OX$上的每个点投影到图像平面上的同一点。但也要考虑正确的图像。现在$OX$线上的不同点投影到不同点（x“）。因此，使用这两个图像，我们可以对正确的3D点进行三角剖分。这就是整个想法。</p>
+<p>OX上不同点的投影在右平面上形成一条线（线$l’$）。我们称它为与点x对应的<code>Epiline</code>。就是说找到点x在右边的图像上，沿着该主线搜索。它应该在这条线上的某处（以这种方式考虑，可以在其他图像中找到匹配点，而无需搜索整个图像，只需沿着<code>Epiline</code>搜索即可。这样可以提供更好的性能和准确性）。这称为对极约束。类似地，所有点在另一幅图像中将具有其对应的<code>Epiline</code>。$XOO’$被称为对极面。</p>
+<p>$O$和$O’$是相机中心。从上面给出的设置中，您可以看到右摄像机$O’$的投影在左侧图像上可见。它被称为子极。<code>Epipole</code>是穿过相机中心和图像平面的线的交点。类似的“是左摄像头的子极。在某些情况下，您将无法在图像中找到子极，它们可能位于图像外部（这意味着一台摄像机看不到另一台）。</p>
+<p>所有的<code>Epilines</code>都通过其<code>Epipole</code>。因此，要找到中心线的位置，我们可以找到许多中心线并找到它们的交点。</p>
+<p>因此，我们将重点放在寻找对极线和极线。但是要找到它们，我们还需要另外两种成分，即<code>基础矩阵（F）</code>和<code>基本矩阵（E）</code>。Essential Matrix包含有关平移和旋转的信息，这些信息在全局坐标中描述了第二个摄像头相对于第一个摄像头的位置。参见下图（图像由Gary Bradsky提供：Learning OpenCV）：<br><img src="images/essential_matrix.jpg" alt></p>
+<p>但是我们更喜欢在像素坐标中进行测量，对吗？基本矩阵除包含有关两个摄像头的内在信息之外，还包含与基本矩阵相同的信息，因此我们可以将两个摄像头的像素坐标关联起来。（如果我们使用的是校正后的图像，并通过除以焦距F= E）。简而言之，基本矩阵F将一个图像中的点映射到另一图像中的线（上）。这是从两个图像的匹配点计算得出的。至少需要8个这样的点才能找到基本矩阵（使用8点算法时）。首选更多点，并使用RANSAC获得更可靠的结果。</p>
+<h2 id="示例代码-1"><a href="#示例代码-1" class="headerlink" title="示例代码"></a>示例代码</h2><p>因此，首先我们需要在两个图像之间找到尽可能多的匹配项，以找到基本矩阵。为此，我们将SIFT描述符与基于FLANN的匹配器和比率测试结合使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">img1 = cv.imread(<span class="string">'myleft.jpg'</span>,<span class="number">0</span>)  <span class="comment">#queryimage # left image</span></span><br><span class="line">img2 = cv.imread(<span class="string">'myright.jpg'</span>,<span class="number">0</span>) <span class="comment">#trainimage # right image</span></span><br><span class="line">sift = cv.SIFT()</span><br><span class="line"><span class="comment"># find the keypoints and descriptors with SIFT</span></span><br><span class="line">kp1, des1 = sift.detectAndCompute(img1,<span class="literal">None</span>)</span><br><span class="line">kp2, des2 = sift.detectAndCompute(img2,<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># FLANN parameters</span></span><br><span class="line">FLANN_INDEX_KDTREE = <span class="number">1</span></span><br><span class="line">index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = <span class="number">5</span>)</span><br><span class="line">search_params = dict(checks=<span class="number">50</span>)</span><br><span class="line">flann = cv.FlannBasedMatcher(index_params,search_params)</span><br><span class="line">matches = flann.knnMatch(des1,des2,k=<span class="number">2</span>)</span><br><span class="line">good = []</span><br><span class="line">pts1 = []</span><br><span class="line">pts2 = []</span><br><span class="line"><span class="comment"># ratio test as per Lowe's paper</span></span><br><span class="line"><span class="keyword">for</span> i,(m,n) <span class="keyword">in</span> enumerate(matches):</span><br><span class="line">    <span class="keyword">if</span> m.distance &lt; <span class="number">0.8</span>*n.distance:</span><br><span class="line">        good.append(m)</span><br><span class="line">        pts2.append(kp2[m.trainIdx].pt)</span><br><span class="line">        pts1.append(kp1[m.queryIdx].pt)</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们有了两个图像的最佳匹配列表。让我们找到基本面矩阵。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pts1 = np.int32(pts1)</span><br><span class="line">pts2 = np.int32(pts2)</span><br><span class="line">F, mask = cv.findFundamentalMat(pts1,pts2,cv.FM_LMEDS)</span><br><span class="line"><span class="comment"># We select only inlier points</span></span><br><span class="line">pts1 = pts1[mask.ravel()==<span class="number">1</span>]</span><br><span class="line">pts2 = pts2[mask.ravel()==<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们找到Epilines。在第二张图像上绘制与第一张图像中的点相对应的Epilines。因此，在这里提到正确的图像很重要。我们得到了一行线。因此，我们定义了一个新功能来在图像上绘制这些线条。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">drawlines</span><span class="params">(img1,img2,lines,pts1,pts2)</span>:</span></span><br><span class="line">    <span class="string">''' img1 - image on which we draw the epilines for the points in img2</span></span><br><span class="line"><span class="string">        lines - corresponding epilines '''</span></span><br><span class="line">    r,c = img1.shape</span><br><span class="line">    img1 = cv.cvtColor(img1,cv.COLOR_GRAY2BGR)</span><br><span class="line">    img2 = cv.cvtColor(img2,cv.COLOR_GRAY2BGR)</span><br><span class="line">    <span class="keyword">for</span> r,pt1,pt2 <span class="keyword">in</span> zip(lines,pts1,pts2):</span><br><span class="line">        color = tuple(np.random.randint(<span class="number">0</span>,<span class="number">255</span>,<span class="number">3</span>).tolist())</span><br><span class="line">        x0,y0 = map(int, [<span class="number">0</span>, -r[<span class="number">2</span>]/r[<span class="number">1</span>] ])</span><br><span class="line">        x1,y1 = map(int, [c, -(r[<span class="number">2</span>]+r[<span class="number">0</span>]*c)/r[<span class="number">1</span>] ])</span><br><span class="line">        img1 = cv.line(img1, (x0,y0), (x1,y1), color,<span class="number">1</span>)</span><br><span class="line">        img1 = cv.circle(img1,tuple(pt1),<span class="number">5</span>,color,<span class="number">-1</span>)</span><br><span class="line">        img2 = cv.circle(img2,tuple(pt2),<span class="number">5</span>,color,<span class="number">-1</span>)</span><br><span class="line">    <span class="keyword">return</span> img1,img2</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们在两个图像中都找到了Epiline并将其绘制。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Find epilines corresponding to points in right image (second image) and</span></span><br><span class="line"><span class="comment"># drawing its lines on left image</span></span><br><span class="line">lines1 = cv.computeCorrespondEpilines(pts2.reshape(<span class="number">-1</span>,<span class="number">1</span>,<span class="number">2</span>), <span class="number">2</span>,F)</span><br><span class="line">lines1 = lines1.reshape(<span class="number">-1</span>,<span class="number">3</span>)</span><br><span class="line">img5,img6 = drawlines(img1,img2,lines1,pts1,pts2)</span><br><span class="line"><span class="comment"># Find epilines corresponding to points in left image (first image) and</span></span><br><span class="line"><span class="comment"># drawing its lines on right image</span></span><br><span class="line">lines2 = cv.computeCorrespondEpilines(pts1.reshape(<span class="number">-1</span>,<span class="number">1</span>,<span class="number">2</span>), <span class="number">1</span>,F)</span><br><span class="line">lines2 = lines2.reshape(<span class="number">-1</span>,<span class="number">3</span>)</span><br><span class="line">img3,img4 = drawlines(img2,img1,lines2,pts2,pts1)</span><br><span class="line">plt.subplot(<span class="number">121</span>),plt.imshow(img5)</span><br><span class="line">plt.subplot(<span class="number">122</span>),plt.imshow(img3)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>下面是我们得到的结果：<br><img src="images/epiresult.jpg" alt></p>
+<p>您可以在左侧图像中看到所有Epilines都在右侧图像的一点处收敛。那个汇合点就是极点。</p>
+<p>为了获得更好的结果，应使用具有良好分辨率和许多非平面点的图像。</p>
+<h2 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h2><ul>
+<li>一个重要的话题是相机的前进。然后，将在两个位置的相同位置看到极点，并且从固定点出现极点。<a href="http://answers.opencv.org/question/17912/location-of-epipole/" target="_blank" rel="noopener">看到这个讨论</a>。</li>
+<li>基本矩阵估计对匹配，离群值等的质量敏感。如果所有选定的匹配都位于同一平面上，则情况会变得更糟。<a href="http://answers.opencv.org/question/18125/epilines-not-correct/" target="_blank" rel="noopener">检查此讨论</a>。</li>
+</ul>
+<h1 id="立体图像的深度图"><a href="#立体图像的深度图" class="headerlink" title="立体图像的深度图"></a>立体图像的深度图</h1><h2 id="目标-3"><a href="#目标-3" class="headerlink" title="目标"></a>目标</h2><p>在这个环节中</p>
+<ul>
+<li>我们将学习根据立体图像创建深度图。</li>
+</ul>
+<h2 id="基本-1"><a href="#基本-1" class="headerlink" title="基本"></a>基本</h2><p>我们看到了对极约束和其他相关术语等基本概念。我们还看到，如果我们有两个场景相同的图像，我们可以通过直观的方式从中获取深度信息。下面是一张图片和一些简单的数学公式证明了直觉。</p>
+<p><img src="images/stereo_depth.jpg" alt><br>上图包含等效三角形。编写它们的等式将产生以下结果：<br>$$<br>disparity=x−x’=Bf/Z<br>$$<br>所以它在两个图像之间找到对应的匹配。我们已经看到了外延约束如何使这个操作更快、更准确。一旦找到匹配，它就会找到差距。让我们看看如何使用opencv</p>
+<h2 id="示例代码-2"><a href="#示例代码-2" class="headerlink" title="示例代码"></a>示例代码</h2><p>下面的代码片段显示了创建视差图的简单过程。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">imgL = cv.imread(<span class="string">'tsukuba_l.png'</span>,<span class="number">0</span>)</span><br><span class="line">imgR = cv.imread(<span class="string">'tsukuba_r.png'</span>,<span class="number">0</span>)</span><br><span class="line">stereo = cv.StereoBM_create(numDisparities=<span class="number">16</span>, blockSize=<span class="number">15</span>)</span><br><span class="line">disparity = stereo.compute(imgL,imgR)</span><br><span class="line">plt.imshow(disparity,<span class="string">'gray'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>下面的图像包含原始图像（左）及其视差图（右）。如您所见，结果受到高度噪声的污染。通过调整numDisparities和blockSize的值，可以获得更好的结果。<br><img src="images/disparity_map.jpg" alt><br>当您熟悉StereoBM时，会有一些参数，可能需要微调参数以获得更好，更平滑的结果。</p>
+<p>参数：</p>
+<ul>
+<li><code>texture_threshold</code>：过滤出纹理不足以进行可靠匹配的区域</li>
+<li><code>Speckle range and size</code>：基于块的匹配器通常会在对象边界附近产生“斑点”，匹配的窗口在一侧捕获前景，而在另一侧捕获背景。在此场景中，匹配器似乎还在桌子上投影的纹理中找到小的虚假匹配项。为了消除这些伪像，我们使用由speckle_size和speckle_range参数控制的散斑滤镜对视差图像进行后处理。speckle_size是将视差斑点忽略为“斑点”的像素数。+ speckle_range控制必须将值差异视为同一对象的一部分的程度。</li>
+<li><code>Number of disparities</code>：滑动窗口的像素数。它越大，可见深度的范围就越大，但是需要更多的计算。</li>
+<li><code>min_disparity</code>：从开始搜索的左像素的x位置开始的偏移量。</li>
+<li><code>uniqueness_ratio</code>：另一个后过滤步骤。如果最佳匹配视差不足够好于搜索范围内的所有其他视差，则将像素滤出。如果texture_threshold和散斑过滤仍在通过虚假匹配，则可以尝试进行调整。</li>
+<li><code>prefilter_size和prefilter_cap</code>：预过滤阶段，可标准化图像亮度并增强纹理，以准备块匹配。通常，您不需要调整这些。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/opencv/相机校准和3D重建.html" title="相机校准和3D重建">http://leesin.cc/opencv/相机校准和3D重建.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/opencv/视频分析.html" rel="next" title="视频分析">
+                  <i class="fa fa-chevron-left"></i> 视频分析
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/opencv/计算摄影.html" rel="prev" title="计算摄影">
+                  计算摄影 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相机校准"><span class="nav-number">1.</span> <span class="nav-text">相机校准</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">1.2.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">1.3.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设定"><span class="nav-number">1.3.1.</span> <span class="nav-text">设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#也可以看看"><span class="nav-number">1.3.2.</span> <span class="nav-text">也可以看看</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#校准"><span class="nav-number">1.4.</span> <span class="nav-text">校准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不失真"><span class="nav-number">1.5.</span> <span class="nav-text">不失真</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用cv-undistort"><span class="nav-number">1.5.1.</span> <span class="nav-text">1.使用cv.undistort()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用重映射"><span class="nav-number">1.5.2.</span> <span class="nav-text">2.使用重映射</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重投影误差"><span class="nav-number">1.6.</span> <span class="nav-text">重投影误差</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#姿势估计"><span class="nav-number">2.</span> <span class="nav-text">姿势估计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标-1"><span class="nav-number">2.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本"><span class="nav-number">2.2.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染立方体"><span class="nav-number">2.3.</span> <span class="nav-text">渲染立方体</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对极几何"><span class="nav-number">3.</span> <span class="nav-text">对极几何</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标-2"><span class="nav-number">3.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">3.2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码-1"><span class="nav-number">3.3.</span> <span class="nav-text">示例代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习题"><span class="nav-number">3.4.</span> <span class="nav-text">练习题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#立体图像的深度图"><span class="nav-number">4.</span> <span class="nav-text">立体图像的深度图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标-3"><span class="nav-number">4.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本-1"><span class="nav-number">4.2.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码-2"><span class="nav-number">4.3.</span> <span class="nav-text">示例代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

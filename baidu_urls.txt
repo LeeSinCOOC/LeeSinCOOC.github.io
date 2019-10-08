@@ -1,3 +1,15 @@
+http://leesin.cc/opencv/OpenCV-Python绑定.html
+http://leesin.cc/opencv/对象检测（objdetect模块）.html
+http://leesin.cc/opencv/机器学习.html
+http://leesin.cc/opencv/计算摄影.html
+http://leesin.cc/opencv/相机校准和3D重建.html
+http://leesin.cc/opencv/视频分析.html
+http://leesin.cc/opencv/特征检测与描述.html
+http://leesin.cc/opencv/OpenCV中的图像处理.html
+http://leesin.cc/opencv/OpenCV的核心操作.html
+http://leesin.cc/opencv/OpenCV中的Gui功能.html
+http://leesin.cc/opencv/OpenCV-Python简介.html
+http://leesin.cc/CUDA_Coding/CUDA编程入门.html
 http://leesin.cc/reading/Hexo+Next+Github搭建个人博客.html
 http://leesin.cc/life/多才多艺.html
 http://leesin.cc/reading/Make命令教程.html
@@ -33,17 +45,17 @@ http://leesin.cc/python/18.Python的文件.html
 http://leesin.cc/python/17.Python的模块.html
 http://leesin.cc/python/16.Python的函数.html
 http://leesin.cc/python/15.Python的循环.html
-http://leesin.cc/python/14.Python条件判断.html
 http://leesin.cc/python/13.Python运算符.html
-http://leesin.cc/python/10.Python的元组.html
+http://leesin.cc/python/14.Python条件判断.html
 http://leesin.cc/python/11.Python的字典.html
+http://leesin.cc/python/10.Python的元组.html
 http://leesin.cc/python/12.复习.html
 http://leesin.cc/python/9.Python 的列表.html
-http://leesin.cc/reading/如何使用SVM训练自己的数据.html
-http://leesin.cc/reading/OpenCV检测分割图像.html
 http://leesin.cc/reading/卷积神经网络.html
 http://leesin.cc/python/8.Python的字符串.html
+http://leesin.cc/reading/如何使用SVM训练自己的数据.html
 http://leesin.cc/python/7.Python的随机数模块.html
+http://leesin.cc/reading/OpenCV检测分割图像.html
 http://leesin.cc/homework/number.html
 http://leesin.cc/python/5.Python的数字类型.html
 http://leesin.cc/python/6.Python的math模块.html

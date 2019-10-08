@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="图像去噪目标 您将了解有关去除图像中噪声的非局部均值去噪算法。 您将看到不同的函数，例如cv.fastNlMeansDenoising()，cv.fastNlMeansDenoisingColored()等。 理论在前面的章节中，我们看到了许多图像平滑技术，例如高斯模糊，中值模糊等，它们在某种程度上可以消除少量噪声。在这些技术中，我们在像素周围采取了一个较小的邻域，并进行了一些操作（例如高斯加权平">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算摄影">
+<meta property="og:url" content="http://leesin.cc/opencv/计算摄影.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="图像去噪目标 您将了解有关去除图像中噪声的非局部均值去噪算法。 您将看到不同的函数，例如cv.fastNlMeansDenoising()，cv.fastNlMeansDenoisingColored()等。 理论在前面的章节中，我们看到了许多图像平滑技术，例如高斯模糊，中值模糊等，它们在某种程度上可以消除少量噪声。在这些技术中，我们在像素周围采取了一个较小的邻域，并进行了一些操作（例如高斯加权平">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/opencv/images/nlm_patch.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/nlm_result1.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/nlm_multi.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/inpaint_basics.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/inpaint_result.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/exposures.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/ldr_debevec.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/ldr_robertson.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/fusion_mertens.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/crf.jpg">
+<meta property="og:updated_time" content="2019-10-08T12:06:43.085Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算摄影">
+<meta name="twitter:description" content="图像去噪目标 您将了解有关去除图像中噪声的非局部均值去噪算法。 您将看到不同的函数，例如cv.fastNlMeansDenoising()，cv.fastNlMeansDenoisingColored()等。 理论在前面的章节中，我们看到了许多图像平滑技术，例如高斯模糊，中值模糊等，它们在某种程度上可以消除少量噪声。在这些技术中，我们在像素周围采取了一个较小的邻域，并进行了一些操作（例如高斯加权平">
+<meta name="twitter:image" content="http://leesin.cc/opencv/images/nlm_patch.jpg">
+  <link rel="canonical" href="http://leesin.cc/opencv/计算摄影">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>计算摄影 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/计算摄影.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">计算摄影
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-08 13:10:00 / 修改时间：20:06:43" itemprop="dateCreated datePublished" datetime="2019-10-08T13:10:00+08:00">2019-10-08</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="图像去噪"><a href="#图像去噪" class="headerlink" title="图像去噪"></a>图像去噪</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>您将了解有关去除图像中噪声的非局部均值去噪算法。</li>
+<li>您将看到不同的函数，例如<code>cv.fastNlMeansDenoising()</code>，<code>cv.fastNlMeansDenoisingColored()</code>等。</li>
+</ul><h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><p>在前面的章节中，我们看到了许多图像平滑技术，例如高斯模糊，中值模糊等，它们在某种程度上可以消除少量噪声。在这些技术中，我们在像素周围采取了一个较小的邻域，并进行了一些操作（例如高斯加权平均值，值的中位数等）来替换中心元素。简而言之，在像素处去除噪声是其周围的局部现象。</p><a id="more"></a>
+
+<p>有噪音的性质。通常认为噪声是零均值的随机变量。考虑一个有噪声的像素，，其中是像素的真实值，是该像素中的噪声。您可以从不同的图像中获取大量相同的像素（例如）并计算其平均值。</p>
+<p>您可以通过简单的设置自己进行验证。将静态相机固定在某个位置几秒钟。这将为您提供很多帧或同一场景的很多图像。然后编写一段代码，找到视频中所有帧的平均值（这对您现在应该太简单了）。比较最终结果和第一帧。您会看到噪音降低。不幸的是，这种简单的方法对摄像机和场景的运动并不稳健。通常，只有一张嘈杂的图像可用。</p>
+<p>因此想法很简单，我们需要一组相似的图像来平均噪声。考虑图像中的一个小窗口（例如5x5窗口）。很有可能同一修补程序可能位于图像中的其他位置。有时在它周围的一个小社区中。一起使用这些相似的补丁并找到它们的平均值怎么办？对于那个特定的窗口，这很好。请参阅下面的示例图片：<br><img src="images/nlm_patch.jpg" alt></p>
+<p>图像中的蓝色补丁看起来很相似。绿色补丁看起来很相似。因此，我们获取一个像素，在其周围获取一个小窗口，在图像中搜索相似的窗口，对所有窗口求平均，然后用得到的结果替换该像素。此方法是“非本地均值消噪”。与我们之前看到的模糊技术相比，它花费了更多时间，但是效果非常好。在更多资源的第一个链接中可以找到更多详细信息和在线演示。</p>
+<p>对于彩色图像，图像将转换为CIELAB色彩空间，然后分别对L和AB分量进行降噪。</p>
+<h2 id="OpenCV中的图像去噪"><a href="#OpenCV中的图像去噪" class="headerlink" title="OpenCV中的图像去噪"></a>OpenCV中的图像去噪</h2><p>OpenCV提供了此技术的四个变体。</p>
+<ul>
+<li><code>cv.fastNlMeansDenoising()</code> -使用单个灰度图像</li>
+<li><code>cv.fastNlMeansDenoisingColored()</code> -使用彩色图像。</li>
+<li><code>cv.fastNlMeansDenoisingMulti()</code> -处理在短时间内捕获的图像序列（灰度图像）</li>
+<li><code>cv.fastNlMeansDenoisingColoredMulti()</code> -与上面相同，但用于彩色图像。<br>常见的参数有：</li>
+<li>h：决定滤波器强度的参数。较高的h值可以更好地消除噪点，但同时也会消除图像细节。（10可以）</li>
+<li>hForColorComponents：与h相同，但仅适用于彩色图像。（通常与h相同）</li>
+<li>templateWindowSize：应为奇数。（推荐7）</li>
+<li>searchWindowSize：应该为奇数。（建议21）<br>请访问其他资源中的第一个链接，以获取有关这些参数的更多详细信息。</li>
+</ul>
+<p>我们将在此处演示2和3。剩下的留给您。</p>
+<h3 id="1-cv-fastNlMeansDenoisingColored"><a href="#1-cv-fastNlMeansDenoisingColored" class="headerlink" title="1. cv.fastNlMeansDenoisingColored()"></a>1. cv.fastNlMeansDenoisingColored()</h3><p>如上所述，它用于消除彩色图像中的噪点。（噪声可能是高斯的）。请参阅以下示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">img = cv.imread(<span class="string">'die.png'</span>)</span><br><span class="line">dst = cv.fastNlMeansDenoisingColored(img,<span class="literal">None</span>,<span class="number">10</span>,<span class="number">10</span>,<span class="number">7</span>,<span class="number">21</span>)</span><br><span class="line">plt.subplot(<span class="number">121</span>),plt.imshow(img)</span><br><span class="line">plt.subplot(<span class="number">122</span>),plt.imshow(dst)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>以下是结果的放大版本。我的输入图像具有$σ$的高斯噪声= 25<br><img src="images/nlm_result1.jpg" alt></p>
+<h3 id="2-cv-fastNlMeansDenoisingMulti"><a href="#2-cv-fastNlMeansDenoisingMulti" class="headerlink" title="2. cv.fastNlMeansDenoisingMulti()"></a>2. cv.fastNlMeansDenoisingMulti()</h3><p>现在，我们将对视频应用相同的方法。第一个参数是噪声帧列表。第二个参数<code>imgToDenoiseIndex</code>指定我们需要去噪的帧，为此我们在输入列表中传递帧的索引。第三是<code>temporalWindowSize</code>，它指定要用于降噪的附近帧的数量。应该很奇怪。在那种情况下，总共使用<code>temporalWindowSize</code>帧，其中中心帧是要去噪的帧。例如，您传递了一个5帧的列表作为输入。令<code>imgToDenoiseIndex = 2</code>，<code>temporalWindowSize =3</code>。然后使用frame-1，frame-2和frame-3去噪frame-2。让我们来看一个例子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">cap = cv.VideoCapture(<span class="string">'vtest.avi'</span>)</span><br><span class="line"><span class="comment"># create a list of first 5 frames</span></span><br><span class="line">img = [cap.read()[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">5</span>)]</span><br><span class="line"><span class="comment"># convert all to grayscale</span></span><br><span class="line">gray = [cv.cvtColor(i, cv.COLOR_BGR2GRAY) <span class="keyword">for</span> i <span class="keyword">in</span> img]</span><br><span class="line"><span class="comment"># convert all to float64</span></span><br><span class="line">gray = [np.float64(i) <span class="keyword">for</span> i <span class="keyword">in</span> gray]</span><br><span class="line"><span class="comment"># create a noise of variance 25</span></span><br><span class="line">noise = np.random.randn(*gray[<span class="number">1</span>].shape)*<span class="number">10</span></span><br><span class="line"><span class="comment"># Add this noise to images</span></span><br><span class="line">noisy = [i+noise <span class="keyword">for</span> i <span class="keyword">in</span> gray]</span><br><span class="line"><span class="comment"># Convert back to uint8</span></span><br><span class="line">noisy = [np.uint8(np.clip(i,<span class="number">0</span>,<span class="number">255</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> noisy]</span><br><span class="line"><span class="comment"># Denoise 3rd frame considering all the 5 frames</span></span><br><span class="line">dst = cv.fastNlMeansDenoisingMulti(noisy, <span class="number">2</span>, <span class="number">5</span>, <span class="literal">None</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">35</span>)</span><br><span class="line">plt.subplot(<span class="number">131</span>),plt.imshow(gray[<span class="number">2</span>],<span class="string">'gray'</span>)</span><br><span class="line">plt.subplot(<span class="number">132</span>),plt.imshow(noisy[<span class="number">2</span>],<span class="string">'gray'</span>)</span><br><span class="line">plt.subplot(<span class="number">133</span>),plt.imshow(dst,<span class="string">'gray'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>下图显示了我们得到的结果的放大版本：</p>
+<p><img src="images/nlm_multi.jpg" alt></p>
+<p>计算需要花费大量时间。结果，第一个图像是原始帧，第二个是噪点图像，第三个是去噪图像。</p>
+<h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><p><a href="http://www.ipol.im/pub/art/2011/bcm_nlm/（包含详细信息，在线演示等。强烈建议访问。我们的测试图像是从此链接生成的）" target="_blank" rel="noopener">http://www.ipol.im/pub/art/2011/bcm_nlm/（包含详细信息，在线演示等。强烈建议访问。我们的测试图像是从此链接生成的）</a></p>
+<h1 id="图像修复"><a href="#图像修复" class="headerlink" title="图像修复"></a>图像修复</h1><h2 id="目标-1"><a href="#目标-1" class="headerlink" title="目标"></a>目标</h2><p>在这一章当中，</p>
+<ul>
+<li>我们将学习如何通过称为“修复”的方法消除旧照片中的小噪音，笔触等。</li>
+<li>我们将在OpenCV中看到修复功能。</li>
+</ul>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>你们大多数人家里都会有一些旧的退化照片，上面有黑点，一些笔触等。您是否曾经想过将其还原？我们不能简单地在绘画工具中擦除它们，因为它将简单地用白色结构代替黑色结构，这是没有用的。在这些情况下，将使用一种称为图像修复的技术。基本思想很简单：用附近的像素替换那些不良标记，使其看起来像附近。考虑下面显示的图像（摘自Wikipedia）：</p>
+<p><img src="images/inpaint_basics.jpg" alt></p>
+<p>为此目的设计了几种算法，OpenCV提供了其中两种。两者都可以通过相同的函数<code>cv.inpaint()</code>访问</p>
+<p>第一种算法基于Alexandru Telea在2004年发表的论文“基于快速行进方法的图像修复技术” 。它基于快速行进方法。考虑图像中要修复的区域。算法从该区域的边界开始，并进入该区域内部，然后逐渐填充边界中的所有内容。在要修复的邻域上的像素周围需要一个小的邻域。该像素被附近所有已知像素的归一化加权总和所代替。权重的选择很重要。那些位于该点附近，边界法线附近的像素和那些位于边界轮廓线上的像素将获得更大的权重。修复像素后，将使用快速行进方法将其移动到下一个最近的像素。FMM确保首先修复已知像素附近的那些像素，以便像手动启发式操作一样工作。通过使用标志启用此算法，<code>cv.INPAINT_TELEA</code>。</p>
+<p>第二种算法基于Bertalmio，Marcelo，Andrea L.Bertozzi和Guillermo Sapiro在2001年发表的论文“ Navier-Stokes，流体动力学以及图像和视频修补”。该算法基于流体动力学并利用了偏微分方程。基本原理是启发式的。它首先沿着边缘从已知区域移动到未知区域（因为边缘是连续的）。它延续了等渗线（线条连接具有相同强度的点，就像轮廓线连接具有相同高程的点一样），同时在修复区域的边界匹配梯度矢量。为此，使用了一些流体动力学方法。获得它们后，将填充颜色以减少该区域的最小差异。通过使用标志<code>cv.INPAINT_NS</code>启用此算法。</p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p>我们需要创建一个与输入图像大小相同的蒙版，其中非零像素对应于要修复的区域。其他一切都很简单。我的图像因一些黑色笔画而退化（我手动添加了）。我使用“绘画”工具创建了相应的笔触。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line">img = cv.imread(<span class="string">'messi_2.jpg'</span>)</span><br><span class="line">mask = cv.imread(<span class="string">'mask2.png'</span>,<span class="number">0</span>)</span><br><span class="line">dst = cv.inpaint(img,mask,<span class="number">3</span>,cv.INPAINT_TELEA)</span><br><span class="line">cv.imshow(<span class="string">'dst'</span>,dst)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<p>请参阅下面的结果。第一张图片显示了降级的输入。第二个图像是蒙版。第三个图像是第一个算法的结果，最后一个图像是第二个算法的结果。<br><img src="images/inpaint_result.jpg" alt></p>
+<h1 id="高动态范围（HDR）"><a href="#高动态范围（HDR）" class="headerlink" title="高动态范围（HDR）"></a>高动态范围（HDR）</h1><h2 id="目标-2"><a href="#目标-2" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>了解如何根据曝光顺序生成和显示HDR图像。</li>
+<li>使用曝光融合来合并曝光序列。</li>
+</ul>
+<h2 id="理论-1"><a href="#理论-1" class="headerlink" title="理论"></a>理论</h2><p>高动态范围成像（HDRI或HDR）是一种用于成像和摄影的技术，可比标准数字成像或摄影技术重现更大的动态光度范围。虽然人眼可以适应各种光照条件，但是大多数成像设备每个通道使用8位，因此我们仅限于256级。当我们拍摄现实世界的照片时，明亮的区域可能会曝光过度，而黑暗的区域可能会曝光不足，因此我们无法一次曝光就捕获所有细节。HDR成像适用于每个通道使用8位以上（通常为32位浮点值）的图像，从而允许更大的动态范围。</p>
+<p>获取HDR图像的方法有多种，但是最常见的一种方法是使用以不同曝光值拍摄的场景照片。要组合这些曝光，了解相机的响应功能并有一些算法可以对其进行估计是很有用的。合并HDR图像后，必须将其转换回8位才能在常规显示器上查看。此过程称为音调映射。当场景或相机的对象在两次拍摄之间移动时，还会增加其他复杂性，因为应记录并调整具有不同曝光度的图像。</p>
+<p>在本教程中，我们展示了两种算法（Debevec，Robertson）来根据曝光序列生成和显示HDR图像，并演示了另一种称为曝光融合（Mertens）的方法，该方法可以生成低动态范围图像，并且不需要曝光时间数据。此外，我们估计相机响应函数（CRF）对于许多计算机视觉算法都具有重要价值。HDR流水线的每个步骤都可以使用不同的算法和参数来实现，因此请查看参考手册以了解所有内容。</p>
+<h2 id="曝光顺序HDR"><a href="#曝光顺序HDR" class="headerlink" title="曝光顺序HDR"></a>曝光顺序HDR</h2><p>在本教程中，我们将查看以下场景，其中有4张曝光图像，曝光时间分别为15、2.5、1 / 4和1/30秒。（您可以从Wikipedia下载图像）<br><img src="images/exposures.jpg" alt></p>
+<h3 id="1-将曝光图像加载到列表中"><a href="#1-将曝光图像加载到列表中" class="headerlink" title="1.将曝光图像加载到列表中"></a>1.将曝光图像加载到列表中</h3><p>第一步只是将所有图像加载到列表中。此外，我们将需要常规HDR算法的曝光时间。请注意数据类型，因为图像应为1通道或3通道8位（np.uint8），并且曝光时间必须为float32，以秒为单位。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># Loading exposure images into a list</span></span><br><span class="line">img_fn = [<span class="string">"img0.jpg"</span>, <span class="string">"img1.jpg"</span>, <span class="string">"img2.jpg"</span>, <span class="string">"img3.jpg"</span>]</span><br><span class="line">img_list = [cv.imread(fn) <span class="keyword">for</span> fn <span class="keyword">in</span> img_fn]</span><br><span class="line">exposure_times = np.array([<span class="number">15.0</span>, <span class="number">2.5</span>, <span class="number">0.25</span>, <span class="number">0.0333</span>], dtype=np.float32)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-将曝光合并到HDR图像中"><a href="#2-将曝光合并到HDR图像中" class="headerlink" title="2.将曝光合并到HDR图像中"></a>2.将曝光合并到HDR图像中</h3><p>在此阶段，我们将曝光序列合并为一张HDR图像，显示了OpenCV中的两种可能性。第一种方法是Debevec，第二种方法是Robertson。请注意，HDR图像的类型为float32，而不是uint8，因为它包含所有曝光图像的完整动态范围。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Merge exposures to HDR image</span></span><br><span class="line">merge_debevec = cv.createMergeDebevec()</span><br><span class="line">hdr_debevec = merge_debevec.process(img_list, times=exposure_times.copy())</span><br><span class="line">merge_robertson = cv.createMergeRobertson()</span><br><span class="line">hdr_robertson = merge_robertson.process(img_list, times=exposure_times.copy())</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-色调图HDR图像"><a href="#3-色调图HDR图像" class="headerlink" title="3.色调图HDR图像"></a>3.色调图HDR图像</h3><p>我们将32位浮点HDR数据映射到[0..1]范围内。实际上，在某些情况下，该值可以大于1或小于0，因此请注意，我们稍后将不得不裁剪数据以避免溢出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Tonemap HDR image</span></span><br><span class="line">tonemap1 = cv.createTonemap(gamma=<span class="number">2.2</span>)</span><br><span class="line">res_debevec = tonemap1.process(hdr_debevec.copy())</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-使用Mertens融合合并曝光"><a href="#4-使用Mertens融合合并曝光" class="headerlink" title="4.使用Mertens融合合并曝光"></a>4.使用Mertens融合合并曝光</h3><p>在这里，我们展示了一种替代算法，用于合并曝光图像，而我们不需要曝光时间。我们也不需要使用任何色调映射算法，因为Mertens算法已经为我们提供了[0..1]范围内的结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Exposure fusion using Mertens</span></span><br><span class="line">merge_mertens = cv.createMergeMertens()</span><br><span class="line">res_mertens = merge_mertens.process(img_list)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-转换为8位并保存"><a href="#5-转换为8位并保存" class="headerlink" title="5.转换为8位并保存"></a>5.转换为8位并保存</h3><p>为了保存或显示结果，我们需要将数据转换为[0..255]范围内的8位整数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Convert datatype to 8-bit and save</span></span><br><span class="line">res_debevec_8bit = np.clip(res_debevec*<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">'uint8'</span>)</span><br><span class="line">res_robertson_8bit = np.clip(res_robertson*<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">'uint8'</span>)</span><br><span class="line">res_mertens_8bit = np.clip(res_mertens*<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">'uint8'</span>)</span><br><span class="line">cv.imwrite(<span class="string">"ldr_debevec.jpg"</span>, res_debevec_8bit)</span><br><span class="line">cv.imwrite(<span class="string">"ldr_robertson.jpg"</span>, res_robertson_8bit)</span><br><span class="line">cv.imwrite(<span class="string">"fusion_mertens.jpg"</span>, res_mertens_8bit)</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>您可以看到不同的结果，但可以认为每种算法都有其他额外的参数，您应该将它们附加以达到期望的结果。最佳实践是尝试不同的方法，然后看看哪种方法最适合您的场景。</p>
+<h3 id="Debevec"><a href="#Debevec" class="headerlink" title="Debevec:"></a>Debevec:</h3><p><img src="images/ldr_debevec.jpg" alt></p>
+<h3 id="Robertson"><a href="#Robertson" class="headerlink" title="Robertson:"></a>Robertson:</h3><p><img src="images/ldr_robertson.jpg" alt></p>
+<h3 id="Mertenes-Fusion"><a href="#Mertenes-Fusion" class="headerlink" title="Mertenes Fusion:"></a>Mertenes Fusion:</h3><p><img src="images/fusion_mertens.jpg" alt></p>
+<h2 id="估计相机响应功能"><a href="#估计相机响应功能" class="headerlink" title="估计相机响应功能"></a>估计相机响应功能</h2><p>摄像机响应功能（CRF）使我们可以将场景辐射度与测得的强度值联系起来。CRF在某些计算机视觉算法（包括HDR算法）中非常重要。在这里，我们估计逆相机响应函数并将其用于HDR合并。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Estimate camera response function (CRF)</span></span><br><span class="line">cal_debevec = cv.createCalibrateDebevec()</span><br><span class="line">crf_debevec = cal_debevec.process(img_list, times=exposure_times)</span><br><span class="line">hdr_debevec = merge_debevec.process(img_list, times=exposure_times.copy(), response=crf_debevec.copy())</span><br><span class="line">cal_robertson = cv.createCalibrateRobertson()</span><br><span class="line">crf_robertson = cal_robertson.process(img_list, times=exposure_times)</span><br><span class="line">hdr_robertson = merge_robertson.process(img_list, times=exposure_times.copy(), response=crf_robertson.copy())</span><br></pre></td></tr></table></figure>
+
+<p>相机响应功能由每个颜色通道的256长度向量表示。对于此序列，我们得到以下估计：<br><img src="images/crf.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/opencv/计算摄影.html" title="计算摄影">http://leesin.cc/opencv/计算摄影.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/opencv/相机校准和3D重建.html" rel="next" title="相机校准和3D重建">
+                  <i class="fa fa-chevron-left"></i> 相机校准和3D重建
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/opencv/机器学习.html" rel="prev" title="机器学习">
+                  机器学习 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图像去噪"><span class="nav-number">1.</span> <span class="nav-text">图像去噪</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理论"><span class="nav-number">1.2.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenCV中的图像去噪"><span class="nav-number">1.3.</span> <span class="nav-text">OpenCV中的图像去噪</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-cv-fastNlMeansDenoisingColored"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. cv.fastNlMeansDenoisingColored()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-cv-fastNlMeansDenoisingMulti"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. cv.fastNlMeansDenoisingMulti()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他资源"><span class="nav-number">1.4.</span> <span class="nav-text">其他资源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图像修复"><span class="nav-number">2.</span> <span class="nav-text">图像修复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标-1"><span class="nav-number">2.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">2.2.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">2.3.</span> <span class="nav-text">示例代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高动态范围（HDR）"><span class="nav-number">3.</span> <span class="nav-text">高动态范围（HDR）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标-2"><span class="nav-number">3.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理论-1"><span class="nav-number">3.2.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#曝光顺序HDR"><span class="nav-number">3.3.</span> <span class="nav-text">曝光顺序HDR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-将曝光图像加载到列表中"><span class="nav-number">3.3.1.</span> <span class="nav-text">1.将曝光图像加载到列表中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-将曝光合并到HDR图像中"><span class="nav-number">3.3.2.</span> <span class="nav-text">2.将曝光合并到HDR图像中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-色调图HDR图像"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.色调图HDR图像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-使用Mertens融合合并曝光"><span class="nav-number">3.3.4.</span> <span class="nav-text">4.使用Mertens融合合并曝光</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-转换为8位并保存"><span class="nav-number">3.3.5.</span> <span class="nav-text">5.转换为8位并保存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">3.4.</span> <span class="nav-text">结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Debevec"><span class="nav-number">3.4.1.</span> <span class="nav-text">Debevec:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Robertson"><span class="nav-number">3.4.2.</span> <span class="nav-text">Robertson:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mertenes-Fusion"><span class="nav-number">3.4.3.</span> <span class="nav-text">Mertenes Fusion:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#估计相机响应功能"><span class="nav-number">3.5.</span> <span class="nav-text">估计相机响应功能</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
