@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://leesin.cc/miscellaneous/index.html</loc>
+    
+    <lastmod>2019-10-17T12:48:02.283Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://leesin.cc/CUDA_Coding/CUDA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8.html</loc>
     
     <lastmod>2019-10-08T12:08:24.590Z</lastmod>
@@ -96,13 +103,6 @@
     <loc>http://leesin.cc/reading/Hexo+Next+Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</loc>
     
     <lastmod>2019-09-30T11:00:28.748Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://leesin.cc/miscellaneous/index.html</loc>
-    
-    <lastmod>2019-09-29T13:18:33.012Z</lastmod>
     
   </url>
   
