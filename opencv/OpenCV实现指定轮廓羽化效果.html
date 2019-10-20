@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="OpenCV实现指定轮廓羽化效果查阅了大多数OpenCV的特效教程，发现羽化效果讲解的较少，要么干脆全图羽化，要么蒙版盖住，全背景羽化，我在这里也试过很多方法，发现像素分配的方法较为简单，且过渡效果比较好，所以记录一下。1.素材准备用一张合适的图片，不要太大，避免处理起来很慢，现在的代码还未进行优化，只是为了讲清楚原理">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV实现指定轮廓羽化效果">
+<meta property="og:url" content="http://leesin.cc/opencv/OpenCV实现指定轮廓羽化效果.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="OpenCV实现指定轮廓羽化效果查阅了大多数OpenCV的特效教程，发现羽化效果讲解的较少，要么干脆全图羽化，要么蒙版盖住，全背景羽化，我在这里也试过很多方法，发现像素分配的方法较为简单，且过渡效果比较好，所以记录一下。1.素材准备用一张合适的图片，不要太大，避免处理起来很慢，现在的代码还未进行优化，只是为了讲清楚原理">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/opencv/images/400x600.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/mask.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/blur_f.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/feather.jpg">
+<meta property="og:image" content="http://leesin.cc/opencv/images/feather.png">
+<meta property="og:updated_time" content="2019-10-20T06:22:30.448Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV实现指定轮廓羽化效果">
+<meta name="twitter:description" content="OpenCV实现指定轮廓羽化效果查阅了大多数OpenCV的特效教程，发现羽化效果讲解的较少，要么干脆全图羽化，要么蒙版盖住，全背景羽化，我在这里也试过很多方法，发现像素分配的方法较为简单，且过渡效果比较好，所以记录一下。1.素材准备用一张合适的图片，不要太大，避免处理起来很慢，现在的代码还未进行优化，只是为了讲清楚原理">
+<meta name="twitter:image" content="http://leesin.cc/opencv/images/400x600.jpg">
+  <link rel="canonical" href="http://leesin.cc/opencv/OpenCV实现指定轮廓羽化效果">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>OpenCV实现指定轮廓羽化效果 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/OpenCV实现指定轮廓羽化效果.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">OpenCV实现指定轮廓羽化效果
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-20 12:48:58 / 修改时间：14:22:30" itemprop="dateCreated datePublished" datetime="2019-10-20T12:48:58+08:00">2019-10-20</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="OpenCV实现指定轮廓羽化效果"><a href="#OpenCV实现指定轮廓羽化效果" class="headerlink" title="OpenCV实现指定轮廓羽化效果"></a>OpenCV实现指定轮廓羽化效果</h1><p>查阅了大多数OpenCV的特效教程，发现羽化效果讲解的较少，要么干脆全图羽化，要么蒙版盖住，全背景羽化，我在这里也试过很多方法，发现像素分配的方法较为简单，且过渡效果比较好，所以记录一下。</p><h2 id="1-素材准备"><a href="#1-素材准备" class="headerlink" title="1.素材准备"></a>1.素材准备</h2><p>用一张合适的图片，不要太大，避免处理起来很慢，现在的代码还未进行优化，只是为了讲清楚原理</p><a id="more"></a>
+
+<h2 id="2-用OpenCV看一下图片"><a href="#2-用OpenCV看一下图片" class="headerlink" title="2.用OpenCV看一下图片"></a>2.用OpenCV看一下图片</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">'images/feather0.jpg'</span>)</span><br><span class="line"></span><br><span class="line">cv.imshow(<span class="string">'image'</span>,image)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-简单裁剪一下"><a href="#3-简单裁剪一下" class="headerlink" title="3.简单裁剪一下"></a>3.简单裁剪一下</h2><p>方便计算圆心位置，当然也可以用CV的函数，只是这里我个人觉得没必要再用mask这些复杂的，</p>
+<p>先看一下图像形状</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">image.shape</span><br><span class="line">Out[<span class="number">15</span>]: (<span class="number">470</span>, <span class="number">700</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>决定取（400,600）大小，使用<code>numpy</code>切片操作就可以了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">'images/feather0.jpg'</span>)[:<span class="number">400</span>,:<span class="number">600</span>]</span><br><span class="line"></span><br><span class="line">cv.imshow(<span class="string">'image'</span>,image)</span><br><span class="line">cv.imwrite(<span class="string">'./images/400x600.jpg'</span>,image)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<p><code>400x600.jpg</code>显示如下：</p>
+<p><img src="images/400x600.jpg" alt="400x600.jpg"></p>
+<p>我们就拿这张图片作为原图进行操作了</p>
+<p><strong>目的</strong>：在图像中心画一个圆，让圆内像素不变，圆外的亮度变暗，圆的边缘进行羽化效果的实现</p>
+<h2 id="4-来左边和我一起画个圆"><a href="#4-来左边和我一起画个圆" class="headerlink" title="4.来左边和我一起画个圆"></a>4.来左边和我一起画个圆</h2><p>圆的公式比较简单，我们做一个一样大小的蒙版，让圆内像素为白色，圆外为黑色</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">'images/400x600.jpg'</span>)</span><br><span class="line"></span><br><span class="line">h,w,c = image.shape</span><br><span class="line">c_x = w//<span class="number">2</span></span><br><span class="line">c_y = h//<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一样大小的数组</span></span><br><span class="line">mask = np.zeros((<span class="number">400</span>,<span class="number">600</span>),<span class="string">"uint8"</span>)</span><br><span class="line"><span class="comment"># 小于150半径的圆内像素填充为255</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(h):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(w):</span><br><span class="line">        <span class="keyword">if</span>  (i<span class="number">-200</span>)**<span class="number">2</span> + (j<span class="number">-300</span>)**<span class="number">2</span> &lt; <span class="number">150</span>**<span class="number">2</span>:</span><br><span class="line">            mask[i,j] = <span class="number">255</span></span><br><span class="line"></span><br><span class="line">cv.imshow(<span class="string">'mask'</span>,mask)</span><br><span class="line">cv.imwrite(<span class="string">'images/mask.jpg'</span>,mask)</span><br><span class="line">cv.imshow(<span class="string">'image'</span>,image)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<p><code>mask.jpg</code>显示如下：</p>
+<p><img src="images/mask.jpg" alt="mask.jpg"></p>
+<h2 id="5-对蒙版图像进行blur平滑处理"><a href="#5-对蒙版图像进行blur平滑处理" class="headerlink" title="5.对蒙版图像进行blur平滑处理"></a>5.对蒙版图像进行<code>blur</code>平滑处理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">blur = cv.blur(mask,(<span class="number">60</span>,<span class="number">60</span>))</span><br><span class="line"></span><br><span class="line">cv.imwrite(<span class="string">'images/blur.jpg'</span>,blur)</span><br></pre></td></tr></table></figure>
+
+<p><code>blur.jpg</code>显示如下：</p>
+<p><img src="images/blur_f.jpg" alt="blur_f.jpg"></p>
+<h2 id="6-做暗背景图"><a href="#6-做暗背景图" class="headerlink" title="6.做暗背景图"></a>6.做暗背景图</h2><p>我们选择比较简单的方式，直接按比例减小图像像素值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(h):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(w):</span><br><span class="line">        image[i,j,<span class="number">0</span>] = int(image[i,j,<span class="number">0</span>] * <span class="number">0.3</span>)</span><br><span class="line">        image[i,j,<span class="number">1</span>] = int(image[i,j,<span class="number">1</span>] * <span class="number">0.3</span>)</span><br><span class="line">        image[i,j,<span class="number">2</span>] = int(image[i,j,<span class="number">2</span>] * <span class="number">0.3</span>)</span><br><span class="line"></span><br><span class="line">cv.imwrite(<span class="string">'images/dark.jpg'</span>,image)</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-进行融合"><a href="#7-进行融合" class="headerlink" title="7.进行融合"></a>7.进行融合</h2><p>现在我们手上就有了<strong>原图</strong>：<code>400x600.jpg</code>，<strong>平滑mask图</strong>：<code>blur.jpg</code>，<strong>黑暗背景图</strong>：<code>dark.jpg</code></p>
+<p>现在我们读入这三张图片，进行一个融合，让边缘达到一个羽化的效果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt </span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">'images/400x600.jpg'</span>)</span><br><span class="line">blur = cv.imread(<span class="string">'images/blur.jpg'</span>,<span class="number">0</span>)</span><br><span class="line">dark = cv.imread(<span class="string">'images/dark.jpg'</span>)</span><br><span class="line"></span><br><span class="line">h,w,c = image.shape</span><br><span class="line">c_x = w//<span class="number">2</span></span><br><span class="line">c_y = h//<span class="number">2</span></span><br><span class="line"></span><br><span class="line">feather = np.zeros((<span class="number">400</span>,<span class="number">600</span>,<span class="number">3</span>),<span class="string">"uint8"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(h):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(w):</span><br><span class="line">        <span class="keyword">if</span> blur[i,j] == <span class="number">0</span>:</span><br><span class="line">            feather[i,j] = dark[i,j]</span><br><span class="line">        <span class="keyword">if</span> blur[i,j] == <span class="number">255</span>:</span><br><span class="line">            feather[i,j] = image[i,j]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            a = blur[i,j]</span><br><span class="line">            b = <span class="number">255</span> - a</span><br><span class="line">            feather[i,j] = image[i,j]*(a/<span class="number">255</span>)+ \</span><br><span class="line">                           dark[i,j]*(b/<span class="number">255</span>)</span><br><span class="line">plt.figure()</span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">plt.imshow(image[:,:,::<span class="number">-1</span>])</span><br><span class="line">plt.xticks([])</span><br><span class="line">plt.yticks([])</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">plt.imshow(blur,cmap=<span class="string">'gray'</span>)</span><br><span class="line">plt.xticks([])</span><br><span class="line">plt.yticks([])</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">plt.imshow(dark[:,:,::<span class="number">-1</span>])</span><br><span class="line">plt.xticks([])</span><br><span class="line">plt.yticks([])</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>)</span><br><span class="line">plt.imshow(feather[:,:,::<span class="number">-1</span>])</span><br><span class="line">plt.xticks([])</span><br><span class="line">plt.yticks([])</span><br><span class="line">         </span><br><span class="line"><span class="comment">#cv.imshow('image',image)</span></span><br><span class="line"><span class="comment">#cv.imshow('blur',blur)</span></span><br><span class="line"><span class="comment">#cv.imshow('dark',dark)</span></span><br><span class="line"><span class="comment">#cv.imshow('feather',feather)</span></span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-一些注意点"><a href="#8-一些注意点" class="headerlink" title="8.一些注意点"></a>8.一些注意点</h2><ol>
+<li><p>虽然我们保存<code>blur</code>的时候只用了单通道，但是读取的时候依然会当做三通道来读取，所以我们这里读取的时候，声明了读取灰度图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blur = cv.imread(<span class="string">'images/blur.jpg'</span>,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>OpenCV</code>使用的是<code>BGR</code>而我们画图的<code>matplotlib</code>是<code>RGB</code>，那么如何转换呢？这里有三种方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">img = cv2.imread(<span class="string">'test.jpg'</span>)</span><br><span class="line">B, G, R = cv2.split(img)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#BGR转RGB，方法1</span></span><br><span class="line">img_rgb1 = cv2.merge([R, G, B])</span><br><span class="line"> </span><br><span class="line"><span class="comment">#BGR转RGB，方法2</span></span><br><span class="line">img_rgb2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#BGR转RGB，方法3</span></span><br><span class="line">img_rgb3 = img[:,:,::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们发现<code>blur.jpg</code>本来就是灰度图，那么就不需要转换了。但是这里会显示出一种热力图，还是得声明一下给<code>matplotlib</code>传入的是灰度图，所以：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(blur,cmap=<span class="string">'gray'</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="9-最终显示效果"><a href="#9-最终显示效果" class="headerlink" title="9.最终显示效果"></a>9.最终显示效果</h2><p><img src="images/feather.jpg" alt="feather.jpg"></p>
+<p><img src="images/feather.png" alt="feather.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/opencv/OpenCV实现指定轮廓羽化效果.html" title="OpenCV实现指定轮廓羽化效果">http://leesin.cc/opencv/OpenCV实现指定轮廓羽化效果.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/opencv/OpenCV-Python绑定.html" rel="next" title="OpenCV-Python绑定">
+                  <i class="fa fa-chevron-left"></i> OpenCV-Python绑定
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV实现指定轮廓羽化效果"><span class="nav-number">1.</span> <span class="nav-text">OpenCV实现指定轮廓羽化效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-素材准备"><span class="nav-number">1.1.</span> <span class="nav-text">1.素材准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-用OpenCV看一下图片"><span class="nav-number">1.2.</span> <span class="nav-text">2.用OpenCV看一下图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-简单裁剪一下"><span class="nav-number">1.3.</span> <span class="nav-text">3.简单裁剪一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-来左边和我一起画个圆"><span class="nav-number">1.4.</span> <span class="nav-text">4.来左边和我一起画个圆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-对蒙版图像进行blur平滑处理"><span class="nav-number">1.5.</span> <span class="nav-text">5.对蒙版图像进行blur平滑处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-做暗背景图"><span class="nav-number">1.6.</span> <span class="nav-text">6.做暗背景图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-进行融合"><span class="nav-number">1.7.</span> <span class="nav-text">7.进行融合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-一些注意点"><span class="nav-number">1.8.</span> <span class="nav-text">8.一些注意点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-最终显示效果"><span class="nav-number">1.9.</span> <span class="nav-text">9.最终显示效果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
