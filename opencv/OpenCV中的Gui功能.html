@@ -63,14 +63,14 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="图像入门目标 在这里，您将学习如何读取图像，如何显示图像以及如何将其保存回 您将学习以下功能：cv.imread()，cv.imshow()，cv.imwrite() （可选）您将学习如何使用Matplotlib显示图像 读取图像使用函数cv.imread()读取图像第二个参数是一个标志，用于指定应读取图像的方式。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/opencv/images/lena1.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/drawing.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/barimage.PNG">
-<meta property="og:updated_time" content="2019-10-08T11:58:31.768Z">
+<meta property="og:image" content="http://leesin.cc/images/lena1.jpg">
+<meta property="og:image" content="http://leesin.cc/images/drawing.jpg">
+<meta property="og:image" content="http://leesin.cc/images/barimage.PNG">
+<meta property="og:updated_time" content="2019-10-20T06:39:46.791Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenCV中的Gui功能">
 <meta name="twitter:description" content="图像入门目标 在这里，您将学习如何读取图像，如何显示图像以及如何将其保存回 您将学习以下功能：cv.imread()，cv.imshow()，cv.imwrite() （可选）您将学习如何使用Matplotlib显示图像 读取图像使用函数cv.imread()读取图像第二个参数是一个标志，用于指定应读取图像的方式。">
-<meta name="twitter:image" content="http://leesin.cc/opencv/images/lena1.jpg">
+<meta name="twitter:image" content="http://leesin.cc/images/lena1.jpg">
   <link rel="canonical" href="http://leesin.cc/opencv/OpenCV中的Gui功能">
 
 
@@ -310,7 +310,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-08 19:58:31" itemprop="dateModified" datetime="2019-10-08T19:58:31+08:00">2019-10-08</time>
+                <time title="修改时间：2019-10-20 14:39:46" itemprop="dateModified" datetime="2019-10-20T14:39:46+08:00">2019-10-20</time>
               </span>
             
           
@@ -371,7 +371,7 @@
 <p>第一个参数是窗口名称，它是一个字符串。第二个参数是我们的图像。</p>
 <h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"></span><br><span class="line">img = cv.imread(<span class="string">'images/lena.jpg'</span>,<span class="number">0</span>)</span><br><span class="line">cv.imshow(<span class="string">'lena'</span>,img)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 
-<p><img src="images/lena1.jpg" alt></p>
+<p><img src="/images/lena1.jpg" alt></p>
 <p><code>cv.waitKey()</code>是键盘绑定功能。它的参数是时间（以毫秒为单位）。该函数将为任何键盘事件等待指定的毫秒数。如果在此期间按任意键，程序将继续。如果传递 0，它将无限期地等待击键。还可以将其设置为检测特定的按键</p>
 <blockquote>
 <p>除了绑定键盘事件之外，此功能还处理许多其他GUI事件，因此必须使用它来实际显示图像。</p>
@@ -473,7 +473,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">True</span><br></pre></td></tr></table></figure>
 
 <p>把上面保存的<code>drawing.jpg</code>显示出来：</p>
-<p><img src="images/drawing.jpg" alt></p>
+<p><img src="/images/drawing.jpg" alt></p>
 <h1 id="用鼠标画东西"><a href="#用鼠标画东西" class="headerlink" title="用鼠标画东西"></a>用鼠标画东西</h1><h2 id="目标-3"><a href="#目标-3" class="headerlink" title="目标"></a>目标</h2><ul>
 <li>了解如何在OpenCV中处理鼠标事件</li>
 <li>您将学习以下功能：<code>cv.setMouseCallback()</code></li>
@@ -499,7 +499,7 @@
 <p>轨迹栏的另一个重要应用是将其用作按钮或开关。默认情况下，OpenCV不具有按钮功能。因此，您可以使用跟踪栏来获得此类功能。在我们的应用程序中，我们创建了一个开关，只有在该开关为ON的情况下该应用程序才能运行，否则屏幕始终为黑色。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nothing</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="comment"># Create a black image, a window</span></span><br><span class="line">img = np.zeros((<span class="number">300</span>,<span class="number">512</span>,<span class="number">3</span>), np.uint8)</span><br><span class="line">cv.namedWindow(<span class="string">'image'</span>)</span><br><span class="line"><span class="comment"># create trackbars for color change</span></span><br><span class="line">cv.createTrackbar(<span class="string">'R'</span>,<span class="string">'image'</span>,<span class="number">0</span>,<span class="number">255</span>,nothing)</span><br><span class="line">cv.createTrackbar(<span class="string">'G'</span>,<span class="string">'image'</span>,<span class="number">0</span>,<span class="number">255</span>,nothing)</span><br><span class="line">cv.createTrackbar(<span class="string">'B'</span>,<span class="string">'image'</span>,<span class="number">0</span>,<span class="number">255</span>,nothing)</span><br><span class="line"><span class="comment"># create switch for ON/OFF functionality</span></span><br><span class="line">switch = <span class="string">'0 : OFF \n1 : ON'</span></span><br><span class="line">cv.createTrackbar(switch, <span class="string">'image'</span>,<span class="number">0</span>,<span class="number">1</span>,nothing)</span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">    cv.imshow(<span class="string">'image'</span>,img)</span><br><span class="line">    k = cv.waitKey(<span class="number">1</span>) &amp; <span class="number">0xFF</span></span><br><span class="line">    <span class="keyword">if</span> k == <span class="number">27</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="comment"># get current positions of four trackbars</span></span><br><span class="line">    r = cv.getTrackbarPos(<span class="string">'R'</span>,<span class="string">'image'</span>)</span><br><span class="line">    g = cv.getTrackbarPos(<span class="string">'G'</span>,<span class="string">'image'</span>)</span><br><span class="line">    b = cv.getTrackbarPos(<span class="string">'B'</span>,<span class="string">'image'</span>)</span><br><span class="line">    s = cv.getTrackbarPos(switch,<span class="string">'image'</span>)</span><br><span class="line">    <span class="keyword">if</span> s == <span class="number">0</span>:</span><br><span class="line">        img[:] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        img[:] = [b,g,r]</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 
-<p>效果如下：<br><img src="images/barimage.PNG" alt></p>
+<p>效果如下：<br><img src="/images/barimage.PNG" alt></p>
 
     </div>
 

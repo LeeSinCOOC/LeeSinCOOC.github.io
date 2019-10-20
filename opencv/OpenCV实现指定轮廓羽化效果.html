@@ -63,16 +63,16 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="OpenCV实现指定轮廓羽化效果查阅了大多数OpenCV的特效教程，发现羽化效果讲解的较少，要么干脆全图羽化，要么蒙版盖住，全背景羽化，我在这里也试过很多方法，发现像素分配的方法较为简单，且过渡效果比较好，所以记录一下。1.素材准备用一张合适的图片，不要太大，避免处理起来很慢，现在的代码还未进行优化，只是为了讲清楚原理">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/opencv/images/400x600.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/mask.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/blur_f.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/feather.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/feather.png">
-<meta property="og:updated_time" content="2019-10-20T06:22:30.448Z">
+<meta property="og:image" content="http://leesin.cc/images/400x600.jpg">
+<meta property="og:image" content="http://leesin.cc/images/mask.jpg">
+<meta property="og:image" content="http://leesin.cc/images/blur_f.jpg">
+<meta property="og:image" content="http://leesin.cc/images/feather.jpg">
+<meta property="og:image" content="http://leesin.cc/images/feather.png">
+<meta property="og:updated_time" content="2019-10-20T06:41:53.715Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenCV实现指定轮廓羽化效果">
 <meta name="twitter:description" content="OpenCV实现指定轮廓羽化效果查阅了大多数OpenCV的特效教程，发现羽化效果讲解的较少，要么干脆全图羽化，要么蒙版盖住，全背景羽化，我在这里也试过很多方法，发现像素分配的方法较为简单，且过渡效果比较好，所以记录一下。1.素材准备用一张合适的图片，不要太大，避免处理起来很慢，现在的代码还未进行优化，只是为了讲清楚原理">
-<meta name="twitter:image" content="http://leesin.cc/opencv/images/400x600.jpg">
+<meta name="twitter:image" content="http://leesin.cc/images/400x600.jpg">
   <link rel="canonical" href="http://leesin.cc/opencv/OpenCV实现指定轮廓羽化效果">
 
 
@@ -301,7 +301,7 @@
                 
               
 
-              <time title="创建时间：2019-10-20 12:48:58 / 修改时间：14:22:30" itemprop="dateCreated datePublished" datetime="2019-10-20T12:48:58+08:00">2019-10-20</time>
+              <time title="创建时间：2019-10-20 12:48:58 / 修改时间：14:41:53" itemprop="dateCreated datePublished" datetime="2019-10-20T12:48:58+08:00">2019-10-20</time>
             </span>
           
             
@@ -353,18 +353,18 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">'images/feather0.jpg'</span>)[:<span class="number">400</span>,:<span class="number">600</span>]</span><br><span class="line"></span><br><span class="line">cv.imshow(<span class="string">'image'</span>,image)</span><br><span class="line">cv.imwrite(<span class="string">'./images/400x600.jpg'</span>,image)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 
 <p><code>400x600.jpg</code>显示如下：</p>
-<p><img src="images/400x600.jpg" alt="400x600.jpg"></p>
+<p><img src="/images/400x600.jpg" alt="400x600.jpg"></p>
 <p>我们就拿这张图片作为原图进行操作了</p>
 <p><strong>目的</strong>：在图像中心画一个圆，让圆内像素不变，圆外的亮度变暗，圆的边缘进行羽化效果的实现</p>
 <h2 id="4-来左边和我一起画个圆"><a href="#4-来左边和我一起画个圆" class="headerlink" title="4.来左边和我一起画个圆"></a>4.来左边和我一起画个圆</h2><p>圆的公式比较简单，我们做一个一样大小的蒙版，让圆内像素为白色，圆外为黑色</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">'images/400x600.jpg'</span>)</span><br><span class="line"></span><br><span class="line">h,w,c = image.shape</span><br><span class="line">c_x = w//<span class="number">2</span></span><br><span class="line">c_y = h//<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一样大小的数组</span></span><br><span class="line">mask = np.zeros((<span class="number">400</span>,<span class="number">600</span>),<span class="string">"uint8"</span>)</span><br><span class="line"><span class="comment"># 小于150半径的圆内像素填充为255</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(h):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(w):</span><br><span class="line">        <span class="keyword">if</span>  (i<span class="number">-200</span>)**<span class="number">2</span> + (j<span class="number">-300</span>)**<span class="number">2</span> &lt; <span class="number">150</span>**<span class="number">2</span>:</span><br><span class="line">            mask[i,j] = <span class="number">255</span></span><br><span class="line"></span><br><span class="line">cv.imshow(<span class="string">'mask'</span>,mask)</span><br><span class="line">cv.imwrite(<span class="string">'images/mask.jpg'</span>,mask)</span><br><span class="line">cv.imshow(<span class="string">'image'</span>,image)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 
 <p><code>mask.jpg</code>显示如下：</p>
-<p><img src="images/mask.jpg" alt="mask.jpg"></p>
+<p><img src="/images/mask.jpg" alt="mask.jpg"></p>
 <h2 id="5-对蒙版图像进行blur平滑处理"><a href="#5-对蒙版图像进行blur平滑处理" class="headerlink" title="5.对蒙版图像进行blur平滑处理"></a>5.对蒙版图像进行<code>blur</code>平滑处理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">blur = cv.blur(mask,(<span class="number">60</span>,<span class="number">60</span>))</span><br><span class="line"></span><br><span class="line">cv.imwrite(<span class="string">'images/blur.jpg'</span>,blur)</span><br></pre></td></tr></table></figure>
 
 <p><code>blur.jpg</code>显示如下：</p>
-<p><img src="images/blur_f.jpg" alt="blur_f.jpg"></p>
+<p><img src="/images/blur_f.jpg" alt="blur_f.jpg"></p>
 <h2 id="6-做暗背景图"><a href="#6-做暗背景图" class="headerlink" title="6.做暗背景图"></a>6.做暗背景图</h2><p>我们选择比较简单的方式，直接按比例减小图像像素值</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(h):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(w):</span><br><span class="line">        image[i,j,<span class="number">0</span>] = int(image[i,j,<span class="number">0</span>] * <span class="number">0.3</span>)</span><br><span class="line">        image[i,j,<span class="number">1</span>] = int(image[i,j,<span class="number">1</span>] * <span class="number">0.3</span>)</span><br><span class="line">        image[i,j,<span class="number">2</span>] = int(image[i,j,<span class="number">2</span>] * <span class="number">0.3</span>)</span><br><span class="line"></span><br><span class="line">cv.imwrite(<span class="string">'images/dark.jpg'</span>,image)</span><br></pre></td></tr></table></figure>
 
@@ -384,8 +384,8 @@
 
 </li>
 </ol>
-<h2 id="9-最终显示效果"><a href="#9-最终显示效果" class="headerlink" title="9.最终显示效果"></a>9.最终显示效果</h2><p><img src="images/feather.jpg" alt="feather.jpg"></p>
-<p><img src="images/feather.png" alt="feather.png"></p>
+<h2 id="9-最终显示效果"><a href="#9-最终显示效果" class="headerlink" title="9.最终显示效果"></a>9.最终显示效果</h2><p><img src="/images/feather.jpg" alt="feather.jpg"></p>
+<p><img src="/images/feather.png" alt="feather.png"></p>
 
     </div>
 

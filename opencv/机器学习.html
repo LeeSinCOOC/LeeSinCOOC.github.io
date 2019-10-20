@@ -63,27 +63,27 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="K最近邻了解k最近邻居目标 在本章中，我们将了解k最近邻（kNN）算法的概念。 理论kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为Class。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/opencv/images/knn_theory.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/knn_simple.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/svm_basics1.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/svm_basics2.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/deskew.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/tshirt.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/tshirt_grouped.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/testdata.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/initial_labelling.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/update_centroid.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/final_clusters.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/oc_1d_testdata.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/oc_1d_clustered.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/oc_feature_representation.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/oc_2d_clustered.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/oc_color_quantization.jpg">
-<meta property="og:updated_time" content="2019-10-08T12:04:46.363Z">
+<meta property="og:image" content="http://leesin.cc/images/knn_theory.png">
+<meta property="og:image" content="http://leesin.cc/images/knn_simple.png">
+<meta property="og:image" content="http://leesin.cc/images/svm_basics1.png">
+<meta property="og:image" content="http://leesin.cc/images/svm_basics2.png">
+<meta property="og:image" content="http://leesin.cc/images/deskew.jpg">
+<meta property="og:image" content="http://leesin.cc/images/tshirt.jpg">
+<meta property="og:image" content="http://leesin.cc/images/tshirt_grouped.jpg">
+<meta property="og:image" content="http://leesin.cc/images/testdata.jpg">
+<meta property="og:image" content="http://leesin.cc/images/initial_labelling.jpg">
+<meta property="og:image" content="http://leesin.cc/images/update_centroid.jpg">
+<meta property="og:image" content="http://leesin.cc/images/final_clusters.jpg">
+<meta property="og:image" content="http://leesin.cc/images/oc_1d_testdata.png">
+<meta property="og:image" content="http://leesin.cc/images/oc_1d_clustered.png">
+<meta property="og:image" content="http://leesin.cc/images/oc_feature_representation.jpg">
+<meta property="og:image" content="http://leesin.cc/images/oc_2d_clustered.jpg">
+<meta property="og:image" content="http://leesin.cc/images/oc_color_quantization.jpg">
+<meta property="og:updated_time" content="2019-10-20T06:41:53.696Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习">
 <meta name="twitter:description" content="K最近邻了解k最近邻居目标 在本章中，我们将了解k最近邻（kNN）算法的概念。 理论kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为Class。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。">
-<meta name="twitter:image" content="http://leesin.cc/opencv/images/knn_theory.png">
+<meta name="twitter:image" content="http://leesin.cc/images/knn_theory.png">
   <link rel="canonical" href="http://leesin.cc/opencv/机器学习">
 
 
@@ -312,11 +312,19 @@
                 
               
 
-              <time title="创建时间：2019-10-08 13:11:00 / 修改时间：20:04:46" itemprop="dateCreated datePublished" datetime="2019-10-08T13:11:00+08:00">2019-10-08</time>
+              <time title="创建时间：2019-10-08 13:11:00" itemprop="dateCreated datePublished" datetime="2019-10-08T13:11:00+08:00">2019-10-08</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -354,7 +362,7 @@
       
         <h1 id="K最近邻"><a href="#K最近邻" class="headerlink" title="K最近邻"></a>K最近邻</h1><h2 id="了解k最近邻居"><a href="#了解k最近邻居" class="headerlink" title="了解k最近邻居"></a>了解k最近邻居</h2><h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><ul>
 <li>在本章中，我们将了解k最近邻（kNN）算法的概念。</li>
-</ul><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><p>kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。</p><p><img src="images/knn_theory.png" alt></p><p>在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为<code>Class</code>。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。<em>（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。每个数据都有两个要素x和y坐标。您可以在2D坐标空间中表示此数据，对吧？现在假设如果有三个要素，则需要3D空间，现在考虑N个要素，需要N维空间，对吗？这个N维空间就是其要素空间，在我们的图像中，您可以将其视为2D情况有两个功能）</em>。</p><a id="more"></a>
+</ul><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><p>kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。</p><p><img src="/images/knn_theory.png" alt></p><p>在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为<code>Class</code>。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。<em>（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。每个数据都有两个要素x和y坐标。您可以在2D坐标空间中表示此数据，对吧？现在假设如果有三个要素，则需要3D空间，现在考虑N个要素，需要N维空间，对吗？这个N维空间就是其要素空间，在我们的图像中，您可以将其视为2D情况有两个功能）</em>。</p><a id="more"></a>
 
 
 
@@ -382,7 +390,7 @@
 <p>我得到的结果如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result:  [[ <span class="number">1.</span>]]</span><br><span class="line">neighbours:  [[ <span class="number">1.</span>  <span class="number">1.</span>  <span class="number">1.</span>]]</span><br><span class="line">distance:  [[ <span class="number">53.</span>  <span class="number">58.</span>  <span class="number">61.</span>]]</span><br></pre></td></tr></table></figure>
 
-<p>它说我们的新来者有3个邻居，全部来自Blue家族。因此，他被标记为蓝色家庭。从下面的图可以明显看出：<br><img src="images/knn_simple.png" alt></p>
+<p>它说我们的新来者有3个邻居，全部来自Blue家族。因此，他被标记为蓝色家庭。从下面的图可以明显看出：<br><img src="/images/knn_simple.png" alt></p>
 <p>如果您有大量数据，则可以将其作为数组传递。还获得了相应的结果作为数组。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 10 new comers</span></span><br><span class="line">newcomers = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,(<span class="number">10</span>,<span class="number">2</span>)).astype(np.float32)</span><br><span class="line">ret, results,neighbours,dist = knn.findNearest(newcomer, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># The results also will contain 10 labels.</span></span><br></pre></td></tr></table></figure>
 
@@ -408,9 +416,9 @@
 <li>我们将看到对SVM的直观了解</li>
 </ul>
 <h3 id="理论-1"><a href="#理论-1" class="headerlink" title="理论"></a>理论</h3><h3 id="线性可分离数据"><a href="#线性可分离数据" class="headerlink" title="线性可分离数据"></a>线性可分离数据</h3><p>考虑下面的图像，它具有两种数据类型，红色和蓝色。在kNN中，对于测试数据，我们用来测量其与所有训练样本的距离，并以最小的距离作为样本。测量所有距离都需要花费大量时间，并且需要大量内存来存储所有训练样本。但是考虑到图像中给出的数据，我们是否需要那么多？</p>
-<p><img src="images/svm_basics1.png" alt></p>
+<p><img src="/images/svm_basics1.png" alt></p>
 <p>您可以看到很多这样的行都是可能的。我们会选哪一个？非常直观地，我们可以说直线应该从所有点尽可能远地经过。为什么？因为传入的数据中可能会有噪音。此数据不应影响分类准确性。因此，走最远的线将提供更大的抗干扰能力。因此，SVM要做的是找到到训练样本的最小距离最大的直线（或超平面）。请参阅下面图像中穿过中心的粗线。</p>
-<p><img src="images/svm_basics2.png" alt><br>因此，要找到此决策边界，您需要训练数据。需要全部吗？没有。仅接近相反组的那些就足够了。在我们的图像中，它们是一个蓝色填充的圆圈和两个红色填充的正方形。我们可以称它们为支持向量，而通过它们的线称为支持平面。它们足以找到我们的决策边界。我们不必担心所有数据。它有助于减少数据量。</p>
+<p><img src="/images/svm_basics2.png" alt><br>因此，要找到此决策边界，您需要训练数据。需要全部吗？没有。仅接近相反组的那些就足够了。在我们的图像中，它们是一个蓝色填充的圆圈和两个红色填充的正方形。我们可以称它们为支持向量，而通过它们的线称为支持平面。它们足以找到我们的决策边界。我们不必担心所有数据。它有助于减少数据量。</p>
 <h3 id="非线性可分离数据"><a href="#非线性可分离数据" class="headerlink" title="非线性可分离数据"></a>非线性可分离数据</h3><p>可以使用二维空间中的平方点积来实现三维空间中的点积。这可以应用于更高维度的空间。因此，我们可以从较低尺寸本身计算较高尺寸的特征。一旦将它们映射，我们将获得更高的空间。</p>
 <p>除了所有这些概念之外，还存在分类错误的问题。因此，仅找到具有最大余量的决策边界是不够的。我们还需要考虑分类错误的问题。有时，可能会找到裕度较小但分类错误减少的决策边界。无论如何，我们需要修改我们的模型，以便它应该找到具有最大裕度但分类错误较少的决策边界。</p>
 <p>如何选择参数C？显然，这个问题的答案取决于训练数据的分布方式。尽管没有一般性的答案，但考虑以下规则会很有用：</p>
@@ -427,7 +435,7 @@
 <p>在这里，在找到HOG之前，我们使用其二阶矩对图像进行去偏斜。因此，我们首先定义一个函数<code>deskew()</code>，该函数获取一个数字图像并将其校正。下面是<code>deskew()</code>函数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">deskew</span><span class="params">(img)</span>:</span></span><br><span class="line">    m = cv.moments(img)</span><br><span class="line">    <span class="keyword">if</span> abs(m[<span class="string">'mu02'</span>]) &lt; <span class="number">1e-2</span>:</span><br><span class="line">        <span class="keyword">return</span> img.copy()</span><br><span class="line">    skew = m[<span class="string">'mu11'</span>]/m[<span class="string">'mu02'</span>]</span><br><span class="line">    M = np.float32([[<span class="number">1</span>, skew, <span class="number">-0.5</span>*SZ*skew], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">    img = cv.warpAffine(img,M,(SZ, SZ),flags=affine_flags)</span><br><span class="line">    <span class="keyword">return</span> img</span><br></pre></td></tr></table></figure>
 
-<p>下图显示了应用于零图像的上偏移校正功能。左图像是原始图像，右图像是去歪斜图像。<br><img src="images/deskew.jpg" alt></p>
+<p>下图显示了应用于零图像的上偏移校正功能。左图像是原始图像，右图像是去歪斜图像。<br><img src="/images/deskew.jpg" alt></p>
 <p>接下来，我们必须找到每个单元格的HOG描述符。为此，我们找到了每个单元在X和Y方向上的Sobel导数。然后在每个像素处找到它们的大小和梯度方向。该梯度被量化为16个整数值。将此图像划分为四个子正方形。对于每个子正方形，计算权重大小方向的直方图（16个bin）。因此，每个子正方形为您提供了一个包含16个值的向量。（四个子正方形的）四个这样的向量共同为我们提供了一个包含64个值的特征向量。这是我们用于训练数据的特征向量。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hog</span><span class="params">(img)</span>:</span></span><br><span class="line">    gx = cv.Sobel(img, cv.CV_32F, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    gy = cv.Sobel(img, cv.CV_32F, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">    mag, ang = cv.cartToPolar(gx, gy)</span><br><span class="line">    bins = np.int32(bin_n*ang/(<span class="number">2</span>*np.pi))    <span class="comment"># quantizing binvalues in (0...16)</span></span><br><span class="line">    bin_cells = bins[:<span class="number">10</span>,:<span class="number">10</span>], bins[<span class="number">10</span>:,:<span class="number">10</span>], bins[:<span class="number">10</span>,<span class="number">10</span>:], bins[<span class="number">10</span>:,<span class="number">10</span>:]</span><br><span class="line">    mag_cells = mag[:<span class="number">10</span>,:<span class="number">10</span>], mag[<span class="number">10</span>:,:<span class="number">10</span>], mag[:<span class="number">10</span>,<span class="number">10</span>:], mag[<span class="number">10</span>:,<span class="number">10</span>:]</span><br><span class="line">    hists = [np.bincount(b.ravel(), m.ravel(), bin_n) <span class="keyword">for</span> b, m <span class="keyword">in</span> zip(bin_cells, mag_cells)]</span><br><span class="line">    hist = np.hstack(hists)     <span class="comment"># hist is a 64 bit vector</span></span><br><span class="line">    <span class="keyword">return</span> hist</span><br></pre></td></tr></table></figure>
 
@@ -439,17 +447,17 @@
 <li>在本章中，我们将了解K-Means聚类的概念，其工作原理等。</li>
 </ul>
 <h3 id="理论-2"><a href="#理论-2" class="headerlink" title="理论"></a>理论</h3><p>我们将用一个常用的例子来处理这个问题。</p>
-<h3 id="T恤尺寸问题"><a href="#T恤尺寸问题" class="headerlink" title="T恤尺寸问题"></a>T恤尺寸问题</h3><p>考虑一家公司，该公司将向市场发布新型号的T恤。显然，他们将不得不制造不同尺寸的模型，以满足各种规模的人们的需求。因此，该公司会记录人们的身高和体重数据，并将其绘制到图形上，如下所示：<br><img src="images/tshirt.jpg" alt></p>
+<h3 id="T恤尺寸问题"><a href="#T恤尺寸问题" class="headerlink" title="T恤尺寸问题"></a>T恤尺寸问题</h3><p>考虑一家公司，该公司将向市场发布新型号的T恤。显然，他们将不得不制造不同尺寸的模型，以满足各种规模的人们的需求。因此，该公司会记录人们的身高和体重数据，并将其绘制到图形上，如下所示：<br><img src="/images/tshirt.jpg" alt></p>
 <p>公司无法制作所有尺寸的T恤。取而代之的是，他们将人划分为小，中和大，并仅制造这三种适合所有人的模型。可以通过k均值聚类将人员分为三组，并且算法可以为我们提供最佳的3种尺寸，这将满足所有人员的需求。如果不是这样，公司可以将人员分为更多的组，可能是五个，依此类推。查看下面的图片：</p>
-<p><img src="images/tshirt_grouped.jpg" alt></p>
+<p><img src="/images/tshirt_grouped.jpg" alt></p>
 <h4 id="它是如何工作的-？"><a href="#它是如何工作的-？" class="headerlink" title="它是如何工作的 ？"></a>它是如何工作的 ？</h4><p>该算法是一个迭代过程。我们将在图像的帮助下逐步解释它。</p>
-<p>考虑如下数据（您可以将其视为T恤问题）。我们需要将此数据分为两类。<br><img src="images/testdata.jpg" alt></p>
+<p>考虑如下数据（您可以将其视为T恤问题）。我们需要将此数据分为两类。<br><img src="/images/testdata.jpg" alt></p>
 <p><strong>步骤1</strong>-算法随机选择两个质心$C1$个和$C2$ （有时，将任何两个数据作为质心）。</p>
 <p><strong>步骤2</strong>-计算每个点到两个质心的距离。如果测试数据更接近$C1$个，然后将该数据标记为“ 0”。如果更接近$C2$，然后标记为“ 1”（如果存在更多质心，则标记为“ 2”，“ 3”等）。</p>
-<p>在我们的示例中，我们将为所有标记为红色的“ 0”和标记为蓝色的所有“ 1”着色。因此，经过以上操作，我们得到以下图像。<br><img src="images/initial_labelling.jpg" alt><br><strong>步骤3</strong>-接下来，我们分别计算所有蓝点和红点的平均值，这将成为我们的新质心。那是$C1$个和$C2$转移到新计算的质心。（请记住，显示的图像不是真实值，也不是真实比例，仅用于演示）。</p>
+<p>在我们的示例中，我们将为所有标记为红色的“ 0”和标记为蓝色的所有“ 1”着色。因此，经过以上操作，我们得到以下图像。<br><img src="/images/initial_labelling.jpg" alt><br><strong>步骤3</strong>-接下来，我们分别计算所有蓝点和红点的平均值，这将成为我们的新质心。那是$C1$个和$C2$转移到新计算的质心。（请记住，显示的图像不是真实值，也不是真实比例，仅用于演示）。</p>
 <p>再次，使用新的质心执行步骤2，并将标签数据设置为’0’和’1’。</p>
-<p>因此我们得到如下结果：<br><img src="images/update_centroid.jpg" alt><br>现在，迭代步骤2和步骤3，直到两个质心都收敛到固定点</p>
-<p>最终结果几乎如下所示：<br><img src="images/final_clusters.jpg" alt></p>
+<p>因此我们得到如下结果：<br><img src="/images/update_centroid.jpg" alt><br>现在，迭代步骤2和步骤3，直到两个质心都收敛到固定点</p>
+<p>最终结果几乎如下所示：<br><img src="/images/final_clusters.jpg" alt></p>
 <h2 id="OpenCV中的K-均值聚类"><a href="#OpenCV中的K-均值聚类" class="headerlink" title="OpenCV中的K-均值聚类"></a>OpenCV中的K-均值聚类</h2><h3 id="目标-5"><a href="#目标-5" class="headerlink" title="目标"></a>目标</h3><ul>
 <li>了解如何在OpenCV中使用<code>cv.kmeans()</code>函数进行数据聚类</li>
 </ul>
@@ -470,7 +478,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">x = np.random.randint(<span class="number">25</span>,<span class="number">100</span>,<span class="number">25</span>)</span><br><span class="line">y = np.random.randint(<span class="number">175</span>,<span class="number">255</span>,<span class="number">25</span>)</span><br><span class="line">z = np.hstack((x,y))</span><br><span class="line">z = z.reshape((<span class="number">50</span>,<span class="number">1</span>))</span><br><span class="line">z = np.float32(z)</span><br><span class="line">plt.hist(z,<span class="number">256</span>,[<span class="number">0</span>,<span class="number">256</span>]),plt.show()</span><br></pre></td></tr></table></figure>
 
 <p>因此，我们有一个“ z”，它是一个大小为50的数组，值的范围是0到255。我已经将“ z”重塑为列向量。如果存在多个功能，它将更加有用。然后我制作了np.float32类型的数据。</p>
-<p>我们得到以下图像：<br><img src="images/oc_1d_testdata.png" alt><br>现在我们应用KMeans函数。在此之前，我们需要指定标准。我的标准是，每当运行10次算法迭代或达到epsilon = 1.0的精度时，就停止算法并返回答案。</p>
+<p>我们得到以下图像：<br><img src="/images/oc_1d_testdata.png" alt><br>现在我们应用KMeans函数。在此之前，我们需要指定标准。我的标准是，每当运行10次算法迭代或达到epsilon = 1.0的精度时，就停止算法并返回答案。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define criteria = ( type, max_iter = 10 , epsilon = 1.0 )</span></span><br><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">10</span>, <span class="number">1.0</span>)</span><br><span class="line"><span class="comment"># Set flags (Just to avoid line break in the code)</span></span><br><span class="line">flags = cv.KMEANS_RANDOM_CENTERS</span><br><span class="line"><span class="comment"># Apply KMeans</span></span><br><span class="line">compactness,labels,centers = cv.kmeans(z,<span class="number">2</span>,<span class="literal">None</span>,criteria,<span class="number">10</span>,flags)</span><br></pre></td></tr></table></figure>
 
 <p>这为我们提供了紧凑性，标签和中心。在这种情况下，我得到的中心分别为60和207。标签的大小将与测试数据的大小相同，其中每个数据的质心都将标记为“ 0”，“ 1”，“ 2”等。现在，我们根据标签将数据分为不同的群集。</p>
@@ -479,18 +487,18 @@
 <p>现在我们以红色绘制A，以蓝色绘制B，以黄色绘制其质心。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Now plot 'A' in red, 'B' in blue, 'centers' in yellow</span></span><br><span class="line">plt.hist(A,<span class="number">256</span>,[<span class="number">0</span>,<span class="number">256</span>],color = <span class="string">'r'</span>)</span><br><span class="line">plt.hist(B,<span class="number">256</span>,[<span class="number">0</span>,<span class="number">256</span>],color = <span class="string">'b'</span>)</span><br><span class="line">plt.hist(centers,<span class="number">32</span>,[<span class="number">0</span>,<span class="number">256</span>],color = <span class="string">'y'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p>以下是我们得到的输出：<br><img src="images/oc_1d_clustered.png" alt></p>
+<p>以下是我们得到的输出：<br><img src="/images/oc_1d_clustered.png" alt></p>
 <h2 id="2-具有多种功能的数据"><a href="#2-具有多种功能的数据" class="headerlink" title="2.具有多种功能的数据"></a>2.具有多种功能的数据</h2><p>在前面的示例中，我们仅考虑了T恤问题的身高。在这里，我们将同时考虑身高和体重，即两个特征。</p>
 <p>请记住，在以前的情况下，我们将数据制作为单个列向量。每个特征排列在一列中，而每一行对应于一个输入测试样本。</p>
-<p>例如，在这种情况下，我们设置了一个大小为50x2的测试数据，即50人的身高和体重。第一列对应于全部50个人的身高，第二列对应于他们的体重。第一行包含两个元素，其中第一个是第一人称的身高，第二个是他的体重。类似地，剩余的行对应于其他人的身高和体重。查看下面的图片：<br><img src="images/oc_feature_representation.jpg" alt><br>现在，我直接转到代码：</p>
+<p>例如，在这种情况下，我们设置了一个大小为50x2的测试数据，即50人的身高和体重。第一列对应于全部50个人的身高，第二列对应于他们的体重。第一行包含两个元素，其中第一个是第一人称的身高，第二个是他的体重。类似地，剩余的行对应于其他人的身高和体重。查看下面的图片：<br><img src="/images/oc_feature_representation.jpg" alt><br>现在，我直接转到代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">X = np.random.randint(<span class="number">25</span>,<span class="number">50</span>,(<span class="number">25</span>,<span class="number">2</span>))</span><br><span class="line">Y = np.random.randint(<span class="number">60</span>,<span class="number">85</span>,(<span class="number">25</span>,<span class="number">2</span>))</span><br><span class="line">Z = np.vstack((X,Y))</span><br><span class="line"><span class="comment"># convert to np.float32</span></span><br><span class="line">Z = np.float32(Z)</span><br><span class="line"><span class="comment"># define criteria and apply kmeans()</span></span><br><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">10</span>, <span class="number">1.0</span>)</span><br><span class="line">ret,label,center=cv.kmeans(Z,<span class="number">2</span>,<span class="literal">None</span>,criteria,<span class="number">10</span>,cv.KMEANS_RANDOM_CENTERS)</span><br><span class="line"><span class="comment"># Now separate the data, Note the flatten()</span></span><br><span class="line">A = Z[label.ravel()==<span class="number">0</span>]</span><br><span class="line">B = Z[label.ravel()==<span class="number">1</span>]</span><br><span class="line"><span class="comment"># Plot the data</span></span><br><span class="line">plt.scatter(A[:,<span class="number">0</span>],A[:,<span class="number">1</span>])</span><br><span class="line">plt.scatter(B[:,<span class="number">0</span>],B[:,<span class="number">1</span>],c = <span class="string">'r'</span>)</span><br><span class="line">plt.scatter(center[:,<span class="number">0</span>],center[:,<span class="number">1</span>],s = <span class="number">80</span>,c = <span class="string">'y'</span>, marker = <span class="string">'s'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Height'</span>),plt.ylabel(<span class="string">'Weight'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p>下面是我们得到的输出：<br><img src="images/oc_2d_clustered.jpg" alt></p>
+<p>下面是我们得到的输出：<br><img src="/images/oc_2d_clustered.jpg" alt></p>
 <h2 id="3-颜色量化"><a href="#3-颜色量化" class="headerlink" title="3.颜色量化"></a>3.颜色量化</h2><p>颜色量化是减少图像中颜色数量的过程。这样做的原因之一是减少内存。有时，某些设备可能会受到限制，因此只能产生有限数量的颜色。同样在那些情况下，执行颜色量化。在这里，我们使用k均值聚类进行颜色量化。</p>
 <p>这里没有新内容要解释。有3个功能，例如R，G，B。因此，我们需要将图像重塑为Mx3大小的数组（M是图像中的像素数）。在聚类之后，我们将质心值（也是R，G，B）应用于所有像素，这样生成的图像将具有指定的颜色数。再一次，我们需要将其重塑为原始图像的形状。下面是代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line">img = cv.imread(<span class="string">'home.jpg'</span>)</span><br><span class="line">Z = img.reshape((<span class="number">-1</span>,<span class="number">3</span>))</span><br><span class="line"><span class="comment"># convert to np.float32</span></span><br><span class="line">Z = np.float32(Z)</span><br><span class="line"><span class="comment"># define criteria, number of clusters(K) and apply kmeans()</span></span><br><span class="line">criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, <span class="number">10</span>, <span class="number">1.0</span>)</span><br><span class="line">K = <span class="number">8</span></span><br><span class="line">ret,label,center=cv.kmeans(Z,K,<span class="literal">None</span>,criteria,<span class="number">10</span>,cv.KMEANS_RANDOM_CENTERS)</span><br><span class="line"><span class="comment"># Now convert back into uint8, and make original image</span></span><br><span class="line">center = np.uint8(center)</span><br><span class="line">res = center[label.flatten()]</span><br><span class="line">res2 = res.reshape((img.shape))</span><br><span class="line">cv.imshow(<span class="string">'res2'</span>,res2)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 
-<p>K = 8，请参见以下结果：<br><img src="images/oc_color_quantization.jpg" alt></p>
+<p>K = 8，请参见以下结果：<br><img src="/images/oc_color_quantization.jpg" alt></p>
 
     </div>
 

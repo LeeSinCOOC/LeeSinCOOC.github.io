@@ -63,21 +63,21 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="图像去噪目标 您将了解有关去除图像中噪声的非局部均值去噪算法。 您将看到不同的函数，例如cv.fastNlMeansDenoising()，cv.fastNlMeansDenoisingColored()等。 理论在前面的章节中，我们看到了许多图像平滑技术，例如高斯模糊，中值模糊等，它们在某种程度上可以消除少量噪声。在这些技术中，我们在像素周围采取了一个较小的邻域，并进行了一些操作（例如高斯加权平">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/opencv/images/nlm_patch.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/nlm_result1.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/nlm_multi.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/inpaint_basics.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/inpaint_result.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/exposures.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/ldr_debevec.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/ldr_robertson.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/fusion_mertens.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/crf.jpg">
-<meta property="og:updated_time" content="2019-10-08T12:06:43.085Z">
+<meta property="og:image" content="http://leesin.cc/images/nlm_patch.jpg">
+<meta property="og:image" content="http://leesin.cc/images/nlm_result1.jpg">
+<meta property="og:image" content="http://leesin.cc/images/nlm_multi.jpg">
+<meta property="og:image" content="http://leesin.cc/images/inpaint_basics.jpg">
+<meta property="og:image" content="http://leesin.cc/images/inpaint_result.jpg">
+<meta property="og:image" content="http://leesin.cc/images/exposures.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ldr_debevec.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ldr_robertson.jpg">
+<meta property="og:image" content="http://leesin.cc/images/fusion_mertens.jpg">
+<meta property="og:image" content="http://leesin.cc/images/crf.jpg">
+<meta property="og:updated_time" content="2019-10-20T06:41:53.734Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算摄影">
 <meta name="twitter:description" content="图像去噪目标 您将了解有关去除图像中噪声的非局部均值去噪算法。 您将看到不同的函数，例如cv.fastNlMeansDenoising()，cv.fastNlMeansDenoisingColored()等。 理论在前面的章节中，我们看到了许多图像平滑技术，例如高斯模糊，中值模糊等，它们在某种程度上可以消除少量噪声。在这些技术中，我们在像素周围采取了一个较小的邻域，并进行了一些操作（例如高斯加权平">
-<meta name="twitter:image" content="http://leesin.cc/opencv/images/nlm_patch.jpg">
+<meta name="twitter:image" content="http://leesin.cc/images/nlm_patch.jpg">
   <link rel="canonical" href="http://leesin.cc/opencv/计算摄影">
 
 
@@ -306,11 +306,19 @@
                 
               
 
-              <time title="创建时间：2019-10-08 13:10:00 / 修改时间：20:06:43" itemprop="dateCreated datePublished" datetime="2019-10-08T13:10:00+08:00">2019-10-08</time>
+              <time title="创建时间：2019-10-08 13:10:00" itemprop="dateCreated datePublished" datetime="2019-10-08T13:10:00+08:00">2019-10-08</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -353,7 +361,7 @@
 
 <p>有噪音的性质。通常认为噪声是零均值的随机变量。考虑一个有噪声的像素，，其中是像素的真实值，是该像素中的噪声。您可以从不同的图像中获取大量相同的像素（例如）并计算其平均值。</p>
 <p>您可以通过简单的设置自己进行验证。将静态相机固定在某个位置几秒钟。这将为您提供很多帧或同一场景的很多图像。然后编写一段代码，找到视频中所有帧的平均值（这对您现在应该太简单了）。比较最终结果和第一帧。您会看到噪音降低。不幸的是，这种简单的方法对摄像机和场景的运动并不稳健。通常，只有一张嘈杂的图像可用。</p>
-<p>因此想法很简单，我们需要一组相似的图像来平均噪声。考虑图像中的一个小窗口（例如5x5窗口）。很有可能同一修补程序可能位于图像中的其他位置。有时在它周围的一个小社区中。一起使用这些相似的补丁并找到它们的平均值怎么办？对于那个特定的窗口，这很好。请参阅下面的示例图片：<br><img src="images/nlm_patch.jpg" alt></p>
+<p>因此想法很简单，我们需要一组相似的图像来平均噪声。考虑图像中的一个小窗口（例如5x5窗口）。很有可能同一修补程序可能位于图像中的其他位置。有时在它周围的一个小社区中。一起使用这些相似的补丁并找到它们的平均值怎么办？对于那个特定的窗口，这很好。请参阅下面的示例图片：<br><img src="/images/nlm_patch.jpg" alt></p>
 <p>图像中的蓝色补丁看起来很相似。绿色补丁看起来很相似。因此，我们获取一个像素，在其周围获取一个小窗口，在图像中搜索相似的窗口，对所有窗口求平均，然后用得到的结果替换该像素。此方法是“非本地均值消噪”。与我们之前看到的模糊技术相比，它花费了更多时间，但是效果非常好。在更多资源的第一个链接中可以找到更多详细信息和在线演示。</p>
 <p>对于彩色图像，图像将转换为CIELAB色彩空间，然后分别对L和AB分量进行降噪。</p>
 <h2 id="OpenCV中的图像去噪"><a href="#OpenCV中的图像去噪" class="headerlink" title="OpenCV中的图像去噪"></a>OpenCV中的图像去噪</h2><p>OpenCV提供了此技术的四个变体。</p>
@@ -371,12 +379,12 @@
 <h3 id="1-cv-fastNlMeansDenoisingColored"><a href="#1-cv-fastNlMeansDenoisingColored" class="headerlink" title="1. cv.fastNlMeansDenoisingColored()"></a>1. cv.fastNlMeansDenoisingColored()</h3><p>如上所述，它用于消除彩色图像中的噪点。（噪声可能是高斯的）。请参阅以下示例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">img = cv.imread(<span class="string">'die.png'</span>)</span><br><span class="line">dst = cv.fastNlMeansDenoisingColored(img,<span class="literal">None</span>,<span class="number">10</span>,<span class="number">10</span>,<span class="number">7</span>,<span class="number">21</span>)</span><br><span class="line">plt.subplot(<span class="number">121</span>),plt.imshow(img)</span><br><span class="line">plt.subplot(<span class="number">122</span>),plt.imshow(dst)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p>以下是结果的放大版本。我的输入图像具有$σ$的高斯噪声= 25<br><img src="images/nlm_result1.jpg" alt></p>
+<p>以下是结果的放大版本。我的输入图像具有$σ$的高斯噪声= 25<br><img src="/images/nlm_result1.jpg" alt></p>
 <h3 id="2-cv-fastNlMeansDenoisingMulti"><a href="#2-cv-fastNlMeansDenoisingMulti" class="headerlink" title="2. cv.fastNlMeansDenoisingMulti()"></a>2. cv.fastNlMeansDenoisingMulti()</h3><p>现在，我们将对视频应用相同的方法。第一个参数是噪声帧列表。第二个参数<code>imgToDenoiseIndex</code>指定我们需要去噪的帧，为此我们在输入列表中传递帧的索引。第三是<code>temporalWindowSize</code>，它指定要用于降噪的附近帧的数量。应该很奇怪。在那种情况下，总共使用<code>temporalWindowSize</code>帧，其中中心帧是要去噪的帧。例如，您传递了一个5帧的列表作为输入。令<code>imgToDenoiseIndex = 2</code>，<code>temporalWindowSize =3</code>。然后使用frame-1，frame-2和frame-3去噪frame-2。让我们来看一个例子。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">cap = cv.VideoCapture(<span class="string">'vtest.avi'</span>)</span><br><span class="line"><span class="comment"># create a list of first 5 frames</span></span><br><span class="line">img = [cap.read()[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">5</span>)]</span><br><span class="line"><span class="comment"># convert all to grayscale</span></span><br><span class="line">gray = [cv.cvtColor(i, cv.COLOR_BGR2GRAY) <span class="keyword">for</span> i <span class="keyword">in</span> img]</span><br><span class="line"><span class="comment"># convert all to float64</span></span><br><span class="line">gray = [np.float64(i) <span class="keyword">for</span> i <span class="keyword">in</span> gray]</span><br><span class="line"><span class="comment"># create a noise of variance 25</span></span><br><span class="line">noise = np.random.randn(*gray[<span class="number">1</span>].shape)*<span class="number">10</span></span><br><span class="line"><span class="comment"># Add this noise to images</span></span><br><span class="line">noisy = [i+noise <span class="keyword">for</span> i <span class="keyword">in</span> gray]</span><br><span class="line"><span class="comment"># Convert back to uint8</span></span><br><span class="line">noisy = [np.uint8(np.clip(i,<span class="number">0</span>,<span class="number">255</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> noisy]</span><br><span class="line"><span class="comment"># Denoise 3rd frame considering all the 5 frames</span></span><br><span class="line">dst = cv.fastNlMeansDenoisingMulti(noisy, <span class="number">2</span>, <span class="number">5</span>, <span class="literal">None</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">35</span>)</span><br><span class="line">plt.subplot(<span class="number">131</span>),plt.imshow(gray[<span class="number">2</span>],<span class="string">'gray'</span>)</span><br><span class="line">plt.subplot(<span class="number">132</span>),plt.imshow(noisy[<span class="number">2</span>],<span class="string">'gray'</span>)</span><br><span class="line">plt.subplot(<span class="number">133</span>),plt.imshow(dst,<span class="string">'gray'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
 <p>下图显示了我们得到的结果的放大版本：</p>
-<p><img src="images/nlm_multi.jpg" alt></p>
+<p><img src="/images/nlm_multi.jpg" alt></p>
 <p>计算需要花费大量时间。结果，第一个图像是原始帧，第二个是噪点图像，第三个是去噪图像。</p>
 <h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><p><a href="http://www.ipol.im/pub/art/2011/bcm_nlm/（包含详细信息，在线演示等。强烈建议访问。我们的测试图像是从此链接生成的）" target="_blank" rel="noopener">http://www.ipol.im/pub/art/2011/bcm_nlm/（包含详细信息，在线演示等。强烈建议访问。我们的测试图像是从此链接生成的）</a></p>
 <h1 id="图像修复"><a href="#图像修复" class="headerlink" title="图像修复"></a>图像修复</h1><h2 id="目标-1"><a href="#目标-1" class="headerlink" title="目标"></a>目标</h2><p>在这一章当中，</p>
@@ -385,14 +393,14 @@
 <li>我们将在OpenCV中看到修复功能。</li>
 </ul>
 <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>你们大多数人家里都会有一些旧的退化照片，上面有黑点，一些笔触等。您是否曾经想过将其还原？我们不能简单地在绘画工具中擦除它们，因为它将简单地用白色结构代替黑色结构，这是没有用的。在这些情况下，将使用一种称为图像修复的技术。基本思想很简单：用附近的像素替换那些不良标记，使其看起来像附近。考虑下面显示的图像（摘自Wikipedia）：</p>
-<p><img src="images/inpaint_basics.jpg" alt></p>
+<p><img src="/images/inpaint_basics.jpg" alt></p>
 <p>为此目的设计了几种算法，OpenCV提供了其中两种。两者都可以通过相同的函数<code>cv.inpaint()</code>访问</p>
 <p>第一种算法基于Alexandru Telea在2004年发表的论文“基于快速行进方法的图像修复技术” 。它基于快速行进方法。考虑图像中要修复的区域。算法从该区域的边界开始，并进入该区域内部，然后逐渐填充边界中的所有内容。在要修复的邻域上的像素周围需要一个小的邻域。该像素被附近所有已知像素的归一化加权总和所代替。权重的选择很重要。那些位于该点附近，边界法线附近的像素和那些位于边界轮廓线上的像素将获得更大的权重。修复像素后，将使用快速行进方法将其移动到下一个最近的像素。FMM确保首先修复已知像素附近的那些像素，以便像手动启发式操作一样工作。通过使用标志启用此算法，<code>cv.INPAINT_TELEA</code>。</p>
 <p>第二种算法基于Bertalmio，Marcelo，Andrea L.Bertozzi和Guillermo Sapiro在2001年发表的论文“ Navier-Stokes，流体动力学以及图像和视频修补”。该算法基于流体动力学并利用了偏微分方程。基本原理是启发式的。它首先沿着边缘从已知区域移动到未知区域（因为边缘是连续的）。它延续了等渗线（线条连接具有相同强度的点，就像轮廓线连接具有相同高程的点一样），同时在修复区域的边界匹配梯度矢量。为此，使用了一些流体动力学方法。获得它们后，将填充颜色以减少该区域的最小差异。通过使用标志<code>cv.INPAINT_NS</code>启用此算法。</p>
 <h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p>我们需要创建一个与输入图像大小相同的蒙版，其中非零像素对应于要修复的区域。其他一切都很简单。我的图像因一些黑色笔画而退化（我手动添加了）。我使用“绘画”工具创建了相应的笔触。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line">img = cv.imread(<span class="string">'messi_2.jpg'</span>)</span><br><span class="line">mask = cv.imread(<span class="string">'mask2.png'</span>,<span class="number">0</span>)</span><br><span class="line">dst = cv.inpaint(img,mask,<span class="number">3</span>,cv.INPAINT_TELEA)</span><br><span class="line">cv.imshow(<span class="string">'dst'</span>,dst)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 
-<p>请参阅下面的结果。第一张图片显示了降级的输入。第二个图像是蒙版。第三个图像是第一个算法的结果，最后一个图像是第二个算法的结果。<br><img src="images/inpaint_result.jpg" alt></p>
+<p>请参阅下面的结果。第一张图片显示了降级的输入。第二个图像是蒙版。第三个图像是第一个算法的结果，最后一个图像是第二个算法的结果。<br><img src="/images/inpaint_result.jpg" alt></p>
 <h1 id="高动态范围（HDR）"><a href="#高动态范围（HDR）" class="headerlink" title="高动态范围（HDR）"></a>高动态范围（HDR）</h1><h2 id="目标-2"><a href="#目标-2" class="headerlink" title="目标"></a>目标</h2><ul>
 <li>了解如何根据曝光顺序生成和显示HDR图像。</li>
 <li>使用曝光融合来合并曝光序列。</li>
@@ -400,7 +408,7 @@
 <h2 id="理论-1"><a href="#理论-1" class="headerlink" title="理论"></a>理论</h2><p>高动态范围成像（HDRI或HDR）是一种用于成像和摄影的技术，可比标准数字成像或摄影技术重现更大的动态光度范围。虽然人眼可以适应各种光照条件，但是大多数成像设备每个通道使用8位，因此我们仅限于256级。当我们拍摄现实世界的照片时，明亮的区域可能会曝光过度，而黑暗的区域可能会曝光不足，因此我们无法一次曝光就捕获所有细节。HDR成像适用于每个通道使用8位以上（通常为32位浮点值）的图像，从而允许更大的动态范围。</p>
 <p>获取HDR图像的方法有多种，但是最常见的一种方法是使用以不同曝光值拍摄的场景照片。要组合这些曝光，了解相机的响应功能并有一些算法可以对其进行估计是很有用的。合并HDR图像后，必须将其转换回8位才能在常规显示器上查看。此过程称为音调映射。当场景或相机的对象在两次拍摄之间移动时，还会增加其他复杂性，因为应记录并调整具有不同曝光度的图像。</p>
 <p>在本教程中，我们展示了两种算法（Debevec，Robertson）来根据曝光序列生成和显示HDR图像，并演示了另一种称为曝光融合（Mertens）的方法，该方法可以生成低动态范围图像，并且不需要曝光时间数据。此外，我们估计相机响应函数（CRF）对于许多计算机视觉算法都具有重要价值。HDR流水线的每个步骤都可以使用不同的算法和参数来实现，因此请查看参考手册以了解所有内容。</p>
-<h2 id="曝光顺序HDR"><a href="#曝光顺序HDR" class="headerlink" title="曝光顺序HDR"></a>曝光顺序HDR</h2><p>在本教程中，我们将查看以下场景，其中有4张曝光图像，曝光时间分别为15、2.5、1 / 4和1/30秒。（您可以从Wikipedia下载图像）<br><img src="images/exposures.jpg" alt></p>
+<h2 id="曝光顺序HDR"><a href="#曝光顺序HDR" class="headerlink" title="曝光顺序HDR"></a>曝光顺序HDR</h2><p>在本教程中，我们将查看以下场景，其中有4张曝光图像，曝光时间分别为15、2.5、1 / 4和1/30秒。（您可以从Wikipedia下载图像）<br><img src="/images/exposures.jpg" alt></p>
 <h3 id="1-将曝光图像加载到列表中"><a href="#1-将曝光图像加载到列表中" class="headerlink" title="1.将曝光图像加载到列表中"></a>1.将曝光图像加载到列表中</h3><p>第一步只是将所有图像加载到列表中。此外，我们将需要常规HDR算法的曝光时间。请注意数据类型，因为图像应为1通道或3通道8位（np.uint8），并且曝光时间必须为float32，以秒为单位。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># Loading exposure images into a list</span></span><br><span class="line">img_fn = [<span class="string">"img0.jpg"</span>, <span class="string">"img1.jpg"</span>, <span class="string">"img2.jpg"</span>, <span class="string">"img3.jpg"</span>]</span><br><span class="line">img_list = [cv.imread(fn) <span class="keyword">for</span> fn <span class="keyword">in</span> img_fn]</span><br><span class="line">exposure_times = np.array([<span class="number">15.0</span>, <span class="number">2.5</span>, <span class="number">0.25</span>, <span class="number">0.0333</span>], dtype=np.float32)</span><br></pre></td></tr></table></figure>
 
@@ -417,13 +425,13 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Convert datatype to 8-bit and save</span></span><br><span class="line">res_debevec_8bit = np.clip(res_debevec*<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">'uint8'</span>)</span><br><span class="line">res_robertson_8bit = np.clip(res_robertson*<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">'uint8'</span>)</span><br><span class="line">res_mertens_8bit = np.clip(res_mertens*<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">'uint8'</span>)</span><br><span class="line">cv.imwrite(<span class="string">"ldr_debevec.jpg"</span>, res_debevec_8bit)</span><br><span class="line">cv.imwrite(<span class="string">"ldr_robertson.jpg"</span>, res_robertson_8bit)</span><br><span class="line">cv.imwrite(<span class="string">"fusion_mertens.jpg"</span>, res_mertens_8bit)</span><br></pre></td></tr></table></figure>
 
 <h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>您可以看到不同的结果，但可以认为每种算法都有其他额外的参数，您应该将它们附加以达到期望的结果。最佳实践是尝试不同的方法，然后看看哪种方法最适合您的场景。</p>
-<h3 id="Debevec"><a href="#Debevec" class="headerlink" title="Debevec:"></a>Debevec:</h3><p><img src="images/ldr_debevec.jpg" alt></p>
-<h3 id="Robertson"><a href="#Robertson" class="headerlink" title="Robertson:"></a>Robertson:</h3><p><img src="images/ldr_robertson.jpg" alt></p>
-<h3 id="Mertenes-Fusion"><a href="#Mertenes-Fusion" class="headerlink" title="Mertenes Fusion:"></a>Mertenes Fusion:</h3><p><img src="images/fusion_mertens.jpg" alt></p>
+<h3 id="Debevec"><a href="#Debevec" class="headerlink" title="Debevec:"></a>Debevec:</h3><p><img src="/images/ldr_debevec.jpg" alt></p>
+<h3 id="Robertson"><a href="#Robertson" class="headerlink" title="Robertson:"></a>Robertson:</h3><p><img src="/images/ldr_robertson.jpg" alt></p>
+<h3 id="Mertenes-Fusion"><a href="#Mertenes-Fusion" class="headerlink" title="Mertenes Fusion:"></a>Mertenes Fusion:</h3><p><img src="/images/fusion_mertens.jpg" alt></p>
 <h2 id="估计相机响应功能"><a href="#估计相机响应功能" class="headerlink" title="估计相机响应功能"></a>估计相机响应功能</h2><p>摄像机响应功能（CRF）使我们可以将场景辐射度与测得的强度值联系起来。CRF在某些计算机视觉算法（包括HDR算法）中非常重要。在这里，我们估计逆相机响应函数并将其用于HDR合并。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Estimate camera response function (CRF)</span></span><br><span class="line">cal_debevec = cv.createCalibrateDebevec()</span><br><span class="line">crf_debevec = cal_debevec.process(img_list, times=exposure_times)</span><br><span class="line">hdr_debevec = merge_debevec.process(img_list, times=exposure_times.copy(), response=crf_debevec.copy())</span><br><span class="line">cal_robertson = cv.createCalibrateRobertson()</span><br><span class="line">crf_robertson = cal_robertson.process(img_list, times=exposure_times)</span><br><span class="line">hdr_robertson = merge_robertson.process(img_list, times=exposure_times.copy(), response=crf_robertson.copy())</span><br></pre></td></tr></table></figure>
 
-<p>相机响应功能由每个颜色通道的256长度向量表示。对于此序列，我们得到以下估计：<br><img src="images/crf.jpg" alt></p>
+<p>相机响应功能由每个颜色通道的256长度向量表示。对于此序列，我们得到以下估计：<br><img src="/images/crf.jpg" alt></p>
 
     </div>
 

@@ -63,17 +63,17 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="级联分类器目标 我们将学习Haar级联对象检测的工作原理。 我们将使用基于Haar Feature的Cascade分类器了解人脸检测和眼睛检测的基础知识我们将使用cv :: CascadeClassifier类来检测视频流中的对象。特别是，我们将使用以下功能：cv :: CascadeClassifier :: load来加载.xml分类器文件。它可以是Haar或LBP分类器cv :: Casca">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/opencv/images/haar_features.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/haar.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/Cascade_Classifier_Tutorial_Result_Haar.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/Cascade_Classifier_Tutorial_Result_LBP.jpg">
-<meta property="og:image" content="http://leesin.cc/opencv/images/visualisation_video.png">
-<meta property="og:image" content="http://leesin.cc/opencv/images/visualisation_single_stage.png">
-<meta property="og:updated_time" content="2019-10-08T12:05:36.056Z">
+<meta property="og:image" content="http://leesin.cc/images/haar_features.jpg">
+<meta property="og:image" content="http://leesin.cc/images/haar.png">
+<meta property="og:image" content="http://leesin.cc/images/Cascade_Classifier_Tutorial_Result_Haar.jpg">
+<meta property="og:image" content="http://leesin.cc/images/Cascade_Classifier_Tutorial_Result_LBP.jpg">
+<meta property="og:image" content="http://leesin.cc/images/visualisation_video.png">
+<meta property="og:image" content="http://leesin.cc/images/visualisation_single_stage.png">
+<meta property="og:updated_time" content="2019-10-20T06:41:53.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="对象检测（objdetect模块）">
 <meta name="twitter:description" content="级联分类器目标 我们将学习Haar级联对象检测的工作原理。 我们将使用基于Haar Feature的Cascade分类器了解人脸检测和眼睛检测的基础知识我们将使用cv :: CascadeClassifier类来检测视频流中的对象。特别是，我们将使用以下功能：cv :: CascadeClassifier :: load来加载.xml分类器文件。它可以是Haar或LBP分类器cv :: Casca">
-<meta name="twitter:image" content="http://leesin.cc/opencv/images/haar_features.jpg">
+<meta name="twitter:image" content="http://leesin.cc/images/haar_features.jpg">
   <link rel="canonical" href="http://leesin.cc/opencv/对象检测（objdetect模块）">
 
 
@@ -302,11 +302,19 @@
                 
               
 
-              <time title="创建时间：2019-10-08 14:11:00 / 修改时间：20:05:36" itemprop="dateCreated datePublished" datetime="2019-10-08T14:11:00+08:00">2019-10-08</time>
+              <time title="创建时间：2019-10-08 14:11:00" itemprop="dateCreated datePublished" datetime="2019-10-08T14:11:00+08:00">2019-10-08</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -348,10 +356,10 @@
 </ul><a id="more"></a>
 <h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><p>使用基于Haar特征的级联分类器进行对象检测是Paul Viola和Michael Jones在其论文“使用简单特征的增强级联进行快速对象检测”中于2001年提出的一种有效的对象检测方法。这是一种基于机器学习的方法，其中从许多正负图像中训练级联函数。然后用于检测其他图像中的对象。</p>
 <p>在这里，我们将进行人脸检测。最初，该算法需要大量正图像（面部图像）和负图像（无面部图像）来训练分类器。然后，我们需要从中提取特征。为此，使用下图所示的Haar功能。它们就像我们的卷积核。每个特征都是通过从黑色矩形下的像素总和中减去白色矩形下的像素总和而获得的单个值。</p>
-<p><img src="images/haar_features.jpg" alt></p>
+<p><img src="/images/haar_features.jpg" alt></p>
 <p>现在，每个内核的所有可能大小和位置都用于计算许多功能。（试想一下它需要多少计算？即使是一个24x24的窗口也会产生超过160000个特征）。对于每个特征计算，我们需要找到白色和黑色矩形下的像素总和。为了解决这个问题，他们引入了整体形象。无论您的图像有多大，它都会将给定像素的计算减少到仅涉及四个像素的操作。很好，不是吗？它使事情变得超快。</p>
 <p>但是在我们计算的所有这些功能中，大多数都不相关。例如，考虑下图。第一行显示了两个良好的功能。选择的第一个特征似乎着眼于眼睛区域通常比鼻子和脸颊区域更暗的性质。选择的第二个功能依赖于眼睛比鼻梁更黑的属性。但是，将相同的窗口应用于脸颊或其他任何地方都是无关紧要的。那么，我们如何从16万多个功能中选择最佳功能？它是由Adaboost实现的。</p>
-<p><img src="images/haar.png" alt></p>
+<p><img src="/images/haar.png" alt></p>
 <p>为此，我们将所有功能应用于所有训练图像。对于每个功能，它会找到最佳的阈值，该阈值会将人脸分为正面和负面。显然，会出现错误或分类错误。我们选择错误率最低的特征，这意味着它们是对人脸和非人脸图像进行最准确分类的特征。（此过程并非如此简单。在开始时，每个图像的权重均相等。在每次分类后，错误分类的图像的权重都会增加。然后执行相同的过程。将计算新的错误率。还要计算新的权重。继续进行此过程，直到达到所需的精度或错误率或找到所需的功能数量为止。</p>
 <p>最终分类器是这些弱分类器的加权和。之所以称为弱分类，是因为仅凭它不能对图像进行分类，而是与其他分类一起形成强分类器。该论文说，甚至200个功能都可以提供95％的准确度检测。他们的最终设置具有大约6000个功能。（想象一下，从160000多个功能减少到6000个功能。这是很大的收获）。</p>
 <p>因此，现在您拍摄一张照片。取每个24x24窗口。向其应用6000个功能。检查是否有脸。哇..这不是效率低下又费时吗？是的。作者对此有一个很好的解决方案。</p>
@@ -365,10 +373,10 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">detectAndDisplay</span><span class="params">(frame)</span>:</span></span><br><span class="line">    frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)</span><br><span class="line">    frame_gray = cv.equalizeHist(frame_gray)</span><br><span class="line">    <span class="comment">#-- Detect faces</span></span><br><span class="line">    faces = face_cascade.detectMultiScale(frame_gray)</span><br><span class="line">    <span class="keyword">for</span> (x,y,w,h) <span class="keyword">in</span> faces:</span><br><span class="line">        center = (x + w//<span class="number">2</span>, y + h//<span class="number">2</span>)</span><br><span class="line">        frame = cv.ellipse(frame, center, (w//<span class="number">2</span>, h//<span class="number">2</span>), <span class="number">0</span>, <span class="number">0</span>, <span class="number">360</span>, (<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">4</span>)</span><br><span class="line">        faceROI = frame_gray[y:y+h,x:x+w]</span><br><span class="line">        <span class="comment">#-- In each face, detect eyes</span></span><br><span class="line">        eyes = eyes_cascade.detectMultiScale(faceROI)</span><br><span class="line">        <span class="keyword">for</span> (x2,y2,w2,h2) <span class="keyword">in</span> eyes:</span><br><span class="line">            eye_center = (x + x2 + w2//<span class="number">2</span>, y + y2 + h2//<span class="number">2</span>)</span><br><span class="line">            radius = int(round((w2 + h2)*<span class="number">0.25</span>))</span><br><span class="line">            frame = cv.circle(frame, eye_center, radius, (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span> ), <span class="number">4</span>)</span><br><span class="line">    cv.imshow(<span class="string">'Capture - Face detection'</span>, frame)</span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="string">'Code for Cascade Classifier tutorial.'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'--face_cascade'</span>, help=<span class="string">'Path to face cascade.'</span>, default=<span class="string">'data/haarcascades/haarcascade_frontalface_alt.xml'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'--eyes_cascade'</span>, help=<span class="string">'Path to eyes cascade.'</span>, default=<span class="string">'data/haarcascades/haarcascade_eye_tree_eyeglasses.xml'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'--camera'</span>, help=<span class="string">'Camera devide number.'</span>, type=int, default=<span class="number">0</span>)</span><br><span class="line">args = parser.parse_args()</span><br><span class="line">face_cascade_name = args.face_cascade</span><br><span class="line">eyes_cascade_name = args.eyes_cascade</span><br><span class="line">face_cascade = cv.CascadeClassifier()</span><br><span class="line">eyes_cascade = cv.CascadeClassifier()</span><br><span class="line"><span class="comment">#-- 1. Load the cascades</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> face_cascade.load(cv.samples.findFile(face_cascade_name)):</span><br><span class="line">    print(<span class="string">'--(!)Error loading face cascade'</span>)</span><br><span class="line">    exit(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> eyes_cascade.load(cv.samples.findFile(eyes_cascade_name)):</span><br><span class="line">    print(<span class="string">'--(!)Error loading eyes cascade'</span>)</span><br><span class="line">    exit(<span class="number">0</span>)</span><br><span class="line">camera_device = args.camera</span><br><span class="line"><span class="comment">#-- 2. Read the video stream</span></span><br><span class="line">cap = cv.VideoCapture(camera_device)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> cap.isOpened:</span><br><span class="line">    print(<span class="string">'--(!)Error opening video capture'</span>)</span><br><span class="line">    exit(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    ret, frame = cap.read()</span><br><span class="line">    <span class="keyword">if</span> frame <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        print(<span class="string">'--(!) No captured frame -- Break!'</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    detectAndDisplay(frame)</span><br><span class="line">    <span class="keyword">if</span> cv.waitKey(<span class="number">10</span>) == <span class="number">27</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>这是运行上面的代码并将内置摄像头的视频流用作输入的结果：</p>
-<p><img src="images/Cascade_Classifier_Tutorial_Result_Haar.jpg" alt></p>
+<p><img src="/images/Cascade_Classifier_Tutorial_Result_Haar.jpg" alt></p>
 <p>确保程序会找到文件<code>haarcascade_frontalface_alt.xml</code>和<code>haarcascade_eye_tree_eyeglasses.xml</code>的路径。它们位于<code>opencv/data/haarcascades</code>中</p>
 <p>这是使用文件<code>lbpcascade_frontalface.xml</code>（经过LBP训练）进行人脸检测的结果。对于眼睛，我们继续使用本教程中使用的文件。</p>
-<p><img src="images/Cascade_Classifier_Tutorial_Result_LBP.jpg" alt></p>
+<p><img src="/images/Cascade_Classifier_Tutorial_Result_LBP.jpg" alt></p>
 <h1 id="级联分类器训练"><a href="#级联分类器训练" class="headerlink" title="级联分类器训练"></a>级联分类器训练</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>使用弱分类器的增强级联包括两个主要阶段：训练和检测阶段。对象检测教程中介绍了使用基于HAAR或LBP模型的检测阶段。本文档概述了训练自己的弱分类器的级联所需的功能。当前指南将分各个阶段进行：收集训练数据，准备训练数据并执行实际模型训练。</p>
 <p>为了支持本教程，将使用几个官方的OpenCV应用程序：<a href="https://github.com/opencv/opencv/tree/master/apps/createsamples" target="_blank" rel="noopener">opencv_createsamples</a>，<a href="https://github.com/opencv/opencv/tree/master/apps/annotation" target="_blank" rel="noopener">opencv_annotation</a>，<a href="https://github.com/opencv/opencv/tree/master/apps/traincascade" target="_blank" rel="noopener">opencv_traincascade</a>和<a href="https://github.com/opencv/opencv/tree/master/apps/visualisation" target="_blank" rel="noopener">opencv_visualisation</a>。</p>
 <h3 id="重要笔记"><a href="#重要笔记" class="headerlink" title="重要笔记"></a>重要笔记</h3><ul>
@@ -491,7 +499,7 @@
 <li>仅处理由opencv_traincascade工具训练的级联分类器模型，其中包含<strong>stumps</strong>作为决策树[默认设置]。</li>
 <li>提供的图像必须是带有原始模型尺寸的样本窗口，并传递给<code>--image</code>参数。<br><code>HAAR/LBP</code>人脸模型的示例在Angelina Jolie的给定窗口上运行，该窗口具有与级联分类器文件相同的预处理-&gt; 24x24像素图像，灰度转换和直方图均衡化：</li>
 </ul>
-<p>每个阶段都会制作一个视频，以显示每个功能：<br><img src="images/visualisation_video.png" alt><br>每个阶段都作为图像存储，以供将来对功能进行验证：<br><img src="images/visualisation_single_stage.png" alt></p>
+<p>每个阶段都会制作一个视频，以显示每个功能：<br><img src="/images/visualisation_video.png" alt><br>每个阶段都作为图像存储，以供将来对功能进行验证：<br><img src="/images/visualisation_single_stage.png" alt></p>
 
     </div>
 
