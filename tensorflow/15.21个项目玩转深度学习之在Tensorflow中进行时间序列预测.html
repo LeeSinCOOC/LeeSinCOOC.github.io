@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="在TensorFlow 中进行时间序列预测从Numpy 数组中读入时间序列数据1python test_input_array.py从CSV 文件中读入时间序列数据1python test_input_csv.pyAR 模型的训练1python train_array.pyLSTM 模型中的单变量时间序列预测">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测">
+<meta property="og:url" content="http://leesin.cc/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="在TensorFlow 中进行时间序列预测从Numpy 数组中读入时间序列数据1python test_input_array.py从CSV 文件中读入时间序列数据1python test_input_csv.pyAR 模型的训练1python train_array.pyLSTM 模型中的单变量时间序列预测">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-02T13:56:34.650Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测">
+<meta name="twitter:description" content="在TensorFlow 中进行时间序列预测从Numpy 数组中读入时间序列数据1python test_input_array.py从CSV 文件中读入时间序列数据1python test_input_csv.pyAR 模型的训练1python train_array.pyLSTM 模型中的单变量时间序列预测">
+  <link rel="canonical" href="http://leesin.cc/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 21:32:09" itemprop="dateCreated datePublished" datetime="2019-09-04T21:32:09+08:00">2019-09-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-02 21:56:34" itemprop="dateModified" datetime="2019-11-02T21:56:34+08:00">2019-11-02</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="在TensorFlow-中进行时间序列预测"><a href="#在TensorFlow-中进行时间序列预测" class="headerlink" title="在TensorFlow 中进行时间序列预测"></a>在TensorFlow 中进行时间序列预测</h2><h3 id="从Numpy-数组中读入时间序列数据"><a href="#从Numpy-数组中读入时间序列数据" class="headerlink" title="从Numpy 数组中读入时间序列数据"></a>从Numpy 数组中读入时间序列数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python test_input_array.py</span><br></pre></td></tr></table></figure><h3 id="从CSV-文件中读入时间序列数据"><a href="#从CSV-文件中读入时间序列数据" class="headerlink" title="从CSV 文件中读入时间序列数据"></a>从CSV 文件中读入时间序列数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python test_input_csv.py</span><br></pre></td></tr></table></figure><h3 id="AR-模型的训练"><a href="#AR-模型的训练" class="headerlink" title="AR 模型的训练"></a>AR 模型的训练</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train_array.py</span><br></pre></td></tr></table></figure><h3 id="LSTM-模型中的单变量时间序列预测"><a href="#LSTM-模型中的单变量时间序列预测" class="headerlink" title="LSTM 模型中的单变量时间序列预测"></a>LSTM 模型中的单变量时间序列预测</h3><a id="more"></a>
+
+
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train_lstm.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="LSTM-模型中的多变量时间序列预测"><a href="#LSTM-模型中的多变量时间序列预测" class="headerlink" title="LSTM 模型中的多变量时间序列预测"></a>LSTM 模型中的多变量时间序列预测</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train_lstm_multivariate.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="test-input-array-py"><a href="#test-input-array-py" class="headerlink" title="test_input_array.py"></a>test_input_array.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.use(<span class="string">'agg'</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.timeseries.python.timeseries <span class="keyword">import</span>  NumpyReader</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x = np.array(range(<span class="number">1000</span>))</span><br><span class="line">noise = np.random.uniform(<span class="number">-0.2</span>, <span class="number">0.2</span>, <span class="number">1000</span>)</span><br><span class="line">y = np.sin(np.pi * x / <span class="number">100</span>) + x / <span class="number">200.</span> + noise</span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.savefig(<span class="string">'timeseries_y.jpg'</span>)</span><br><span class="line"></span><br><span class="line">data = &#123;</span><br><span class="line">    tf.contrib.timeseries.TrainEvalFeatures.TIMES: x,</span><br><span class="line">    tf.contrib.timeseries.TrainEvalFeatures.VALUES: y,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reader = NumpyReader(data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    full_data = reader.read_full()</span><br><span class="line">    coord = tf.train.Coordinator()</span><br><span class="line">    threads = tf.train.start_queue_runners(sess=sess, coord=coord)</span><br><span class="line">    print(sess.run(full_data))</span><br><span class="line">    coord.request_stop()</span><br><span class="line"></span><br><span class="line">train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(</span><br><span class="line">    reader, batch_size=<span class="number">2</span>, window_size=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    batch_data = train_input_fn.create_batch()</span><br><span class="line">    coord = tf.train.Coordinator()</span><br><span class="line">    threads = tf.train.start_queue_runners(sess=sess, coord=coord)</span><br><span class="line">    one_batch = sess.run(batch_data[<span class="number">0</span>])</span><br><span class="line">    coord.request_stop()</span><br><span class="line"></span><br><span class="line">print(<span class="string">'one_batch_data:'</span>, one_batch)</span><br></pre></td></tr></table></figure>
+
+<h2 id="test-input-csv-py"><a href="#test-input-csv-py" class="headerlink" title="test_input_csv.py"></a>test_input_csv.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">csv_file_name = <span class="string">'./data/period_trend.csv'</span></span><br><span class="line">reader = tf.contrib.timeseries.CSVReader(csv_file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    data = reader.read_full()</span><br><span class="line">    coord = tf.train.Coordinator()</span><br><span class="line">    threads = tf.train.start_queue_runners(sess=sess, coord=coord)</span><br><span class="line">    print(sess.run(data))</span><br><span class="line">    coord.request_stop()</span><br><span class="line"></span><br><span class="line">train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(reader, batch_size=<span class="number">4</span>, window_size=<span class="number">16</span>)</span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    data = train_input_fn.create_batch()</span><br><span class="line">    coord = tf.train.Coordinator()</span><br><span class="line">    threads = tf.train.start_queue_runners(sess=sess, coord=coord)</span><br><span class="line">    batch1 = sess.run(data[<span class="number">0</span>])</span><br><span class="line">    batch2 = sess.run(data[<span class="number">0</span>])</span><br><span class="line">    coord.request_stop()</span><br><span class="line"></span><br><span class="line">print(<span class="string">'batch1:'</span>, batch1)</span><br><span class="line">print(<span class="string">'batch2:'</span>, batch2)</span><br></pre></td></tr></table></figure>
+
+<h2 id="train-array-py"><a href="#train-array-py" class="headerlink" title="train_array.py"></a>train_array.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.use(<span class="string">'agg'</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.timeseries.python.timeseries <span class="keyword">import</span>  NumpyReader</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(_)</span>:</span></span><br><span class="line">    x = np.array(range(<span class="number">1000</span>))</span><br><span class="line">    noise = np.random.uniform(<span class="number">-0.2</span>, <span class="number">0.2</span>, <span class="number">1000</span>)</span><br><span class="line">    y = np.sin(np.pi * x / <span class="number">100</span>) + x / <span class="number">200.</span> + noise</span><br><span class="line">    plt.plot(x, y)</span><br><span class="line">    plt.savefig(<span class="string">'timeseries_y.jpg'</span>)</span><br><span class="line"></span><br><span class="line">    data = &#123;</span><br><span class="line">        tf.contrib.timeseries.TrainEvalFeatures.TIMES: x,</span><br><span class="line">        tf.contrib.timeseries.TrainEvalFeatures.VALUES: y,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    reader = NumpyReader(data)</span><br><span class="line"></span><br><span class="line">    train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(</span><br><span class="line">        reader, batch_size=<span class="number">16</span>, window_size=<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">    ar = tf.contrib.timeseries.ARRegressor(</span><br><span class="line">        periodicities=<span class="number">200</span>, input_window_size=<span class="number">30</span>, output_window_size=<span class="number">10</span>,</span><br><span class="line">        num_features=<span class="number">1</span>,</span><br><span class="line">        loss=tf.contrib.timeseries.ARModel.NORMAL_LIKELIHOOD_LOSS)</span><br><span class="line"></span><br><span class="line">    ar.train(input_fn=train_input_fn, steps=<span class="number">6000</span>)</span><br><span class="line"></span><br><span class="line">    evaluation_input_fn = tf.contrib.timeseries.WholeDatasetInputFn(reader)</span><br><span class="line">    <span class="comment"># keys of evaluation: ['covariance', 'loss', 'mean', 'observed', 'start_tuple', 'times', 'global_step']</span></span><br><span class="line">    evaluation = ar.evaluate(input_fn=evaluation_input_fn, steps=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    (predictions,) = tuple(ar.predict(</span><br><span class="line">        input_fn=tf.contrib.timeseries.predict_continuation_input_fn(</span><br><span class="line">            evaluation, steps=<span class="number">250</span>)))</span><br><span class="line"></span><br><span class="line">    plt.figure(figsize=(<span class="number">15</span>, <span class="number">5</span>))</span><br><span class="line">    plt.plot(data[<span class="string">'times'</span>].reshape(<span class="number">-1</span>), data[<span class="string">'values'</span>].reshape(<span class="number">-1</span>), label=<span class="string">'origin'</span>)</span><br><span class="line">    plt.plot(evaluation[<span class="string">'times'</span>].reshape(<span class="number">-1</span>), evaluation[<span class="string">'mean'</span>].reshape(<span class="number">-1</span>), label=<span class="string">'evaluation'</span>)</span><br><span class="line">    plt.plot(predictions[<span class="string">'times'</span>].reshape(<span class="number">-1</span>), predictions[<span class="string">'mean'</span>].reshape(<span class="number">-1</span>), label=<span class="string">'prediction'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'time_step'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'values'</span>)</span><br><span class="line">    plt.legend(loc=<span class="number">4</span>)</span><br><span class="line">    plt.savefig(<span class="string">'predict_result.jpg'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tf.logging.set_verbosity(tf.logging.INFO)</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+
+<h3 id="train-csv-py"><a href="#train-csv-py" class="headerlink" title="train_csv.py"></a>train_csv.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.use(<span class="string">'agg'</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(_)</span>:</span></span><br><span class="line">    csv_file_name = <span class="string">'./data/period_trend.csv'</span></span><br><span class="line">    reader = tf.contrib.timeseries.CSVReader(csv_file_name)</span><br><span class="line">    train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(reader, batch_size=<span class="number">16</span>, window_size=<span class="number">16</span>)</span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        data = reader.read_full()</span><br><span class="line">        coord = tf.train.Coordinator()</span><br><span class="line">        tf.train.start_queue_runners(sess=sess, coord=coord)</span><br><span class="line">        data = sess.run(data)</span><br><span class="line">        coord.request_stop()</span><br><span class="line"></span><br><span class="line">    ar = tf.contrib.timeseries.ARRegressor(</span><br><span class="line">        periodicities=<span class="number">100</span>, input_window_size=<span class="number">10</span>, output_window_size=<span class="number">6</span>,</span><br><span class="line">        num_features=<span class="number">1</span>,</span><br><span class="line">        loss=tf.contrib.timeseries.ARModel.NORMAL_LIKELIHOOD_LOSS)</span><br><span class="line"></span><br><span class="line">    ar.train(input_fn=train_input_fn, steps=<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">    evaluation_input_fn = tf.contrib.timeseries.WholeDatasetInputFn(reader)</span><br><span class="line">    <span class="comment"># keys of evaluation: ['covariance', 'loss', 'mean', 'observed', 'start_tuple', 'times', 'global_step']</span></span><br><span class="line">    evaluation = ar.evaluate(input_fn=evaluation_input_fn, steps=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    (predictions,) = tuple(ar.predict(</span><br><span class="line">        input_fn=tf.contrib.timeseries.predict_continuation_input_fn(</span><br><span class="line">            evaluation, steps=<span class="number">250</span>)))</span><br><span class="line"></span><br><span class="line">    plt.figure(figsize=(<span class="number">15</span>, <span class="number">5</span>))</span><br><span class="line">    plt.plot(data[<span class="string">'times'</span>].reshape(<span class="number">-1</span>), data[<span class="string">'values'</span>].reshape(<span class="number">-1</span>), label=<span class="string">'origin'</span>)</span><br><span class="line">    plt.plot(evaluation[<span class="string">'times'</span>].reshape(<span class="number">-1</span>), evaluation[<span class="string">'mean'</span>].reshape(<span class="number">-1</span>), label=<span class="string">'evaluation'</span>)</span><br><span class="line">    plt.plot(predictions[<span class="string">'times'</span>].reshape(<span class="number">-1</span>), predictions[<span class="string">'mean'</span>].reshape(<span class="number">-1</span>), label=<span class="string">'prediction'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'time_step'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'values'</span>)</span><br><span class="line">    plt.legend(loc=<span class="number">4</span>)</span><br><span class="line">    plt.savefig(<span class="string">'predict_result.jpg'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tf.logging.set_verbosity(tf.logging.INFO)</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+
+<h3 id="train-lstm-py"><a href="#train-lstm-py" class="headerlink" title="train_lstm.py"></a>train_lstm.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Copyright 2017 The TensorFlow Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the "License");</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"><span class="comment"># ==============================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.timeseries.python.timeseries <span class="keyword">import</span> estimators <span class="keyword">as</span> ts_estimators</span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.timeseries.python.timeseries <span class="keyword">import</span> model <span class="keyword">as</span> ts_model</span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.timeseries.python.timeseries <span class="keyword">import</span>  NumpyReader</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.use(<span class="string">"agg"</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_LSTMModel</span><span class="params">(ts_model.SequentialTimeSeriesModel)</span>:</span></span><br><span class="line">  <span class="string">"""A time series model-building example using an RNNCell."""</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_units, num_features, dtype=tf.float32)</span>:</span></span><br><span class="line">    <span class="string">"""Initialize/configure the model object.</span></span><br><span class="line"><span class="string">    Note that we do not start graph building here. Rather, this object is a</span></span><br><span class="line"><span class="string">    configurable factory for TensorFlow graphs which are run by an Estimator.</span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">      num_units: The number of units in the model's LSTMCell.</span></span><br><span class="line"><span class="string">      num_features: The dimensionality of the time series (features per</span></span><br><span class="line"><span class="string">        timestep).</span></span><br><span class="line"><span class="string">      dtype: The floating point data type to use.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    super(_LSTMModel, self).__init__(</span><br><span class="line">        <span class="comment"># Pre-register the metrics we'll be outputting (just a mean here).</span></span><br><span class="line">        train_output_names=[<span class="string">"mean"</span>],</span><br><span class="line">        predict_output_names=[<span class="string">"mean"</span>],</span><br><span class="line">        num_features=num_features,</span><br><span class="line">        dtype=dtype)</span><br><span class="line">    self._num_units = num_units</span><br><span class="line">    <span class="comment"># Filled in by initialize_graph()</span></span><br><span class="line">    self._lstm_cell = <span class="literal">None</span></span><br><span class="line">    self._lstm_cell_run = <span class="literal">None</span></span><br><span class="line">    self._predict_from_lstm_output = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize_graph</span><span class="params">(self, input_statistics)</span>:</span></span><br><span class="line">    <span class="string">"""Save templates for components, which can then be used repeatedly.</span></span><br><span class="line"><span class="string">    This method is called every time a new graph is created. It's safe to start</span></span><br><span class="line"><span class="string">    adding ops to the current default graph here, but the graph should be</span></span><br><span class="line"><span class="string">    constructed from scratch.</span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">      input_statistics: A math_utils.InputStatistics object.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    super(_LSTMModel, self).initialize_graph(input_statistics=input_statistics)</span><br><span class="line">    self._lstm_cell = tf.nn.rnn_cell.LSTMCell(num_units=self._num_units)</span><br><span class="line">    <span class="comment"># Create templates so we don't have to worry about variable reuse.</span></span><br><span class="line">    self._lstm_cell_run = tf.make_template(</span><br><span class="line">        name_=<span class="string">"lstm_cell"</span>,</span><br><span class="line">        func_=self._lstm_cell,</span><br><span class="line">        create_scope_now_=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># Transforms LSTM output into mean predictions.</span></span><br><span class="line">    self._predict_from_lstm_output = tf.make_template(</span><br><span class="line">        name_=<span class="string">"predict_from_lstm_output"</span>,</span><br><span class="line">        func_=<span class="keyword">lambda</span> inputs: tf.layers.dense(inputs=inputs, units=self.num_features),</span><br><span class="line">        create_scope_now_=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">get_start_state</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Return initial state for the time series model."""</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="comment"># Keeps track of the time associated with this state for error checking.</span></span><br><span class="line">        tf.zeros([], dtype=tf.int64),</span><br><span class="line">        <span class="comment"># The previous observation or prediction.</span></span><br><span class="line">        tf.zeros([self.num_features], dtype=self.dtype),</span><br><span class="line">        <span class="comment"># The state of the RNNCell (batch dimension removed since this parent</span></span><br><span class="line">        <span class="comment"># class will broadcast).</span></span><br><span class="line">        [tf.squeeze(state_element, axis=<span class="number">0</span>)</span><br><span class="line">         <span class="keyword">for</span> state_element</span><br><span class="line">         <span class="keyword">in</span> self._lstm_cell.zero_state(batch_size=<span class="number">1</span>, dtype=self.dtype)])</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_transform</span><span class="params">(self, data)</span>:</span></span><br><span class="line">    <span class="string">"""Normalize data based on input statistics to encourage stable training."""</span></span><br><span class="line">    mean, variance = self._input_statistics.overall_feature_moments</span><br><span class="line">    <span class="keyword">return</span> (data - mean) / variance</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_de_transform</span><span class="params">(self, data)</span>:</span></span><br><span class="line">    <span class="string">"""Transform data back to the input scale."""</span></span><br><span class="line">    mean, variance = self._input_statistics.overall_feature_moments</span><br><span class="line">    <span class="keyword">return</span> data * variance + mean</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_filtering_step</span><span class="params">(self, current_times, current_values, state, predictions)</span>:</span></span><br><span class="line">    <span class="string">"""Update model state based on observations.</span></span><br><span class="line"><span class="string">    Note that we don't do much here aside from computing a loss. In this case</span></span><br><span class="line"><span class="string">    it's easier to update the RNN state in _prediction_step, since that covers</span></span><br><span class="line"><span class="string">    running the RNN both on observations (from this method) and our own</span></span><br><span class="line"><span class="string">    predictions. This distinction can be important for probabilistic models,</span></span><br><span class="line"><span class="string">    where repeatedly predicting without filtering should lead to low-confidence</span></span><br><span class="line"><span class="string">    predictions.</span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">      current_times: A [batch size] integer Tensor.</span></span><br><span class="line"><span class="string">      current_values: A [batch size, self.num_features] floating point Tensor</span></span><br><span class="line"><span class="string">        with new observations.</span></span><br><span class="line"><span class="string">      state: The model's state tuple.</span></span><br><span class="line"><span class="string">      predictions: The output of the previous `_prediction_step`.</span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">      A tuple of new state and a predictions dictionary updated to include a</span></span><br><span class="line"><span class="string">      loss (note that we could also return other measures of goodness of fit,</span></span><br><span class="line"><span class="string">      although only "loss" will be optimized).</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    state_from_time, prediction, lstm_state = state</span><br><span class="line">    <span class="keyword">with</span> tf.control_dependencies(</span><br><span class="line">            [tf.assert_equal(current_times, state_from_time)]):</span><br><span class="line">      transformed_values = self._transform(current_values)</span><br><span class="line">      <span class="comment"># Use mean squared error across features for the loss.</span></span><br><span class="line">      predictions[<span class="string">"loss"</span>] = tf.reduce_mean(</span><br><span class="line">          (prediction - transformed_values) ** <span class="number">2</span>, axis=<span class="number">-1</span>)</span><br><span class="line">      <span class="comment"># Keep track of the new observation in model state. It won't be run</span></span><br><span class="line">      <span class="comment"># through the LSTM until the next _imputation_step.</span></span><br><span class="line">      new_state_tuple = (current_times, transformed_values, lstm_state)</span><br><span class="line">    <span class="keyword">return</span> (new_state_tuple, predictions)</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_prediction_step</span><span class="params">(self, current_times, state)</span>:</span></span><br><span class="line">    <span class="string">"""Advance the RNN state using a previous observation or prediction."""</span></span><br><span class="line">    _, previous_observation_or_prediction, lstm_state = state</span><br><span class="line">    lstm_output, new_lstm_state = self._lstm_cell_run(</span><br><span class="line">        inputs=previous_observation_or_prediction, state=lstm_state)</span><br><span class="line">    next_prediction = self._predict_from_lstm_output(lstm_output)</span><br><span class="line">    new_state_tuple = (current_times, next_prediction, new_lstm_state)</span><br><span class="line">    <span class="keyword">return</span> new_state_tuple, &#123;<span class="string">"mean"</span>: self._de_transform(next_prediction)&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_imputation_step</span><span class="params">(self, current_times, state)</span>:</span></span><br><span class="line">    <span class="string">"""Advance model state across a gap."""</span></span><br><span class="line">    <span class="comment"># Does not do anything special if we're jumping across a gap. More advanced</span></span><br><span class="line">    <span class="comment"># models, especially probabilistic ones, would want a special case that</span></span><br><span class="line">    <span class="comment"># depends on the gap size.</span></span><br><span class="line">    <span class="keyword">return</span> state</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_exogenous_input_step</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">          self, current_times, current_exogenous_regressors, state)</span>:</span></span><br><span class="line">    <span class="string">"""Update model state based on exogenous regressors."""</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(</span><br><span class="line">        <span class="string">"Exogenous inputs are not implemented for this example."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">  tf.logging.set_verbosity(tf.logging.INFO)</span><br><span class="line">  x = np.array(range(<span class="number">1000</span>))</span><br><span class="line">  noise = np.random.uniform(<span class="number">-0.2</span>, <span class="number">0.2</span>, <span class="number">1000</span>)</span><br><span class="line">  y = np.sin(np.pi * x / <span class="number">50</span> ) + np.cos(np.pi * x / <span class="number">50</span>) + np.sin(np.pi * x / <span class="number">25</span>) + noise</span><br><span class="line"></span><br><span class="line">  data = &#123;</span><br><span class="line">      tf.contrib.timeseries.TrainEvalFeatures.TIMES: x,</span><br><span class="line">      tf.contrib.timeseries.TrainEvalFeatures.VALUES: y,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  reader = NumpyReader(data)</span><br><span class="line"></span><br><span class="line">  train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(</span><br><span class="line">      reader, batch_size=<span class="number">4</span>, window_size=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">  estimator = ts_estimators.TimeSeriesRegressor(</span><br><span class="line">      model=_LSTMModel(num_features=<span class="number">1</span>, num_units=<span class="number">128</span>),</span><br><span class="line">      optimizer=tf.train.AdamOptimizer(<span class="number">0.001</span>))</span><br><span class="line"></span><br><span class="line">  estimator.train(input_fn=train_input_fn, steps=<span class="number">2000</span>)</span><br><span class="line">  evaluation_input_fn = tf.contrib.timeseries.WholeDatasetInputFn(reader)</span><br><span class="line">  evaluation = estimator.evaluate(input_fn=evaluation_input_fn, steps=<span class="number">1</span>)</span><br><span class="line">  <span class="comment"># Predict starting after the evaluation</span></span><br><span class="line">  (predictions,) = tuple(estimator.predict(</span><br><span class="line">      input_fn=tf.contrib.timeseries.predict_continuation_input_fn(</span><br><span class="line">          evaluation, steps=<span class="number">200</span>)))</span><br><span class="line"></span><br><span class="line">  observed_times = evaluation[<span class="string">"times"</span>][<span class="number">0</span>]</span><br><span class="line">  observed = evaluation[<span class="string">"observed"</span>][<span class="number">0</span>, :, :]</span><br><span class="line">  evaluated_times = evaluation[<span class="string">"times"</span>][<span class="number">0</span>]</span><br><span class="line">  evaluated = evaluation[<span class="string">"mean"</span>][<span class="number">0</span>]</span><br><span class="line">  predicted_times = predictions[<span class="string">'times'</span>]</span><br><span class="line">  predicted = predictions[<span class="string">"mean"</span>]</span><br><span class="line"></span><br><span class="line">  plt.figure(figsize=(<span class="number">15</span>, <span class="number">5</span>))</span><br><span class="line">  plt.axvline(<span class="number">999</span>, linestyle=<span class="string">"dotted"</span>, linewidth=<span class="number">4</span>, color=<span class="string">'r'</span>)</span><br><span class="line">  observed_lines = plt.plot(observed_times, observed, label=<span class="string">"observation"</span>, color=<span class="string">"k"</span>)</span><br><span class="line">  evaluated_lines = plt.plot(evaluated_times, evaluated, label=<span class="string">"evaluation"</span>, color=<span class="string">"g"</span>)</span><br><span class="line">  predicted_lines = plt.plot(predicted_times, predicted, label=<span class="string">"prediction"</span>, color=<span class="string">"r"</span>)</span><br><span class="line">  plt.legend(handles=[observed_lines[<span class="number">0</span>], evaluated_lines[<span class="number">0</span>], predicted_lines[<span class="number">0</span>]],</span><br><span class="line">             loc=<span class="string">"upper left"</span>)</span><br><span class="line">  plt.savefig(<span class="string">'predict_result.jpg'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="train-lstm-multivariate-py"><a href="#train-lstm-multivariate-py" class="headerlink" title="train_lstm_multivariate.py"></a>train_lstm_multivariate.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Copyright 2017 The TensorFlow Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the "License");</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"><span class="comment"># ==============================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.timeseries.python.timeseries <span class="keyword">import</span> estimators <span class="keyword">as</span> ts_estimators</span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.timeseries.python.timeseries <span class="keyword">import</span> model <span class="keyword">as</span> ts_model</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.use(<span class="string">"agg"</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_LSTMModel</span><span class="params">(ts_model.SequentialTimeSeriesModel)</span>:</span></span><br><span class="line">  <span class="string">"""A time series model-building example using an RNNCell."""</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_units, num_features, dtype=tf.float32)</span>:</span></span><br><span class="line">    <span class="string">"""Initialize/configure the model object.</span></span><br><span class="line"><span class="string">    Note that we do not start graph building here. Rather, this object is a</span></span><br><span class="line"><span class="string">    configurable factory for TensorFlow graphs which are run by an Estimator.</span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">      num_units: The number of units in the model's LSTMCell.</span></span><br><span class="line"><span class="string">      num_features: The dimensionality of the time series (features per</span></span><br><span class="line"><span class="string">        timestep).</span></span><br><span class="line"><span class="string">      dtype: The floating point data type to use.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    super(_LSTMModel, self).__init__(</span><br><span class="line">        <span class="comment"># Pre-register the metrics we'll be outputting (just a mean here).</span></span><br><span class="line">        train_output_names=[<span class="string">"mean"</span>],</span><br><span class="line">        predict_output_names=[<span class="string">"mean"</span>],</span><br><span class="line">        num_features=num_features,</span><br><span class="line">        dtype=dtype)</span><br><span class="line">    self._num_units = num_units</span><br><span class="line">    <span class="comment"># Filled in by initialize_graph()</span></span><br><span class="line">    self._lstm_cell = <span class="literal">None</span></span><br><span class="line">    self._lstm_cell_run = <span class="literal">None</span></span><br><span class="line">    self._predict_from_lstm_output = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize_graph</span><span class="params">(self, input_statistics)</span>:</span></span><br><span class="line">    <span class="string">"""Save templates for components, which can then be used repeatedly.</span></span><br><span class="line"><span class="string">    This method is called every time a new graph is created. It's safe to start</span></span><br><span class="line"><span class="string">    adding ops to the current default graph here, but the graph should be</span></span><br><span class="line"><span class="string">    constructed from scratch.</span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">      input_statistics: A math_utils.InputStatistics object.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    super(_LSTMModel, self).initialize_graph(input_statistics=input_statistics)</span><br><span class="line">    self._lstm_cell = tf.nn.rnn_cell.LSTMCell(num_units=self._num_units)</span><br><span class="line">    <span class="comment"># Create templates so we don't have to worry about variable reuse.</span></span><br><span class="line">    self._lstm_cell_run = tf.make_template(</span><br><span class="line">        name_=<span class="string">"lstm_cell"</span>,</span><br><span class="line">        func_=self._lstm_cell,</span><br><span class="line">        create_scope_now_=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># Transforms LSTM output into mean predictions.</span></span><br><span class="line">    self._predict_from_lstm_output = tf.make_template(</span><br><span class="line">        name_=<span class="string">"predict_from_lstm_output"</span>,</span><br><span class="line">        func_=<span class="keyword">lambda</span> inputs: tf.layers.dense(inputs=inputs, units=self.num_features),</span><br><span class="line">        create_scope_now_=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">get_start_state</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Return initial state for the time series model."""</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="comment"># Keeps track of the time associated with this state for error checking.</span></span><br><span class="line">        tf.zeros([], dtype=tf.int64),</span><br><span class="line">        <span class="comment"># The previous observation or prediction.</span></span><br><span class="line">        tf.zeros([self.num_features], dtype=self.dtype),</span><br><span class="line">        <span class="comment"># The state of the RNNCell (batch dimension removed since this parent</span></span><br><span class="line">        <span class="comment"># class will broadcast).</span></span><br><span class="line">        [tf.squeeze(state_element, axis=<span class="number">0</span>)</span><br><span class="line">         <span class="keyword">for</span> state_element</span><br><span class="line">         <span class="keyword">in</span> self._lstm_cell.zero_state(batch_size=<span class="number">1</span>, dtype=self.dtype)])</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_transform</span><span class="params">(self, data)</span>:</span></span><br><span class="line">    <span class="string">"""Normalize data based on input statistics to encourage stable training."""</span></span><br><span class="line">    mean, variance = self._input_statistics.overall_feature_moments</span><br><span class="line">    <span class="keyword">return</span> (data - mean) / variance</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_de_transform</span><span class="params">(self, data)</span>:</span></span><br><span class="line">    <span class="string">"""Transform data back to the input scale."""</span></span><br><span class="line">    mean, variance = self._input_statistics.overall_feature_moments</span><br><span class="line">    <span class="keyword">return</span> data * variance + mean</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_filtering_step</span><span class="params">(self, current_times, current_values, state, predictions)</span>:</span></span><br><span class="line">    <span class="string">"""Update model state based on observations.</span></span><br><span class="line"><span class="string">    Note that we don't do much here aside from computing a loss. In this case</span></span><br><span class="line"><span class="string">    it's easier to update the RNN state in _prediction_step, since that covers</span></span><br><span class="line"><span class="string">    running the RNN both on observations (from this method) and our own</span></span><br><span class="line"><span class="string">    predictions. This distinction can be important for probabilistic models,</span></span><br><span class="line"><span class="string">    where repeatedly predicting without filtering should lead to low-confidence</span></span><br><span class="line"><span class="string">    predictions.</span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">      current_times: A [batch size] integer Tensor.</span></span><br><span class="line"><span class="string">      current_values: A [batch size, self.num_features] floating point Tensor</span></span><br><span class="line"><span class="string">        with new observations.</span></span><br><span class="line"><span class="string">      state: The model's state tuple.</span></span><br><span class="line"><span class="string">      predictions: The output of the previous `_prediction_step`.</span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">      A tuple of new state and a predictions dictionary updated to include a</span></span><br><span class="line"><span class="string">      loss (note that we could also return other measures of goodness of fit,</span></span><br><span class="line"><span class="string">      although only "loss" will be optimized).</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    state_from_time, prediction, lstm_state = state</span><br><span class="line">    <span class="keyword">with</span> tf.control_dependencies(</span><br><span class="line">            [tf.assert_equal(current_times, state_from_time)]):</span><br><span class="line">      transformed_values = self._transform(current_values)</span><br><span class="line">      <span class="comment"># Use mean squared error across features for the loss.</span></span><br><span class="line">      predictions[<span class="string">"loss"</span>] = tf.reduce_mean(</span><br><span class="line">          (prediction - transformed_values) ** <span class="number">2</span>, axis=<span class="number">-1</span>)</span><br><span class="line">      <span class="comment"># Keep track of the new observation in model state. It won't be run</span></span><br><span class="line">      <span class="comment"># through the LSTM until the next _imputation_step.</span></span><br><span class="line">      new_state_tuple = (current_times, transformed_values, lstm_state)</span><br><span class="line">    <span class="keyword">return</span> (new_state_tuple, predictions)</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_prediction_step</span><span class="params">(self, current_times, state)</span>:</span></span><br><span class="line">    <span class="string">"""Advance the RNN state using a previous observation or prediction."""</span></span><br><span class="line">    _, previous_observation_or_prediction, lstm_state = state</span><br><span class="line">    lstm_output, new_lstm_state = self._lstm_cell_run(</span><br><span class="line">        inputs=previous_observation_or_prediction, state=lstm_state)</span><br><span class="line">    next_prediction = self._predict_from_lstm_output(lstm_output)</span><br><span class="line">    new_state_tuple = (current_times, next_prediction, new_lstm_state)</span><br><span class="line">    <span class="keyword">return</span> new_state_tuple, &#123;<span class="string">"mean"</span>: self._de_transform(next_prediction)&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_imputation_step</span><span class="params">(self, current_times, state)</span>:</span></span><br><span class="line">    <span class="string">"""Advance model state across a gap."""</span></span><br><span class="line">    <span class="comment"># Does not do anything special if we're jumping across a gap. More advanced</span></span><br><span class="line">    <span class="comment"># models, especially probabilistic ones, would want a special case that</span></span><br><span class="line">    <span class="comment"># depends on the gap size.</span></span><br><span class="line">    <span class="keyword">return</span> state</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_exogenous_input_step</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">          self, current_times, current_exogenous_regressors, state)</span>:</span></span><br><span class="line">    <span class="string">"""Update model state based on exogenous regressors."""</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(</span><br><span class="line">        <span class="string">"Exogenous inputs are not implemented for this example."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">  tf.logging.set_verbosity(tf.logging.INFO)</span><br><span class="line">  csv_file_name = path.join(<span class="string">"./data/multivariate_periods.csv"</span>)</span><br><span class="line">  reader = tf.contrib.timeseries.CSVReader(</span><br><span class="line">      csv_file_name,</span><br><span class="line">      column_names=((tf.contrib.timeseries.TrainEvalFeatures.TIMES,)</span><br><span class="line">                    + (tf.contrib.timeseries.TrainEvalFeatures.VALUES,) * <span class="number">5</span>))</span><br><span class="line">  train_input_fn = tf.contrib.timeseries.RandomWindowInputFn(</span><br><span class="line">      reader, batch_size=<span class="number">4</span>, window_size=<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line">  estimator = ts_estimators.TimeSeriesRegressor(</span><br><span class="line">      model=_LSTMModel(num_features=<span class="number">5</span>, num_units=<span class="number">128</span>),</span><br><span class="line">      optimizer=tf.train.AdamOptimizer(<span class="number">0.001</span>))</span><br><span class="line"></span><br><span class="line">  estimator.train(input_fn=train_input_fn, steps=<span class="number">200</span>)</span><br><span class="line">  evaluation_input_fn = tf.contrib.timeseries.WholeDatasetInputFn(reader)</span><br><span class="line">  evaluation = estimator.evaluate(input_fn=evaluation_input_fn, steps=<span class="number">1</span>)</span><br><span class="line">  <span class="comment"># Predict starting after the evaluation</span></span><br><span class="line">  (predictions,) = tuple(estimator.predict(</span><br><span class="line">      input_fn=tf.contrib.timeseries.predict_continuation_input_fn(</span><br><span class="line">          evaluation, steps=<span class="number">100</span>)))</span><br><span class="line"></span><br><span class="line">  observed_times = evaluation[<span class="string">"times"</span>][<span class="number">0</span>]</span><br><span class="line">  observed = evaluation[<span class="string">"observed"</span>][<span class="number">0</span>, :, :]</span><br><span class="line">  evaluated_times = evaluation[<span class="string">"times"</span>][<span class="number">0</span>]</span><br><span class="line">  evaluated = evaluation[<span class="string">"mean"</span>][<span class="number">0</span>]</span><br><span class="line">  predicted_times = predictions[<span class="string">'times'</span>]</span><br><span class="line">  predicted = predictions[<span class="string">"mean"</span>]</span><br><span class="line"></span><br><span class="line">  plt.figure(figsize=(<span class="number">15</span>, <span class="number">5</span>))</span><br><span class="line">  plt.axvline(<span class="number">99</span>, linestyle=<span class="string">"dotted"</span>, linewidth=<span class="number">4</span>, color=<span class="string">'r'</span>)</span><br><span class="line">  observed_lines = plt.plot(observed_times, observed, label=<span class="string">"observation"</span>, color=<span class="string">"k"</span>)</span><br><span class="line">  evaluated_lines = plt.plot(evaluated_times, evaluated, label=<span class="string">"evaluation"</span>, color=<span class="string">"g"</span>)</span><br><span class="line">  predicted_lines = plt.plot(predicted_times, predicted, label=<span class="string">"prediction"</span>, color=<span class="string">"r"</span>)</span><br><span class="line">  plt.legend(handles=[observed_lines[<span class="number">0</span>], evaluated_lines[<span class="number">0</span>], predicted_lines[<span class="number">0</span>]],</span><br><span class="line">             loc=<span class="string">"upper left"</span>)</span><br><span class="line">  plt.savefig(<span class="string">'predict_result.jpg'</span>)</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测.html" title="15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测">http://leesin.cc/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/tensorflow/14.21个项目玩转深度学习之词的向量表示.html" rel="next" title="14.21个项目玩转深度学习之词的向量表示">
+                  <i class="fa fa-chevron-left"></i> 14.21个项目玩转深度学习之词的向量表示
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/tensorflow/16.21个项目玩转深度学习之神经网络机器翻译技术.html" rel="prev" title="16.21个项目玩转深度学习之神经网络机器翻译技术">
+                  16.21个项目玩转深度学习之神经网络机器翻译技术 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在TensorFlow-中进行时间序列预测"><span class="nav-number">1.</span> <span class="nav-text">在TensorFlow 中进行时间序列预测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从Numpy-数组中读入时间序列数据"><span class="nav-number">1.1.</span> <span class="nav-text">从Numpy 数组中读入时间序列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从CSV-文件中读入时间序列数据"><span class="nav-number">1.2.</span> <span class="nav-text">从CSV 文件中读入时间序列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AR-模型的训练"><span class="nav-number">1.3.</span> <span class="nav-text">AR 模型的训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM-模型中的单变量时间序列预测"><span class="nav-number">1.4.</span> <span class="nav-text">LSTM 模型中的单变量时间序列预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM-模型中的多变量时间序列预测"><span class="nav-number">1.5.</span> <span class="nav-text">LSTM 模型中的多变量时间序列预测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#test-input-array-py"><span class="nav-number">2.</span> <span class="nav-text">test_input_array.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#test-input-csv-py"><span class="nav-number">3.</span> <span class="nav-text">test_input_csv.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#train-array-py"><span class="nav-number">4.</span> <span class="nav-text">train_array.py</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#train-csv-py"><span class="nav-number">4.1.</span> <span class="nav-text">train_csv.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#train-lstm-py"><span class="nav-number">4.2.</span> <span class="nav-text">train_lstm.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#train-lstm-multivariate-py"><span class="nav-number">4.3.</span> <span class="nav-text">train_lstm_multivariate.py</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

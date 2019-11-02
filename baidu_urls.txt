@@ -26,6 +26,12 @@ http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-4.pip安装虚拟环境.html
 http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-3.更改pip源.html
 http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-2.更改Ubuntu源为国内源.html
 http://leesin.cc/Ubuntu/Ubuntu16.04装机系列-1.系统安装.html
+http://leesin.cc/tensorflow/16.21个项目玩转深度学习之神经网络机器翻译技术.html
+http://leesin.cc/tensorflow/15.21个项目玩转深度学习之在Tensorflow中进行时间序列预测.html
+http://leesin.cc/tensorflow/14.21个项目玩转深度学习之词的向量表示.html
+http://leesin.cc/tensorflow/13.21个项目玩转深度学习之序列分类问题详解.html
+http://leesin.cc/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成.html
+http://leesin.cc/tensorflow/11.21个项目玩转深度学习之CycleGAN与非配对图像转换.html
 http://leesin.cc/tensorflow/10.21个项目玩转深度学习之超分辨让图像变得更清晰.html
 http://leesin.cc/tensorflow/9.21个项目玩转深度学习之pip2pix模型与自动上色技术.html
 http://leesin.cc/tensorflow/8.21个项目玩转深度学习之GAN与DCGAN入门.html
@@ -52,11 +58,11 @@ http://leesin.cc/python/11.Python的字典.html
 http://leesin.cc/python/10.Python的元组.html
 http://leesin.cc/python/12.复习.html
 http://leesin.cc/python/9.Python 的列表.html
-http://leesin.cc/reading/卷积神经网络.html
-http://leesin.cc/python/8.Python的字符串.html
-http://leesin.cc/reading/如何使用SVM训练自己的数据.html
 http://leesin.cc/python/7.Python的随机数模块.html
 http://leesin.cc/reading/OpenCV检测分割图像.html
+http://leesin.cc/python/8.Python的字符串.html
+http://leesin.cc/reading/卷积神经网络.html
+http://leesin.cc/reading/如何使用SVM训练自己的数据.html
 http://leesin.cc/homework/number.html
 http://leesin.cc/python/6.Python的math模块.html
 http://leesin.cc/python/5.Python的数字类型.html

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="RNN基本结构与Char_RNN文本生成RNN原理RNN的英文全称是Recurrent Neural Networks，即循环神经网络，它是对序列型数据进行建模的深度模型。为了处理建模序列问题，RNN引入了隐状态的概念，隐状态可以对序列型的数据提取特征，接着再转换为输出简单地说就是，第一个数据激活+权重+偏置+初始化隐状态得到的结果作为第二个数据的隐状态，这样每个步骤的参数都是共享的，这是RNN的">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成">
+<meta property="og:url" content="http://leesin.cc/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="RNN基本结构与Char_RNN文本生成RNN原理RNN的英文全称是Recurrent Neural Networks，即循环神经网络，它是对序列型数据进行建模的深度模型。为了处理建模序列问题，RNN引入了隐状态的概念，隐状态可以对序列型的数据提取特征，接着再转换为输出简单地说就是，第一个数据激活+权重+偏置+初始化隐状态得到的结果作为第二个数据的隐状态，这样每个步骤的参数都是共享的，这是RNN的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-02T12:04:07.531Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成">
+<meta name="twitter:description" content="RNN基本结构与Char_RNN文本生成RNN原理RNN的英文全称是Recurrent Neural Networks，即循环神经网络，它是对序列型数据进行建模的深度模型。为了处理建模序列问题，RNN引入了隐状态的概念，隐状态可以对序列型的数据提取特征，接着再转换为输出简单地说就是，第一个数据激活+权重+偏置+初始化隐状态得到的结果作为第二个数据的隐状态，这样每个步骤的参数都是共享的，这是RNN的">
+  <link rel="canonical" href="http://leesin.cc/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 21:30:33" itemprop="dateCreated datePublished" datetime="2019-09-04T21:30:33+08:00">2019-09-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-02 20:04:07" itemprop="dateModified" datetime="2019-11-02T20:04:07+08:00">2019-11-02</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="RNN基本结构与Char-RNN文本生成"><a href="#RNN基本结构与Char-RNN文本生成" class="headerlink" title="RNN基本结构与Char_RNN文本生成"></a>RNN基本结构与Char_RNN文本生成</h1><h2 id="RNN原理"><a href="#RNN原理" class="headerlink" title="RNN原理"></a>RNN原理</h2><p>RNN的英文全称是<code>Recurrent Neural Networks</code>，即循环神经网络，它是对序列型数据进行建模的深度模型。</p><p>为了处理建模序列问题，RNN引入了隐状态的概念，隐状态可以对序列型的数据提取特征，接着再转换为输出</p><p>简单地说就是，第一个数据<strong>激活</strong>+<strong>权重</strong>+<strong>偏置</strong>+<strong>初始化隐状态</strong>得到的结果作为第二个数据的隐状态，这样每个步骤的参数都是共享的，这是RNN的重要特点</p><a id="more"></a>
+
+
+<h2 id="N对1的RNN结构"><a href="#N对1的RNN结构" class="headerlink" title="N对1的RNN结构"></a>N对1的RNN结构</h2><p>问题的输入是一个序列，输出是一个单独的值而不是序列，就在输出的时候对最后一个隐状态做运算即可</p>
+<h2 id="1对N的RNN结构"><a href="#1对N的RNN结构" class="headerlink" title="1对N的RNN结构"></a>1对N的RNN结构</h2><p>输入不是序列而输出是序列的情况下，可以只在序列开始进行输入计算</p>
+<h2 id="LSTM的原理"><a href="#LSTM的原理" class="headerlink" title="LSTM的原理"></a>LSTM的原理</h2><p>RNN的每一层的隐状态都是前一层的隐状态经过变换和激活函数得到，反向传播求导最终得到的导数会包含每一步的梯度的连乘，这会引起梯度爆炸或者梯度消失，所以RNN很难处理长程依赖的问题，LSTM在隐状态计算时以加法代替了这里的迭代变换，可以避免梯度消失的问题，使网络学到长程规律</p>
+<h2 id="Char-RNN的原理"><a href="#Char-RNN的原理" class="headerlink" title="Char RNN的原理"></a>Char RNN的原理</h2><p>使用的是RNN最经典的N vs N的模型，即输入是N的序列，输出是与之相等的序列，可以用来生成文章，诗歌甚至代码</p>
+<ul>
+<li>英文可以使用独热编码来表示</li>
+<li>汉字种类多，可能导致模型过大，优化办法：<ul>
+<li>取常用的N个汉字，剩下的汉字单独设为一类，并用一个特殊的字符进行标注</li>
+<li>输入的时候加入一层embedding层，这个层可以将汉字转换为较为稠密的表示</li>
+</ul>
+</li>
+</ul>
+<h1 id="TensorFlow-的-RNN-实现方式"><a href="#TensorFlow-的-RNN-实现方式" class="headerlink" title="TensorFlow 的 RNN 实现方式"></a>TensorFlow 的 RNN 实现方式</h1><h2 id="实现-RNN-的基本单元：-RNNCell"><a href="#实现-RNN-的基本单元：-RNNCell" class="headerlink" title="实现 RNN 的基本单元： RNNCell"></a>实现 RNN 的基本单元： RNNCell</h2><p>两个可以直接使用的子类，一个是 <code>BasicRNNCell</code> ，还有一个<br>是 <code>BasicLSTMCell</code></p>
+<p>学习 RNNCell 要重点关注三个地方：</p>
+<ul>
+<li>类方法 call </li>
+<li>类属性 state size </li>
+<li>类属性 output_size </li>
+</ul>
+<h3 id="定义一个基本-RNN-单元的方法为："><a href="#定义一个基本-RNN-单元的方法为：" class="headerlink" title="定义一个基本 RNN 单元的方法为："></a>定义一个基本 RNN 单元的方法为：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">rnn_cell = tf.nn.rnn_cell.BasicRNNCell(num_units=<span class="number">128</span>)</span><br><span class="line">print(rnn_cell.state_size) <span class="comment"># state_size=128</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="定义一个基本-LSTM-单元的方法为："><a href="#定义一个基本-LSTM-单元的方法为：" class="headerlink" title="定义一个基本 LSTM 单元的方法为："></a>定义一个基本 LSTM 单元的方法为：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=<span class="number">128</span>)</span><br><span class="line">print(rnn_cell.state_size) <span class="comment"># state_size=128</span></span><br></pre></td></tr></table></figure>
+
+<p>LSTM 可以看作h 和 C两个隐层 ,LSTM 基本单元的 state size 由两部分组成，一部分是 c ，另一部分是 h </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=<span class="number">128</span>)</span><br><span class="line">inputs = tf.placeholder(np.float32,shape=(<span class="number">32</span>,<span class="number">100</span>))  <span class="comment"># 32是batch_size</span></span><br><span class="line">h0 = lstm_cell.zero_state(<span class="number">32</span>,np.float32) <span class="comment">#通过zero_state得到一个全0的初始状态</span></span><br><span class="line">output,h1 = lstm_cell.call(inputs,h0)</span><br><span class="line"></span><br><span class="line">print(h1.h) <span class="comment"># shape=(32,128)</span></span><br><span class="line">print(h1.c) <span class="comment"># shape=(32,128)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="对-RNN-进行堆叠：-MultiRNNCell"><a href="#对-RNN-进行堆叠：-MultiRNNCell" class="headerlink" title="对 RNN 进行堆叠： MultiRNNCell"></a>对 RNN 进行堆叠： MultiRNNCell</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每调用一次这个函数返回一个BasicRNNCell</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_a_cell</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.nn.rnn_cell.BasicRNNCell(num_uints=<span class="number">128</span>)</span><br><span class="line"><span class="comment"># 用tf.nn.rnn_cell.MultiRNNCell 创建3层RNN</span></span><br><span class="line">cell = tf.nn.rnn_cell.MultiRNNCell([get_a_cell() <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">3</span>)])</span><br><span class="line"></span><br><span class="line">print(cell.state_size) <span class="comment"># (128,128,128) 这里的意思是共有3个隐层状态，每个状态大小为128</span></span><br><span class="line"></span><br><span class="line">inputs = tf.placeholder(np.float32,shape=(<span class="number">32</span>,<span class="number">100</span>))</span><br><span class="line">h0 = cell.zero_state(<span class="number">32</span>,np.float32)</span><br><span class="line"></span><br><span class="line">output , h1 = cell.call(inputs,h0)</span><br><span class="line">print(h1)</span><br></pre></td></tr></table></figure>
+
+<h2 id="BasicRNNCell-和-BasicLSTMCell-的-output"><a href="#BasicRNNCell-和-BasicLSTMCell-的-output" class="headerlink" title="BasicRNNCell 和 BasicLSTMCell 的 output"></a>BasicRNNCell 和 BasicLSTMCell 的 output</h2><p>在 BasicRNNCell 中， output其实和隐状态的值是一样的。因此，还需要额外对输出定义新的变换，才能得到图中真正的输出 y </p>
+<h2 id="使用-tf-nn-dynamic-rnn-展开时间维度"><a href="#使用-tf-nn-dynamic-rnn-展开时间维度" class="headerlink" title="使用 tf.nn.dynamic_rnn 展开时间维度"></a>使用 tf.nn.dynamic_rnn 展开时间维度</h2><p>设输入数据的格式为（batch_size, time steps, input_size）其<br>中 batch_size 表示 batch 的大小，即一个 batch 中序列的个数 。 time_steps 表示序列本身的长度 ， 如在 CharRNN 中，长度为 10 的句子对应的 time_steps等于 10  </p>
+<h2 id="便用-TensorFlow-实现-CharRNN"><a href="#便用-TensorFlow-实现-CharRNN" class="headerlink" title="便用 TensorFlow 实现 CharRNN"></a>便用 TensorFlow 实现 CharRNN</h2><h3 id="定义输入数据"><a href="#定义输入数据" class="headerlink" title="定义输入数据"></a>定义输入数据</h3><h3 id="定义多层-LSTM-模型"><a href="#定义多层-LSTM-模型" class="headerlink" title="定义多层 LSTM 模型"></a>定义多层 LSTM 模型</h3><h3 id="定义损失"><a href="#定义损失" class="headerlink" title="定义损失"></a>定义损失</h3><h3 id="训练模型与生成文字"><a href="#训练模型与生成文字" class="headerlink" title="训练模型与生成文字"></a>训练模型与生成文字</h3><h4 id="训练生成英文的模型："><a href="#训练生成英文的模型：" class="headerlink" title="训练生成英文的模型："></a>训练生成英文的模型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">python train.py \</span><br><span class="line">  --input_file data/shakespeare.txt \</span><br><span class="line">  --name shakespeare \</span><br><span class="line">  --num_steps 50 \</span><br><span class="line">  --num_seqs 32 \</span><br><span class="line">  --learning_rate 0.01 \</span><br><span class="line">  --max_steps 20000</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试模型："><a href="#测试模型：" class="headerlink" title="测试模型："></a>测试模型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python sample.py \</span><br><span class="line">  --converter_path model/shakespeare/converter.pkl \</span><br><span class="line">  --checkpoint_path model/shakespeare/ \</span><br><span class="line">  --max_length 1000</span><br></pre></td></tr></table></figure>
+
+<h4 id="训练写诗模型："><a href="#训练写诗模型：" class="headerlink" title="训练写诗模型："></a>训练写诗模型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">python train.py \</span><br><span class="line">  --use_embedding \</span><br><span class="line">  --input_file data/poetry.txt \</span><br><span class="line">  --name poetry \</span><br><span class="line">  --learning_rate 0.005 \</span><br><span class="line">  --num_steps 26 \</span><br><span class="line">  --num_seqs 32 \</span><br><span class="line">  --max_steps 10000</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试模型：-1"><a href="#测试模型：-1" class="headerlink" title="测试模型："></a>测试模型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python sample.py \</span><br><span class="line">  --use_embedding \</span><br><span class="line">  --converter_path model/poetry/converter.pkl \</span><br><span class="line">  --checkpoint_path model/poetry/ \</span><br><span class="line">  --max_length 300</span><br></pre></td></tr></table></figure>
+
+<h4 id="训练生成C代码的模型："><a href="#训练生成C代码的模型：" class="headerlink" title="训练生成C代码的模型："></a>训练生成C代码的模型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">python train.py \</span><br><span class="line">  --input_file data/linux.txt \</span><br><span class="line">  --num_steps 100 \</span><br><span class="line">  --name linux \</span><br><span class="line">  --learning_rate 0.01 \</span><br><span class="line">  --num_seqs 32 \</span><br><span class="line">  --max_steps 20000</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试模型：-2"><a href="#测试模型：-2" class="headerlink" title="测试模型："></a>测试模型：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python sample.py \</span><br><span class="line">  --converter_path model/linux/converter.pkl \</span><br><span class="line">  --checkpoint_path model/linux \</span><br><span class="line">  --max_length 1000</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成.html" title="12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成">http://leesin.cc/tensorflow/12.21个项目玩转深度学习之RNN基本结构与Char_RNN文本生成.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/tensorflow/11.21个项目玩转深度学习之CycleGAN与非配对图像转换.html" rel="next" title="11.21个项目玩转深度学习之CycleGAN与非配对图像转换">
+                  <i class="fa fa-chevron-left"></i> 11.21个项目玩转深度学习之CycleGAN与非配对图像转换
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/tensorflow/13.21个项目玩转深度学习之序列分类问题详解.html" rel="prev" title="13.21个项目玩转深度学习之序列分类问题详解">
+                  13.21个项目玩转深度学习之序列分类问题详解 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RNN基本结构与Char-RNN文本生成"><span class="nav-number">1.</span> <span class="nav-text">RNN基本结构与Char_RNN文本生成</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RNN原理"><span class="nav-number">1.1.</span> <span class="nav-text">RNN原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#N对1的RNN结构"><span class="nav-number">1.2.</span> <span class="nav-text">N对1的RNN结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1对N的RNN结构"><span class="nav-number">1.3.</span> <span class="nav-text">1对N的RNN结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM的原理"><span class="nav-number">1.4.</span> <span class="nav-text">LSTM的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Char-RNN的原理"><span class="nav-number">1.5.</span> <span class="nav-text">Char RNN的原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TensorFlow-的-RNN-实现方式"><span class="nav-number">2.</span> <span class="nav-text">TensorFlow 的 RNN 实现方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现-RNN-的基本单元：-RNNCell"><span class="nav-number">2.1.</span> <span class="nav-text">实现 RNN 的基本单元： RNNCell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义一个基本-RNN-单元的方法为："><span class="nav-number">2.1.1.</span> <span class="nav-text">定义一个基本 RNN 单元的方法为：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义一个基本-LSTM-单元的方法为："><span class="nav-number">2.1.2.</span> <span class="nav-text">定义一个基本 LSTM 单元的方法为：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-RNN-进行堆叠：-MultiRNNCell"><span class="nav-number">2.2.</span> <span class="nav-text">对 RNN 进行堆叠： MultiRNNCell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BasicRNNCell-和-BasicLSTMCell-的-output"><span class="nav-number">2.3.</span> <span class="nav-text">BasicRNNCell 和 BasicLSTMCell 的 output</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-tf-nn-dynamic-rnn-展开时间维度"><span class="nav-number">2.4.</span> <span class="nav-text">使用 tf.nn.dynamic_rnn 展开时间维度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#便用-TensorFlow-实现-CharRNN"><span class="nav-number">2.5.</span> <span class="nav-text">便用 TensorFlow 实现 CharRNN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义输入数据"><span class="nav-number">2.5.1.</span> <span class="nav-text">定义输入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义多层-LSTM-模型"><span class="nav-number">2.5.2.</span> <span class="nav-text">定义多层 LSTM 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义损失"><span class="nav-number">2.5.3.</span> <span class="nav-text">定义损失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练模型与生成文字"><span class="nav-number">2.5.4.</span> <span class="nav-text">训练模型与生成文字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#训练生成英文的模型："><span class="nav-number">2.5.4.1.</span> <span class="nav-text">训练生成英文的模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试模型："><span class="nav-number">2.5.4.2.</span> <span class="nav-text">测试模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练写诗模型："><span class="nav-number">2.5.4.3.</span> <span class="nav-text">训练写诗模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试模型：-1"><span class="nav-number">2.5.4.4.</span> <span class="nav-text">测试模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练生成C代码的模型："><span class="nav-number">2.5.4.5.</span> <span class="nav-text">训练生成C代码的模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试模型：-2"><span class="nav-number">2.5.4.6.</span> <span class="nav-text">测试模型：</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
