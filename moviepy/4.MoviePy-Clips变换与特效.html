@@ -63,12 +63,12 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="4.MoviePy-Clips变换与特效MoviePy中的几种对clip的修改修改clip属性的方法有 clip.set_duration, clip.set_audio clip.set_mask clip.set_start 等 已经实现的特效 clip.subclip(t1,t2):截取t1到t2时间段内的片段 还有一些高级效果，loop：让clip循环播放 time_mirror:让cli">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/moviepy/images/my_fl.PNG">
-<meta property="og:updated_time" content="2019-11-03T07:39:03.286Z">
+<meta property="og:image" content="http://leesin.cc/images/my_fl.PNG">
+<meta property="og:updated_time" content="2019-11-03T07:54:49.013Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="4.MoviePy-Clips变换与特效">
 <meta name="twitter:description" content="4.MoviePy-Clips变换与特效MoviePy中的几种对clip的修改修改clip属性的方法有 clip.set_duration, clip.set_audio clip.set_mask clip.set_start 等 已经实现的特效 clip.subclip(t1,t2):截取t1到t2时间段内的片段 还有一些高级效果，loop：让clip循环播放 time_mirror:让cli">
-<meta name="twitter:image" content="http://leesin.cc/moviepy/images/my_fl.PNG">
+<meta name="twitter:image" content="http://leesin.cc/images/my_fl.PNG">
   <link rel="canonical" href="http://leesin.cc/moviepy/4.MoviePy-Clips变换与特效">
 
 
@@ -297,7 +297,7 @@
                 
               
 
-              <time title="创建时间：2019-11-03 15:23:45 / 修改时间：15:39:03" itemprop="dateCreated datePublished" datetime="2019-11-03T15:23:45+08:00">2019-11-03</time>
+              <time title="创建时间：2019-11-03 15:23:45 / 修改时间：15:54:49" itemprop="dateCreated datePublished" datetime="2019-11-03T15:23:45+08:00">2019-11-03</time>
             </span>
           
             
@@ -391,7 +391,7 @@
 <p>当我们在编写一些新的效果的时候，应该尽可能地使用<code>fl_time</code>和<code>fl_image</code>，而不是<code>fl</code>。原因在于，在这些效果被应用于<br><code>ImageClip</code>的时候，<code>MoviePy</code>会认为这些方法不需要应用于每一帧，渲染速度会更快。</p>
 <h4 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sin</span><br><span class="line"></span><br><span class="line">my_clip = VideoFileClip(<span class="string">'./MY_VIDEOS/my_concatenate.mp4'</span>)</span><br><span class="line">modifiedClip1 = my_clip.fl_time(<span class="keyword">lambda</span> t: <span class="number">3</span>*t).set_duration(<span class="number">3</span>) //这里按照教程不加duration会报错</span><br><span class="line">modifiedClip2 = my_clip.fl_time(<span class="keyword">lambda</span> t: <span class="number">1</span>+sin(t)).set_duration(<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invert_green_blue</span><span class="params">(image)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> image[:,:,[<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>]]</span><br><span class="line">modifiedClip3 = my_clip.fl_image(invert_green_blue)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scroll</span><span class="params">(get_frame, t)</span>:</span></span><br><span class="line">    frame = get_frame(t)</span><br><span class="line">    frame_region = frame[int(t):int(t)+<span class="number">360</span>,:]</span><br><span class="line">    <span class="keyword">return</span> frame_region</span><br><span class="line">modifiedClip4 = my_clip.fl(scroll)</span><br><span class="line"></span><br><span class="line">modifiedClip1.write_videofile(<span class="string">'./MY_VIDEOS/my_fl_time1.mp4'</span>)</span><br><span class="line">modifiedClip2.write_videofile(<span class="string">'./MY_VIDEOS/my_fl_time2.mp4'</span>)</span><br><span class="line">modifiedClip3.write_videofile(<span class="string">'./MY_VIDEOS/my_fl_image.mp4'</span>)</span><br><span class="line">modifiedClip4.write_videofile(<span class="string">'./MY_VIDEOS/my_fl.mp4'</span>)</span><br></pre></td></tr></table></figure>
 
-<p>modifiedClip4的效果如下：<br><img src="./images/my_fl.PNG" alt></p>
+<p>modifiedClip4的效果如下：<br><img src="/images/my_fl.PNG" alt></p>
 
     </div>
 

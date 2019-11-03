@@ -63,13 +63,13 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="3.MoviePy-视频合成Mixing clips（就是视频合成，拼接混合）视频的排版，众所周知，这是一个非线性编辑的技术活，有时候还要把几段clip在一个新的clip里面一起播放。还有一点很重要，一般情况下，每一个video clip都带有一个audio 和一个 mask，分别是audio clip和mask clip，通俗地讲就是每一个视频切片带有一个音频切片和一个蒙版切片。所以，当我们把几">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/moviepy/images/my_stack.PNG">
-<meta property="og:image" content="http://leesin.cc/moviepy/images/my_CompositeVideoClip.PNG">
-<meta property="og:updated_time" content="2019-11-03T07:38:56.682Z">
+<meta property="og:image" content="http://leesin.cc/images/my_stack.PNG">
+<meta property="og:image" content="http://leesin.cc/images/my_CompositeVideoClip.PNG">
+<meta property="og:updated_time" content="2019-11-03T07:54:48.983Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="3.MoviePy-视频合成">
 <meta name="twitter:description" content="3.MoviePy-视频合成Mixing clips（就是视频合成，拼接混合）视频的排版，众所周知，这是一个非线性编辑的技术活，有时候还要把几段clip在一个新的clip里面一起播放。还有一点很重要，一般情况下，每一个video clip都带有一个audio 和一个 mask，分别是audio clip和mask clip，通俗地讲就是每一个视频切片带有一个音频切片和一个蒙版切片。所以，当我们把几">
-<meta name="twitter:image" content="http://leesin.cc/moviepy/images/my_stack.PNG">
+<meta name="twitter:image" content="http://leesin.cc/images/my_stack.PNG">
   <link rel="canonical" href="http://leesin.cc/moviepy/3.MoviePy-视频合成">
 
 
@@ -298,7 +298,7 @@
                 
               
 
-              <time title="创建时间：2019-11-03 15:23:27 / 修改时间：15:38:56" itemprop="dateCreated datePublished" datetime="2019-11-03T15:23:27+08:00">2019-11-03</time>
+              <time title="创建时间：2019-11-03 15:23:27 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:23:27+08:00">2019-11-03</time>
             </span>
           
             
@@ -346,7 +346,7 @@
 <p>如果你只想裁剪<code>1.mp4</code>中的一部分，你可以使用<code>clip1 = VideoFileClip(&quot;./videos/1.mp4&quot;).subclip(0,1)</code></p>
 <h4 id="一个大的画面同时播几个视频"><a href="#一个大的画面同时播几个视频" class="headerlink" title="一个大的画面同时播几个视频"></a>一个大的画面同时播几个视频</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> VideoFileClip, clips_array, vfx</span><br><span class="line"> </span><br><span class="line">clip1 = VideoFileClip(<span class="string">"./videos/1.mp4"</span>).margin(<span class="number">10</span>)</span><br><span class="line">clip2 = clip1.fx(vfx.mirror_x)<span class="comment">#x轴镜像</span></span><br><span class="line">clip3 = clip1.fx(vfx.mirror_y)<span class="comment">#y轴镜像</span></span><br><span class="line">clip4 = clip1.resize(<span class="number">0.6</span>)<span class="comment">#尺寸等比缩放0.6</span></span><br><span class="line"> </span><br><span class="line">final_clip = clips_array([</span><br><span class="line">                            [clip1, clip2],</span><br><span class="line">                            [clip3, clip3]</span><br><span class="line">                        ])</span><br><span class="line">final_clip.resize(width=<span class="number">480</span>).write_videofile(<span class="string">"./MY_VIDEOS/my_stack.mp4"</span>)</span><br></pre></td></tr></table></figure>
 
-<p>效果如下：<br><img src="./images/my_stack.PNG" alt></p>
+<p>效果如下：<br><img src="/images/my_stack.PNG" alt></p>
 <h3 id="视频叠加"><a href="#视频叠加" class="headerlink" title="视频叠加"></a>视频叠加</h3><p>这个相对而言是比较高级的，和ps里面的图层类似，或者说，假设你想做一个星球大战的视频，而你正是<br>男主，你也不可能飞到银河系，所以你可以自己录制一个单一背景的动作，再把你提取出来放在星球大战的<br>视频上面，一个特效小电影就完成了，当然你也可以做其他一些有趣的，嘿嘿。</p>
 <h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">video = CompositeVideoClip([clip1, clip2, clip3])</span><br><span class="line">// clip2压在clip1上，clip3压在最上面</span><br></pre></td></tr></table></figure>
 
@@ -374,7 +374,7 @@
 <h2 id="视频堆叠代码"><a href="#视频堆叠代码" class="headerlink" title="视频堆叠代码"></a>视频堆叠代码</h2><p>教程没有完整的示例代码，不妨学完操作一下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> VideoFileClip,CompositeVideoClip</span><br><span class="line"> </span><br><span class="line">clip1 = VideoFileClip(<span class="string">'./MY_VIDEOS/my_concatenate.mp4'</span>)</span><br><span class="line">clip2 = VideoFileClip(<span class="string">'./MY_VIDEOS/my_stack.mp4'</span>)</span><br><span class="line"></span><br><span class="line">final_clip = CompositeVideoClip([</span><br><span class="line">                                   clip1.set_start(<span class="number">1</span>) ,</span><br><span class="line">                                   clip2.set_position((<span class="number">20</span>,<span class="number">20</span>)).crossfadein(<span class="number">1</span>)</span><br><span class="line">                                ])</span><br><span class="line">final_clip.write_videofile(<span class="string">"./MY_VIDEOS/my_CompositeVideoClip.mp4"</span>)</span><br></pre></td></tr></table></figure>
 
-<p>效果如下：<br><img src="./images/my_CompositeVideoClip.PNG" alt></p>
+<p>效果如下：<br><img src="/images/my_CompositeVideoClip.PNG" alt></p>
 
     </div>
 

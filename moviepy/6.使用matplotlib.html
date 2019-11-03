@@ -63,12 +63,12 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="使用matplotlib到现在为止也没有做一个matplotlib的教程，原因在于其实我使用matplotlib的频率其实不是很高，而且有很多现成的画廊代码，这个对于数据可视化来讲还是挺重要的，记得还是要做啊，少玩几把游戏把时间腾出来用户自定义动画moviepy允许开发者自定义动画：定义一个方法，以numpy数组的形式在动画中给定的时间返回一帧画面。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/moviepy/images/matplotlib.gif">
-<meta property="og:updated_time" content="2019-11-03T07:39:14.237Z">
+<meta property="og:image" content="http://leesin.cc/images/matplotlib.gif">
+<meta property="og:updated_time" content="2019-11-03T07:54:48.919Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="6.使用matplotlib">
 <meta name="twitter:description" content="使用matplotlib到现在为止也没有做一个matplotlib的教程，原因在于其实我使用matplotlib的频率其实不是很高，而且有很多现成的画廊代码，这个对于数据可视化来讲还是挺重要的，记得还是要做啊，少玩几把游戏把时间腾出来用户自定义动画moviepy允许开发者自定义动画：定义一个方法，以numpy数组的形式在动画中给定的时间返回一帧画面。">
-<meta name="twitter:image" content="http://leesin.cc/moviepy/images/matplotlib.gif">
+<meta name="twitter:image" content="http://leesin.cc/images/matplotlib.gif">
   <link rel="canonical" href="http://leesin.cc/moviepy/6.使用matplotlib">
 
 
@@ -297,7 +297,7 @@
                 
               
 
-              <time title="创建时间：2019-11-03 15:24:12 / 修改时间：15:39:14" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:12+08:00">2019-11-03</time>
+              <time title="创建时间：2019-11-03 15:24:12 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:12+08:00">2019-11-03</time>
             </span>
           
             
@@ -341,7 +341,7 @@
 
 <h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> VideoClip</span><br><span class="line"><span class="keyword">from</span> moviepy.video.io.bindings <span class="keyword">import</span> mplfig_to_npimage</span><br><span class="line"> </span><br><span class="line">x = np.linspace(<span class="number">-2</span>, <span class="number">2</span>, <span class="number">200</span>)</span><br><span class="line"> </span><br><span class="line">duration = <span class="number">2</span></span><br><span class="line"> </span><br><span class="line">fig,ax = plt.subplots()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_frame</span><span class="params">(t)</span>:</span></span><br><span class="line">    ax.clear()</span><br><span class="line">    ax.plot(x, np.sin(x**<span class="number">2</span>) + np.sin(x + <span class="number">2</span>*np.pi/duration * t), lw=<span class="number">3</span>)</span><br><span class="line">    ax.set_ylim(<span class="number">-1.5</span>, <span class="number">2.5</span>)</span><br><span class="line">    <span class="keyword">return</span> mplfig_to_npimage(fig)</span><br><span class="line"> </span><br><span class="line">animation = VideoClip(make_frame, duration=duration)</span><br><span class="line">animation.write_gif(<span class="string">"./images/matplotlib.gif"</span>, fps=<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
 
-<p>这里使用了<code>write_gif</code>，这样的话，我们就方便在文档中嵌入效果图了，前面也提到过<br>效果如下：<br><img src="./images/matplotlib.gif" alt><br>如果和我一样对机器学习感兴趣，你甚至可以将你的训练过程可视化出来，这样就能更直观地观察数据了</p>
+<p>这里使用了<code>write_gif</code>，这样的话，我们就方便在文档中嵌入效果图了，前面也提到过<br>效果如下：<br><img src="/images/matplotlib.gif" alt><br>如果和我一样对机器学习感兴趣，你甚至可以将你的训练过程可视化出来，这样就能更直观地观察数据了</p>
 
     </div>
 

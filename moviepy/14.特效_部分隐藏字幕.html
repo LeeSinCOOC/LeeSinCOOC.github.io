@@ -63,12 +63,12 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="部分隐藏字幕奇怪的很，作者这个代码跑不通，不加duration 要报错，加了duration 又没字，尬 12345678910111213141516171819202122232425from moviepy.editor import *from moviepy.video.tools.credits import credits1 # 加载山背景的clip，截取，变慢，画面变暗clip =">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/moviepy/images/magic_worlds_show.gif">
-<meta property="og:updated_time" content="2019-11-03T07:40:07.935Z">
+<meta property="og:image" content="http://leesin.cc/images/magic_worlds_show.gif">
+<meta property="og:updated_time" content="2019-11-03T07:54:48.855Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="14.特效_部分隐藏字幕">
 <meta name="twitter:description" content="部分隐藏字幕奇怪的很，作者这个代码跑不通，不加duration 要报错，加了duration 又没字，尬 12345678910111213141516171819202122232425from moviepy.editor import *from moviepy.video.tools.credits import credits1 # 加载山背景的clip，截取，变慢，画面变暗clip =">
-<meta name="twitter:image" content="http://leesin.cc/moviepy/images/magic_worlds_show.gif">
+<meta name="twitter:image" content="http://leesin.cc/images/magic_worlds_show.gif">
   <link rel="canonical" href="http://leesin.cc/moviepy/14.特效_部分隐藏字幕">
 
 
@@ -297,7 +297,7 @@
                 
               
 
-              <time title="创建时间：2019-11-03 15:25:38 / 修改时间：15:40:07" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:38+08:00">2019-11-03</time>
+              <time title="创建时间：2019-11-03 15:25:38 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:38+08:00">2019-11-03</time>
             </span>
           
             
@@ -337,7 +337,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="部分隐藏字幕"><a href="#部分隐藏字幕" class="headerlink" title="部分隐藏字幕"></a>部分隐藏字幕</h1><p><img src="./images/magic_worlds_show.gif" alt><br>奇怪的很，作者这个代码跑不通，不加duration 要报错，加了duration 又没字，尬</p>
+        <h1 id="部分隐藏字幕"><a href="#部分隐藏字幕" class="headerlink" title="部分隐藏字幕"></a>部分隐藏字幕</h1><p><img src="/images/magic_worlds_show.gif" alt><br>奇怪的很，作者这个代码跑不通，不加duration 要报错，加了duration 又没字，尬</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.credits <span class="keyword">import</span> credits1</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载山背景的clip，截取，变慢，画面变暗</span></span><br><span class="line">clip = (VideoFileClip(<span class="string">'./MY_VIDEOS/my_concatenate.mp4'</span>, audio=<span class="literal">False</span>)</span><br><span class="line">           .subclip(<span class="number">0</span>,<span class="number">7</span>)</span><br><span class="line">           .speedx(<span class="number">0.4</span>)</span><br><span class="line">           .fx(vfx.colorx, <span class="number">0.7</span>))</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 保存第一帧画面，一会使用GIMP处理，增加一个mask</span></span><br><span class="line"><span class="comment">#clip.save_frame('./images/magic_Mask.png')</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载mountain mask</span></span><br><span class="line">mask = ImageClip(<span class="string">'./images/magic_Mask.png'</span>,ismask=<span class="literal">True</span>).set_duration(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用一个文本文件内容生成字幕</span></span><br><span class="line">m_credits = credits1(<span class="string">'./worlds/China_zhou.txt'</span>,<span class="number">3</span>*clip.w/<span class="number">4</span>)</span><br><span class="line">scrolling_credits = m_credits.set_pos(<span class="keyword">lambda</span> t:(<span class="string">'center'</span>,<span class="number">-10</span>*t)).set_duration(<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 让字幕以10像素每秒的速度滚动起来</span></span><br><span class="line">final = CompositeVideoClip([clip,</span><br><span class="line">                            scrolling_credits,</span><br><span class="line">                            clip.set_mask(mask)])</span><br><span class="line"></span><br><span class="line">final.write_gif(<span class="string">'magic_worlds_show.gif'</span>,fps=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
     </div>
 
