@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="3.MoviePy-视频合成Mixing clips（就是视频合成，拼接混合）视频的排版，众所周知，这是一个非线性编辑的技术活，有时候还要把几段clip在一个新的clip里面一起播放。还有一点很重要，一般情况下，每一个video clip都带有一个audio 和一个 mask，分别是audio clip和mask clip，通俗地讲就是每一个视频切片带有一个音频切片和一个蒙版切片。所以，当我们把几">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.MoviePy-视频合成">
+<meta property="og:url" content="http://leesin.cc/moviepy/3.MoviePy-视频合成.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="3.MoviePy-视频合成Mixing clips（就是视频合成，拼接混合）视频的排版，众所周知，这是一个非线性编辑的技术活，有时候还要把几段clip在一个新的clip里面一起播放。还有一点很重要，一般情况下，每一个video clip都带有一个audio 和一个 mask，分别是audio clip和mask clip，通俗地讲就是每一个视频切片带有一个音频切片和一个蒙版切片。所以，当我们把几">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/my_stack.PNG">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/my_CompositeVideoClip.PNG">
+<meta property="og:updated_time" content="2019-11-03T07:28:25.465Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.MoviePy-视频合成">
+<meta name="twitter:description" content="3.MoviePy-视频合成Mixing clips（就是视频合成，拼接混合）视频的排版，众所周知，这是一个非线性编辑的技术活，有时候还要把几段clip在一个新的clip里面一起播放。还有一点很重要，一般情况下，每一个video clip都带有一个audio 和一个 mask，分别是audio clip和mask clip，通俗地讲就是每一个视频切片带有一个音频切片和一个蒙版切片。所以，当我们把几">
+<meta name="twitter:image" content="http://leesin.cc/moviepy/images/my_stack.PNG">
+  <link rel="canonical" href="http://leesin.cc/moviepy/3.MoviePy-视频合成">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>3.MoviePy-视频合成 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/3.MoviePy-视频合成.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">3.MoviePy-视频合成
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:23:27 / 修改时间：15:28:25" itemprop="dateCreated datePublished" datetime="2019-11-03T15:23:27+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="3-MoviePy-视频合成"><a href="#3-MoviePy-视频合成" class="headerlink" title="3.MoviePy-视频合成"></a>3.MoviePy-视频合成</h1><h2 id="Mixing-clips（就是视频合成，拼接混合）"><a href="#Mixing-clips（就是视频合成，拼接混合）" class="headerlink" title="Mixing clips（就是视频合成，拼接混合）"></a>Mixing clips（就是视频合成，拼接混合）</h2><p>视频的排版，众所周知，这是一个非线性编辑的技术活，有时候还要把几段clip在一个新的clip里面一起播放。</p><p>还有一点很重要，一般情况下，每一个video clip都带有一个audio 和一个 mask，分别是audio clip和mask clip，通俗地讲就是每一个视频切片带有一个音频切片和一个蒙版切片。所以，当我们把几个视频排版混合到一起的时候。声音轨道和mask也同时被混合在一起形成最终的clip。所以但多数时候我们是不需要操心声音和mask的。</p><a id="more"></a>
+
+<h2 id="视频拼接和视频叠加"><a href="#视频拼接和视频叠加" class="headerlink" title="视频拼接和视频叠加"></a>视频拼接和视频叠加</h2><p>这里有三个重要的函数：<code>concatenate_videoclips</code>，<code>clip_array</code>和<code>CompositeVideoClips</code></p>
+<h3 id="视频拼接"><a href="#视频拼接" class="headerlink" title="视频拼接"></a>视频拼接</h3><h4 id="视频一个接一个地播放"><a href="#视频一个接一个地播放" class="headerlink" title="视频一个接一个地播放"></a>视频一个接一个地播放</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> VideoFileClip, concatenate_videoclips</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 将我的几个短视频拼接起来</span></span><br><span class="line"></span><br><span class="line">clip1 = VideoFileClip(<span class="string">"./videos/1.mp4"</span>)</span><br><span class="line">clip2 = VideoFileClip(<span class="string">"./videos/2.mp4"</span>)</span><br><span class="line">clip3 = VideoFileClip(<span class="string">"./videos/3.mp4"</span>)</span><br><span class="line">clip4 = VideoFileClip(<span class="string">"./videos/4.mp4"</span>)</span><br><span class="line"> </span><br><span class="line">finalclip = concatenate_videoclips([clip1 , clip2 , clip3 , clip4])</span><br><span class="line">finalclip.write_videofile(<span class="string">"my_concatenate.mp4"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果你只想裁剪<code>1.mp4</code>中的一部分，你可以使用<code>clip1 = VideoFileClip(&quot;./videos/1.mp4&quot;).subclip(0,1)</code></p>
+<h4 id="一个大的画面同时播几个视频"><a href="#一个大的画面同时播几个视频" class="headerlink" title="一个大的画面同时播几个视频"></a>一个大的画面同时播几个视频</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> VideoFileClip, clips_array, vfx</span><br><span class="line"> </span><br><span class="line">clip1 = VideoFileClip(<span class="string">"./videos/1.mp4"</span>).margin(<span class="number">10</span>)</span><br><span class="line">clip2 = clip1.fx(vfx.mirror_x)<span class="comment">#x轴镜像</span></span><br><span class="line">clip3 = clip1.fx(vfx.mirror_y)<span class="comment">#y轴镜像</span></span><br><span class="line">clip4 = clip1.resize(<span class="number">0.6</span>)<span class="comment">#尺寸等比缩放0.6</span></span><br><span class="line"> </span><br><span class="line">final_clip = clips_array([</span><br><span class="line">                            [clip1, clip2],</span><br><span class="line">                            [clip3, clip3]</span><br><span class="line">                        ])</span><br><span class="line">final_clip.resize(width=<span class="number">480</span>).write_videofile(<span class="string">"./MY_VIDEOS/my_stack.mp4"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：<br><img src="./images/my_stack.PNG" alt></p>
+<h3 id="视频叠加"><a href="#视频叠加" class="headerlink" title="视频叠加"></a>视频叠加</h3><p>这个相对而言是比较高级的，和ps里面的图层类似，或者说，假设你想做一个星球大战的视频，而你正是<br>男主，你也不可能飞到银河系，所以你可以自己录制一个单一背景的动作，再把你提取出来放在星球大战的<br>视频上面，一个特效小电影就完成了，当然你也可以做其他一些有趣的，嘿嘿。</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">video = CompositeVideoClip([clip1, clip2, clip3])</span><br><span class="line">// clip2压在clip1上，clip3压在最上面</span><br></pre></td></tr></table></figure>
+
+<p>有时候是需要我们的clip浮在一个比较大的合成体的上方的，那这个时候我们就需要声明合成clip的尺寸。看看下面的栗子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">video = CompositeVideoClip([clip1, clip2, clip3], size=(<span class="number">720</span>,<span class="number">480</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="开始和结束时间"><a href="#开始和结束时间" class="headerlink" title="开始和结束时间"></a>开始和结束时间</h4><p>每个clip会在通过clip.start函数声明的时间开始播放，我们可以像下面这样去设置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clip1 = clip1.set_start(<span class="number">5</span>) <span class="comment">#在5秒时开始</span></span><br></pre></td></tr></table></figure>
+
+<p>所以一般情况下，我们代码中的视频堆叠都长这个样子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">video = CompositeVideoClip([</span><br><span class="line">                            clip1, <span class="comment">#在第0秒开始</span></span><br><span class="line">                            clip2.set_start(<span class="number">5</span>), <span class="comment">#在第5秒开始</span></span><br><span class="line">                            clip3.set_start(<span class="number">9</span>)  <span class="comment">#第9秒开始</span></span><br><span class="line">                            ])</span><br></pre></td></tr></table></figure>
+
+<p>为了避免过渡僵硬，我们可以使用一些特效，可能clip2开始的时候，正好是clip1将要结束的时机，这样的情况，我们可以让clip2使用在一秒内“渐入”的特效来显示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">video = CompositeVideoClip([   </span><br><span class="line">                            clip1,</span><br><span class="line">                            clip2.set_start(<span class="number">5</span>).crossfadein(<span class="number">1</span>),</span><br><span class="line">                            clip3.set_start(<span class="number">9</span>).crossfadein(<span class="number">1.5</span>)</span><br><span class="line">                            ])</span><br></pre></td></tr></table></figure>
+
+<h4 id="位置设定"><a href="#位置设定" class="headerlink" title="位置设定"></a>位置设定</h4><p>下面的栗子就是通过指定坐标的形式（距离左上方的像素距离）把clip2和clip3在画面中指定位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">video = CompositeVideoClip([</span><br><span class="line">                            clip1,</span><br><span class="line">                            clip2.set_pos((<span class="number">45</span>,<span class="number">150</span>)),</span><br><span class="line">                            clip3.set_pos((<span class="number">90</span>,<span class="number">100</span>))</span><br><span class="line">                            ])</span><br></pre></td></tr></table></figure>
+
+<p>在moviepy中我们有很多的方法定位clip的位置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">clip2.set_pos((<span class="number">45</span>,<span class="number">150</span>)) <span class="comment">#像素坐标</span></span><br><span class="line">clip2.set_pos(<span class="string">"center"</span>) <span class="comment">#居中</span></span><br><span class="line">clip2.set_pos((<span class="string">"center"</span>,<span class="string">"top"</span>)) <span class="comment">#水平方向居中，但是处置方向放置在顶部</span></span><br><span class="line">clip2.set_pos((<span class="string">"left"</span>,<span class="string">"center"</span>)) <span class="comment">#水平方向放置在左边，垂直方向居中</span></span><br><span class="line">clip2.set_pos((<span class="number">0.4</span>,<span class="number">0.7</span>), relative=<span class="literal">True</span>) <span class="comment">#0.4倍宽，0.7倍高处</span></span><br><span class="line">clip2.set_pos(<span class="keyword">lambda</span> t: (<span class="string">'center'</span>, <span class="number">50</span>+t)) <span class="comment">#水平居中，向下移动</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="合成声音"><a href="#合成声音" class="headerlink" title="合成声音"></a>合成声音</h2><p>在混合vedio clips时，MoviePy将会自动地把这些vedio自带的audio clip按照一定形式混合在一起形成最终的clip<br>如果你有一些特殊的的定制合成音频的需求，应该使用<code>CompositeAudioClip</code>和<code>concatenate_audioclips</code>这俩类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor imports *</span><br><span class="line"> </span><br><span class="line">concat = concatenate_audioclips([clip1, clip2, clip3])</span><br><span class="line">compo = CompositeAudioClip([</span><br><span class="line">                            aclip1.volumex(<span class="number">1.2</span>),</span><br><span class="line">                            aclip2.set_start(<span class="number">5</span>), <span class="comment"># start at t=5s</span></span><br><span class="line">                            aclip3.set_start(<span class="number">9</span>)</span><br><span class="line">                            ])</span><br></pre></td></tr></table></figure>
+
+<h2 id="视频堆叠代码"><a href="#视频堆叠代码" class="headerlink" title="视频堆叠代码"></a>视频堆叠代码</h2><p>教程没有完整的示例代码，不妨学完操作一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> VideoFileClip,CompositeVideoClip</span><br><span class="line"> </span><br><span class="line">clip1 = VideoFileClip(<span class="string">'./MY_VIDEOS/my_concatenate.mp4'</span>)</span><br><span class="line">clip2 = VideoFileClip(<span class="string">'./MY_VIDEOS/my_stack.mp4'</span>)</span><br><span class="line"></span><br><span class="line">final_clip = CompositeVideoClip([</span><br><span class="line">                                   clip1.set_start(<span class="number">1</span>) ,</span><br><span class="line">                                   clip2.set_position((<span class="number">20</span>,<span class="number">20</span>)).crossfadein(<span class="number">1</span>)</span><br><span class="line">                                ])</span><br><span class="line">final_clip.write_videofile(<span class="string">"./MY_VIDEOS/my_CompositeVideoClip.mp4"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：<br><img src="./images/my_CompositeVideoClip.PNG" alt></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/moviepy/3.MoviePy-视频合成.html" title="3.MoviePy-视频合成">http://leesin.cc/moviepy/3.MoviePy-视频合成.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/moviepy/2.快速入门.html" rel="next" title="2.快速入门">
+                  <i class="fa fa-chevron-left"></i> 2.快速入门
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/moviepy/4.MoviePy-Clips变换与特效.html" rel="prev" title="4.MoviePy-Clips变换与特效">
+                  4.MoviePy-Clips变换与特效 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MoviePy-视频合成"><span class="nav-number">1.</span> <span class="nav-text">3.MoviePy-视频合成</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mixing-clips（就是视频合成，拼接混合）"><span class="nav-number">1.1.</span> <span class="nav-text">Mixing clips（就是视频合成，拼接混合）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视频拼接和视频叠加"><span class="nav-number">1.2.</span> <span class="nav-text">视频拼接和视频叠加</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视频拼接"><span class="nav-number">1.2.1.</span> <span class="nav-text">视频拼接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视频一个接一个地播放"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">视频一个接一个地播放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个大的画面同时播几个视频"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">一个大的画面同时播几个视频</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视频叠加"><span class="nav-number">1.2.2.</span> <span class="nav-text">视频叠加</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开始和结束时间"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">开始和结束时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#位置设定"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">位置设定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合成声音"><span class="nav-number">1.3.</span> <span class="nav-text">合成声音</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视频堆叠代码"><span class="nav-number">1.4.</span> <span class="nav-text">视频堆叠代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

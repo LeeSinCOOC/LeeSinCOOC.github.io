@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/OpenCV实现指定轮廓羽化效果.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/18.漂亮的结尾.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -279,7 +279,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/opencv/OpenCV实现指定轮廓羽化效果.html" class="post-title-link" itemprop="url">OpenCV实现指定轮廓羽化效果</a>
+            <a href="/moviepy/18.漂亮的结尾.html" class="post-title-link" itemprop="url">18.漂亮的结尾</a>
           
         </h2>
 
@@ -294,33 +294,12 @@
                 
               
 
-              <time title="创建时间：2019-10-20 12:48:58" itemprop="dateCreated datePublished" datetime="2019-10-20T12:48:58+08:00">2019-10-20</time>
+              <time title="创建时间：2019-11-03 15:26:13 / 修改时间：15:33:45" itemprop="dateCreated datePublished" datetime="2019-11-03T15:26:13+08:00">2019-11-03</time>
             </span>
           
             
 
             
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-22 21:57:02" itemprop="dateModified" datetime="2019-10-22T21:57:02+08:00">2019-10-22</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -334,11 +313,247 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="OpenCV实现指定轮廓羽化效果"><a href="#OpenCV实现指定轮廓羽化效果" class="headerlink" title="OpenCV实现指定轮廓羽化效果"></a>OpenCV实现指定轮廓羽化效果</h1><p>查阅了大多数OpenCV的特效教程，发现羽化效果讲解的较少，要么干脆全图羽化，要么蒙版盖住，全背景羽化，我在这里也试过很多方法，发现像素分配的方法较为简单，且过渡效果比较好，所以记录一下。</p><h2 id="1-素材准备"><a href="#1-素材准备" class="headerlink" title="1.素材准备"></a>1.素材准备</h2><p>用一张合适的图片，不要太大，避免处理起来很慢，现在的代码还未进行优化，只是为了讲清楚原理</p>
+          <h1 id="漂亮的结尾"><a href="#漂亮的结尾" class="headerlink" title="漂亮的结尾"></a>漂亮的结尾</h1><p><img src="./images/magic_theEnd.gif" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.drawing <span class="keyword">import</span> circle</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 原有视频</span></span><br><span class="line">clip = VideoFileClip(<span class="string">"./videos/1.mp4"</span>, audio=<span class="literal">False</span>).add_mask()</span><br><span class="line">           </span><br><span class="line">w,h = clip.size</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 这里的mask是一个半径按照 r(t) = 800-200*t  根据时间变化消失的圆           </span></span><br><span class="line">clip.mask.get_frame = <span class="keyword">lambda</span> t: circle(screensize=(clip.w,clip.h),</span><br><span class="line">                                       center=(clip.w/<span class="number">2</span>,clip.h/<span class="number">4</span>),</span><br><span class="line">                                       radius=max(<span class="number">0</span>,int(<span class="number">200</span><span class="number">-200</span>*t)),</span><br><span class="line">                                       col1=<span class="number">1</span>, col2=<span class="number">0</span>, blur=<span class="number">4</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 搞一个TextClip来放The End</span></span><br><span class="line">the_end = TextClip(<span class="string">"The End"</span>, font=<span class="string">"Amiri-bold"</span>, color=<span class="string">"white"</span>,</span><br><span class="line">                   fontsize=<span class="number">70</span>).set_duration(clip.duration)</span><br><span class="line"> </span><br><span class="line">final = CompositeVideoClip([the_end.set_pos(<span class="string">'center'</span>),clip],</span><br><span class="line">                           size =clip.size)</span><br><span class="line">                           </span><br><span class="line">final.write_gif(<span class="string">"./images/magic_theEnd.gif"</span>,fps=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/17.追踪人脸.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/17.追踪人脸.html" class="post-title-link" itemprop="url">17.追踪人脸</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:26:04 / 修改时间：15:33:30" itemprop="dateCreated datePublished" datetime="2019-11-03T15:26:04+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="追踪人脸"><a href="#追踪人脸" class="headerlink" title="追踪人脸"></a>追踪人脸</h1><p><img src="./images/magic_detect_face.gif" alt></p>
+<blockquote>
+<p>下面的代码依然跑不通</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.tracking <span class="keyword">import</span> manual_tracking, to_fxfy</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载clip，截取一个卓别林电影的6‘51-7’01之间的片段</span></span><br><span class="line">clip = VideoFileClip(<span class="string">"../../videos/chaplin.mp4"</span>).subclip((<span class="number">6</span>,<span class="number">51.7</span>),(<span class="number">7</span>,<span class="number">01.3</span>))</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 手动跟踪标记头部</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 下面的三行代码，手动跟踪，然后把结果保存进文件，应该在一次运行之后就完成量跟踪标记</span></span><br><span class="line"><span class="comment"># 注意：我们保存的格式是一个(ti,xi,yi)list，不是函数fx和fy</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#txy, (fx,fy) = manual_tracking(clip, fps=6)</span></span><br><span class="line"><span class="comment">#with open("../../chaplin_txy.dat",'w+') as f:</span></span><br><span class="line"><span class="comment">#    pickle.dump(txy)</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 已经完成手动跟踪人脸并标记的情况下</span></span><br><span class="line"><span class="comment"># fx(t),fy(t)的形式加载跟踪标记的数据</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"../../chaplin_txy.dat"</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    fx,fy = to_fxfy( pickle.load(f) )</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 在clip中，模糊卓别林的头部</span></span><br><span class="line"> </span><br><span class="line">clip_blurred = clip.fx( vfx.headblur, fx, fy, <span class="number">25</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 生成文本，灰色背景</span></span><br><span class="line"> </span><br><span class="line">txt = TextClip(<span class="string">"Hey you ! \n You're blurry!"</span>, color=<span class="string">'grey70'</span>,</span><br><span class="line">               size = clip.size, bg_color=<span class="string">'grey20'</span>,</span><br><span class="line">               font = <span class="string">"Century-Schoolbook-Italic"</span>, fontsize=<span class="number">40</span>)</span><br><span class="line">               </span><br><span class="line">               </span><br><span class="line"><span class="comment"># 把卓别林的vedio clip和TextClip连接起来，添加audio clip</span></span><br><span class="line"> </span><br><span class="line">final = concatenate_videoclips([clip_blurred,txt.set_duration(<span class="number">3</span>)]).\</span><br><span class="line">          set_audio(clip.audio)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 将比特率修改为3000k是为了画面不至于太丑</span></span><br><span class="line"> </span><br><span class="line">final.write_videofile(<span class="string">'../../blurredChaplin.avi'</span>, bitrate=<span class="string">"3000k"</span>)</span><br></pre></td></tr></table></figure>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/16.Logo阴影.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/16.Logo阴影.html" class="post-title-link" itemprop="url">16.Logo阴影</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:25:56 / 修改时间：15:33:13" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:56+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Logo阴影"><a href="#Logo阴影" class="headerlink" title="Logo阴影"></a>Logo阴影</h1><p><img src="./images/magic_logo.gif" alt></p>
+<blockquote>
+<p>!!! 这个例子没代码 这教程。。。。无语了</p>
+</blockquote>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/15.使用画笔特效定格视频中的某一帧.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/15.使用画笔特效定格视频中的某一帧.html" class="post-title-link" itemprop="url">15.使用画笔特效定格视频中的某一帧</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:25:47 / 修改时间：15:32:55" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:47+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="使用画笔特效定格视频中的某一帧"><a href="#使用画笔特效定格视频中的某一帧" class="headerlink" title="使用画笔特效定格视频中的某一帧"></a>使用画笔特效定格视频中的某一帧</h1><blockquote>
+<p>!!!!我擦，这段也跑不通，这教程对新手这么不友善？<br>AttributeError: ‘VideoFileClip’ object has no attribute ‘coreader’</p>
+</blockquote><p>这样的处理手法，会让一帧画面看起来像画一样：</p><ol>
+<li>用Sobel算法算出图像中的边缘，我们就获得了像手绘的黑白画面</li>
+<li>图片矩阵相乘，获得比较亮的画面，再叠加第一步获得的轮廓</li>
+</ol>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/opencv/OpenCV实现指定轮廓羽化效果.html#more" rel="contents">
+              <a class="btn" href="/moviepy/15.使用画笔特效定格视频中的某一帧.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -369,7 +584,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/OpenCV-Python绑定.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/14.特效_部分隐藏字幕.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -383,7 +598,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/opencv/OpenCV-Python绑定.html" class="post-title-link" itemprop="url">OpenCV-Python绑定</a>
+            <a href="/moviepy/14.特效_部分隐藏字幕.html" class="post-title-link" itemprop="url">14.特效_部分隐藏字幕</a>
           
         </h2>
 
@@ -398,25 +613,12 @@
                 
               
 
-              <time title="创建时间：2019-10-08 15:11:00 / 修改时间：20:06:12" itemprop="dateCreated datePublished" datetime="2019-10-08T15:11:00+08:00">2019-10-08</time>
+              <time title="创建时间：2019-11-03 15:25:38 / 修改时间：15:32:41" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:38+08:00">2019-11-03</time>
             </span>
           
             
 
             
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -430,14 +632,91 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>学习：</p><ul>
-<li>OpenCV-Python绑定如何生成？</li>
-<li>如何将新的OpenCV模块扩展到Python？</li>
-</ul><h2 id="OpenCV-Python绑定如何生成？"><a href="#OpenCV-Python绑定如何生成？" class="headerlink" title="OpenCV-Python绑定如何生成？"></a>OpenCV-Python绑定如何生成？</h2><p>在OpenCV中，所有算法均以C++实现。但是这些算法可以从不同的语言（例如Python，Java等）中使用。绑定生成器使这成为可能。这些生成器在C++和Python之间建立了桥梁，使用户能够从Python调用C++函数。为了全面了解后台发生的事情，需要对Python/C API有充分的了解。在官方Python文档中可以找到一个有关将C++函数扩展到Python的简单示例。因此，通过手动编写包装函数将OpenCV中的所有函数扩展到Python是一项耗时的任务。因此，OpenCV以更智能的方式进行操作。OpenCV使用位于中的某些Python脚本，从C++头自动生成这些包装器函数<code>modules/python/src2</code>。我们将调查他们的工作。</p>
+          <h1 id="部分隐藏字幕"><a href="#部分隐藏字幕" class="headerlink" title="部分隐藏字幕"></a>部分隐藏字幕</h1><p><img src="./images/magic_worlds_show.gif" alt><br>奇怪的很，作者这个代码跑不通，不加duration 要报错，加了duration 又没字，尬</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.credits <span class="keyword">import</span> credits1</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载山背景的clip，截取，变慢，画面变暗</span></span><br><span class="line">clip = (VideoFileClip(<span class="string">'./MY_VIDEOS/my_concatenate.mp4'</span>, audio=<span class="literal">False</span>)</span><br><span class="line">           .subclip(<span class="number">0</span>,<span class="number">7</span>)</span><br><span class="line">           .speedx(<span class="number">0.4</span>)</span><br><span class="line">           .fx(vfx.colorx, <span class="number">0.7</span>))</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 保存第一帧画面，一会使用GIMP处理，增加一个mask</span></span><br><span class="line"><span class="comment">#clip.save_frame('./images/magic_Mask.png')</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载mountain mask</span></span><br><span class="line">mask = ImageClip(<span class="string">'./images/magic_Mask.png'</span>,ismask=<span class="literal">True</span>).set_duration(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用一个文本文件内容生成字幕</span></span><br><span class="line">m_credits = credits1(<span class="string">'./worlds/China_zhou.txt'</span>,<span class="number">3</span>*clip.w/<span class="number">4</span>)</span><br><span class="line">scrolling_credits = m_credits.set_pos(<span class="keyword">lambda</span> t:(<span class="string">'center'</span>,<span class="number">-10</span>*t)).set_duration(<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 让字幕以10像素每秒的速度滚动起来</span></span><br><span class="line">final = CompositeVideoClip([clip,</span><br><span class="line">                            scrolling_credits,</span><br><span class="line">                            clip.set_mask(mask)])</span><br><span class="line"></span><br><span class="line">final.write_gif(<span class="string">'magic_worlds_show.gif'</span>,fps=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/13.特效_星战序幕.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/13.特效_星战序幕.html" class="post-title-link" itemprop="url">13.特效_星战序幕</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:25:29 / 修改时间：15:32:26" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:29+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="星战序幕"><a href="#星战序幕" class="headerlink" title="星战序幕"></a>星战序幕</h1><h2 id="星战效果"><a href="#星战效果" class="headerlink" title="星战效果"></a>星战效果</h2><p><img src="./images/starworms.gif" alt></p><h2 id="手册效果"><a href="#手册效果" class="headerlink" title="手册效果"></a>手册效果</h2><p><img src="./images/tutorial.gif" alt></p><blockquote>
+<p>注意： 这里可能存在numpy版本过高的问题，解决方案有两种</p>
+</blockquote><ol>
+<li>安装低版本的numpy，但是可能把你的其他库影响了，比如我的话，tensorflow会被影响</li>
+<li>报错是arraypad.py缺少函数，那我们就把函数添加进去，比如我的路径是：</li>
+</ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\EDZ\AppData\Roaming\Python\Python37\site-packages\numpy\lib\arraypad.py</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/opencv/OpenCV-Python绑定.html#more" rel="contents">
+              <a class="btn" href="/moviepy/13.特效_星战序幕.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -468,7 +747,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/对象检测（objdetect模块）.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/12.特效_一个音频示例.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -482,7 +761,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/opencv/对象检测（objdetect模块）.html" class="post-title-link" itemprop="url">对象检测（objdetect模块）</a>
+            <a href="/moviepy/12.特效_一个音频示例.html" class="post-title-link" itemprop="url">12.特效_一个音频示例</a>
           
         </h2>
 
@@ -497,33 +776,12 @@
                 
               
 
-              <time title="创建时间：2019-10-08 14:11:00" itemprop="dateCreated datePublished" datetime="2019-10-08T14:11:00+08:00">2019-10-08</time>
+              <time title="创建时间：2019-11-03 15:25:16 / 修改时间：15:32:09" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:16+08:00">2019-11-03</time>
             </span>
           
             
 
             
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -537,19 +795,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="级联分类器"><a href="#级联分类器" class="headerlink" title="级联分类器"></a>级联分类器</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>我们将学习Haar级联对象检测的工作原理。</li>
-<li>我们将使用基于<code>Haar Feature</code>的<code>Cascade</code>分类器了解人脸检测和眼睛检测的基础知识<br>我们将使用<code>cv :: CascadeClassifier</code>类来检测视频流中的对象。特别是，我们将使用以下功能：<br><code>cv :: CascadeClassifier :: load</code>来加载<code>.xml</code>分类器文件。它可以是<code>Haar</code>或<code>LBP</code>分类器<br><code>cv :: CascadeClassifier :: detectMultiScale</code>执行检测。</li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/对象检测（objdetect模块）.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
+          <h1 id="一个音频示例"><a href="#一个音频示例" class="headerlink" title="一个音频示例"></a>一个音频示例</h1><p>使用MoviePy组合带有声音的影片剪辑的示例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Description of the video:</span></span><br><span class="line"><span class="string">The screen is split in two parts showing Carry and Audrey at the phone,</span></span><br><span class="line"><span class="string">talking at the same time, because it is actually two scenes of a same</span></span><br><span class="line"><span class="string">movie put together.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.drawing <span class="keyword">import</span> color_split</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">duration = <span class="number">6</span> <span class="comment"># duration of the final clip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># LOAD THE MAIN SCENE</span></span><br><span class="line"><span class="comment"># this small video contains the two scenes that we will put together.</span></span><br><span class="line"></span><br><span class="line">main_clip = VideoFileClip(<span class="string">"../../videos/charadePhone.mp4"</span>)</span><br><span class="line">W,H = main_clip.size</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># MAKE THE LEFT CLIP : cut, crop, add a mask </span></span><br><span class="line">                            </span><br><span class="line">mask = color_split((<span class="number">2</span>*W/<span class="number">3</span>,H),</span><br><span class="line">                   p1=(W/<span class="number">3</span>,H), p2=(<span class="number">2</span>*W/<span class="number">3</span>,<span class="number">0</span>),</span><br><span class="line">                   col1=<span class="number">1</span>, col2=<span class="number">0</span>,</span><br><span class="line">                   grad_width=<span class="number">2</span>)</span><br><span class="line">                   </span><br><span class="line">mask_clip = ImageClip(mask, ismask=<span class="literal">True</span>)</span><br><span class="line">                   </span><br><span class="line">clip_left = (main_clip.coreader()</span><br><span class="line">                      .subclip(<span class="number">0</span>,duration)</span><br><span class="line">                      .crop( x1=<span class="number">60</span>, x2=<span class="number">60</span> + <span class="number">2</span>*W/<span class="number">3</span>)</span><br><span class="line">                      .set_mask(mask_clip))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># MAKE THE RIGHT CLIP : cut, crop, add a mask </span></span><br><span class="line">                   </span><br><span class="line">mask = color_split((<span class="number">2</span>*W/<span class="number">3</span>,H),</span><br><span class="line">                   p1=(<span class="number">2</span>,H), p2=(W/<span class="number">3</span>+<span class="number">2</span>,<span class="number">0</span>),</span><br><span class="line">                   col1=<span class="number">0</span>, col2=<span class="number">1</span>,</span><br><span class="line">                   grad_width=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">mask_clip = ImageClip(mask, ismask=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">clip_right = (main_clip.coreader()</span><br><span class="line">                       .subclip(<span class="number">21</span>,<span class="number">21</span>+duration)</span><br><span class="line">                       .crop(x1=<span class="number">70</span>, x2=<span class="number">70</span>+<span class="number">2</span>*W/<span class="number">3</span>)</span><br><span class="line">                       .set_mask(mask_clip))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ASSEMBLE AND WRITE THE MOVIE TO A FILE</span></span><br><span class="line"></span><br><span class="line">cc = CompositeVideoClip([clip_right.set_pos(<span class="string">'right'</span>).volumex(<span class="number">0.4</span>),</span><br><span class="line">                         clip_left.set_pos(<span class="string">'left'</span>).volumex(<span class="number">0.4</span>)],</span><br><span class="line">                         size = (W,H))</span><br><span class="line"><span class="comment">#cc.preview()</span></span><br><span class="line">cc.write_videofile(<span class="string">"../../biphone3.avi"</span>,fps=<span class="number">24</span>, codec=<span class="string">'mpeg4'</span>)</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -575,7 +822,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/机器学习.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/11.特效_一个简单的音乐视频.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -589,7 +836,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/opencv/机器学习.html" class="post-title-link" itemprop="url">机器学习</a>
+            <a href="/moviepy/11.特效_一个简单的音乐视频.html" class="post-title-link" itemprop="url">11.特效_一个简单的音乐视频</a>
           
         </h2>
 
@@ -604,33 +851,12 @@
                 
               
 
-              <time title="创建时间：2019-10-08 13:11:00" itemprop="dateCreated datePublished" datetime="2019-10-08T13:11:00+08:00">2019-10-08</time>
+              <time title="创建时间：2019-11-03 15:25:04 / 修改时间：15:31:53" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:04+08:00">2019-11-03</time>
             </span>
           
             
 
             
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -644,18 +870,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="K最近邻"><a href="#K最近邻" class="headerlink" title="K最近邻"></a>K最近邻</h1><h2 id="了解k最近邻居"><a href="#了解k最近邻居" class="headerlink" title="了解k最近邻居"></a>了解k最近邻居</h2><h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><ul>
-<li>在本章中，我们将了解k最近邻（kNN）算法的概念。</li>
-</ul><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><p>kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。</p><p><img src="/images/knn_theory.png" alt></p><p>在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为<code>Class</code>。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。<em>（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。每个数据都有两个要素x和y坐标。您可以在2D坐标空间中表示此数据，对吧？现在假设如果有三个要素，则需要3D空间，现在考虑N个要素，需要N维空间，对吗？这个N维空间就是其要素空间，在我们的图像中，您可以将其视为2D情况有两个功能）</em>。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/机器学习.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
+          <h1 id="一个简单的音乐视频"><a href="#一个简单的音乐视频" class="headerlink" title="一个简单的音乐视频"></a>一个简单的音乐视频</h1><p>这是一个没有声音（音乐视频的声音）的示例，很快将被一个真实的音乐视频示例替换（代码将保持99％相同）。<br>MoviePy的理念是，对于我要制作的每个新音乐视频，我只需要复制/粘贴此代码，并修改几行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># UKULELE CLIP, OBTAINED BY CUTTING AND CROPPING</span></span><br><span class="line"><span class="comment"># RAW FOOTAGE</span></span><br><span class="line"></span><br><span class="line">ukulele = VideoFileClip(<span class="string">"../../videos/moi_ukulele.MOV"</span>, audio=<span class="literal">False</span>).\</span><br><span class="line">               subclip(<span class="number">60</span>+<span class="number">33</span>, <span class="number">60</span>+<span class="number">50</span>).\</span><br><span class="line">               crop(<span class="number">486</span>, <span class="number">180</span>, <span class="number">1196</span>, <span class="number">570</span>)</span><br><span class="line"></span><br><span class="line">w,h = moviesize = ukulele.size</span><br><span class="line"></span><br><span class="line"><span class="comment"># THE PIANO FOOTAGE IS DOWNSIZED, HAS A WHITE MARGIN, IS</span></span><br><span class="line"><span class="comment"># IN THE BOTTOM RIGHT CORNER </span></span><br><span class="line"></span><br><span class="line">piano = (VideoFileClip(<span class="string">"../../videos/douceamb.mp4"</span>,audio=<span class="literal">False</span>).</span><br><span class="line">         subclip(<span class="number">30</span>,<span class="number">50</span>).</span><br><span class="line">         resize((w/<span class="number">3</span>,h/<span class="number">3</span>)).    <span class="comment"># one third of the total screen</span></span><br><span class="line">         margin( <span class="number">6</span>,color=(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>)).  <span class="comment">#white margin</span></span><br><span class="line">         margin( bottom=<span class="number">20</span>, right=<span class="number">20</span>, opacity=<span class="number">0</span>). <span class="comment"># transparent</span></span><br><span class="line">         set_pos((<span class="string">'right'</span>,<span class="string">'bottom'</span>)) )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># A CLIP WITH A TEXT AND A BLACK SEMI-OPAQUE BACKGROUND</span></span><br><span class="line"></span><br><span class="line">txt = TextClip(<span class="string">"V. Zulkoninov - Ukulele Sonata"</span>, font=<span class="string">'Amiri-regular'</span>,</span><br><span class="line">	               color=<span class="string">'white'</span>,fontsize=<span class="number">24</span>)</span><br><span class="line"></span><br><span class="line">txt_col = txt.on_color(size=(ukulele.w + txt.w,txt.h<span class="number">-10</span>),</span><br><span class="line">                  color=(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>), pos=(<span class="number">6</span>,<span class="string">'center'</span>), col_opacity=<span class="number">0.6</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># THE TEXT CLIP IS ANIMATED.</span></span><br><span class="line"><span class="comment"># I am *NOT* explaining the formula, understands who can/want.</span></span><br><span class="line">txt_mov = txt_col.set_pos( <span class="keyword">lambda</span> t: (max(w/<span class="number">30</span>,int(w<span class="number">-0.5</span>*w*t)),</span><br><span class="line">                                  max(<span class="number">5</span>*h/<span class="number">6</span>,int(<span class="number">100</span>*t))) )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># FINAL ASSEMBLY</span></span><br><span class="line">final = CompositeVideoClip([ukulele,txt_mov,piano])</span><br><span class="line">final.subclip(<span class="number">0</span>,<span class="number">5</span>).write_videofile(<span class="string">"ukulele.avi"</span>,fps=<span class="number">24</span>,codec=<span class="string">'libx264'</span>)</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -681,7 +897,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/计算摄影.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/10.特效_重建15世纪舞蹈.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -695,7 +911,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/opencv/计算摄影.html" class="post-title-link" itemprop="url">计算摄影</a>
+            <a href="/moviepy/10.特效_重建15世纪舞蹈.html" class="post-title-link" itemprop="url">10.特效_重建15世纪舞蹈</a>
           
         </h2>
 
@@ -710,33 +926,12 @@
                 
               
 
-              <time title="创建时间：2019-10-08 13:10:00" itemprop="dateCreated datePublished" datetime="2019-10-08T13:10:00+08:00">2019-10-08</time>
+              <time title="创建时间：2019-11-03 15:24:53 / 修改时间：15:31:35" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:53+08:00">2019-11-03</time>
             </span>
           
             
 
             
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -750,19 +945,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="图像去噪"><a href="#图像去噪" class="headerlink" title="图像去噪"></a>图像去噪</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>您将了解有关去除图像中噪声的非局部均值去噪算法。</li>
-<li>您将看到不同的函数，例如<code>cv.fastNlMeansDenoising()</code>，<code>cv.fastNlMeansDenoisingColored()</code>等。</li>
-</ul><h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><p>在前面的章节中，我们看到了许多图像平滑技术，例如高斯模糊，中值模糊等，它们在某种程度上可以消除少量噪声。在这些技术中，我们在像素周围采取了一个较小的邻域，并进行了一些操作（例如高斯加权平均值，值的中位数等）来替换中心元素。简而言之，在像素处去除噪声是其周围的局部现象。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/计算摄影.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
+          <h1 id="重建15世纪舞蹈"><a href="#重建15世纪舞蹈" class="headerlink" title="重建15世纪舞蹈"></a>重建15世纪舞蹈</h1><p>素材来源在注释中，这个代码比较综合，适合实战练习<br><img src="./images/15th_dancing.gif" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Result: https://www.youtube.com/watch?v=Qu7HJrsEYFg</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This is how we can imagine knights dancing at the 15th century, based on a very</span></span><br><span class="line"><span class="string">serious historical study here: https://www.youtube.com/watch?v=zvCvOC2VwDc</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Here is what we do:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0- Get the video of a dancing knight, and a (Creative Commons) audio music file.</span></span><br><span class="line"><span class="string">1- load the audio file and automatically find the tempo</span></span><br><span class="line"><span class="string">2- load the video and automatically find a segment that loops well</span></span><br><span class="line"><span class="string">3- extract this segment, slow it down so that it matches the audio tempo,</span></span><br><span class="line"><span class="string">   and make it loop forever.</span></span><br><span class="line"><span class="string">4- Symmetrize this segment so that we will get two knights instead of one</span></span><br><span class="line"><span class="string">5- Add a title screen and some credits, write to a file.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This example has been originally edited in an IPython Notebook, which makes it</span></span><br><span class="line"><span class="string">easy to preview and fine-tune each part of the editing.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.cuts <span class="keyword">import</span> find_video_period</span><br><span class="line"><span class="keyword">from</span> moviepy.audio.tools.cuts <span class="keyword">import</span> find_audio_period</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Next lines are for downloading the required videos from Youtube.</span></span><br><span class="line"><span class="comment"># To do this you must have youtube-dl installed, otherwise you will need to</span></span><br><span class="line"><span class="comment"># download the videos by hand and rename them, as follows:</span></span><br><span class="line"><span class="comment">#     https://www.youtube.com/watch?v=zvCvOC2VwDc =&gt; knights.mp4</span></span><br><span class="line"><span class="comment">#     https://www.youtube.com/watch?v=lkY3Ek9VPtg =&gt; frontier.mp4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">"knights.mp4"</span>):</span><br><span class="line">    os.system(<span class="string">"youtube-dl zvCvOC2VwDc -o knights.mp4"</span>)</span><br><span class="line">    os.system(<span class="string">"youtube-dl lkY3Ek9VPtg -o frontier.mp4"</span>)</span><br><span class="line"><span class="comment">#==========</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># LOAD, EDIT, ANALYZE THE AUDIO</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">audio = (AudioFileClip(<span class="string">"frontier.mp4"</span>)</span><br><span class="line">         .subclip((<span class="number">4</span>,<span class="number">7</span>), (<span class="number">4</span>,<span class="number">18</span>))</span><br><span class="line">         .audio_fadein(<span class="number">1</span>)</span><br><span class="line">         .audio_fadeout(<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">audio_period = find_audio_period(audio)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'Analyzed the audio, found a period of %.02f seconds'</span>%audio_period)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># LOAD, EDIT, ANALYZE THE VIDEO</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clip = (VideoFileClip(<span class="string">"./knights.mp4"</span>, audio=<span class="literal">False</span>)</span><br><span class="line">        .subclip((<span class="number">1</span>,<span class="number">24.15</span>),(<span class="number">1</span>,<span class="number">26</span>))</span><br><span class="line">        .crop(x1=<span class="number">332</span>, x2=<span class="number">910</span>, y2=<span class="number">686</span>))</span><br><span class="line"></span><br><span class="line">video_period = find_video_period(clip, tmin=<span class="number">.3</span>)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'Analyzed the video, found a period of %.02f seconds'</span>%video_period)</span><br><span class="line"></span><br><span class="line">edited_right = (clip.subclip(<span class="number">0</span>,video_period)</span><br><span class="line">                .speedx(final_duration=<span class="number">2</span>*audio_period)</span><br><span class="line">                .fx(vfx.loop, duration=audio.duration)</span><br><span class="line">                .subclip(<span class="number">.25</span>))</span><br><span class="line"></span><br><span class="line">edited_left = edited_right.fx(vfx.mirror_x)</span><br><span class="line"></span><br><span class="line">dancing_knights = (clips_array([[edited_left, edited_right]])</span><br><span class="line">                   .fadein(<span class="number">1</span>).fadeout(<span class="number">1</span>).set_audio(audio).subclip(<span class="number">.3</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># MAKE THE TITLE SCREEN</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">txt_title = (TextClip(<span class="string">"15th century dancing\n(hypothetical)"</span>, fontsize=<span class="number">70</span>,</span><br><span class="line">               font=<span class="string">"Century-Schoolbook-Roman"</span>, color=<span class="string">"white"</span>)</span><br><span class="line">             .margin(top=<span class="number">15</span>, opacity=<span class="number">0</span>)</span><br><span class="line">             .set_position((<span class="string">"center"</span>,<span class="string">"top"</span>)))</span><br><span class="line"></span><br><span class="line">title = (CompositeVideoClip([dancing_knights.to_ImageClip(), txt_title])</span><br><span class="line">         .fadein(<span class="number">.5</span>)</span><br><span class="line">         .set_duration(<span class="number">3.5</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># MAKE THE CREDITS SCREEN</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">txt_credits = <span class="string">"""</span></span><br><span class="line"><span class="string">CREDITS</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Video excerpt: Le combat en armure au XVe siècle</span></span><br><span class="line"><span class="string">By J. Donzé, D. Jaquet, T. Schmuziger,</span></span><br><span class="line"><span class="string">Université de Genève, Musée National de Moyen Age</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Music: "Frontier", by DOCTOR VOX</span></span><br><span class="line"><span class="string">Under licence Creative Commons</span></span><br><span class="line"><span class="string">https://www.youtube.com/user/DOCTORVOXofficial</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Video editing © Zulko 2014</span></span><br><span class="line"><span class="string"> Licence Creative Commons (CC BY 4.0)</span></span><br><span class="line"><span class="string">Edited with MoviePy: http://zulko.github.io/moviepy/</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">credits = (TextClip(txt_credits, color=<span class="string">'white'</span>,</span><br><span class="line">            font=<span class="string">"Century-Schoolbook-Roman"</span>, fontsize=<span class="number">35</span>, kerning=<span class="number">-2</span>,</span><br><span class="line">            interline=<span class="number">-1</span>, bg_color=<span class="string">'black'</span>, size=title.size)</span><br><span class="line">          .set_duration(<span class="number">2.5</span>)</span><br><span class="line">          .fadein(<span class="number">.5</span>)</span><br><span class="line">          .fadeout(<span class="number">.5</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ASSEMBLE EVERYTHING, WRITE TO FILE</span></span><br><span class="line"></span><br><span class="line">final = concatenate_videoclips([title, dancing_knights, credits])</span><br><span class="line"></span><br><span class="line">final.write_videofile(<span class="string">"dancing_knights.mp4"</span>, fps=clip.fps,</span><br><span class="line">                      audio_bitrate=<span class="string">"1000k"</span>, bitrate=<span class="string">"4000k"</span>)</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -788,7 +972,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/相机校准和3D重建.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/9.特效_炫动的字母.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -802,7 +986,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/opencv/相机校准和3D重建.html" class="post-title-link" itemprop="url">相机校准和3D重建</a>
+            <a href="/moviepy/9.特效_炫动的字母.html" class="post-title-link" itemprop="url">9.特效_炫动的字母</a>
           
         </h2>
 
@@ -817,33 +1001,12 @@
                 
               
 
-              <time title="创建时间：2019-10-07 23:11:00" itemprop="dateCreated datePublished" datetime="2019-10-07T23:11:00+08:00">2019-10-07</time>
+              <time title="创建时间：2019-11-03 15:24:42 / 修改时间：15:31:16" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:42+08:00">2019-11-03</time>
             </span>
           
             
 
             
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -857,450 +1020,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="相机校准"><a href="#相机校准" class="headerlink" title="相机校准"></a>相机校准</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在本节中，我们将学习</p><ul>
-<li>相机造成的失真类型</li>
-<li>如何找到相机的内在和外在特性</li>
-<li>如何根据这些属性使图像不失真</li>
-</ul><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>一些针孔相机会给图像带来明显的失真。两种主要的变形是<strong>径向变形</strong>和<strong>切向变形</strong>。</p><p>径向变形会导致直线出现弯曲。距图像中心越远，径向畸变越大。例如，下面显示一个图像，其中棋盘的两个边缘用红线标记。但是，您会看到国际象棋棋盘的边框不是直线，并且与红线不匹配。所有预期的直线都凸出。有关更多详细信息，请访问“ <a href="http://en.wikipedia.org/wiki/Distortion_%28optics%29" target="_blank" rel="noopener">失真（光学）</a> ”。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/相机校准和3D重建.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/视频分析.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/opencv/视频分析.html" class="post-title-link" itemprop="url">视频分析</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-06 23:11:00" itemprop="dateCreated datePublished" datetime="2019-10-06T23:11:00+08:00">2019-10-06</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="如何使用背景减法"><a href="#如何使用背景减法" class="headerlink" title="如何使用背景减法"></a>如何使用背景减法</h1><p>在视频流算法上找到用途，例如：运动提取，特征跟踪和前景提取。</p><p>我们将学习如何从视频和图像序列中提取前景蒙版并显示它们。</p><ul>
-<li>背景减法（BS）是通过使用静态相机来生成前景蒙版（即，包含属于场景中的移动物体的像素的二进制图像）的通用且广泛使用的技术。</li>
-<li>顾名思义，BS计算前景蒙板，在当前帧和背景模型之间执行减法运算，其中包含场景的静态部分，或者更一般而言，考虑到所观察场景的特征，可以将其视为背景的所有内容。</li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/视频分析.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/特征检测与描述.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/opencv/特征检测与描述.html" class="post-title-link" itemprop="url">特征检测与描述</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-05 23:11:00" itemprop="dateCreated datePublished" datetime="2019-10-05T23:11:00+08:00">2019-10-05</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="了解功能"><a href="#了解功能" class="headerlink" title="了解功能"></a>了解功能</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>在本章中，我们将尝试理解什么是特征，为什么重要，拐角重要等。</li>
-</ul><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你们大多数人都会玩拼图游戏。您会得到很多小图像，需要正确组装它们以形成大的真实图像。问题是，你怎么做？将相同的理论投影到计算机程序上，以便计算机可以玩拼图游戏呢？如果计算机可以玩拼图游戏，为什么我们不能给计算机提供很多自然风光的真实图像，并告诉计算机将所有这些图像拼接成一个大的单个图像呢？如果计算机可以将多个自然图像缝合在一起，那么如何给建筑物或任何结构提供大量图片并告诉计算机从中创建3D模型呢？</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/特征检测与描述.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/OpenCV中的图像处理.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/opencv/OpenCV中的图像处理.html" class="post-title-link" itemprop="url">OpenCV中的图像处理</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-04 23:11:00" itemprop="dateCreated datePublished" datetime="2019-10-04T23:11:00+08:00">2019-10-04</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="改变色彩空间"><a href="#改变色彩空间" class="headerlink" title="改变色彩空间"></a>改变色彩空间</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>在本教程中，您将学习如何将图像从一种颜色空间转换为另一种颜色空间，例如<code>BGR ↔ Gray</code>，<code>BGR ↔ HSV</code>等。</li>
-<li>除此之外，我们还将创建一个应用程序，以提取视频中的彩色对象</li>
-<li>您将学习以下功能：<code>cv.cvtColor()</code>，<code>cv.inRange()</code>等</li>
-</ul><h2 id="改变色彩空间-1"><a href="#改变色彩空间-1" class="headerlink" title="改变色彩空间"></a>改变色彩空间</h2><p>OpenCV提供了150多种颜色空间转换方法。但是，我们将只研究两种使用最广泛的工具，即<code>BGR ↔ Gray</code>和<code>BGR ↔ HSV</code>。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/OpenCV中的图像处理.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/OpenCV的核心操作.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/opencv/OpenCV的核心操作.html" class="post-title-link" itemprop="url">OpenCV的核心操作</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-03 23:11:00" itemprop="dateCreated datePublished" datetime="2019-10-03T23:11:00+08:00">2019-10-03</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="图像的基本操作"><a href="#图像的基本操作" class="headerlink" title="图像的基本操作"></a>图像的基本操作</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>访问像素值并修改它们</li>
-<li>访问图像属性</li>
-<li>设置兴趣区（ROI）</li>
-<li>分割和合并图像<br>本节中的几乎所有操作都主要与Numpy相关，而不是与OpenCV相关。要使用OpenCV编写更好的优化代码，需要Numpy的丰富知识。</li>
-</ul><p><em>（由于大多数示例都是单行代码，因此示例将在Python终端中显示）</em></p><h2 id="访问和修改像素值"><a href="#访问和修改像素值" class="headerlink" title="访问和修改像素值"></a>访问和修改像素值</h2>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/OpenCV的核心操作.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
+          <h1 id="炫动的字母"><a href="#炫动的字母" class="headerlink" title="炫动的字母"></a>炫动的字母</h1><p><img src="./images/cool_worlds.gif" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.segmenting <span class="keyword">import</span> findObjects</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 目标是创建炫动的文字，先创建TextClip，然后设置它居中</span></span><br><span class="line"> </span><br><span class="line">screensize = (<span class="number">720</span>,<span class="number">460</span>)</span><br><span class="line">txtClip = TextClip(<span class="string">'Cool effect'</span>,color=<span class="string">'white'</span>, font=<span class="string">"Amiri-Bold"</span>,</span><br><span class="line">                   kerning = <span class="number">5</span>, fontsize=<span class="number">100</span>)</span><br><span class="line">cvc = CompositeVideoClip( [txtClip.set_pos(<span class="string">'center'</span>)],</span><br><span class="line">                        size=screensize)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 下面的四个函数，定义了四种移动字母的方式</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># helper function</span></span><br><span class="line">rotMatrix = <span class="keyword">lambda</span> a: np.array( [[np.cos(a),np.sin(a)], </span><br><span class="line">                                 [-np.sin(a),np.cos(a)]] )</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vortex</span><span class="params">(screenpos,i,nletters)</span>:</span></span><br><span class="line">    d = <span class="keyword">lambda</span> t : <span class="number">1.0</span>/(<span class="number">0.3</span>+t**<span class="number">8</span>) <span class="comment">#damping</span></span><br><span class="line">    a = i*np.pi/ nletters <span class="comment"># angle of the movement</span></span><br><span class="line">    v = rotMatrix(a).dot([<span class="number">-1</span>,<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> i%<span class="number">2</span> : v[<span class="number">1</span>] = -v[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">lambda</span> t: screenpos+<span class="number">400</span>*d(t)*rotMatrix(<span class="number">0.5</span>*d(t)*a).dot(v)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cascade</span><span class="params">(screenpos,i,nletters)</span>:</span></span><br><span class="line">    v = np.array([<span class="number">0</span>,<span class="number">-1</span>])</span><br><span class="line">    d = <span class="keyword">lambda</span> t : <span class="number">1</span> <span class="keyword">if</span> t&lt;<span class="number">0</span> <span class="keyword">else</span> abs(np.sinc(t)/(<span class="number">1</span>+t**<span class="number">4</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">lambda</span> t: screenpos+v*<span class="number">400</span>*d(t<span class="number">-0.15</span>*i)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arrive</span><span class="params">(screenpos,i,nletters)</span>:</span></span><br><span class="line">    v = np.array([<span class="number">-1</span>,<span class="number">0</span>])</span><br><span class="line">    d = <span class="keyword">lambda</span> t : max(<span class="number">0</span>, <span class="number">3</span><span class="number">-3</span>*t)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">lambda</span> t: screenpos<span class="number">-400</span>*v*d(t<span class="number">-0.2</span>*i)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vortexout</span><span class="params">(screenpos,i,nletters)</span>:</span></span><br><span class="line">    d = <span class="keyword">lambda</span> t : max(<span class="number">0</span>,t) <span class="comment">#damping</span></span><br><span class="line">    a = i*np.pi/ nletters <span class="comment"># angle of the movement</span></span><br><span class="line">    v = rotMatrix(a).dot([<span class="number">-1</span>,<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> i%<span class="number">2</span> : v[<span class="number">1</span>] = -v[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">lambda</span> t: screenpos+<span class="number">400</span>*d(t<span class="number">-0.1</span>*i)*rotMatrix(<span class="number">-0.2</span>*d(t)*a).dot(v)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># WE USE THE PLUGIN findObjects TO LOCATE AND SEPARATE EACH LETTER</span></span><br><span class="line"> </span><br><span class="line">letters = findObjects(cvc) <span class="comment"># a list of ImageClips</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 让字母动起来</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">moveLetters</span><span class="params">(letters, funcpos)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [ letter.set_pos(funcpos(letter.screenpos,i,len(letters)))</span><br><span class="line">              <span class="keyword">for</span> i,letter <span class="keyword">in</span> enumerate(letters)]</span><br><span class="line"> </span><br><span class="line">clips = [ CompositeVideoClip( moveLetters(letters,funcpos),</span><br><span class="line">                              size = screensize).subclip(<span class="number">0</span>,<span class="number">5</span>)</span><br><span class="line">          <span class="keyword">for</span> funcpos <span class="keyword">in</span> [vortex, cascade, arrive, vortexout] ]</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 连接，写入文件</span></span><br><span class="line">final_clip = concatenate_videoclips(clips)</span><br><span class="line">final_clip.write_gif(<span class="string">'./images/cool_worlds.gif'</span>,fps=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -1323,7 +1044,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1359,7 +1080,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

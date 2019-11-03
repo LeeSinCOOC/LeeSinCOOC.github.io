@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="4.MoviePy-Clips变换与特效MoviePy中的几种对clip的修改修改clip属性的方法有 clip.set_duration, clip.set_audio clip.set_mask clip.set_start 等 已经实现的特效 clip.subclip(t1,t2):截取t1到t2时间段内的片段 还有一些高级效果，loop：让clip循环播放 time_mirror:让cli">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.MoviePy-Clips变换与特效">
+<meta property="og:url" content="http://leesin.cc/moviepy/4.MoviePy-Clips变换与特效.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="4.MoviePy-Clips变换与特效MoviePy中的几种对clip的修改修改clip属性的方法有 clip.set_duration, clip.set_audio clip.set_mask clip.set_start 等 已经实现的特效 clip.subclip(t1,t2):截取t1到t2时间段内的片段 还有一些高级效果，loop：让clip循环播放 time_mirror:让cli">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/my_fl.PNG">
+<meta property="og:updated_time" content="2019-11-03T07:29:25.899Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.MoviePy-Clips变换与特效">
+<meta name="twitter:description" content="4.MoviePy-Clips变换与特效MoviePy中的几种对clip的修改修改clip属性的方法有 clip.set_duration, clip.set_audio clip.set_mask clip.set_start 等 已经实现的特效 clip.subclip(t1,t2):截取t1到t2时间段内的片段 还有一些高级效果，loop：让clip循环播放 time_mirror:让cli">
+<meta name="twitter:image" content="http://leesin.cc/moviepy/images/my_fl.PNG">
+  <link rel="canonical" href="http://leesin.cc/moviepy/4.MoviePy-Clips变换与特效">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>4.MoviePy-Clips变换与特效 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/4.MoviePy-Clips变换与特效.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">4.MoviePy-Clips变换与特效
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:23:45 / 修改时间：15:29:25" itemprop="dateCreated datePublished" datetime="2019-11-03T15:23:45+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="4-MoviePy-Clips变换与特效"><a href="#4-MoviePy-Clips变换与特效" class="headerlink" title="4.MoviePy-Clips变换与特效"></a>4.MoviePy-Clips变换与特效</h1><h2 id="MoviePy中的几种对clip的修改"><a href="#MoviePy中的几种对clip的修改" class="headerlink" title="MoviePy中的几种对clip的修改"></a>MoviePy中的几种对clip的修改</h2><h3 id="修改clip属性的方法有"><a href="#修改clip属性的方法有" class="headerlink" title="修改clip属性的方法有"></a>修改clip属性的方法有</h3><ul>
+<li>clip.set_duration,</li>
+<li>clip.set_audio</li>
+<li>clip.set_mask</li>
+<li>clip.set_start 等</li>
+</ul><h3 id="已经实现的特效"><a href="#已经实现的特效" class="headerlink" title="已经实现的特效"></a>已经实现的特效</h3><ul>
+<li>clip.subclip(t1,t2):截取t1到t2时间段内的片段</li>
+<li>还有一些高级效果，loop：让clip循环播放</li>
+<li>time_mirror:让clip倒播，这些方法位于特殊的模块moviepy.video.fx, moviepy.audio.fx，应用clip.fx方法，比如clip.fx(time_mirror)让视频倒播。</li>
+<li>也可以你自己创造一些需要的特效。<br>以上的特效其实本质上并不是原地直接修改的（没有对原始视频修改），而是根据修改产生新的clip。所以，我们如果想让修改生效，需要将修改过的产生的clip赋值给某clip，保存修改。举个栗子。</li>
+</ul><a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">my_clip = VideoFileClip(<span class="string">"some_file.mp4"</span>)</span><br><span class="line">my_clip.set_start(t=<span class="number">5</span>) <span class="comment">#没有做任何改变，修改会丢失</span></span><br><span class="line">my_new_clip = my_clip.set_start(t=<span class="number">5</span>) <span class="comment">#这样才对。moviepy中，修改过的clip要重新赋值给变量，修改才会被保存</span></span><br></pre></td></tr></table></figure>
+
+<p>所以，当我们写出clip.resize(width=640),moviepy并不是立刻就逐帧修改clip。一般只会先修改第一帧，其他的左右的帧只有在需要的时候(最后写入文件或者预览)才会被resize。</p>
+<p>另一方面，可以这样讲，创建一个clip，几乎是不会占用时间和内存的，几乎所有的计算其实发生在最后转换的时刻。</p>
+<h2 id="moviepy中的时间表示"><a href="#moviepy中的时间表示" class="headerlink" title="moviepy中的时间表示"></a>moviepy中的时间表示</h2><p>很多方法都接受时间参数，<code>clip.subclip(t_start,t_end)</code>，截取两个时间点之间的clip片段，在这个方法中，时间既可以用<code>(t_start=230.54)</code>,以秒的时间来表示，也可以用<code>(t_start=(3,50.54))</code>，<br>以3分50.54秒的形式来表示，还可以 <code>(t_start=(0,3,50.54))</code>或者 <code>(t_start=(00:03:50.54))</code>,以，小时，分钟，秒的形式来表示。</p>
+<p>大多数没有赋值的时间参数会有一个默认值，比如<code>clip.subclip(t_start=50)</code>，t_end的默认值就是视频的长度，<code>clip.subclip(t_end=50)</code>，那么t_start就默认为0.当时间是负数的时候，代表倒数n秒。<br>比如，<code>clip.subclip(-20, -10)</code>会截取倒数20秒到倒数10秒之间的片段。</p>
+<h2 id="改变clip属性的方法"><a href="#改变clip属性的方法" class="headerlink" title="改变clip属性的方法"></a>改变clip属性的方法</h2><h3 id="clip-fx"><a href="#clip-fx" class="headerlink" title="clip.fx"></a>clip.fx</h3><p>假定我们很多修改clip的方法。这些方法呢，都是输入一个clip和一些参数，输出一个新的clip。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">effect_1(clip, args1) -&gt; new clip</span><br><span class="line">effect_2(clip, args2) -&gt; new clip</span><br><span class="line">effect_3(clip, args3) -&gt; new clip</span><br></pre></td></tr></table></figure>
+
+<p>如果我们要按顺序，依次修改clip，那么你可能会这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">newclip =  effect_3( effect_2( effect_1(clip, args3), args2), args1)</span><br></pre></td></tr></table></figure>
+
+<p>但是上面的代码可读性不高，我们可以利用clip.fx来实现一种更简练的写法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">newclip = (clip.fx( effect_1, args1)</span><br><span class="line">               .fx( effect_2, args2)</span><br><span class="line">               .fx( effect_3, args3))</span><br></pre></td></tr></table></figure>
+
+<p>看上去是不是好多了。在模块<code>moviepy.video.fx</code>和<code>moviepy.audio.fx</code>中已经实现来一些修改clip的方法，这些fx的方法会自动的作用到和clip相关的声音和mask上，所以我们在修改clip的时候并不需要去关心声音和mask的处理，除非我们确实要对声音或者mask做一些特殊的处理。</p>
+<p>在实际应用中，当我们使用<code>from moviepy import.editor *</code>的时候，这两个模块会被加载为vfx和afx，所以我们会像下面这样写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line">clip = (VideoFileClip(<span class="string">"myvideo.avi"</span>)</span><br><span class="line">        .fx( vfx.resize, width=<span class="number">460</span>) <span class="comment"># 尺寸变化，保持纵横比</span></span><br><span class="line">        .fx( vfx.speedx, <span class="number">2</span>) <span class="comment"># 2倍速</span></span><br><span class="line">        .fx( vfx.colorx, <span class="number">0.5</span>)) <span class="comment"># 画面调暗</span></span><br></pre></td></tr></table></figure>
+
+<p>为方便起见，当我们使用<code>moviepy.editor</code>的时候，比如我们使用<code>resize</code>的时候，我们经常会使用<code>clip.resize(...)</code>这样的简便的写法来代替<code>clip.fx( vfx.resize, ...)</code>的写法。<br>按照上面的操作，我们生成一个视频来看一下</p>
+<h4 id="代码示例："><a href="#代码示例：" class="headerlink" title="代码示例："></a>代码示例：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line">clip = (VideoFileClip(<span class="string">"./MY_VIDEOS/my_concatenate.mp4"</span>)</span><br><span class="line">        .fx( vfx.resize, width=<span class="number">460</span>) <span class="comment"># 尺寸变化，保持纵横比</span></span><br><span class="line">        .fx( vfx.speedx, <span class="number">2</span>) <span class="comment"># 2倍速</span></span><br><span class="line">        .fx( vfx.colorx, <span class="number">0.5</span>)) <span class="comment"># 画面调暗</span></span><br><span class="line"></span><br><span class="line">clip.write_videofile(<span class="string">'./MY_VIDEOS/my_vfx.mp4'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>就不附上效果图了，加速也不太好表示，后面学制作GIF就可以展示了</p>
+<h2 id="创建用户自定义特效的方法"><a href="#创建用户自定义特效的方法" class="headerlink" title="创建用户自定义特效的方法"></a>创建用户自定义特效的方法</h2><h3 id="clip-fl"><a href="#clip-fl" class="headerlink" title="clip.fl"></a>clip.fl</h3><p>我们可以使用<code>clip.fl_time</code>、<code>clip.fl_image</code>或者更普遍的<code>clip.fl</code>来修改一个<code>clip</code>。</p>
+<ul>
+<li>使用clip.fl_time修改clip的时间线</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">modifiedClip1 = my_clip.fl_time(<span class="keyword">lambda</span> t: <span class="number">3</span>*t)</span><br><span class="line">modifiedClip2 = my_clip.fl_time(<span class="keyword">lambda</span> t: <span class="number">1</span>+sin(t))</span><br></pre></td></tr></table></figure>
+
+<p>现在，modifiedClip1是my_clip的三倍速度播放效果。modifiedClip2只会在t=0s和t=2s之间播放，并且会有倒放效果。<br>在后一个例子中，我们已经创建了一个无限持续的clip（现在并不会出什么问题）。</p>
+<ul>
+<li>用clip.fl_image来修改一个clip的显示</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invert_green_blue</span><span class="params">(image)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> image[:,:,[<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>]]</span><br><span class="line">modifiedClip = my_clip.fl_image(invert_green_blue)</span><br></pre></td></tr></table></figure>
+
+<p>将会把一个clip每一帧的绿色和蓝色通道转换。<br>接下来，我没还有可能需要同时对时间和每一帧的画面都做处理，我们用<code>clip.fl(filter)</code>方法也是可以实现的，这个filter必须是<br>传入两个参数，返回一个画面的函数。第一个参数是get_frame方法（例如：g(t)给定一个时刻，然后返回在那一时刻这个clip中对应的<br>一帧），第二个参数就是时间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scroll</span><span class="params">(get_frame, t)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    这个函数返回：当前帧的一个‘区域’</span></span><br><span class="line"><span class="string">    上述所说的‘区域’的位置依赖于第二个参数，时间</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    frame = get_frame(t)</span><br><span class="line">    frame_region = frame[int(t):int(t)+<span class="number">360</span>,:]</span><br><span class="line">    <span class="keyword">return</span> frame_region</span><br><span class="line">modifiedClip = my_clip.fl(scroll)</span><br></pre></td></tr></table></figure>
+
+<p>以上代码，将会向下滚动360个像素高度。</p>
+<p>当我们在编写一些新的效果的时候，应该尽可能地使用<code>fl_time</code>和<code>fl_image</code>，而不是<code>fl</code>。原因在于，在这些效果被应用于<br><code>ImageClip</code>的时候，<code>MoviePy</code>会认为这些方法不需要应用于每一帧，渲染速度会更快。</p>
+<h4 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sin</span><br><span class="line"></span><br><span class="line">my_clip = VideoFileClip(<span class="string">'./MY_VIDEOS/my_concatenate.mp4'</span>)</span><br><span class="line">modifiedClip1 = my_clip.fl_time(<span class="keyword">lambda</span> t: <span class="number">3</span>*t).set_duration(<span class="number">3</span>) //这里按照教程不加duration会报错</span><br><span class="line">modifiedClip2 = my_clip.fl_time(<span class="keyword">lambda</span> t: <span class="number">1</span>+sin(t)).set_duration(<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invert_green_blue</span><span class="params">(image)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> image[:,:,[<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>]]</span><br><span class="line">modifiedClip3 = my_clip.fl_image(invert_green_blue)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scroll</span><span class="params">(get_frame, t)</span>:</span></span><br><span class="line">    frame = get_frame(t)</span><br><span class="line">    frame_region = frame[int(t):int(t)+<span class="number">360</span>,:]</span><br><span class="line">    <span class="keyword">return</span> frame_region</span><br><span class="line">modifiedClip4 = my_clip.fl(scroll)</span><br><span class="line"></span><br><span class="line">modifiedClip1.write_videofile(<span class="string">'./MY_VIDEOS/my_fl_time1.mp4'</span>)</span><br><span class="line">modifiedClip2.write_videofile(<span class="string">'./MY_VIDEOS/my_fl_time2.mp4'</span>)</span><br><span class="line">modifiedClip3.write_videofile(<span class="string">'./MY_VIDEOS/my_fl_image.mp4'</span>)</span><br><span class="line">modifiedClip4.write_videofile(<span class="string">'./MY_VIDEOS/my_fl.mp4'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>modifiedClip4的效果如下：<br><img src="./images/my_fl.PNG" alt></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/moviepy/4.MoviePy-Clips变换与特效.html" title="4.MoviePy-Clips变换与特效">http://leesin.cc/moviepy/4.MoviePy-Clips变换与特效.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/moviepy/3.MoviePy-视频合成.html" rel="next" title="3.MoviePy-视频合成">
+                  <i class="fa fa-chevron-left"></i> 3.MoviePy-视频合成
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/moviepy/5.如何高效率使用MoviePy.html" rel="prev" title="5.如何高效率使用MoviePy">
+                  5.如何高效率使用MoviePy <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-MoviePy-Clips变换与特效"><span class="nav-number">1.</span> <span class="nav-text">4.MoviePy-Clips变换与特效</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MoviePy中的几种对clip的修改"><span class="nav-number">1.1.</span> <span class="nav-text">MoviePy中的几种对clip的修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改clip属性的方法有"><span class="nav-number">1.1.1.</span> <span class="nav-text">修改clip属性的方法有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#已经实现的特效"><span class="nav-number">1.1.2.</span> <span class="nav-text">已经实现的特效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#moviepy中的时间表示"><span class="nav-number">1.2.</span> <span class="nav-text">moviepy中的时间表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改变clip属性的方法"><span class="nav-number">1.3.</span> <span class="nav-text">改变clip属性的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#clip-fx"><span class="nav-number">1.3.1.</span> <span class="nav-text">clip.fx</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码示例："><span class="nav-number">1.3.1.1.</span> <span class="nav-text">代码示例：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建用户自定义特效的方法"><span class="nav-number">1.4.</span> <span class="nav-text">创建用户自定义特效的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#clip-fl"><span class="nav-number">1.4.1.</span> <span class="nav-text">clip.fl</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码示例"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">代码示例</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

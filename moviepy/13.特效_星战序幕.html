@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="星战序幕星战效果手册效果 注意： 这里可能存在numpy版本过高的问题，解决方案有两种  安装低版本的numpy，但是可能把你的其他库影响了，比如我的话，tensorflow会被影响 报错是arraypad.py缺少函数，那我们就把函数添加进去，比如我的路径是： 1C:\Users\EDZ\AppData\Roaming\Python\Python37\site-packages\numpy\li">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.特效_星战序幕">
+<meta property="og:url" content="http://leesin.cc/moviepy/13.特效_星战序幕.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="星战序幕星战效果手册效果 注意： 这里可能存在numpy版本过高的问题，解决方案有两种  安装低版本的numpy，但是可能把你的其他库影响了，比如我的话，tensorflow会被影响 报错是arraypad.py缺少函数，那我们就把函数添加进去，比如我的路径是： 1C:\Users\EDZ\AppData\Roaming\Python\Python37\site-packages\numpy\li">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/starworms.gif">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/tutorial.gif">
+<meta property="og:updated_time" content="2019-11-03T07:32:26.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="13.特效_星战序幕">
+<meta name="twitter:description" content="星战序幕星战效果手册效果 注意： 这里可能存在numpy版本过高的问题，解决方案有两种  安装低版本的numpy，但是可能把你的其他库影响了，比如我的话，tensorflow会被影响 报错是arraypad.py缺少函数，那我们就把函数添加进去，比如我的路径是： 1C:\Users\EDZ\AppData\Roaming\Python\Python37\site-packages\numpy\li">
+<meta name="twitter:image" content="http://leesin.cc/moviepy/images/starworms.gif">
+  <link rel="canonical" href="http://leesin.cc/moviepy/13.特效_星战序幕">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>13.特效_星战序幕 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/13.特效_星战序幕.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">13.特效_星战序幕
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:25:29 / 修改时间：15:32:26" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:29+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="星战序幕"><a href="#星战序幕" class="headerlink" title="星战序幕"></a>星战序幕</h1><h2 id="星战效果"><a href="#星战效果" class="headerlink" title="星战效果"></a>星战效果</h2><p><img src="./images/starworms.gif" alt></p><h2 id="手册效果"><a href="#手册效果" class="headerlink" title="手册效果"></a>手册效果</h2><p><img src="./images/tutorial.gif" alt></p><blockquote>
+<p>注意： 这里可能存在numpy版本过高的问题，解决方案有两种</p>
+</blockquote><ol>
+<li>安装低版本的numpy，但是可能把你的其他库影响了，比如我的话，tensorflow会被影响</li>
+<li>报错是arraypad.py缺少函数，那我们就把函数添加进去，比如我的路径是：</li>
+</ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\EDZ\AppData\Roaming\Python\Python37\site-packages\numpy\lib\arraypad.py</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+
+<p>添加代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_normalize_shape</span><span class="params">(ndarray, shape, cast_to_int=True)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Private function which does some checks and normalizes the possibly</span></span><br><span class="line"><span class="string">    much simpler representations of 'pad_width', 'stat_length',</span></span><br><span class="line"><span class="string">    'constant_values', 'end_values'.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters</span></span><br><span class="line"><span class="string">    ----------</span></span><br><span class="line"><span class="string">    narray : ndarray</span></span><br><span class="line"><span class="string">        Input ndarray</span></span><br><span class="line"><span class="string">    shape : &#123;sequence, array_like, float, int&#125;, optional</span></span><br><span class="line"><span class="string">        The width of padding (pad_width), the number of elements on the</span></span><br><span class="line"><span class="string">        edge of the narray used for statistics (stat_length), the constant</span></span><br><span class="line"><span class="string">        value(s) to use when filling padded regions (constant_values), or the</span></span><br><span class="line"><span class="string">        endpoint target(s) for linear ramps (end_values).</span></span><br><span class="line"><span class="string">        ((before_1, after_1), ... (before_N, after_N)) unique number of</span></span><br><span class="line"><span class="string">        elements for each axis where `N` is rank of `narray`.</span></span><br><span class="line"><span class="string">        ((before, after),) yields same before and after constants for each</span></span><br><span class="line"><span class="string">        axis.</span></span><br><span class="line"><span class="string">        (constant,) or val is a shortcut for before = after = constant for</span></span><br><span class="line"><span class="string">        all axes.</span></span><br><span class="line"><span class="string">    cast_to_int : bool, optional</span></span><br><span class="line"><span class="string">        Controls if values in ``shape`` will be rounded and cast to int</span></span><br><span class="line"><span class="string">        before being returned.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns</span></span><br><span class="line"><span class="string">    -------</span></span><br><span class="line"><span class="string">    normalized_shape : tuple of tuples</span></span><br><span class="line"><span class="string">        val                               =&gt; ((val, val), (val, val), ...)</span></span><br><span class="line"><span class="string">        [[val1, val2], [val3, val4], ...] =&gt; ((val1, val2), (val3, val4), ...)</span></span><br><span class="line"><span class="string">        ((val1, val2), (val3, val4), ...) =&gt; no change</span></span><br><span class="line"><span class="string">        [[val1, val2], ]                  =&gt; ((val1, val2), (val1, val2), ...)</span></span><br><span class="line"><span class="string">        ((val1, val2), )                  =&gt; ((val1, val2), (val1, val2), ...)</span></span><br><span class="line"><span class="string">        [[val ,     ], ]                  =&gt; ((val, val), (val, val), ...)</span></span><br><span class="line"><span class="string">        ((val ,     ), )                  =&gt; ((val, val), (val, val), ...)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    ndims = ndarray.ndim</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Shortcut shape=None</span></span><br><span class="line">    <span class="keyword">if</span> shape <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> ((<span class="literal">None</span>, <span class="literal">None</span>), ) * ndims</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Convert any input `info` to a NumPy array</span></span><br><span class="line">    shape_arr = np.asarray(shape)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        shape_arr = np.broadcast_to(shape_arr, (ndims, <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">except</span> ValueError:</span><br><span class="line">        fmt = <span class="string">"Unable to create correctly shaped tuple from %s"</span></span><br><span class="line">        <span class="keyword">raise</span> ValueError(fmt % (shape,))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Cast if necessary</span></span><br><span class="line">    <span class="keyword">if</span> cast_to_int <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">        shape_arr = np.round(shape_arr).astype(int)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Convert list of lists to tuple of tuples</span></span><br><span class="line">    <span class="keyword">return</span> tuple(tuple(axis) <span class="keyword">for</span> axis <span class="keyword">in</span> shape_arr.tolist())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_validate_lengths</span><span class="params">(narray, number_elements)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Private function which does some checks and reformats pad_width and</span></span><br><span class="line"><span class="string">    stat_length using _normalize_shape.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters</span></span><br><span class="line"><span class="string">    ----------</span></span><br><span class="line"><span class="string">    narray : ndarray</span></span><br><span class="line"><span class="string">        Input ndarray</span></span><br><span class="line"><span class="string">    number_elements : &#123;sequence, int&#125;, optional</span></span><br><span class="line"><span class="string">        The width of padding (pad_width) or the number of elements on the edge</span></span><br><span class="line"><span class="string">        of the narray used for statistics (stat_length).</span></span><br><span class="line"><span class="string">        ((before_1, after_1), ... (before_N, after_N)) unique number of</span></span><br><span class="line"><span class="string">        elements for each axis.</span></span><br><span class="line"><span class="string">        ((before, after),) yields same before and after constants for each</span></span><br><span class="line"><span class="string">        axis.</span></span><br><span class="line"><span class="string">        (constant,) or int is a shortcut for before = after = constant for all</span></span><br><span class="line"><span class="string">        axes.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns</span></span><br><span class="line"><span class="string">    -------</span></span><br><span class="line"><span class="string">    _validate_lengths : tuple of tuples</span></span><br><span class="line"><span class="string">        int                               =&gt; ((int, int), (int, int), ...)</span></span><br><span class="line"><span class="string">        [[int1, int2], [int3, int4], ...] =&gt; ((int1, int2), (int3, int4), ...)</span></span><br><span class="line"><span class="string">        ((int1, int2), (int3, int4), ...) =&gt; no change</span></span><br><span class="line"><span class="string">        [[int1, int2], ]                  =&gt; ((int1, int2), (int1, int2), ...)</span></span><br><span class="line"><span class="string">        ((int1, int2), )                  =&gt; ((int1, int2), (int1, int2), ...)</span></span><br><span class="line"><span class="string">        [[int ,     ], ]                  =&gt; ((int, int), (int, int), ...)</span></span><br><span class="line"><span class="string">        ((int ,     ), )                  =&gt; ((int, int), (int, int), ...)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    normshp = _normalize_shape(narray, number_elements)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> normshp:</span><br><span class="line">        chk = [<span class="number">1</span> <span class="keyword">if</span> x <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> x <span class="keyword">for</span> x <span class="keyword">in</span> i]</span><br><span class="line">        chk = [<span class="number">1</span> <span class="keyword">if</span> x &gt;= <span class="number">0</span> <span class="keyword">else</span> <span class="number">-1</span> <span class="keyword">for</span> x <span class="keyword">in</span> chk]</span><br><span class="line">        <span class="keyword">if</span> (chk[<span class="number">0</span>] &lt; <span class="number">0</span>) <span class="keyword">or</span> (chk[<span class="number">1</span>] &lt; <span class="number">0</span>):</span><br><span class="line">            fmt = <span class="string">"%s cannot contain negative values."</span></span><br><span class="line">            <span class="keyword">raise</span> ValueError(fmt % (number_elements,))</span><br><span class="line">    <span class="keyword">return</span> normshp</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Description of the video:</span></span><br><span class="line"><span class="string">Mimic of Star Wars' opening title. A text with a (false)</span></span><br><span class="line"><span class="string">perspective effect goes towards the end of space, on a</span></span><br><span class="line"><span class="string">background made of stars. Slight fading effect on the text.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> transform <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.drawing <span class="keyword">import</span> color_gradient</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># RESOLUTION</span></span><br><span class="line"></span><br><span class="line">w = <span class="number">720</span></span><br><span class="line">h = int(w*<span class="number">9</span>/<span class="number">16</span>) <span class="comment"># 16/9 screen //这里转一下，否则后面需要整型的时候会报错，同时，像素点这种，float也是不科学的</span></span><br><span class="line">moviesize = w,h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># THE RAW TEXT</span></span><br><span class="line">txt = <span class="string">"\n"</span>.join([</span><br><span class="line"><span class="string">"A long time ago, in a faraway galaxy,"</span>,</span><br><span class="line"><span class="string">"there lived a prince and a princess"</span>,</span><br><span class="line"><span class="string">"who had never seen the stars, for they"</span>,</span><br><span class="line"><span class="string">"lived deep underground."</span>,</span><br><span class="line"><span class="string">""</span>,</span><br><span class="line"><span class="string">"Many years before, the prince's"</span>,</span><br><span class="line"><span class="string">"grandfather had ventured out to the"</span>,</span><br><span class="line"><span class="string">"surface and had been burnt to ashes by"</span>,</span><br><span class="line"><span class="string">"solar winds."</span>,</span><br><span class="line"><span class="string">""</span>,</span><br><span class="line"><span class="string">"One day, as the princess was coding"</span>,</span><br><span class="line"><span class="string">"and the prince was shopping online, a"</span>,</span><br><span class="line"><span class="string">"meteor landed just a few megameters"</span>,</span><br><span class="line"><span class="string">"from the couple's flat."</span></span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Add blanks</span></span><br><span class="line">txt = <span class="number">10</span>*<span class="string">"\n"</span> +txt + <span class="number">10</span>*<span class="string">"\n"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># CREATE THE TEXT IMAGE</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clip_txt = TextClip(txt,color=<span class="string">'white'</span>, align=<span class="string">'West'</span>,fontsize=<span class="number">25</span>,</span><br><span class="line">                    font=<span class="string">'Xolonium-Bold'</span>, method=<span class="string">'label'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># SCROLL THE TEXT IMAGE BY CROPPING A MOVING AREA</span></span><br><span class="line"></span><br><span class="line">txt_speed = <span class="number">27</span></span><br><span class="line">fl = <span class="keyword">lambda</span> gf,t : gf(t)[int(txt_speed*t):int(txt_speed*t)+h,:]</span><br><span class="line">moving_txt= clip_txt.fl(fl, apply_to=[<span class="string">'mask'</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ADD A VANISHING EFFECT ON THE TEXT WITH A GRADIENT MASK</span></span><br><span class="line"></span><br><span class="line">grad = color_gradient(moving_txt.size,p1=(<span class="number">0</span>,<span class="number">2</span>*h/<span class="number">3</span>),</span><br><span class="line">                p2=(<span class="number">0</span>,h/<span class="number">4</span>),col1=<span class="number">0.0</span>,col2=<span class="number">1.0</span>)</span><br><span class="line">gradmask = ImageClip(grad,ismask=<span class="literal">True</span>)</span><br><span class="line">fl = <span class="keyword">lambda</span> pic : np.minimum(pic,gradmask.img)</span><br><span class="line">moving_txt.mask = moving_txt.mask.fl_image(fl)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># WARP THE TEXT INTO A TRAPEZOID (PERSPECTIVE EFFECT)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">trapzWarp</span><span class="params">(pic,cx,cy,ismask=False)</span>:</span></span><br><span class="line">    <span class="string">""" Complicated function (will be latex packaged as a fx) """</span></span><br><span class="line">    Y,X = pic.shape[:<span class="number">2</span>]</span><br><span class="line">    src = np.array([[<span class="number">0</span>,<span class="number">0</span>],[X,<span class="number">0</span>],[X,Y],[<span class="number">0</span>,Y]])</span><br><span class="line">    dst = np.array([[cx*X,cy*Y],[(<span class="number">1</span>-cx)*X,cy*Y],[X,Y],[<span class="number">0</span>,Y]])</span><br><span class="line">    tform = tf.ProjectiveTransform()</span><br><span class="line">    tform.estimate(src,dst)</span><br><span class="line">    im = tf.warp(pic, tform.inverse, output_shape=(Y,X))</span><br><span class="line">    <span class="keyword">return</span> im <span class="keyword">if</span> ismask <span class="keyword">else</span> (im*<span class="number">255</span>).astype(<span class="string">'uint8'</span>)</span><br><span class="line"></span><br><span class="line">fl_im = <span class="keyword">lambda</span> pic : trapzWarp(pic,<span class="number">0.2</span>,<span class="number">0.3</span>)</span><br><span class="line">fl_mask = <span class="keyword">lambda</span> pic : trapzWarp(pic,<span class="number">0.2</span>,<span class="number">0.3</span>, ismask=<span class="literal">True</span>)</span><br><span class="line">warped_txt= moving_txt.fl_image(fl_im)</span><br><span class="line">warped_txt.mask = warped_txt.mask.fl_image(fl_mask)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># BACKGROUND IMAGE, DARKENED AT 60%</span></span><br><span class="line"></span><br><span class="line">stars = ImageClip(<span class="string">'./images/base.jpg'</span>)</span><br><span class="line">stars_darkened = stars.fl_image(<span class="keyword">lambda</span> pic: (<span class="number">0.6</span>*pic).astype(<span class="string">'int16'</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># COMPOSE THE MOVIE</span></span><br><span class="line"></span><br><span class="line">final = CompositeVideoClip([</span><br><span class="line">         stars_darkened,</span><br><span class="line">         warped_txt.set_pos((<span class="string">'center'</span>,<span class="string">'bottom'</span>))],</span><br><span class="line">         size = moviesize)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># WRITE TO A FILE</span></span><br><span class="line"></span><br><span class="line">final.set_duration(<span class="number">8</span>).write_gif(<span class="string">"starworms.gif"</span>, fps=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># This script is heavy (30s of computations to render 8s of video)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"""=====================================================================</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    CODE FOR THE VIDEO TUTORIAL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  We will now code the video tutorial for this video.</span></span><br><span class="line"><span class="string">  When you think about it, it is a code for a video explaining how to</span></span><br><span class="line"><span class="string">  make another video using some code (this is so meta !).</span></span><br><span class="line"><span class="string">  This code uses the variables of the previous code (it should be placed</span></span><br><span class="line"><span class="string">  after that previous code to work).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">====================================================================="""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">annotate</span><span class="params">(clip,txt,txt_color=<span class="string">'white'</span>,bg_color=<span class="params">(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>)</span>)</span>:</span></span><br><span class="line">    <span class="string">""" Writes a text at the bottom of the clip. """</span></span><br><span class="line">    </span><br><span class="line">    txtclip = TextClip(txt, fontsize=<span class="number">20</span>, font=<span class="string">'Ubuntu-bold'</span>,</span><br><span class="line">                       color=txt_color)</span><br><span class="line">                       </span><br><span class="line">    txtclip = txtclip.on_color((clip.w,txtclip.h+<span class="number">6</span>), color=(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>),</span><br><span class="line">                        pos=(<span class="number">6</span>,<span class="string">'center'</span>))</span><br><span class="line">                        </span><br><span class="line">    cvc =  CompositeVideoClip([clip , txtclip.set_pos((<span class="number">0</span>,<span class="string">'bottom'</span>))])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> cvc.set_duration(clip.duration)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">resizeCenter</span><span class="params">(clip)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> clip.resize( height=h).set_pos(<span class="string">'center'</span>)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">composeCenter</span><span class="params">(clip)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> CompositeVideoClip([clip.set_pos(<span class="string">'center'</span>)],size=moviesize)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">annotated_clips = [ annotate(clip,text) <span class="keyword">for</span> clip,text <span class="keyword">in</span> [</span><br><span class="line">               </span><br><span class="line">(composeCenter(resizeCenter(stars)).subclip(<span class="number">0</span>,<span class="number">3</span>),</span><br><span class="line">    <span class="string">"This is a public domain picture of stars"</span>),</span><br><span class="line"></span><br><span class="line">(CompositeVideoClip([stars],moviesize).subclip(<span class="number">0</span>,<span class="number">3</span>),</span><br><span class="line">    <span class="string">"We only keep one part."</span>),</span><br><span class="line"></span><br><span class="line">(CompositeVideoClip([stars_darkened],moviesize).subclip(<span class="number">0</span>,<span class="number">3</span>),</span><br><span class="line">    <span class="string">"We darken it a little."</span>),</span><br><span class="line"></span><br><span class="line">(composeCenter(resizeCenter(clip_txt)).subclip(<span class="number">0</span>,<span class="number">3</span>),</span><br><span class="line">    <span class="string">"We generate a text image."</span>),</span><br><span class="line"></span><br><span class="line">(composeCenter(moving_txt.set_mask(<span class="literal">None</span>)).subclip(<span class="number">6</span>,<span class="number">9</span>),</span><br><span class="line">    <span class="string">"We scroll the text by cropping a moving region of it."</span>),</span><br><span class="line"></span><br><span class="line">(composeCenter(gradmask.to_RGB()).subclip(<span class="number">0</span>,<span class="number">2</span>),</span><br><span class="line">    <span class="string">"We add this mask to the clip."</span>),</span><br><span class="line"></span><br><span class="line">(composeCenter(moving_txt).subclip(<span class="number">6</span>,<span class="number">9</span>),</span><br><span class="line">    <span class="string">"Here is the result"</span>),</span><br><span class="line"></span><br><span class="line">(composeCenter(warped_txt).subclip(<span class="number">6</span>,<span class="number">9</span>),</span><br><span class="line">    <span class="string">"We now warp this clip in a trapezoid."</span>),</span><br><span class="line"></span><br><span class="line">(final.subclip(<span class="number">6</span>,<span class="number">9</span>),</span><br><span class="line">    <span class="string">"We finally superimpose with the stars."</span>)</span><br><span class="line">]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Concatenate and write to a file</span></span><br><span class="line"></span><br><span class="line">concatenate_videoclips(annotated_clips).write_gif(<span class="string">'tutorial.gif'</span>, fps=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/moviepy/13.特效_星战序幕.html" title="13.特效_星战序幕">http://leesin.cc/moviepy/13.特效_星战序幕.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/moviepy/12.特效_一个音频示例.html" rel="next" title="12.特效_一个音频示例">
+                  <i class="fa fa-chevron-left"></i> 12.特效_一个音频示例
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/moviepy/14.特效_部分隐藏字幕.html" rel="prev" title="14.特效_部分隐藏字幕">
+                  14.特效_部分隐藏字幕 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#星战序幕"><span class="nav-number">1.</span> <span class="nav-text">星战序幕</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#星战效果"><span class="nav-number">1.1.</span> <span class="nav-text">星战效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手册效果"><span class="nav-number">1.2.</span> <span class="nav-text">手册效果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

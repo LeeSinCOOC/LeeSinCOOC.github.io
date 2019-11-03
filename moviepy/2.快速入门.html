@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="2.快速入门代码示例在一个MoviePy脚本中，我们可以加载视频和音频，然后修改它们，将他们合并，然后把最终结果写入到一个新的文件中。下面的例子，加载视频，在视频中间添加一个标题显示10秒钟，然后把结果写入到一个新的文件内。1234567891011121314151617181920# 导入需要的库from moviepy.editor import *# 从本地载入视频base.mp4并截取0">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.快速入门">
+<meta property="og:url" content="http://leesin.cc/moviepy/2.快速入门.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="2.快速入门代码示例在一个MoviePy脚本中，我们可以加载视频和音频，然后修改它们，将他们合并，然后把最终结果写入到一个新的文件中。下面的例子，加载视频，在视频中间添加一个标题显示10秒钟，然后把结果写入到一个新的文件内。1234567891011121314151617181920# 导入需要的库from moviepy.editor import *# 从本地载入视频base.mp4并截取0">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-03T07:27:45.524Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2.快速入门">
+<meta name="twitter:description" content="2.快速入门代码示例在一个MoviePy脚本中，我们可以加载视频和音频，然后修改它们，将他们合并，然后把最终结果写入到一个新的文件中。下面的例子，加载视频，在视频中间添加一个标题显示10秒钟，然后把结果写入到一个新的文件内。1234567891011121314151617181920# 导入需要的库from moviepy.editor import *# 从本地载入视频base.mp4并截取0">
+  <link rel="canonical" href="http://leesin.cc/moviepy/2.快速入门">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>2.快速入门 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/2.快速入门.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">2.快速入门
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:23:08 / 修改时间：15:27:45" itemprop="dateCreated datePublished" datetime="2019-11-03T15:23:08+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="2-快速入门"><a href="#2-快速入门" class="headerlink" title="2.快速入门"></a>2.快速入门</h1><h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p>在一个MoviePy脚本中，我们可以加载视频和音频，然后修改它们，将他们合并，然后把最终结果写入到<br>一个新的文件中。下面的例子，加载视频，在视频中间添加一个标题显示10秒钟，然后把结果写入到一个<br>新的文件内。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入需要的库</span></span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从本地载入视频base.mp4并截取00:00:20 - 00:00:30部分</span></span><br><span class="line">clip = VideoFileClip(<span class="string">"base.mp4"</span>).subclip(<span class="number">20</span>,<span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调低音频音量 (volume x 0.8)</span></span><br><span class="line">clip = clip.volumex(<span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 做一个txt clip. 自定义样式，颜色，字体</span></span><br><span class="line">txt_clip = TextClip(<span class="string">"大家好，才是真的好"</span>,fontsize=<span class="number">70</span>,color=<span class="string">'white'</span>,font=<span class="string">'simhei.ttf'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文本clip在屏幕正中显示持续10秒</span></span><br><span class="line">txt_clip = txt_clip.set_pos(<span class="string">'center'</span>).set_duration(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把 text clip 的内容覆盖 video clip</span></span><br><span class="line">video = CompositeVideoClip([clip, txt_clip])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把最后生成的视频导出到文件内</span></span><br><span class="line">video.write_videofile(<span class="string">"hilo.webm"</span>)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<blockquote>
+<p>这里因为使用了中文，所以要声明一下字体，有些字体是不支持中文的，可以建立一个自己的字体库</p>
+</blockquote>
+<h2 id="MoviePy如何工作"><a href="#MoviePy如何工作" class="headerlink" title="MoviePy如何工作"></a>MoviePy如何工作</h2><p>MoviePy使用软件ffmpeg读取和导出视频和音频文件，使用ImageMagick生产文字和GIF图。这些处理过程都有赖于Python强大的数学处理库，高级特效和软件加强用到了许多的Python图像处理库。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>MoviePy中最核心的对象就是<code>clips</code> 。<code>AudioClips</code>和<code>VedioClips</code>，开发者可以对clips进行修改(剪切，调速度，调亮度…)或者和其他clip混合拼接到一起。使用PyGame或者IPython NoteBook还可以预览。</p>
+<p>VedioClips可以由视频文件，图像，文本或者动画来创建实例。vedio clip可以拥有一个音频轨道(audio clip) 和一个叠加层的vedio clip(这是一个特殊的VedioClip，这意味着，当一个视频和其他VedioClip混合的时候，这个叠加层clip是隐藏的)</p>
+<p>一个clip可以被MoviePy中多多种效果作用，比如(clip.resize(width=”360”), clip.subclip(t1,t2), or clip.fx(vfx.black_white)).</p>
+<p>当然，也可以被用户自定义的效果作用。MoviePy实现了许多类似（clip.fl, clip.fx）这样的方法，可以简便地修改效果。</p>
+<p>在<code>moviepy.video.tools</code>里面，还可以找到许多好东西，实现很多高级功能，比如跟踪视频中的一个对象，画一些简单的图形，斜线，或者颜色，制作副标题等等效果</p>
+<p>即使moviepy没有图形化的用户交互界面，但是在我们高质量地加工我们的视频的时候，我们仍然有很多可以允许很好地控制和调节脚本的预览方式。</p>
+<h2 id="我有话说"><a href="#我有话说" class="headerlink" title="我有话说"></a>我有话说</h2><p><a href="http://zulko.github.io/moviepy/" target="_blank" rel="noopener">官方手册</a>中的参考手册大概是这样的构成：</p>
+<h3 id="Clip"><a href="#Clip" class="headerlink" title="Clip"></a>Clip</h3><h3 id="Classes-of-Video-Clips"><a href="#Classes-of-Video-Clips" class="headerlink" title="Classes of Video Clips"></a>Classes of Video Clips</h3><h4 id="VideoFileClip"><a href="#VideoFileClip" class="headerlink" title="VideoFileClip"></a>VideoFileClip</h4><h4 id="ImageClip"><a href="#ImageClip" class="headerlink" title="ImageClip"></a>ImageClip</h4><h4 id="ColorClip"><a href="#ColorClip" class="headerlink" title="ColorClip"></a>ColorClip</h4><h4 id="TextClip"><a href="#TextClip" class="headerlink" title="TextClip"></a>TextClip</h4><h4 id="CompositeVideoClip"><a href="#CompositeVideoClip" class="headerlink" title="CompositeVideoClip"></a>CompositeVideoClip</h4><h3 id="AudioClip"><a href="#AudioClip" class="headerlink" title="AudioClip"></a>AudioClip</h3><h4 id="AudioClip-1"><a href="#AudioClip-1" class="headerlink" title="AudioClip"></a>AudioClip</h4><h4 id="AudioFileClip"><a href="#AudioFileClip" class="headerlink" title="AudioFileClip"></a>AudioFileClip</h4><h4 id="CompositeAudioClip"><a href="#CompositeAudioClip" class="headerlink" title="CompositeAudioClip"></a>CompositeAudioClip</h4><h3 id="moviepy-video-fx-vfx"><a href="#moviepy-video-fx-vfx" class="headerlink" title="moviepy.video.fx (vfx)"></a>moviepy.video.fx (vfx)</h3><h3 id="audio-fx"><a href="#audio-fx" class="headerlink" title="audio.fx"></a>audio.fx</h3><h3 id="video-tools"><a href="#video-tools" class="headerlink" title="video.tools"></a>video.tools</h3><h3 id="audio-tools"><a href="#audio-tools" class="headerlink" title="audio.tools"></a>audio.tools</h3><h3 id="FFMPEG-tools"><a href="#FFMPEG-tools" class="headerlink" title="FFMPEG tools"></a>FFMPEG tools</h3><h3 id="Decorators"><a href="#Decorators" class="headerlink" title="Decorators"></a>Decorators</h3><p>目录部分就将这个库的思想表达的很清楚了，一个视频编辑库的组成大致就是这样，我没遇到这个<br>库的时候，思路也是这样设计的，视频编辑无非就是对帧图像的处理，所以独立出来<em>文字</em>，<em>图像</em>，<em>音频</em>作为对象<br>OOP的优势就体现出来了，MoviePy就是把整个视频编辑当作一个对象，视频分为视频图像和音频两部分，<br>视频又由图像，文字，视频流组成。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/moviepy/2.快速入门.html" title="2.快速入门">http://leesin.cc/moviepy/2.快速入门.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/moviepy/MoviePy介绍.html" rel="next" title="MoviePy介绍">
+                  <i class="fa fa-chevron-left"></i> MoviePy介绍
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/moviepy/3.MoviePy-视频合成.html" rel="prev" title="3.MoviePy-视频合成">
+                  3.MoviePy-视频合成 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-快速入门"><span class="nav-number">1.</span> <span class="nav-text">2.快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码示例"><span class="nav-number">1.1.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoviePy如何工作"><span class="nav-number">1.2.</span> <span class="nav-text">MoviePy如何工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.3.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我有话说"><span class="nav-number">1.4.</span> <span class="nav-text">我有话说</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clip"><span class="nav-number">1.4.1.</span> <span class="nav-text">Clip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Classes-of-Video-Clips"><span class="nav-number">1.4.2.</span> <span class="nav-text">Classes of Video Clips</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VideoFileClip"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">VideoFileClip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ImageClip"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">ImageClip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ColorClip"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">ColorClip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TextClip"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">TextClip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CompositeVideoClip"><span class="nav-number">1.4.2.5.</span> <span class="nav-text">CompositeVideoClip</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AudioClip"><span class="nav-number">1.4.3.</span> <span class="nav-text">AudioClip</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioClip-1"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">AudioClip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioFileClip"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">AudioFileClip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CompositeAudioClip"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">CompositeAudioClip</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#moviepy-video-fx-vfx"><span class="nav-number">1.4.4.</span> <span class="nav-text">moviepy.video.fx (vfx)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#audio-fx"><span class="nav-number">1.4.5.</span> <span class="nav-text">audio.fx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#video-tools"><span class="nav-number">1.4.6.</span> <span class="nav-text">video.tools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#audio-tools"><span class="nav-number">1.4.7.</span> <span class="nav-text">audio.tools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FFMPEG-tools"><span class="nav-number">1.4.8.</span> <span class="nav-text">FFMPEG tools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decorators"><span class="nav-number">1.4.9.</span> <span class="nav-text">Decorators</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>

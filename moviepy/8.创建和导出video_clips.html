@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="创建和导出video clipsvideo 和 audio clips是moviepy中的核心的对象。这篇博文，我们会介绍不同的clip，展示如何创建他们，以及如何将它们导出到文件中。关于修改和处理vedio clip的信息点这里。一些基本的clips。VIDEO CLIPS clip = VideoClip(make_frame, duration=4) # 自定义动画 clip = Video">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.创建和导出video_clips">
+<meta property="og:url" content="http://leesin.cc/moviepy/8.创建和导出video_clips.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="创建和导出video clipsvideo 和 audio clips是moviepy中的核心的对象。这篇博文，我们会介绍不同的clip，展示如何创建他们，以及如何将它们导出到文件中。关于修改和处理vedio clip的信息点这里。一些基本的clips。VIDEO CLIPS clip = VideoClip(make_frame, duration=4) # 自定义动画 clip = Video">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/movie_image.jpg">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/movie_dark.jpg">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/movie_blur.jpg">
+<meta property="og:image" content="http://leesin.cc/moviepy/images/movie_feather.jpg">
+<meta property="og:updated_time" content="2019-11-03T07:30:47.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8.创建和导出video_clips">
+<meta name="twitter:description" content="创建和导出video clipsvideo 和 audio clips是moviepy中的核心的对象。这篇博文，我们会介绍不同的clip，展示如何创建他们，以及如何将它们导出到文件中。关于修改和处理vedio clip的信息点这里。一些基本的clips。VIDEO CLIPS clip = VideoClip(make_frame, duration=4) # 自定义动画 clip = Video">
+<meta name="twitter:image" content="http://leesin.cc/moviepy/images/movie_image.jpg">
+  <link rel="canonical" href="http://leesin.cc/moviepy/8.创建和导出video_clips">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>8.创建和导出video_clips | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/8.创建和导出video_clips.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">8.创建和导出video_clips
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:24:31 / 修改时间：15:30:47" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:31+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="创建和导出video-clips"><a href="#创建和导出video-clips" class="headerlink" title="创建和导出video clips"></a>创建和导出video clips</h1><p>video 和 audio clips是moviepy中的核心的对象。这篇博文，我们会介绍不同的clip，展示如何创建他们，以及如何将它们<br>导出到文件中。关于修改和处理vedio clip的信息点这里。</p><h2 id="一些基本的clips。"><a href="#一些基本的clips。" class="headerlink" title="一些基本的clips。"></a>一些基本的clips。</h2><h3 id="VIDEO-CLIPS"><a href="#VIDEO-CLIPS" class="headerlink" title="VIDEO CLIPS"></a>VIDEO CLIPS</h3><ul>
+<li>clip = VideoClip(make_frame, duration=4) # 自定义动画</li>
+<li>clip = VideoFileClip(“my_vedio_file.mp4”) # 文件格式还可以是avi、webm、 gif等</li>
+<li>clip = ImageSequenceClip([‘imagefile.jpeg’, … ], fps=24)</li>
+<li>clip = ImageClip(‘my_picture.png’) # 文件格式还可以是 png、tiff等</li>
+<li>clip = TextClip(‘Hello!’, font=”Amiri-Bold”, fintsize=70, color=’black’)</li>
+<li>clip = ColorClip(size=(460, 380), color=[R,G,B])</li>
+</ul><a id="more"></a>
+
+<h3 id="AUDIO-CLIPS"><a href="#AUDIO-CLIPS" class="headerlink" title="AUDIO CLIPS"></a>AUDIO CLIPS</h3><ul>
+<li>clip = AudioFileClip(“my_audio_file.mp3”) #文件格式还可以是ogg、wav或者也可以是一个vedio</li>
+<li>clip = AudioArrayClip(numpy_array, fps=44100) # 一个numpy数组</li>
+<li>clip = AudioClip(make_frame, duration=3) # 使用一个方法make_frame(t)</li>
+</ul>
+<h2 id="video-clip的分类"><a href="#video-clip的分类" class="headerlink" title="video clip的分类"></a>video clip的分类</h2><p>video clip好比是较长的video的积木块。从技术上讲，这些clip都是使用clip.get_frame(t)方法，在某一时间t获得<br>的HxWx3 numpy 格式的剪辑帧的数组。主要有两种分类，首先是动画形式的clip（包括VideoClip、VideoFileClip）;<br>其次是非动画形式的clip，循环显示相同的画面（包括ImageClip、TextClip、ColorClip都在此列）。还有一种特殊的<br>clip，那就是masks，它属于上面的类别，但是他输出的灰色帧表示在另一个剪辑中哪些部分是可见的还有哪些部分是不可见的。</p>
+<h3 id="VideoClip"><a href="#VideoClip" class="headerlink" title="VideoClip"></a>VideoClip</h3><p>VideoClip是movipy中其他所有的vedio clips的父类。如果你的需求仅仅是编辑视频文件，你是不会用到他的。<br>事实上，一般只有在我们通过一些第三方的库生成动画的时候才会用到这个类。我们所需要做的，就是定义一个<br><code>make_frame(t)</code>函数，这个函数在一个给定的时刻t返回HxWx3形式的numpy数组。下面是一个使用第三方图像<br>库Gizeh的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gizeh</span><br><span class="line"><span class="keyword">import</span> moviepy.editor <span class="keyword">as</span> mpy</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_frame</span><span class="params">(t)</span>:</span></span><br><span class="line">    surface = gizeh.Surface(<span class="number">128</span>, <span class="number">128</span>) <span class="comment"># 宽、高</span></span><br><span class="line">    radius = W*(<span class="number">1</span>+ (t*(<span class="number">2</span>-t))**<span class="number">2</span> )/<span class="number">6</span> <span class="comment"># 半径随时间变化</span></span><br><span class="line">    circle = gizeh.circle(radius, xy=(<span class="number">64</span>,<span class="number">64</span>), fill(<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>))</span><br><span class="line">    circle.draw(surface)</span><br><span class="line">    <span class="keyword">return</span> surface.getnpimage() <span class="comment"># 返回一个8bit RGB数组</span></span><br><span class="line"> </span><br><span class="line">clip = mpy.VideoClip(make_frame, duration=<span class="number">2</span>)</span><br><span class="line">clip.write_gif(<span class="string">'circle.gif'</span>, fps=<span class="number">15</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：在上面的make_frame函数并没有一个默认的帧率，所以我们必须给write_gif或者write_videofile提供一个fps（frames per second）.</p>
+</blockquote>
+<blockquote>
+<p>Python有一个称为PyCairo的快速强大的矢量图形库，但是它很难学习和使用。Gizeh在Cairo之上实现了一些类，这些类使它更易于使用</p>
+</blockquote>
+<h3 id="VideoFileClip"><a href="#VideoFileClip" class="headerlink" title="VideoFileClip"></a>VideoFileClip</h3><p>VideoFileClip就是从视频文件（大部分的视频格式都支持）或者GIF格式文件读取生成的clip。我们可以像下面这样去加载一个video。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myclip = VideoFileClip(<span class="string">"some_video.avi"</span>)</span><br><span class="line">myclip = VideoFileClip(<span class="string">"some_animation,gif"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>每一个clip都有一个fps参数，当我们使用<code>write_videofile</code>, <code>write_gif</code>等去将一个clip切分成小的clip去保存的时候，原有的clip的fps会默认地传递给新产生的clip。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">myclip = VideoFileClip(<span class="string">"some_video.avi"</span>)</span><br><span class="line">print(myclip.fps) <span class="comment"># 输出为30</span></span><br><span class="line"><span class="comment"># 剪辑这个clip 的10s-25s，这会保存fps</span></span><br><span class="line">myclip2 = myclip.subclip(<span class="number">10</span>, <span class="number">25</span>)</span><br><span class="line">myclip2.write_gif(<span class="string">"test.gif"</span>) <span class="comment"># 这个gif文件的fps=30</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ImageSequenceClip"><a href="#ImageSequenceClip" class="headerlink" title="ImageSequenceClip"></a>ImageSequenceClip</h3><p>顾名思义，就是一系列图片创建的clip，你可以像下面这样调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clip = ImageSequenceClip(images_list, fps=<span class="number">25</span>)</span><br></pre></td></tr></table></figure>
+
+<p>images_list可以有三种形式：</p>
+<ol>
+<li>图片name list，将会按照list顺序播放</li>
+<li>一个目录，这个目录下面的所有的图片都会被播放，按照字母或者数字的顺序播放</li>
+<li>一系列frames (Numpy arrays)，从其他的clip剪辑得到的，顺序是按照list顺序播放</li>
+</ol>
+<p>当我们使用第一种或者第二种的时候，我们可以通过选择<code>load_images=True</code>来指定是否将所有的图片直接加载到RAM中。<br>当然，这样的操作仅仅是在我们的图片不是很多，且每张图片都被使用超过1次的时候。</p>
+<h3 id="ImageClip"><a href="#ImageClip" class="headerlink" title="ImageClip"></a>ImageClip</h3><p>ImageClip就是一个一直播同一张图片的vedio clip，我们可以按照下面的方式创建：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">myclip = ImageClip(<span class="string">"some_pic.jpeg"</span>)</span><br><span class="line">myclip = ImageClip(some_array) <span class="comment"># 一个（高 × 宽 × 3）RGB numpy 数组</span></span><br><span class="line">myclip = some_video_clip.to_ImageClip(t = <span class="string">'01:00:00'</span>) <span class="comment"># 在1h时刻的帧画面</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="TextClip"><a href="#TextClip" class="headerlink" title="TextClip"></a>TextClip</h3><p>生成一个TextClip需要安装<code>ImageMagick</code>，并且和<code>moviepy</code>关联。</p>
+<p>下面是一个创建TextClip的示例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myclip = TextClip(<span class="string">'Hello!'</span>, font=<span class="string">'Amiri-Bold'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里的font可以是任何安装在你的电脑上的font，如果照抄这里的代码，有可能会有问题，因为你的电脑上并没有这个样式。<br>那么如何查看当前设备可用的样式呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TextClip.list(<span class="string">'font'</span>) <span class="comment"># 可以获得当前设备所有可用的font</span></span><br></pre></td></tr></table></figure>
+
+<p>但是这里会报错，教程是复数形式，显示让用font，这里不知道<br>是什么问题，不过我把<code>ttf</code>格式的字体单独复制出来，就能够正常加载了，我觉得这是个更好的方案，因为字体版权问题比较复杂，单独<br>建立一个免费的字体库，也容易避免纠纷。就不用固定字体，而是设置成路径变量</p>
+<p>ImageMagick对样式也有自己的指定的名称，比如：通常的normal Amiri被称为Amiri-Regular，Impact font被称为Impact-Normal。</p>
+<p>查找所有给定字体相关的所有字体，使用下面的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TextClip.search(<span class="string">'Amiri'</span>,<span class="string">'fonts'</span>) <span class="comment"># 查找所有包含Amiri的字体</span></span><br></pre></td></tr></table></figure>
+
+<p>问题同上<br>注意：使用笔划或者（轮廓）的话，对于较小的字母来说不会有很好的结果。如果我们需要一个小的具有轮廓的TextClip，我们最好是先生成一个<br>大点的文字，然后再将它缩小，这样的效果才会好。这个效果就像字体镂空一样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myclip = TextClip(<span class="string">'Hello!'</span>, fontsize=<span class="number">70</span>, stroke_width=<span class="number">5</span>).resize(height=<span class="number">15</span>)</span><br></pre></td></tr></table></figure>
+
+<p>TextClip是有很多很多的可选项的，对齐、字距（字母距离）、笔划大小、背景、字体环绕等等。如果需要详细的信息，可以去官网参考手册去<br>找或者等待后续中文文档更新。</p>
+<h3 id="Mask-clips"><a href="#Mask-clips" class="headerlink" title="Mask clips"></a>Mask clips</h3><p>mask clip是一种特殊的vide clip，当一个带有mask的video clip 和其他的video clips合成的时候，可以用来指示哪些像素是可见的，<br>哪些是不显示的。在导出GIF或者PNG文件的时候，mask也可以用来定义透明度。</p>
+<p>mask clip和普通的vedio clip最基本的不同在于：</p>
+<ul>
+<li>标准的clip的每一帧中的每一个像素是由3个色元即R-G-B组合成的，取值范围是0-255。（0-255， 0-255，0-255）</li>
+<li>mask clip每个像素仅一个色元组件， 取值范围只有0-1。要么着一个像素可见，要么这个像素透明。<br>另一方面看，mask只有灰色的通道。</li>
+</ul>
+<p>当我们创建或者加载一个带有mask 的clip的时候，我们会像下面这样声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">maskclip = VideoClip(makeframe, duration=<span class="number">4</span>, ismask=<span class="literal">True</span>)</span><br><span class="line">maskclip = ImageClip(<span class="string">'my_mask.jpeg'</span>, ismask=<span class="literal">True</span>)</span><br><span class="line">maskclip = VideoFileClip(<span class="string">"myvideo.mp4"</span>, ismask=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>将一个mask clip覆盖在一个和他同样尺寸的clip时使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myclip.set_mask(mask_clip)</span><br></pre></td></tr></table></figure>
+
+<p>一些通过一个alpha 层来支持透明度的图片格式，比如PNG，moviepy中应该使用mask来对应：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myclip = ImageClip(<span class="string">"image.png"</span>, transparent=<span class="literal">True</span>) <span class="comment"># 默认为True</span></span><br><span class="line">myclip.mask <span class="comment"># 图片的alpha层</span></span><br></pre></td></tr></table></figure>
+
+<p>任何一个video clip都可以通过clip.to_mask()转换为一个mask，任何一个mask也可以通过my_mask_clip.to_RGB()转换为标准的RGB video clip.</p>
+<h2 id="导出video-clips"><a href="#导出video-clips" class="headerlink" title="导出video clips"></a>导出video clips</h2><p>video文件（.mp4 , .webm, .ogv…）</p>
+<h3 id="将一个clip写入一个文件"><a href="#将一个clip写入一个文件" class="headerlink" title="将一个clip写入一个文件"></a>将一个clip写入一个文件</h3><ul>
+<li>myclip.write_videofile(‘movie.mp4’) # 默认编码 ‘libx264’, 24 fps</li>
+<li>myclip.write_videofile(‘movie.mp4’, fps=15)</li>
+<li>myclip.write_videofile(‘movie.webm’)</li>
+<li>myclip.write_videofile(‘movie.webm’, audio=False) # 不使用音频<br>MoviePy对于大多数的扩展名都有默认的编解码，如果我们希望使用其他的编解码，或者我们不喜欢默认的编解码的话，我们可以通过codec=’mpeg4’来<br>使用自己指定的编解码。当我们导出为一个文件的时候，也有许多的可选项（比特率，是否将音频也导出，文件大小优化，使用处理器个数，等等）</li>
+</ul>
+<p>有些时候，我们使用moviepy是无法获得一个clip的duration这个值的。然后，duration这个必须通过clip.set_duration()来指定:</p>
+<h3 id="创建一个clip，显示一个花的图片5秒钟"><a href="#创建一个clip，显示一个花的图片5秒钟" class="headerlink" title="创建一个clip，显示一个花的图片5秒钟"></a>创建一个clip，显示一个花的图片5秒钟</h3><ul>
+<li>my_clip = ImageClip(‘flower.jpeg’) # 现在是无限时间，不停地循环</li>
+<li>my_clip.write_videofile(‘flower.mp4’) # 这一步将会出错，因为没有指定duration</li>
+<li>my_clip.set_duration(5).write_videofile(‘flower.mp4’) # 正确执行</li>
+</ul>
+<h3 id="GIF-动画"><a href="#GIF-动画" class="headerlink" title="GIF 动画"></a>GIF 动画</h3><p>将vedio clip导出为一个gif动画</p>
+<ul>
+<li>my_clip.write_gif(‘test.gif’, fps=12)<br>注意：需要安装ImageMagick。此外，我们还可以通过添加选项<code>program=&#39;ffmpeg&#39;</code>来使用ffmpeg生成gif动画。使用ffmpeg生成gif动图，虽然<br>要快一点，但是看起来效果可能会不太好，而且没有办法去优化。</li>
+</ul>
+<h2 id="导出图片"><a href="#导出图片" class="headerlink" title="导出图片"></a>导出图片</h2><p>我们可以将某一帧导出为图片</p>
+<ul>
+<li>myclip.save_frame(‘frame.png’) # 默认保存第一帧画面</li>
+<li>myclip.save_frame(‘frame.jpeg’, t=’01:00:00’) # 保存1h时刻的帧画面<br>如果这些clip有mask的话，mask将会作为图片的alpha层被保存。除非我们使用withmask=False指定不保存mask。</li>
+</ul>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p>我的一篇讲OpenCV羽化问题的博客，也提到过mask原理，当时是在图片上的蒙版，如果我们想要在视频中达到类似的效果应该怎么做呢？<br>先回顾一下效果图：</p>
+<p><em>原图：</em><br><img src="./images/movie_image.jpg" alt><br><em>背景图：</em><br><img src="./images/movie_dark.jpg" alt><br><em>mask图：</em><br><img src="./images/movie_blur.jpg" alt><br><em>最终羽化图：</em><br><img src="./images/movie_feather.jpg" alt></p>
+<h1 id="！！！待续"><a href="#！！！待续" class="headerlink" title="！！！待续"></a>！！！待续</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">做出来有问题的，教程讲的不够详细，等解决了再来补充</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/moviepy/8.创建和导出video_clips.html" title="8.创建和导出video_clips">http://leesin.cc/moviepy/8.创建和导出video_clips.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/moviepy/7.MoviePy中的Audio.html" rel="next" title="7.MoviePy中的Audio">
+                  <i class="fa fa-chevron-left"></i> 7.MoviePy中的Audio
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/moviepy/9.特效_炫动的字母.html" rel="prev" title="9.特效_炫动的字母">
+                  9.特效_炫动的字母 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建和导出video-clips"><span class="nav-number">1.</span> <span class="nav-text">创建和导出video clips</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些基本的clips。"><span class="nav-number">1.1.</span> <span class="nav-text">一些基本的clips。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VIDEO-CLIPS"><span class="nav-number">1.1.1.</span> <span class="nav-text">VIDEO CLIPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AUDIO-CLIPS"><span class="nav-number">1.1.2.</span> <span class="nav-text">AUDIO CLIPS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#video-clip的分类"><span class="nav-number">1.2.</span> <span class="nav-text">video clip的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VideoClip"><span class="nav-number">1.2.1.</span> <span class="nav-text">VideoClip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VideoFileClip"><span class="nav-number">1.2.2.</span> <span class="nav-text">VideoFileClip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageSequenceClip"><span class="nav-number">1.2.3.</span> <span class="nav-text">ImageSequenceClip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageClip"><span class="nav-number">1.2.4.</span> <span class="nav-text">ImageClip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TextClip"><span class="nav-number">1.2.5.</span> <span class="nav-text">TextClip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mask-clips"><span class="nav-number">1.2.6.</span> <span class="nav-text">Mask clips</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出video-clips"><span class="nav-number">1.3.</span> <span class="nav-text">导出video clips</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#将一个clip写入一个文件"><span class="nav-number">1.3.1.</span> <span class="nav-text">将一个clip写入一个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个clip，显示一个花的图片5秒钟"><span class="nav-number">1.3.2.</span> <span class="nav-text">创建一个clip，显示一个花的图片5秒钟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GIF-动画"><span class="nav-number">1.3.3.</span> <span class="nav-text">GIF 动画</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出图片"><span class="nav-number">1.4.</span> <span class="nav-text">导出图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">1.5.</span> <span class="nav-text">示例代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#！！！待续"><span class="nav-number">2.</span> <span class="nav-text">！！！待续</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
