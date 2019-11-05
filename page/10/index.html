@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/如何使用SVM训练自己的数据.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/OpenCV检测分割图像.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -279,7 +279,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/reading/如何使用SVM训练自己的数据.html" class="post-title-link" itemprop="url">如何使用SVM训练自己的数据</a>
+            <a href="/reading/OpenCV检测分割图像.html" class="post-title-link" itemprop="url">直接可以用的Python和OpenCV检测及分割图像的目标区域例子</a>
           
         </h2>
 
@@ -294,7 +294,7 @@
                 
               
 
-              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:12:14" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:12:59" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
             </span>
           
             
@@ -326,11 +326,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="如何使用SVM训练自己的数据"><a href="#如何使用SVM训练自己的数据" class="headerlink" title="如何使用SVM训练自己的数据"></a>如何使用SVM训练自己的数据</h1><h2 id="1-分析数据"><a href="#1-分析数据" class="headerlink" title="1.分析数据"></a>1.分析数据</h2><p>示例数据集使用的是 CSV 文件（以逗号为分隔符的文本文件）</p><p><strong>数据集：</strong></p><p><img src="/images/2019082201.PNG" alt></p><p><strong>标签文件</strong></p><p><img src="/images/2019082202.PNG" alt></p><h2 id="2-导入相关模块"><a href="#2-导入相关模块" class="headerlink" title="2.导入相关模块"></a>2.导入相关模块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.externals <span class="keyword">import</span> joblib <span class="comment"># 保存加载模型时使用</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split <span class="comment"># 划分数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV <span class="comment"># 网格搜索最优参数</span></span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC <span class="comment"># 导入 SVM 算法模块</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report <span class="comment"># 生成训练结果报告</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np <span class="comment"># 这个可以不用，我手滑习惯性都导入，新版的pandas改版了许多兼容numpy的类型，以前是很依赖numpy的，所以普遍教程都是先教你numpy再教你pandas。现在基本上numpy能做的pandas都能做，既独立，又兼容。</span></span><br></pre></td></tr></table></figure>
+          <h1 id="直接可以用的Python和OpenCV检测及分割图像的目标区域例子"><a href="#直接可以用的Python和OpenCV检测及分割图像的目标区域例子" class="headerlink" title="直接可以用的Python和OpenCV检测及分割图像的目标区域例子"></a>直接可以用的Python和OpenCV检测及分割图像的目标区域例子</h1><h2 id="第一天"><a href="#第一天" class="headerlink" title="第一天"></a>第一天</h2><p>老师：你知道么，今天有人问了我一个问题。<br>~.我：什么？<br>老师：他说很难。<br>~.我：关于什么的？<br>老师：图像处理。</p><p>~.我：喔，你说说看，我确实做了不少图像处理的东西（心里默念，你不知知道你给过我多少图像吗？）<br>老师：好嘞！在用深度学习的时候，比如说面对一张图像，对某个区域感兴趣怎么办？<br>~.我：他傻啊，切割出来啊，只需要训练感兴趣的部分就好啦。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/reading/如何使用SVM训练自己的数据.html#more" rel="contents">
+              <a class="btn" href="/reading/OpenCV检测分割图像.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -361,7 +361,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/7.Python的随机数模块.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/卷积神经网络.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -375,7 +375,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/python/7.Python的随机数模块.html" class="post-title-link" itemprop="url">7.Python的随机数模块</a>
+            <a href="/reading/卷积神经网络.html" class="post-title-link" itemprop="url">几种经典的卷积神经网络模型</a>
           
         </h2>
 
@@ -390,7 +390,7 @@
                 
               
 
-              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：22:48:17" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:42:50" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
             </span>
           
             
@@ -403,7 +403,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
 
                 
                 
@@ -422,46 +422,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><p>随机数可以用于数学，游戏，安全等领域中，还经常被嵌入到算法中，用以提高算法效率，并提高程序的安全性。</p><h3 id="Python随机数函数"><a href="#Python随机数函数" class="headerlink" title="Python随机数函数"></a>Python随机数函数</h3><table>
-<thead>
-<tr>
-<th align="left">函数</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">choice(seq)</td>
-<td align="left">从序列的元素中随机挑选一个元素，比如random.choice(range(10))，从0到9中随机挑选一个整数。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://www.runoob.com/python/func-number-randrange.html" target="_blank" rel="noopener">randrange ([start,] stop [,step])</a></td>
-<td align="left">从指定范围内，按指定基数递增的集合中获取一个随机数，基数默认值为 1</td>
-</tr>
-<tr>
-<td align="left"><a href="https://www.runoob.com/python/func-number-random.html" target="_blank" rel="noopener">random()</a></td>
-<td align="left">随机生成下一个实数，它在[0,1)范围内。</td>
-</tr>
-<tr>
-<td align="left">[seed(x)]</td>
-<td align="left">改变随机数生成器的种子seed。如果你不了解其原理，你不必特别去设定seed，Python会帮你选择seed。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://www.runoob.com/python/func-number-shuffle.html" target="_blank" rel="noopener">shuffle(lst)</a></td>
-<td align="left">将序列的所有元素随机排序</td>
-</tr>
-<tr>
-<td align="left">uniform(x, y)</td>
-<td align="left">随机生成下一个实数，它在[x,y]范围内。</td>
-</tr>
-<tr>
-<td align="left">sample</td>
-<td align="left">序列中取出指定个数</td>
-</tr>
-</tbody></table>
+          <h1 id="几种经典的卷积神经网络模型"><a href="#几种经典的卷积神经网络模型" class="headerlink" title="几种经典的卷积神经网络模型"></a>几种经典的卷积神经网络模型</h1><h2 id="1-卷积神经网络介绍"><a href="#1-卷积神经网络介绍" class="headerlink" title="1.卷积神经网络介绍"></a>1.卷积神经网络介绍</h2><p>卷积神经网络（Convolutional Neural Networks, CNN）是一类包含卷积计算且具有深度结构的前馈神经网络（Feedforward Neural Networks），是深度学习（deep learning）的代表算法之一</p><h3 id="1-1输入层"><a href="#1-1输入层" class="headerlink" title="1.1输入层"></a><strong>1.1输入层</strong></h3>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/python/7.Python的随机数模块.html#more" rel="contents">
+              <a class="btn" href="/reading/卷积神经网络.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -588,102 +553,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/5.Python的数字类型.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/python/5.Python的数字类型.html" class="post-title-link" itemprop="url">5.Python的数字类型</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-21 23:11:00 / 修改时间：23:13:55" itemprop="dateCreated datePublished" datetime="2019-08-21T23:11:00+08:00">2019-08-21</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><p>上一篇博客中简单介绍了一下Python的各种变量类型，这一篇我们重点介绍Python的数字类型。</p><p>数字类型算得上是程序语言的灵魂了，大家都知道计算机通过高低电平的状态，规定高电平为1，低电平为0，用0和1来表示了如此庞大的计算体系。</p><p>用0和1推演出字符，数字等的表达方式，再用数字，字符组成了如此复杂的程序结构。古老的程序员都是用打孔纸带进行编程，哪有现在这么舒服。作为语言中最重要的一环，数字，不得不首先介绍它，因为没有数字就真的什么都没有了。包括没有在数学的表达上也是0，所以这么世界就是数学，没有数学表达不了的东西。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/python/5.Python的数字类型.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/6.Python的math模块.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -752,6 +621,102 @@
           
             <div class="post-button text-center">
               <a class="btn" href="/python/6.Python的math模块.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/5.Python的数字类型.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/python/5.Python的数字类型.html" class="post-title-link" itemprop="url">5.Python的数字类型</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-21 23:11:00 / 修改时间：23:13:55" itemprop="dateCreated datePublished" datetime="2019-08-21T23:11:00+08:00">2019-08-21</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><p>上一篇博客中简单介绍了一下Python的各种变量类型，这一篇我们重点介绍Python的数字类型。</p><p>数字类型算得上是程序语言的灵魂了，大家都知道计算机通过高低电平的状态，规定高电平为1，低电平为0，用0和1来表示了如此庞大的计算体系。</p><p>用0和1推演出字符，数字等的表达方式，再用数字，字符组成了如此复杂的程序结构。古老的程序员都是用打孔纸带进行编程，哪有现在这么舒服。作为语言中最重要的一环，数字，不得不首先介绍它，因为没有数字就真的什么都没有了。包括没有在数学的表达上也是0，所以这么世界就是数学，没有数学表达不了的东西。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/python/5.Python的数字类型.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
