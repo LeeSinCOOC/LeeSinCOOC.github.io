@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="安装使用XGBoost第一部分：环境准备如果电脑已经安装Python的集成环境，可以直接略过这部分，本篇主要针对Windows系统下的安装下载安装Anaconda（python的一个集成包）推荐使用清华源镜像，官方下载2019年7月后莫名就慢了，这是我的常用方式下载安装XGBoost下载XGBoost">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装使用XGboost">
+<meta property="og:url" content="http://leesin.cc/reading/安装使用XGboost.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="安装使用XGBoost第一部分：环境准备如果电脑已经安装Python的集成环境，可以直接略过这部分，本篇主要针对Windows系统下的安装下载安装Anaconda（python的一个集成包）推荐使用清华源镜像，官方下载2019年7月后莫名就慢了，这是我的常用方式下载安装XGBoost下载XGBoost">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-05T11:49:46.535Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安装使用XGboost">
+<meta name="twitter:description" content="安装使用XGBoost第一部分：环境准备如果电脑已经安装Python的集成环境，可以直接略过这部分，本篇主要针对Windows系统下的安装下载安装Anaconda（python的一个集成包）推荐使用清华源镜像，官方下载2019年7月后莫名就慢了，这是我的常用方式下载安装XGBoost下载XGBoost">
+  <link rel="canonical" href="http://leesin.cc/reading/安装使用XGboost">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>安装使用XGboost | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/安装使用XGboost.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">安装使用XGboost
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-05 19:48:05 / 修改时间：19:49:46" itemprop="dateCreated datePublished" datetime="2019-11-05T19:48:05+08:00">2019-11-05</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="安装使用XGBoost"><a href="#安装使用XGBoost" class="headerlink" title="安装使用XGBoost"></a>安装使用XGBoost</h1><h2 id="第一部分：环境准备"><a href="#第一部分：环境准备" class="headerlink" title="第一部分：环境准备"></a>第一部分：环境准备</h2><p>如果电脑已经安装Python的集成环境，可以直接略过这部分，本篇主要针对Windows系统下的安装</p><h3 id="下载安装Anaconda（python的一个集成包）"><a href="#下载安装Anaconda（python的一个集成包）" class="headerlink" title="下载安装Anaconda（python的一个集成包）"></a>下载安装Anaconda（python的一个集成包）</h3><p>推荐使用<a href="https://mirrors.tuna.tsinghua.edu.cn/#" target="_blank" rel="noopener">清华源</a>镜像，官方下载2019年7月后莫名就慢了，这是我的常用方式</p><h3 id="下载安装XGBoost"><a href="#下载安装XGBoost" class="headerlink" title="下载安装XGBoost"></a>下载安装XGBoost</h3><h4 id="下载XGBoost"><a href="#下载XGBoost" class="headerlink" title="下载XGBoost"></a>下载<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#xgboost" target="_blank" rel="noopener">XGBoost</a></h4><a id="more"></a>
+
+<h4 id="安装XGBoost"><a href="#安装XGBoost" class="headerlink" title="安装XGBoost"></a>安装XGBoost</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install xgboost-0.90-cp37-cp37m-win_amd64.whl</span><br></pre></td></tr></table></figure>
+
+<h3 id="扩展安装包"><a href="#扩展安装包" class="headerlink" title="扩展安装包"></a>扩展安装包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install scikit-learn -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="第二部分：简单使用"><a href="#第二部分：简单使用" class="headerlink" title="第二部分：简单使用"></a>第二部分：简单使用</h2><h3 id="测试安装"><a href="#测试安装" class="headerlink" title="测试安装"></a>测试安装</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="comment"># 无报错</span></span><br><span class="line"><span class="keyword">import</span> sklearn <span class="comment"># 无报错</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="简单代码测试"><a href="#简单代码测试" class="headerlink" title="简单代码测试"></a>简单代码测试</h3><h4 id="xgboost-py"><a href="#xgboost-py" class="headerlink" title="xgboost.py"></a>xgboost.py</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"></span><br><span class="line">rawData = [[<span class="number">2</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>], [<span class="number">1</span>,<span class="number">2</span>], [<span class="number">4</span>,<span class="number">5</span>], [<span class="number">7</span>,<span class="number">8</span>]]</span><br><span class="line">label = [<span class="number">6</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">9</span>,<span class="number">15</span>]</span><br><span class="line"></span><br><span class="line">dtrain = xgb.DMatrix(rawData, label=label)</span><br><span class="line">deval = xgb.DMatrix([[<span class="number">3</span>,<span class="number">5</span>],[<span class="number">3</span>,<span class="number">6</span>]], label=[<span class="number">8</span>,<span class="number">9</span>])</span><br><span class="line"></span><br><span class="line">param = &#123;<span class="string">'max_depth'</span>: <span class="number">2</span>, <span class="string">'eta'</span>: <span class="number">1</span>, <span class="string">'silent'</span>: <span class="number">1</span>, <span class="string">'objective'</span>: <span class="string">'reg:linear'</span>&#125;</span><br><span class="line"><span class="comment"># param['nthread'] = 4</span></span><br><span class="line"><span class="comment"># param['eval_metric'] = 'auc'</span></span><br><span class="line"></span><br><span class="line">evallist = [(deval, <span class="string">'eval'</span>), (dtrain, <span class="string">'train'</span>)]</span><br><span class="line"></span><br><span class="line">num_round = <span class="number">100</span></span><br><span class="line">bst = xgb.train(param, dtrain, num_round, evallist)</span><br><span class="line"></span><br><span class="line">bst.save_model(<span class="string">'xgb.model'</span>)</span><br><span class="line"></span><br><span class="line">dtest = xgb.DMatrix([[<span class="number">2</span>,<span class="number">4</span>], [<span class="number">7</span>,<span class="number">8</span>]])</span><br><span class="line">ypred = bst.predict(dtest)</span><br><span class="line"></span><br><span class="line">print(ypred)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">参数：</span></span><br><span class="line"><span class="string">max_depth:树最大深度</span></span><br><span class="line"><span class="string">eta:迭代步长</span></span><br><span class="line"><span class="string">silent：是否打印额外信息</span></span><br><span class="line"><span class="string">objective：训练目标</span></span><br><span class="line"><span class="string">booster：树类型</span></span><br><span class="line"><span class="string">gamma：子树生成最小loss</span></span><br><span class="line"><span class="string">tree_method：树生成类型</span></span><br><span class="line"><span class="string">lambda：L2正则项，防止过拟合</span></span><br><span class="line"><span class="string">alpha：L1正则项，防止过拟合</span></span><br><span class="line"><span class="string">subsample:样本测样，防止过拟合</span></span><br><span class="line"><span class="string">colsample_bytree：建树特征抽样，防止过拟合</span></span><br><span class="line"><span class="string">colsample_bylevel：子树特征抽样，防止过拟合</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="load-model-py"><a href="#load-model-py" class="headerlink" title="load_model.py"></a>load_model.py</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"></span><br><span class="line"><span class="comment"># load model and data in</span></span><br><span class="line">tar = xgb.Booster(model_file=<span class="string">'xgb.model'</span>)</span><br><span class="line">dtest = xgb.DMatrix([[<span class="number">2</span>,<span class="number">4</span>], [<span class="number">7</span>,<span class="number">8</span>]])</span><br><span class="line">preds = tar.predict(dtest)</span><br><span class="line"></span><br><span class="line">print(preds)</span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>陈天奇和团队开发了三个被广泛采用的机器学习系统：</p>
+<ul>
+<li>TVM stack：一个用于深度学习的自动端到端优化编译器。</li>
+<li>XGBoost，一个可扩展的、端到端的tree boosting系统。这个工具已经成为数据科学家每天使用的工具之一。</li>
+<li>Apache MXNet(共同作者)：目前AWS采用的主要深度学习框架之一。</li>
+</ul>
+<h3 id="TVM"><a href="#TVM" class="headerlink" title="TVM"></a>TVM</h3><p>是一个神经网络编译器，它<strong>可以直接从其他框架训练好的模型编译到目标平台上的可执行代码</strong>，速度和显存的都有大幅优化。TVM使得自动或者半自动生成的代码能够达到手写代码的效果。 </p>
+<h3 id="XgBoost"><a href="#XgBoost" class="headerlink" title="XgBoost"></a>XgBoost</h3><p>在竞赛中的使用率还是很高，性能也很好 </p>
+<h3 id="MXNet"><a href="#MXNet" class="headerlink" title="MXNet"></a>MXNet</h3><p>是主流的三大深度学习框架之一：</p>
+<ul>
+<li><a href="https://www.tensorflow.org/" target="_blank" rel="noopener">TensorFlow</a>：Google支持，其简化版是<a href="https://keras.io/" target="_blank" rel="noopener">Keras</a>；</li>
+<li><a href="https://pytorch.org/" target="_blank" rel="noopener">PyTorch</a>：Facebook支持，其工业版是<a href="https://caffe2.ai/" target="_blank" rel="noopener">Caffe2</a>；</li>
+<li>MXNet：中立，Apache孵化器项目，也被AWS选为官方DL平台；</li>
+</ul>
+<p>MXNet的优势是，其开发者之一李沐，是中国人，在MXNet的推广中具有语言优势（汉语），有利于国内开发者的学习。同时，推荐李沐录制的<a href="https://discuss.gluon.ai/t/topic/753" target="_blank" rel="noopener">教学视频</a> </p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/安装使用XGboost.html" title="安装使用XGboost">http://leesin.cc/reading/安装使用XGboost.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/C++多文件编译.html" rel="next" title="C++多文件编译">
+                  <i class="fa fa-chevron-left"></i> C++多文件编译
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装使用XGBoost"><span class="nav-number">1.</span> <span class="nav-text">安装使用XGBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分：环境准备"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分：环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载安装Anaconda（python的一个集成包）"><span class="nav-number">1.1.1.</span> <span class="nav-text">下载安装Anaconda（python的一个集成包）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载安装XGBoost"><span class="nav-number">1.1.2.</span> <span class="nav-text">下载安装XGBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载XGBoost"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">下载XGBoost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装XGBoost"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">安装XGBoost</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展安装包"><span class="nav-number">1.1.3.</span> <span class="nav-text">扩展安装包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二部分：简单使用"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分：简单使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试安装"><span class="nav-number">1.2.1.</span> <span class="nav-text">测试安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单代码测试"><span class="nav-number">1.2.2.</span> <span class="nav-text">简单代码测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#xgboost-py"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">xgboost.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#load-model-py"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">load_model.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">1.3.</span> <span class="nav-text">结语</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TVM"><span class="nav-number">1.3.1.</span> <span class="nav-text">TVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XgBoost"><span class="nav-number">1.3.2.</span> <span class="nav-text">XgBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MXNet"><span class="nav-number">1.3.3.</span> <span class="nav-text">MXNet</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
