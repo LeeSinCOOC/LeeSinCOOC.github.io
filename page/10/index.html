@@ -361,7 +361,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/卷积神经网络.html">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/如何使用SVM训练自己的数据.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈 建">
@@ -375,7 +375,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
             
-            <a href="/reading/卷积神经网络.html" class="post-title-link" itemprop="url">几种经典的卷积神经网络模型</a>
+            <a href="/reading/如何使用SVM训练自己的数据.html" class="post-title-link" itemprop="url">如何使用SVM训练自己的数据</a>
           
         </h2>
 
@@ -390,7 +390,7 @@
                 
               
 
-              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:42:50" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：20:12:14" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
             </span>
           
             
@@ -422,11 +422,109 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="几种经典的卷积神经网络模型"><a href="#几种经典的卷积神经网络模型" class="headerlink" title="几种经典的卷积神经网络模型"></a>几种经典的卷积神经网络模型</h1><h2 id="1-卷积神经网络介绍"><a href="#1-卷积神经网络介绍" class="headerlink" title="1.卷积神经网络介绍"></a>1.卷积神经网络介绍</h2><p>卷积神经网络（Convolutional Neural Networks, CNN）是一类包含卷积计算且具有深度结构的前馈神经网络（Feedforward Neural Networks），是深度学习（deep learning）的代表算法之一</p><h3 id="1-1输入层"><a href="#1-1输入层" class="headerlink" title="1.1输入层"></a><strong>1.1输入层</strong></h3>
+          <h1 id="如何使用SVM训练自己的数据"><a href="#如何使用SVM训练自己的数据" class="headerlink" title="如何使用SVM训练自己的数据"></a>如何使用SVM训练自己的数据</h1><h2 id="1-分析数据"><a href="#1-分析数据" class="headerlink" title="1.分析数据"></a>1.分析数据</h2><p>示例数据集使用的是 CSV 文件（以逗号为分隔符的文本文件）</p><p><strong>数据集：</strong></p><p><img src="/images/2019082201.PNG" alt></p><p><strong>标签文件</strong></p><p><img src="/images/2019082202.PNG" alt></p><h2 id="2-导入相关模块"><a href="#2-导入相关模块" class="headerlink" title="2.导入相关模块"></a>2.导入相关模块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.externals <span class="keyword">import</span> joblib <span class="comment"># 保存加载模型时使用</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split <span class="comment"># 划分数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV <span class="comment"># 网格搜索最优参数</span></span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC <span class="comment"># 导入 SVM 算法模块</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report <span class="comment"># 生成训练结果报告</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np <span class="comment"># 这个可以不用，我手滑习惯性都导入，新版的pandas改版了许多兼容numpy的类型，以前是很依赖numpy的，所以普遍教程都是先教你numpy再教你pandas。现在基本上numpy能做的pandas都能做，既独立，又兼容。</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/reading/卷积神经网络.html#more" rel="contents">
+              <a class="btn" href="/reading/如何使用SVM训练自己的数据.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/8.Python的字符串.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/python/8.Python的字符串.html" class="post-title-link" itemprop="url">8.Python的字符串</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-22 23:11:00 / 修改时间：23:01:13" itemprop="dateCreated datePublished" datetime="2019-08-22T23:11:00+08:00">2019-08-22</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="书接上文"><a href="#书接上文" class="headerlink" title="书接上文"></a>书接上文</h2><p>在学习新的内容之前，我们做一个小校验，看看自己前面的数值类型是否掌握。</p><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; 1.把你的名字拼音用编码数字进行输出</span><br><span class="line">&gt; 2.把上一题的编码解析出来，你或许以后可以用这个当成你的某网站密码</span><br><span class="line">&gt; 3.数字3.1向上取整</span><br><span class="line">&gt; 4.数字4.9向下取整</span><br><span class="line">&gt; 5.数字5.555保留两位小数</span><br><span class="line">&gt; 6.把你名字的数字编码转为二进制，八进制，十六进制</span><br><span class="line">&gt; 7.将数字8.88转为整型</span><br><span class="line">&gt; 8.将字符串的python语句转为正常语句，再赋给一个字符串</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/python/8.Python的字符串.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1112,98 +1210,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/python/1.Python 介绍.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/python/1.Python 介绍.html" class="post-title-link" itemprop="url">1.Python 介绍</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-19 00:16:56" itemprop="dateCreated datePublished" datetime="2019-08-19T00:16:56+08:00">2019-08-19</time>
-            </span>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python-教程/" itemprop="url" rel="index"><span itemprop="name">Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Python-来了"><a href="#Python-来了" class="headerlink" title="Python 来了"></a>Python 来了</h1><p><strong>Python</strong>（英国发音：<a href="https://wikipedia.hk.wjbk.site/baike-Wikipedia:國際音標英語發音" target="_blank" rel="noopener">/ˈpaɪθən/</a> 美国发音：<a href="https://wikipedia.hk.wjbk.site/baike-Wikipedia:國際音標英語發音" target="_blank" rel="noopener">/ˈpaɪθɑːn/</a>）是一种广泛使用的<a href="https://wikipedia.hk.wjbk.site/baike-直譯語言" target="_blank" rel="noopener">解释型</a>、<a href="https://wikipedia.hk.wjbk.site/baike-高级编程语言" target="_blank" rel="noopener">高级编程</a>、<a href="https://wikipedia.hk.wjbk.site/baike-通用编程语言" target="_blank" rel="noopener">通用型编程语言</a>，由<a href="https://wikipedia.hk.wjbk.site/baike-吉多·范罗苏姆" target="_blank" rel="noopener">吉多·范罗苏姆</a>创造，第一版发布于1991年。</p><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>Python的创始人为<a href="https://wikipedia.hk.wjbk.site/baike-吉多·范罗苏姆" target="_blank" rel="noopener">吉多·范罗苏姆</a>。1989年的圣诞节期间，<a href="https://wikipedia.hk.wjbk.site/baike-吉多·范罗苏姆" target="_blank" rel="noopener">吉多·范罗苏姆</a>为了在<a href="https://wikipedia.hk.wjbk.site/baike-阿姆斯特丹" target="_blank" rel="noopener">阿姆斯特丹</a>打发时间，决心开发一个新的脚本解释程序，作为<a href="https://wikipedia.hk.wjbk.site/baike-ABC語言" target="_blank" rel="noopener">ABC语言</a>的一种继承。之所以选中Python作为程序的名字，是因为他是BBC电视剧——<a href="https://wikipedia.hk.wjbk.site/baike-蒙提·派森的飛行馬戲團" target="_blank" rel="noopener">蒙提·派森的飞行马戏团</a>的爱好者。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/python/1.Python 介绍.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1244,7 +1250,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1277,7 +1283,9 @@
         
           
         
-        <span class="site-state-item-count">9</span>
+          
+        
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
