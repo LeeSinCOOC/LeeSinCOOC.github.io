@@ -265,6 +265,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/17.追踪人脸.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/17.追踪人脸.html" class="post-title-link" itemprop="url">17.追踪人脸</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:26:04 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:26:04+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="追踪人脸"><a href="#追踪人脸" class="headerlink" title="追踪人脸"></a>追踪人脸</h1><p><img src="/images/magic_detect_face.gif" alt></p>
+<blockquote>
+<p>下面的代码依然跑不通</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.tracking <span class="keyword">import</span> manual_tracking, to_fxfy</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载clip，截取一个卓别林电影的6‘51-7’01之间的片段</span></span><br><span class="line">clip = VideoFileClip(<span class="string">"../../videos/chaplin.mp4"</span>).subclip((<span class="number">6</span>,<span class="number">51.7</span>),(<span class="number">7</span>,<span class="number">01.3</span>))</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 手动跟踪标记头部</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 下面的三行代码，手动跟踪，然后把结果保存进文件，应该在一次运行之后就完成量跟踪标记</span></span><br><span class="line"><span class="comment"># 注意：我们保存的格式是一个(ti,xi,yi)list，不是函数fx和fy</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#txy, (fx,fy) = manual_tracking(clip, fps=6)</span></span><br><span class="line"><span class="comment">#with open("../../chaplin_txy.dat",'w+') as f:</span></span><br><span class="line"><span class="comment">#    pickle.dump(txy)</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 已经完成手动跟踪人脸并标记的情况下</span></span><br><span class="line"><span class="comment"># fx(t),fy(t)的形式加载跟踪标记的数据</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"../../chaplin_txy.dat"</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    fx,fy = to_fxfy( pickle.load(f) )</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 在clip中，模糊卓别林的头部</span></span><br><span class="line"> </span><br><span class="line">clip_blurred = clip.fx( vfx.headblur, fx, fy, <span class="number">25</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 生成文本，灰色背景</span></span><br><span class="line"> </span><br><span class="line">txt = TextClip(<span class="string">"Hey you ! \n You're blurry!"</span>, color=<span class="string">'grey70'</span>,</span><br><span class="line">               size = clip.size, bg_color=<span class="string">'grey20'</span>,</span><br><span class="line">               font = <span class="string">"Century-Schoolbook-Italic"</span>, fontsize=<span class="number">40</span>)</span><br><span class="line">               </span><br><span class="line">               </span><br><span class="line"><span class="comment"># 把卓别林的vedio clip和TextClip连接起来，添加audio clip</span></span><br><span class="line"> </span><br><span class="line">final = concatenate_videoclips([clip_blurred,txt.set_duration(<span class="number">3</span>)]).\</span><br><span class="line">          set_audio(clip.audio)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 将比特率修改为3000k是为了画面不至于太丑</span></span><br><span class="line"> </span><br><span class="line">final.write_videofile(<span class="string">'../../blurredChaplin.avi'</span>, bitrate=<span class="string">"3000k"</span>)</span><br></pre></td></tr></table></figure>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/16.Logo阴影.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/16.Logo阴影.html" class="post-title-link" itemprop="url">16.Logo阴影</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:25:56 / 修改时间：15:54:49" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:56+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Logo阴影"><a href="#Logo阴影" class="headerlink" title="Logo阴影"></a>Logo阴影</h1><p><img src="/images/magic_logo.gif" alt></p>
+<blockquote>
+<p>!!! 这个例子没代码 这教程。。。。无语了</p>
+</blockquote>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/15.使用画笔特效定格视频中的某一帧.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1003,198 +1185,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/7.MoviePy中的Audio.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/moviepy/7.MoviePy中的Audio.html" class="post-title-link" itemprop="url">7.MoviePy中的Audio</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-03 15:24:21 / 修改时间：15:39:20" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:21+08:00">2019-11-03</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="MoviePy中的Audio"><a href="#MoviePy中的Audio" class="headerlink" title="MoviePy中的Audio"></a>MoviePy中的Audio</h1><p>下面主要是演示在moviepy中如何创建和编辑audio clips。</p><p>之前曾经说过，在moviepy中，当我们剪切，混合，拼接video clip的时候，audio clip并不需要我们去操心，他会自动的随着video完成相应的<br>处理。这篇博文提到的对于audio clip的操作主要是为了开发者的两种情况</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/moviepy/7.MoviePy中的Audio.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/6.使用matplotlib.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/moviepy/6.使用matplotlib.html" class="post-title-link" itemprop="url">6.使用matplotlib</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-03 15:24:12 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:12+08:00">2019-11-03</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="使用matplotlib"><a href="#使用matplotlib" class="headerlink" title="使用matplotlib"></a>使用matplotlib</h1><p>到现在为止也没有做一个<code>matplotlib</code>的教程，原因在于其实我使用matplotlib的频率其实<br>不是很高，而且有很多现成的画廊代码，这个对于数据可视化来讲还是挺重要的，记得还是要做啊，<br>少玩几把游戏把时间腾出来</p><h2 id="用户自定义动画"><a href="#用户自定义动画" class="headerlink" title="用户自定义动画"></a>用户自定义动画</h2><p>moviepy允许开发者自定义动画：定义一个方法，以numpy数组的形式在动画中给定的时间返回一帧画面。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/moviepy/6.使用matplotlib.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1235,7 +1225,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

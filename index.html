@@ -265,6 +265,195 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/PyMysql插入数据.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/reading/PyMysql插入数据.html" class="post-title-link" itemprop="url">PyMysql插入数据</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-28 18:05:38 / 修改时间：18:06:35" itemprop="dateCreated datePublished" datetime="2019-11-28T18:05:38+08:00">2019-11-28</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="PyMysql插入数据"><a href="#PyMysql插入数据" class="headerlink" title="PyMysql插入数据"></a>PyMysql插入数据</h1><h2 id="安装pymysql"><a href="#安装pymysql" class="headerlink" title="安装pymysql"></a>安装pymysql</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pymysql -i https://pypi.doubanio.com/simple</span><br></pre></td></tr></table></figure>
+
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">import pymysql</span><br><span class="line">import datetime</span><br><span class="line"></span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">id</span><br><span class="line">name</span><br><span class="line">time</span><br><span class="line">class</span><br><span class="line">NO.</span><br><span class="line">options</span><br><span class="line">update_time</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line"># 连接数据库</span><br><span class="line">conn = pymysql.connect(</span><br><span class="line">    host=&quot;your sql host&quot;,</span><br><span class="line">    user=&quot;your user name&quot;,</span><br><span class="line">    password=&quot;your passworld&quot;,</span><br><span class="line">    database=&quot;your database&quot;,</span><br><span class="line">    charset=&quot;utf8&quot;)</span><br><span class="line"></span><br><span class="line"># 创建游标</span><br><span class="line">cursor = conn.cursor()</span><br><span class="line"></span><br><span class="line"># 把要写入的数据做成字典</span><br><span class="line">date = datetime.datetime.now()</span><br><span class="line">data = &#123;</span><br><span class="line">    &apos;name&apos;:&apos;test&apos;,</span><br><span class="line">    &apos;time&apos;:date,</span><br><span class="line">    &apos;class&apos;:&apos;master&apos;,</span><br><span class="line">    &apos;NO.&apos;:&apos;adf&apos;,</span><br><span class="line">    &apos;options&apos;:&apos;Y&apos;,</span><br><span class="line">    &apos;update_time&apos;:&apos;&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">table = &apos;traffic_cut&apos;</span><br><span class="line">keys = &apos;, &apos;.join(data.keys())</span><br><span class="line">values = &apos;, &apos;.join([&apos;%s&apos;] * len(data))</span><br><span class="line">sql = &apos;INSERT INTO &#123;table&#125;(&#123;keys&#125;) VALUES (&#123;values&#125;)&apos;.format(table=table, keys=keys, values=values)</span><br><span class="line">try:</span><br><span class="line">    #这里的第二个参数传入的要是一个元组</span><br><span class="line">   if cursor.execute(sql, tuple(data.values())):</span><br><span class="line">       print(&apos;Successful&apos;)</span><br><span class="line">       conn.commit()</span><br><span class="line">except:</span><br><span class="line">    print(&apos;Failed&apos;)</span><br><span class="line">    conn.rollback()</span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
+
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/ROS机器人学习.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/reading/ROS机器人学习.html" class="post-title-link" itemprop="url">ROS机器人学习</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-28 18:03:59 / 修改时间：18:04:38" itemprop="dateCreated datePublished" datetime="2019-11-28T18:03:59+08:00">2019-11-28</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="视觉机器人-人体姿态识别项目总结"><a href="#视觉机器人-人体姿态识别项目总结" class="headerlink" title="视觉机器人+人体姿态识别项目总结"></a>视觉机器人+人体姿态识别项目总结</h1><p>之前也做过一段时间的ROS开发，偶然看到这篇博客，记录一下，如果有生之年还有幸做ROS不妨拿出来参考一下。</p><blockquote>
+<p>原文链接： <a href="https://www.cnblogs.com/wdzeng/p/10274657.html" target="_blank" rel="noopener">https://www.cnblogs.com/wdzeng/p/10274657.html</a> </p>
+</blockquote><h2 id="一．整体介绍"><a href="#一．整体介绍" class="headerlink" title="一．整体介绍"></a>一．整体介绍</h2><p>项目大概从17年的5月份开始，那时候招了一个团队来做。两个大二的，三个大一的。后来慢慢摸索。暑假过后就没有人在项目组了。后来暑假重新找到了人重新开始。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/reading/ROS机器人学习.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/霍夫变换车道线检测.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -993,188 +1182,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/17.追踪人脸.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/moviepy/17.追踪人脸.html" class="post-title-link" itemprop="url">17.追踪人脸</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-03 15:26:04 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:26:04+08:00">2019-11-03</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="追踪人脸"><a href="#追踪人脸" class="headerlink" title="追踪人脸"></a>追踪人脸</h1><p><img src="/images/magic_detect_face.gif" alt></p>
-<blockquote>
-<p>下面的代码依然跑不通</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.tracking <span class="keyword">import</span> manual_tracking, to_fxfy</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 加载clip，截取一个卓别林电影的6‘51-7’01之间的片段</span></span><br><span class="line">clip = VideoFileClip(<span class="string">"../../videos/chaplin.mp4"</span>).subclip((<span class="number">6</span>,<span class="number">51.7</span>),(<span class="number">7</span>,<span class="number">01.3</span>))</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 手动跟踪标记头部</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 下面的三行代码，手动跟踪，然后把结果保存进文件，应该在一次运行之后就完成量跟踪标记</span></span><br><span class="line"><span class="comment"># 注意：我们保存的格式是一个(ti,xi,yi)list，不是函数fx和fy</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#txy, (fx,fy) = manual_tracking(clip, fps=6)</span></span><br><span class="line"><span class="comment">#with open("../../chaplin_txy.dat",'w+') as f:</span></span><br><span class="line"><span class="comment">#    pickle.dump(txy)</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 已经完成手动跟踪人脸并标记的情况下</span></span><br><span class="line"><span class="comment"># fx(t),fy(t)的形式加载跟踪标记的数据</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"../../chaplin_txy.dat"</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    fx,fy = to_fxfy( pickle.load(f) )</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 在clip中，模糊卓别林的头部</span></span><br><span class="line"> </span><br><span class="line">clip_blurred = clip.fx( vfx.headblur, fx, fy, <span class="number">25</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 生成文本，灰色背景</span></span><br><span class="line"> </span><br><span class="line">txt = TextClip(<span class="string">"Hey you ! \n You're blurry!"</span>, color=<span class="string">'grey70'</span>,</span><br><span class="line">               size = clip.size, bg_color=<span class="string">'grey20'</span>,</span><br><span class="line">               font = <span class="string">"Century-Schoolbook-Italic"</span>, fontsize=<span class="number">40</span>)</span><br><span class="line">               </span><br><span class="line">               </span><br><span class="line"><span class="comment"># 把卓别林的vedio clip和TextClip连接起来，添加audio clip</span></span><br><span class="line"> </span><br><span class="line">final = concatenate_videoclips([clip_blurred,txt.set_duration(<span class="number">3</span>)]).\</span><br><span class="line">          set_audio(clip.audio)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 将比特率修改为3000k是为了画面不至于太丑</span></span><br><span class="line"> </span><br><span class="line">final.write_videofile(<span class="string">'../../blurredChaplin.avi'</span>, bitrate=<span class="string">"3000k"</span>)</span><br></pre></td></tr></table></figure>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/16.Logo阴影.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/moviepy/16.Logo阴影.html" class="post-title-link" itemprop="url">16.Logo阴影</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-03 15:25:56 / 修改时间：15:54:49" itemprop="dateCreated datePublished" datetime="2019-11-03T15:25:56+08:00">2019-11-03</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Logo阴影"><a href="#Logo阴影" class="headerlink" title="Logo阴影"></a>Logo阴影</h1><p><img src="/images/magic_logo.gif" alt></p>
-<blockquote>
-<p>!!! 这个例子没代码 这教程。。。。无语了</p>
-</blockquote>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1215,7 +1222,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

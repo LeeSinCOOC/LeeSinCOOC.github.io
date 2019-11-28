@@ -265,6 +265,198 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/7.MoviePy中的Audio.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/7.MoviePy中的Audio.html" class="post-title-link" itemprop="url">7.MoviePy中的Audio</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:24:21 / 修改时间：15:39:20" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:21+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MoviePy中的Audio"><a href="#MoviePy中的Audio" class="headerlink" title="MoviePy中的Audio"></a>MoviePy中的Audio</h1><p>下面主要是演示在moviepy中如何创建和编辑audio clips。</p><p>之前曾经说过，在moviepy中，当我们剪切，混合，拼接video clip的时候，audio clip并不需要我们去操心，他会自动的随着video完成相应的<br>处理。这篇博文提到的对于audio clip的操作主要是为了开发者的两种情况</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/moviepy/7.MoviePy中的Audio.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/6.使用matplotlib.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/6.使用matplotlib.html" class="post-title-link" itemprop="url">6.使用matplotlib</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:24:12 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:12+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="使用matplotlib"><a href="#使用matplotlib" class="headerlink" title="使用matplotlib"></a>使用matplotlib</h1><p>到现在为止也没有做一个<code>matplotlib</code>的教程，原因在于其实我使用matplotlib的频率其实<br>不是很高，而且有很多现成的画廊代码，这个对于数据可视化来讲还是挺重要的，记得还是要做啊，<br>少玩几把游戏把时间腾出来</p><h2 id="用户自定义动画"><a href="#用户自定义动画" class="headerlink" title="用户自定义动画"></a>用户自定义动画</h2><p>moviepy允许开发者自定义动画：定义一个方法，以numpy数组的形式在动画中给定的时间返回一帧画面。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/moviepy/6.使用matplotlib.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/5.如何高效率使用MoviePy.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1049,219 +1241,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/对象检测（objdetect模块）.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/opencv/对象检测（objdetect模块）.html" class="post-title-link" itemprop="url">对象检测（objdetect模块）</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-08 14:11:00" itemprop="dateCreated datePublished" datetime="2019-10-08T14:11:00+08:00">2019-10-08</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="级联分类器"><a href="#级联分类器" class="headerlink" title="级联分类器"></a>级联分类器</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>我们将学习Haar级联对象检测的工作原理。</li>
-<li>我们将使用基于<code>Haar Feature</code>的<code>Cascade</code>分类器了解人脸检测和眼睛检测的基础知识<br>我们将使用<code>cv :: CascadeClassifier</code>类来检测视频流中的对象。特别是，我们将使用以下功能：<br><code>cv :: CascadeClassifier :: load</code>来加载<code>.xml</code>分类器文件。它可以是<code>Haar</code>或<code>LBP</code>分类器<br><code>cv :: CascadeClassifier :: detectMultiScale</code>执行检测。</li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/对象检测（objdetect模块）.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/opencv/机器学习.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/opencv/机器学习.html" class="post-title-link" itemprop="url">机器学习</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-08 13:11:00" itemprop="dateCreated datePublished" datetime="2019-10-08T13:11:00+08:00">2019-10-08</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-20 14:41:53" itemprop="dateModified" datetime="2019-10-20T14:41:53+08:00">2019-10-20</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenCV-Python-教程/" itemprop="url" rel="index"><span itemprop="name">OpenCV-Python 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="K最近邻"><a href="#K最近邻" class="headerlink" title="K最近邻"></a>K最近邻</h1><h2 id="了解k最近邻居"><a href="#了解k最近邻居" class="headerlink" title="了解k最近邻居"></a>了解k最近邻居</h2><h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><ul>
-<li>在本章中，我们将了解k最近邻（kNN）算法的概念。</li>
-</ul><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><p>kNN是可用于监督学习的最简单的分类算法之一。这个想法是在特征空间中搜索测试数据的最匹配。我们将用下面的图片来研究它。</p><p><img src="/images/knn_theory.png" alt></p><p>在图像中，有两个家族，蓝色正方形和红色三角形。我们称每个家庭为<code>Class</code>。他们的房屋显示在他们的城镇地图中，我们称之为要素空间。<em>（您可以将要素空间视为投影所有数据的空间。例如，考虑一个2D坐标空间。每个数据都有两个要素x和y坐标。您可以在2D坐标空间中表示此数据，对吧？现在假设如果有三个要素，则需要3D空间，现在考虑N个要素，需要N维空间，对吗？这个N维空间就是其要素空间，在我们的图像中，您可以将其视为2D情况有两个功能）</em>。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/opencv/机器学习.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1302,7 +1281,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="视觉机器人+人体姿态识别项目总结之前也做过一段时间的ROS开发，偶然看到这篇博客，记录一下，如果有生之年还有幸做ROS不妨拿出来参考一下。 原文链接： https://www.cnblogs.com/wdzeng/p/10274657.html  一．整体介绍项目大概从17年的5月份开始，那时候招了一个团队来做。两个大二的，三个大一的。后来慢慢摸索。暑假过后就没有人在项目组了。后来暑假重新找到了人">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS机器人学习">
+<meta property="og:url" content="http://leesin.cc/reading/ROS机器人学习.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="视觉机器人+人体姿态识别项目总结之前也做过一段时间的ROS开发，偶然看到这篇博客，记录一下，如果有生之年还有幸做ROS不妨拿出来参考一下。 原文链接： https://www.cnblogs.com/wdzeng/p/10274657.html  一．整体介绍项目大概从17年的5月份开始，那时候招了一个团队来做。两个大二的，三个大一的。后来慢慢摸索。暑假过后就没有人在项目组了。后来暑假重新找到了人">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_0.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_1.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_2.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_3.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_4.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_5.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_6.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_7.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_8.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_9.jpg">
+<meta property="og:image" content="http://leesin.cc/reading/images/ros_10.jpg">
+<meta property="og:updated_time" content="2019-11-28T10:04:38.638Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ROS机器人学习">
+<meta name="twitter:description" content="视觉机器人+人体姿态识别项目总结之前也做过一段时间的ROS开发，偶然看到这篇博客，记录一下，如果有生之年还有幸做ROS不妨拿出来参考一下。 原文链接： https://www.cnblogs.com/wdzeng/p/10274657.html  一．整体介绍项目大概从17年的5月份开始，那时候招了一个团队来做。两个大二的，三个大一的。后来慢慢摸索。暑假过后就没有人在项目组了。后来暑假重新找到了人">
+<meta name="twitter:image" content="http://leesin.cc/reading/images/ros_0.jpg">
+  <link rel="canonical" href="http://leesin.cc/reading/ROS机器人学习">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>ROS机器人学习 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/ROS机器人学习.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">ROS机器人学习
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-28 18:03:59 / 修改时间：18:04:38" itemprop="dateCreated datePublished" datetime="2019-11-28T18:03:59+08:00">2019-11-28</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="视觉机器人-人体姿态识别项目总结"><a href="#视觉机器人-人体姿态识别项目总结" class="headerlink" title="视觉机器人+人体姿态识别项目总结"></a>视觉机器人+人体姿态识别项目总结</h1><p>之前也做过一段时间的ROS开发，偶然看到这篇博客，记录一下，如果有生之年还有幸做ROS不妨拿出来参考一下。</p><blockquote>
+<p>原文链接： <a href="https://www.cnblogs.com/wdzeng/p/10274657.html" target="_blank" rel="noopener">https://www.cnblogs.com/wdzeng/p/10274657.html</a> </p>
+</blockquote><h2 id="一．整体介绍"><a href="#一．整体介绍" class="headerlink" title="一．整体介绍"></a>一．整体介绍</h2><p>项目大概从17年的5月份开始，那时候招了一个团队来做。两个大二的，三个大一的。后来慢慢摸索。暑假过后就没有人在项目组了。后来暑假重新找到了人重新开始。</p><a id="more"></a>
+
+
+<p>项目的整体目的是完成机器人识别人体姿态从而达到跟随或者是完成特定功能的效果。整体分为两个部分，一部分是完成<strong>turtlebot2</strong>机器人的环境搭建并且在从turtlebot2机器人上的<strong>奥比中光相机</strong>得到深度图，另一部分是用利用<strong>TensorFlow</strong>深度学习框架下人体姿态视频的学习和检测。</p>
+<p>因为时间关系，项目只做了一部分，很多的时候并不是因为难。但是因为一些网络原因，所以Ubuntu上+ROS的PPA的源总是无法更新，总是无法安装ROS的所有包，而且在做的这个项目又处在学术前线，除了这个在其他配置过程中也找不到任何的参考资料。而最基本的ROS环境网速基本上会被限制到死。经常出现无法更新的现象。</p>
+<h2 id="二．项目中涉及到的概念和技术"><a href="#二．项目中涉及到的概念和技术" class="headerlink" title="二．项目中涉及到的概念和技术"></a>二．项目中涉及到的概念和技术</h2><h3 id="1-第一部分中涉及到的概念和技术"><a href="#1-第一部分中涉及到的概念和技术" class="headerlink" title="1.第一部分中涉及到的概念和技术"></a>1.第一部分中涉及到的概念和技术</h3><h4 id="第一个无疑是ROS无疑"><a href="#第一个无疑是ROS无疑" class="headerlink" title="第一个无疑是ROS无疑"></a>第一个无疑是ROS无疑</h4><p>ROS是一个机器人操作系统，而且是一个开源的机器人系统，把很多底层的东西给抽象成为可以调用的包。提供了一些标准操作系统服务，例如硬件抽象，底层设备控制，常用功能实现，进程间消息以及数据包管理。虽然是操作系统，但是并不能独立运行，所以只能依托于一般意义上的操作系统。目前支持最好的是Ubuntu。</p>
+<h4 id="第二个概念就是Ubuntu"><a href="#第二个概念就是Ubuntu" class="headerlink" title="第二个概念就是Ubuntu"></a>第二个概念就是Ubuntu</h4><p>目前ROS在Ubuntu上面支持最好。Ubuntu是一个开源操作系统Linux的一个比较流行的发行版。关于Ubuntu的其他的东西可以查一些百度百科来了解。</p>
+<h4 id="第三个概念是深度图"><a href="#第三个概念是深度图" class="headerlink" title="第三个概念是深度图"></a>第三个概念是深度图</h4><p>在计算机视觉系统中，三维场景信息为图像分割、目标检测、物体跟踪等各类计算机视觉应用提供了更多的可能性，而深度图像（Depth map）作为一种普遍的三维场景信息表达方式得到了广泛的应用。深度图像的每个像素点的灰度值可</p>
+<p>用于表示物体离相机的距离。在这个项目中用的就是奥比中光的相机来获取深度图像。</p>
+<h4 id="第四个概念SSH连接"><a href="#第四个概念SSH连接" class="headerlink" title="第四个概念SSH连接"></a>第四个概念SSH连接</h4><p>SSH 为 <a href="http://link.zhihu.com/?target=https%3A//baike.baidu.com/item/Secure%20Shell" target="_blank" rel="noopener">Secure Shell</a> 的缩写。其实就是一个远程登录的协议。在这个项目当中如果要实现工作站和PC端的通信，从而可以把PC端放在机器人上，让一些复杂的运算在工作站计算。</p>
+<h4 id="第五个概念就是安卓开发"><a href="#第五个概念就是安卓开发" class="headerlink" title="第五个概念就是安卓开发"></a>第五个概念就是安卓开发</h4><p>到了后面可能要是实现手机控制turtlebot2机器人的行动，这个时候可以去Play Store来下载对应的APP来实现控制，但是只有最基本的功能，可以按照官方给的开发文档来进行二次开发，但是如果二次开发的话，可能需要注意网络问题。</p>
+<h3 id="2-第二部分中所用到的概念和技术"><a href="#2-第二部分中所用到的概念和技术" class="headerlink" title="2.第二部分中所用到的概念和技术"></a>2.第二部分中所用到的概念和技术</h3><h4 id="第一个概念就是Python程序设计语言"><a href="#第一个概念就是Python程序设计语言" class="headerlink" title="第一个概念就是Python程序设计语言"></a>第一个概念就是Python程序设计语言</h4><p>当然这个语言在第一部分中也会用的到，Python也是一个开源的程序设计语言，现在在很多领域都得到了应用。现在已经成为了主流的程序设计语言。在Python当中一切皆可为对象。所以如果对面向对象不了解的，可以继续看一下这块的东西。</p>
+<h4 id="第二个概念就是TensorFlow"><a href="#第二个概念就是TensorFlow" class="headerlink" title="第二个概念就是TensorFlow"></a>第二个概念就是TensorFlow</h4><p>Google公司出品的深度学习工具，刚好这个深度学习框架对Ubuntu 的支持也是最好的。到这里就会发现这个项目用到的所有的东西都是完全开源的东西。所以一切的纽带都可以用Ubuntu来连接起来。这就是这个项目的核心所在。</p>
+<h2 id="三．具体的实现过程："><a href="#三．具体的实现过程：" class="headerlink" title="三．具体的实现过程："></a>三．具体的实现过程：</h2><h3 id="1-环境的实现"><a href="#1-环境的实现" class="headerlink" title="1.环境的实现"></a>1.环境的实现</h3><h4 id="（1）首先是环境的搭建-完成环境所需要的："><a href="#（1）首先是环境的搭建-完成环境所需要的：" class="headerlink" title="（1）首先是环境的搭建,完成环境所需要的："></a>（1）首先是环境的搭建,完成环境所需要的：</h4><ol>
+<li><a href="http://link.zhihu.com/?target=http%3A//www.turtlebot.com/" target="_blank" rel="noopener">Turtlebot2</a> 带有Kobuki 移动基站，来自<a href="http://link.zhihu.com/?target=http%3A//www.clearpathrobotics.com/turtlebot_2/" target="_blank" rel="noopener">ClearpathRobotics</a>.</li>
+<li>上网本：Turtlebot2兼容上网本。</li>
+<li>充电器：机器已经自带</li>
+<li>工作站：第二台计算机与一个体面的图形卡（比如Nvidia），和足够的内存的三维模拟（4 GB+ 以上内存）。</li>
+<li>路由器：无线路由器允许工作站和Turtlebot通过本地IP通信。</li>
+</ol>
+<h4 id="（2）硬件安装"><a href="#（2）硬件安装" class="headerlink" title="（2）硬件安装"></a>（2）硬件安装</h4><ol>
+<li>安装基础支架</li>
+<li>安装电脑，把你的笔记本电脑放在面对turtlebot后方的USB插头的第二架。（后面有各种插入kobuki基站。）</li>
+<li>安装Kinect，USB端连接到笔记本电脑的USB口，另一个插口连接kobuki底座的12V 1.5A端口</li>
+<li>找到Kobuki底座侧面的开/关按钮，打开即开始工作。</li>
+</ol>
+<h4 id="（3）操作系统的安装："><a href="#（3）操作系统的安装：" class="headerlink" title="（3）操作系统的安装："></a>（3）操作系统的安装：</h4><p>这个就不再详细说了，可以自行尝试装Ubuntu16.04，目前在PC端装好系统。</p>
+<h4 id="（4）ROS系统的安装："><a href="#（4）ROS系统的安装：" class="headerlink" title="（4）ROS系统的安装："></a>（4）ROS系统的安装：</h4><p>我们需要在工作台和turtlebot都安装ROS和turtlebot包。</p>
+<p>每个ROS对应不同的Ubuntu的版本有着不同的版本号。所以还是需要注意一下。</p>
+<p>目前Ubuntu16.04对应的是ROS Kinetic。</p>
+<p>按照官网教程：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/Robots/TurtleBot/" target="_blank" rel="noopener">http://wiki.ros.org/Robots/TurtleBot/</a></p>
+<p>一步一步安装。</p>
+<p>具体的安装教程在这里：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/indigo/Installation/Ubuntu" target="_blank" rel="noopener">http://wiki.ros.org/indigo/Installation/Ubuntu</a></p>
+<p>设置源列表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" &gt; /etc/apt/sources.list.d/ros-latest.list'</span><br></pre></td></tr></table></figure>
+
+<p>设置密钥：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key adv --keyserver hkp://http://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116</span><br></pre></td></tr></table></figure>
+
+<p>确保可以更新：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<p>安装全功能包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ros-kinetic-desktop-full</span><br></pre></td></tr></table></figure>
+
+<p>初始化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosdep：</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rosdep init</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosdep update</span><br></pre></td></tr></table></figure>
+
+<p>环境设置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo "source /opt/ros/indigo/setup.bash" &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>获取rosinstall：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-rosinstall</span><br></pre></td></tr></table></figure>
+
+<p>然后是安装Turtlebot2有关的包:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ros-kinetic-turtlebot ros-kinetic-turtlebot-apps ros-kinetic-turtlebot-interactions ros-kinetic-turtlebot-simulator ros-kinetic-kobuki-ftdi ros-kinetic-rocon-remocon ros-kinetic-rocon-qt-library ros-kinetic-ar-track-alvar-msgs</span><br></pre></td></tr></table></figure>
+
+<p>然后是源安装：</p>
+<p>第一步是准备：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-rosdep python-wstool ros-indigo-ros</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rosdep init</span><br><span class="line">rosdep update</span><br></pre></td></tr></table></figure>
+
+<p>工作空间的准备：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/rocon</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">cd</span> ~/rocon</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> wstool init -j5 src https://raw.github.com/robotics-in-concert/rocon/release/indigo/rocon.rosinstall</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">source</span> /opt/ros/indigo/setup.bash</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> rosdep install --from-paths src -i -y</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> catkin_make</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> mkdir ~/kobuki</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">cd</span> ~/kobuki</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> wstool init src -j5 https://raw.github.com/yujinrobot/yujin_tools/master/rosinstalls/indigo/kobuki.rosinstall</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">source</span> ~/rocon/devel/setup.bash</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> rosdep install --from-paths src -i -y</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> catkin_make</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> mkdir ~/turtlebot</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">cd</span> ~/turtlebot</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> wstool init src -j5 https://raw.github.com/yujinrobot/yujin_tools/master/rosinstalls/indigo/turtlebot.rosinstall</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">source</span> ~/kobuki/devel/setup.bash</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> rosdep install --from-paths src -i -y</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> catkin_make</span></span><br></pre></td></tr></table></figure>
+
+<p>（以上github地址中的indigo换为 Kinetic）</p>
+<p>为了让启动后就启动好环境，使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> For a deb installation</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"source /opt/ros/indigo/setup.bash"</span> &gt;&gt; ~/.bashrc</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> For a <span class="built_in">source</span> installation</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"source ~/turtlebot/devel/setup.bash"</span> &gt;&gt; ~/.bashrc</span></span><br></pre></td></tr></table></figure>
+
+<p>设置与Kobuki一起工作：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> . /opt/ros/kinetic/setup.bash</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; rosrun kobuki_ftdi create_udev_rules</span><br></pre></td></tr></table></figure>
+
+<h4 id="（5）替换3d相机设置："><a href="#（5）替换3d相机设置：" class="headerlink" title="（5）替换3d相机设置："></a>（5）替换3d相机设置：</h4><p>因为项目中使用的是奥比中光的传感器，所以需要更改默认3d传感器设置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\&gt; echo "export TURTLEBOT_3D_SENSOR=&lt;astra&gt;" &gt;&gt; ~/turtlebot/devel/setup.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">source</span> ~/turtlebot/devel/setup.bash</span></span><br></pre></td></tr></table></figure>
+
+<p>然后安装相机的依赖：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install build-essential freeglut3 freeglut3-dev</span></span><br></pre></td></tr></table></figure>
+
+<p>检查有没有libudev.so.1，没有的话添加：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">check udev version, Orbbec Driver need libudev.so.1, <span class="keyword">if</span> can<span class="string">'t find it, can make symbolic link from libudev.so.x.x,</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">which</span> usually locate <span class="keyword">in</span> /lib/x86_64-linux-gnu or /lib/i386-linux-gnu</span></span><br><span class="line"><span class="meta">$</span><span class="bash">ldconfig -p | grep libudev.so.1</span></span><br><span class="line"><span class="meta">$</span><span class="bash"><span class="built_in">cd</span> /lib/x86_64-linux-gnu</span></span><br><span class="line"><span class="meta">$</span><span class="bash">sudo ln -s libudev.so.x.x.x libudev.so.1</span></span><br></pre></td></tr></table></figure>
+
+<p>下载驱动：<a href="http://link.zhihu.com/?target=https%3A//orbbec3d.com/develop/%23registergestoos" target="_blank" rel="noopener">https://orbbec3d.com/develop/#registergestoos</a>，选择linux版本：</p>
+<p>下载解压：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wget http://www.orbbec3d.net/Tools_SDK_OpenNI/2-Linux.zip</span></span><br></pre></td></tr></table></figure>
+
+<p>进入文件夹之后执行安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chmod a+x install.sh</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo ./install.sh</span></span><br></pre></td></tr></table></figure>
+
+<p>加入环境：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> OpenNIDevEnvironment</span></span><br></pre></td></tr></table></figure>
+
+<p>编译例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> Samples/SimpleViewer</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
+
+<p>连接设备，执行例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> Bin/x64-Release</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./SimpleViewer</span></span><br></pre></td></tr></table></figure>
+
+<p>安装所需要的ros的包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install ros-kinetic-astra-camera ros-kinetic-astra-launch</span></span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> roslaunch astra_launch astra.launch</span></span><br></pre></td></tr></table></figure>
+
+<p>安装libuvc支持：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/ktossell/libuvc</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> libuvc</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cmake ..</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make &amp;&amp; sudo make install</span></span><br></pre></td></tr></table></figure>
+
+<p>安装libuvc_ros：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/catkin_ws/src</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/ktossell/libuvc_ros</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ..</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> catkin_make</span></span><br></pre></td></tr></table></figure>
+
+<p>放入合适位置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo cp /usr/include/libusb-1.0/libusb.h` `/usr/<span class="built_in">local</span>/include/libuvc/</span></span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<p>启动roscore之后，使用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rosrun libuvc_camera camera_node</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="（6）配置网络："><a href="#（6）配置网络：" class="headerlink" title="（6）配置网络："></a>（6）配置网络：</h4><p>首先pc端要和工作站的时钟</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install chrony</span><br><span class="line">sudo ntpdate ntp.ubuntu.com</span><br></pre></td></tr></table></figure>
+
+<p>获取turtlebot和工作站的ip：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ifconfig</span><br></pre></td></tr></table></figure>
+
+<p>查看ssh的工作状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service ssh status</span><br></pre></td></tr></table></figure>
+
+<p>没有的话，就安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></table></figure>
+
+<p>工作站远程登录Turtlebot上网本，在终端执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></table></figure>
+
+<p>turtlebot配置参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo export ROS_MASTER_URI=http://localhost:11311 &gt;&gt;</span><br><span class="line">~/.bashrc echo export ROS_HOSTNAME=IP_OF_TURTLEBOT</span><br><span class="line">\&gt;&gt; ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>工作站配置参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo export ROS_MASTER_URI=http://IP_OF_TURTLEBOT:11311</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt; ~/.bashrc <span class="built_in">echo</span> <span class="built_in">export</span> ROS_HOSTNAME=IP_OF_PC &gt;&gt;</span></span><br><span class="line">~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>其中验证是否为通路：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_bringup minimal.launch --screen</span><br></pre></td></tr></table></figure>
+
+<p>在工作站执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_teleop keyboard_teleop.launch</span><br></pre></td></tr></table></figure>
+
+<p>可以在工作站的键盘点击“i”，控制Turtlebot前进。</p>
+<h4 id="（7）键盘操纵："><a href="#（7）键盘操纵：" class="headerlink" title="（7）键盘操纵："></a>（7）键盘操纵：</h4><p>终端运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_bringup minimal.lauch</span><br></pre></td></tr></table></figure>
+
+<p>键盘控制：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_teleop keyboard_teleop.launch</span><br></pre></td></tr></table></figure>
+
+<h4 id="（8）检查底座是否正常："><a href="#（8）检查底座是否正常：" class="headerlink" title="（8）检查底座是否正常："></a>（8）检查底座是否正常：</h4><p>在pc上运行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rqt -s kobuki_dashboard</span><br></pre></td></tr></table></figure>
+
+<p>运行之前可能需要先安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ros-kinetic-kobuki-dashboard</span><br></pre></td></tr></table></figure>
+
+<p>如果出现错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rqt --force-discovery</span><br></pre></td></tr></table></figure>
+
+<p>然后重新运行第一个命令。</p>
+<p><img src="images/ros_0.jpg" alt></p>
+<p>这个时候要确保变量已经导出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_dashboard turtlebot_dashboard.launch</span><br></pre></td></tr></table></figure>
+
+<h4 id="（9）在运行之前可以进行测量和校准："><a href="#（9）在运行之前可以进行测量和校准：" class="headerlink" title="（9）在运行之前可以进行测量和校准："></a>（9）在运行之前可以进行测量和校准：</h4><p>Kobuki带有工厂校准的陀螺仪。在校准或测试在运行任何基于导航的应用程序时最好还是要进行TurtleBot的校准。</p>
+<p>第一个位置TurtleBot位于长直墙（至少2米长）的中心，面向墙，离墙约30厘米。</p>
+<p>启动机器人后，通过ssh链接，然后执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_calibration calibrate.launch</span><br></pre></td></tr></table></figure>
+
+<p>当它完成后，你会看到这样的屏幕上打印;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[INFO] [WallTime: 1299286750.822427] Multiply the &apos;turtlebot_node/odom_angular_scale_correction&apos; parameter with 1.000263</span><br></pre></td></tr></table></figure>
+
+<p>校准参数参考网站：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot_calibration/Tutorials/Calibrate%20Odometry%20and%20Gyro" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot_calibration/Tutorials/Calibrate%20Odometry%20and%20Gyro</a></p>
+<h3 id="2-具体的应用："><a href="#2-具体的应用：" class="headerlink" title="2.具体的应用："></a>2.具体的应用：</h3><h4 id="（1）第一次互动："><a href="#（1）第一次互动：" class="headerlink" title="（1）第一次互动："></a>（1）第一次互动：</h4><h5 id="在pc机器上完成："><a href="#在pc机器上完成：" class="headerlink" title="在pc机器上完成："></a>在pc机器上完成：</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ros-indigo-rocon-remocon ros-indigo-rocon-apps</span><br></pre></td></tr></table></figure>
+
+<h5 id="使用rqt遥控器："><a href="#使用rqt遥控器：" class="headerlink" title="使用rqt遥控器："></a>使用rqt遥控器：</h5><p>确保<a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Network%20Configuration" target="_blank" rel="noopener">ROS_MASTER_URI / ROS_HOSTNAME</a>配置正确。这个非常重要：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rqt_remocon</span><br></pre></td></tr></table></figure>
+
+<p><img src="images/ros_1.jpg" alt></p>
+<p> 选择PC Pairing </p>
+<p><img src="images/ros_2.jpg" alt></p>
+<p> 双击Listener： </p>
+<p><img src="images/ros_3.jpg" alt></p>
+<p>开始不断发出请求。</p>
+<p>然后添加一个Master：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rocon_remocon</span><br></pre></td></tr></table></figure>
+
+<p><img src="images/ros_4.jpg" alt></p>
+<p>参考文章：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/A%20First%20Interaction" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/A%20First%20Interaction</a></p>
+<h4 id="（2）turtlebot可视化："><a href="#（2）turtlebot可视化：" class="headerlink" title="（2）turtlebot可视化："></a>（2）turtlebot可视化：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_model.launch --screen</span><br></pre></td></tr></table></figure>
+
+<p>另外一个导入类型：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export TURTLEBOT_BASE=create</span><br><span class="line">export TURTLEBOT_STACKS=circles</span><br><span class="line">export TURTLEBOT_3D_SENSOR=astra</span><br><span class="line">roslaunch turtlebot_rviz_launchers view_model.launch --screen</span><br></pre></td></tr></table></figure>
+
+<p>在PC上运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_robot.launch --screen</span><br></pre></td></tr></table></figure>
+
+<p>参考网址：<a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Visualisation" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/Visualisation</a></p>
+<h4 id="（3）3d可视化"><a href="#（3）3d可视化" class="headerlink" title="（3）3d可视化;"></a>（3）3d可视化;</h4><p>很多传感只能用于usb2.0的端口，所以尽量把3d传感器插在usb2.0的插口</p>
+<p>启动3d传感器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_bringup 3dsensor.launch</span><br></pre></td></tr></table></figure>
+
+<p>PC上：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_robot.launch</span><br></pre></td></tr></table></figure>
+
+<p>想看到什么就选择什么：</p>
+<ul>
+<li>DepthCloud</li>
+<li>Registered DepthCloud</li>
+<li>Image</li>
+<li>PointCloud</li>
+<li>Registered PointCloud</li>
+</ul>
+<p><img src="images/ros_5.jpg" alt></p>
+<p>参考网址;</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/3D%20Visualisation" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/3D%20Visualisation</a></p>
+<h4 id="（4）交互式标记来控制机器人"><a href="#（4）交互式标记来控制机器人" class="headerlink" title="（4）交互式标记来控制机器人;"></a>（4）交互式标记来控制机器人;</h4><p>输入命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ros-indigo-turtlebot-apps ros-indigo-turtlebot-interactions</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ros-indigo-turtlebot-interactive-markers</span><br></pre></td></tr></table></figure>
+
+<p>启动turtlebot_marker_server，它将托管<a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/interactive_markers" target="_blank" rel="noopener">interactive_markers</a>服务器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_interactive_markers interactive_markers.launch --screen</span><br></pre></td></tr></table></figure>
+
+<p>接下来，启动显示标记主题的rviz。在电脑上输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_robot.launch</span><br></pre></td></tr></table></figure>
+
+<p>相互作用：</p>
+<p>检查“交互式标记”显示组件，然后在屏幕顶部的工具调色板（如下所示）中选择“交互”工具，为turtlebot调出交互式标记。</p>
+<p><img src="images/ros_6.jpg" alt></p>
+<p>可以拖动红色的箭头来驱动TurtleBot向前和向后，蓝色的环可以旋转TurtleBot。也可以拖动蓝色圆环同时旋转TurtleBot。</p>
+<p>参考网址：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot_interactive_markers/Tutorials/indigo/UsingTurtlebotInteractiveMarkers" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot_interactive_markers/Tutorials/indigo/UsingTurtlebotInteractiveMarkers</a></p>
+<h4 id="（5）SLAM建图："><a href="#（5）SLAM建图：" class="headerlink" title="（5）SLAM建图："></a>（5）SLAM建图：</h4><p>如何构建地图，让机器人记住周围的环境。通过生成的地图，机器人可以自主导航。</p>
+<h5 id="在turtlebot上运行："><a href="#在turtlebot上运行：" class="headerlink" title="在turtlebot上运行："></a>在turtlebot上运行：</h5><p># From turtlebot laptop.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_navigation gmapping_demo.launch</span><br></pre></td></tr></table></figure>
+
+<h5 id="在PC上运行："><a href="#在PC上运行：" class="headerlink" title="在PC上运行："></a>在PC上运行：</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_navigation.launch</span><br></pre></td></tr></table></figure>
+
+<p>可以启动遥控器进行遥控：</p>
+<p><img src="images/ros_7.jpg" alt></p>
+<p>保存SLAM建图时产生的地图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun map_server map_saver -f / tmp / my_map</span><br></pre></td></tr></table></figure>
+
+<h4 id="（6）自动导航已知地图文件："><a href="#（6）自动导航已知地图文件：" class="headerlink" title="（6）自动导航已知地图文件："></a>（6）自动导航已知地图文件：</h4><p>自动导航已经生成的文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export TURTLEBOT_MAP_FILE = / tmp / my_map.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">＃eg）export TURTLEBOT_MAP_FILE：=`rospack find turtlebot_navigation` / maps / willow-2010-02-18-0.10.yaml</span><br><span class="line"></span><br><span class="line">roslaunch turtlebot_navigation amcl_demo.launch</span><br></pre></td></tr></table></figure>
+
+<p>在PC上：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_navigation.launch --screen</span><br></pre></td></tr></table></figure>
+
+<p>或者是用遥控器;</p>
+<p>配置TURTLEBOT_MAP_FILE环境变量以指向要使用的地图:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export TURTLEBOT_MAP_FILE = / tmp / my_map.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">＃eg）export TURTLEBOT_MAP_FILE：=`rospack find turtlebot_navigation` / maps / willow-2010-02-18-0.10.yaml</span><br></pre></td></tr></table></figure>
+
+<p>启动遥控器并启动PC配对/导航交互:</p>
+<p><img src="images/ros_8.jpg" alt></p>
+<p>启动时，TurtleBot不知道它在哪里。为了给他提供在地图上的大概位置：</p>
+<ol>
+<li>点击“2D Pose Estimate”按钮</li>
+<li>点击TurtleBot所在的地图，然后拖动TurtleBot指向的方向。</li>
+</ol>
+<p>会看到一组箭头，这是TurtleBot的位置的假设。</p>
+<p>随着TurtleBot本地化，它可以自动规划通过环境。</p>
+<p>发送目标：</p>
+<p>1.点击“2D导航目标”按钮</p>
+<p>2.点击你想TurtleBot开车的地图，然后拖到TurtleBot应该指向最后的方向。</p>
+<p>如果路径或目标被阻止，这可能会失败。</p>
+<p>如果想在机器人到达目标之前停止机器人，请在其当前位置发送一个目标。</p>
+<p>参考网站：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot_navigation/Tutorials/indigo/Autonomously%20navigate%20in%20a%20known%20map" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot_navigation/Tutorials/indigo/Autonomously%20navigate%20in%20a%20known%20map</a></p>
+<h4 id="（7）跟随人的demo："><a href="#（7）跟随人的demo：" class="headerlink" title="（7）跟随人的demo："></a>（7）跟随人的demo：</h4><p>TurtleBot在它前面的窗口中查找对象。它将试图保持被观察物体的质心直接在它的前面和一个固定的距离。如果物体的质心太远，它会向前驱动，向后靠得太近，如果向一边偏移，它会转向质心。</p>
+<p>从ssh进入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_follower follower.launch</span><br></pre></td></tr></table></figure>
+
+<p>在工作站计算机上运行动态重新配置gui:</p>
+<p>＃pre-groovy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rosrun dynamic_reconfigure reconfigure_gui</span><br><span class="line">＃常规或更高版本</span><br><span class="line">rosrun rqt_reconfigure rqt_reconfigur</span><br></pre></td></tr></table></figure>
+
+<p>在重新配置的gui上选择摄像机或者跟踪者</p>
+<p>参考网址：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot_follower/Tutorials/Demo" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot_follower/Tutorials/Demo</a></p>
+<h4 id="（8）全景演示："><a href="#（8）全景演示：" class="headerlink" title="（8）全景演示："></a>（8）全景演示：</h4><p>链接ssh后：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_panorama panorama.launch</span><br></pre></td></tr></table></figure>
+
+<p>检查结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun image_view image_view image：= / turtlebot_panorama/panorama</span><br></pre></td></tr></table></figure>
+
+<p>参考网址：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot_panorama/Tutorials/Demo" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot_panorama/Tutorials/Demo</a></p>
+<h4 id="（9）通过安卓控制turtlebot机器人："><a href="#（9）通过安卓控制turtlebot机器人：" class="headerlink" title="（9）通过安卓控制turtlebot机器人："></a>（9）通过安卓控制turtlebot机器人：</h4><p><img src="images/ros_9.jpg" alt></p>
+<img src="images/ros_10.jpg" style="zoom:50%;">
+
+<p>参考网址：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/Download%20Turtlebot%20Android%20Apps%20from%20Play%20Store" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/Download%20Turtlebot%20Android%20Apps%20from%20Play%20Store</a></p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/How%20to%20Run%20Turtlebot%20Andorid%20Application" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/How%20to%20Run%20Turtlebot%20Andorid%20Application</a></p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/Turtlebot%20Android%20Apps%20Dev%20Tutorials" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/Turtlebot%20Android%20Apps%20Dev%20Tutorials</a></p>
+<h4 id="（10）添加新的3d传感器："><a href="#（10）添加新的3d传感器：" class="headerlink" title="（10）添加新的3d传感器："></a>（10）添加新的3d传感器：</h4><p>直接按照官方教程来设置：</p>
+<p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Adding%20New%203D%20Sensor" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/Adding%20New%203D%20Sensor</a></p>
+<h2 id="四．过程中需要注意的问题："><a href="#四．过程中需要注意的问题：" class="headerlink" title="四．过程中需要注意的问题："></a>四．过程中需要注意的问题：</h2><p>1.第一个就是显卡驱动的问题，英伟达显卡经常会和自带的驱动冲突，所以装驱动的时候记得禁用掉X sever。</p>
+<p>2.第二个就是网络的问题，这个可以通过换源的问题解决。</p>
+<p>3.第三个就是ROS版本的问题，因为用Ubuntu16.04的版本，所以对应的是Kinetic，对应的所有ROS版本里面indigo都要换为Kinetic。</p>
+<p>4.第五个问题就是安卓app是可以自己改写一些功能的，看官网给的开发文档就可以。</p>
+<p>5.第六个就是局域网的问题，哪怕没有联网也没有关系，连接在同一个局域网之下就可以解决。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/ROS机器人学习.html" title="ROS机器人学习">http://leesin.cc/reading/ROS机器人学习.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/霍夫变换车道线检测.html" rel="next" title="霍夫变换车道线检测">
+                  <i class="fa fa-chevron-left"></i> 霍夫变换车道线检测
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/reading/PyMysql插入数据.html" rel="prev" title="PyMysql插入数据">
+                  PyMysql插入数据 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#视觉机器人-人体姿态识别项目总结"><span class="nav-number">1.</span> <span class="nav-text">视觉机器人+人体姿态识别项目总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一．整体介绍"><span class="nav-number">1.1.</span> <span class="nav-text">一．整体介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二．项目中涉及到的概念和技术"><span class="nav-number">1.2.</span> <span class="nav-text">二．项目中涉及到的概念和技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-第一部分中涉及到的概念和技术"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.第一部分中涉及到的概念和技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一个无疑是ROS无疑"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">第一个无疑是ROS无疑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二个概念就是Ubuntu"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">第二个概念就是Ubuntu</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三个概念是深度图"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">第三个概念是深度图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四个概念SSH连接"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">第四个概念SSH连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五个概念就是安卓开发"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">第五个概念就是安卓开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-第二部分中所用到的概念和技术"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.第二部分中所用到的概念和技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一个概念就是Python程序设计语言"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">第一个概念就是Python程序设计语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二个概念就是TensorFlow"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">第二个概念就是TensorFlow</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三．具体的实现过程："><span class="nav-number">1.3.</span> <span class="nav-text">三．具体的实现过程：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-环境的实现"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.环境的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）首先是环境的搭建-完成环境所需要的："><span class="nav-number">1.3.1.1.</span> <span class="nav-text">（1）首先是环境的搭建,完成环境所需要的：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）硬件安装"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">（2）硬件安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）操作系统的安装："><span class="nav-number">1.3.1.3.</span> <span class="nav-text">（3）操作系统的安装：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（4）ROS系统的安装："><span class="nav-number">1.3.1.4.</span> <span class="nav-text">（4）ROS系统的安装：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（5）替换3d相机设置："><span class="nav-number">1.3.1.5.</span> <span class="nav-text">（5）替换3d相机设置：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（6）配置网络："><span class="nav-number">1.3.1.6.</span> <span class="nav-text">（6）配置网络：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（7）键盘操纵："><span class="nav-number">1.3.1.7.</span> <span class="nav-text">（7）键盘操纵：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（8）检查底座是否正常："><span class="nav-number">1.3.1.8.</span> <span class="nav-text">（8）检查底座是否正常：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（9）在运行之前可以进行测量和校准："><span class="nav-number">1.3.1.9.</span> <span class="nav-text">（9）在运行之前可以进行测量和校准：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-具体的应用："><span class="nav-number">1.3.2.</span> <span class="nav-text">2.具体的应用：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）第一次互动："><span class="nav-number">1.3.2.1.</span> <span class="nav-text">（1）第一次互动：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在pc机器上完成："><span class="nav-number">1.3.2.1.1.</span> <span class="nav-text">在pc机器上完成：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用rqt遥控器："><span class="nav-number">1.3.2.1.2.</span> <span class="nav-text">使用rqt遥控器：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）turtlebot可视化："><span class="nav-number">1.3.2.2.</span> <span class="nav-text">（2）turtlebot可视化：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）3d可视化"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">（3）3d可视化;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（4）交互式标记来控制机器人"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">（4）交互式标记来控制机器人;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（5）SLAM建图："><span class="nav-number">1.3.2.5.</span> <span class="nav-text">（5）SLAM建图：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在turtlebot上运行："><span class="nav-number">1.3.2.5.1.</span> <span class="nav-text">在turtlebot上运行：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在PC上运行："><span class="nav-number">1.3.2.5.2.</span> <span class="nav-text">在PC上运行：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（6）自动导航已知地图文件："><span class="nav-number">1.3.2.6.</span> <span class="nav-text">（6）自动导航已知地图文件：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（7）跟随人的demo："><span class="nav-number">1.3.2.7.</span> <span class="nav-text">（7）跟随人的demo：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（8）全景演示："><span class="nav-number">1.3.2.8.</span> <span class="nav-text">（8）全景演示：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（9）通过安卓控制turtlebot机器人："><span class="nav-number">1.3.2.9.</span> <span class="nav-text">（9）通过安卓控制turtlebot机器人：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（10）添加新的3d传感器："><span class="nav-number">1.3.2.10.</span> <span class="nav-text">（10）添加新的3d传感器：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四．过程中需要注意的问题："><span class="nav-number">1.4.</span> <span class="nav-text">四．过程中需要注意的问题：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
