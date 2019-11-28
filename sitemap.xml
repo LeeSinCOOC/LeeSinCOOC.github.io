@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://leesin.cc/reading/%E9%9C%8D%E5%A4%AB%E5%8F%98%E6%8D%A2%E8%BD%A6%E9%81%93%E7%BA%BF%E6%A3%80%E6%B5%8B.html</loc>
+    
+    <lastmod>2019-11-28T09:46:27.195Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://leesin.cc/miscellaneous/index.html</loc>
+    
+    <lastmod>2019-11-27T04:04:00.569Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://leesin.cc/numpy/2.%E7%90%86%E8%A7%A3Python%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html</loc>
+    
+    <lastmod>2019-11-06T14:49:14.864Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://leesin.cc/numpy/3.NumPy%E6%95%B0%E7%BB%84%E5%9F%BA%E7%A1%80.html</loc>
+    
+    <lastmod>2019-11-06T14:49:06.146Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://leesin.cc/numpy/4.NumPy%E6%95%B0%E7%BB%84%E8%AE%A1%E7%AE%97.html</loc>
+    
+    <lastmod>2019-11-06T14:48:59.727Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://leesin.cc/numpy/1.IPython.html</loc>
     
     <lastmod>2019-11-06T14:44:32.304Z</lastmod>
@@ -229,13 +264,6 @@
     <loc>http://leesin.cc/tensorflow/11.21%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%A9%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8BCycleGAN%E4%B8%8E%E9%9D%9E%E9%85%8D%E5%AF%B9%E5%9B%BE%E5%83%8F%E8%BD%AC%E6%8D%A2.html</loc>
     
     <lastmod>2019-11-02T10:33:16.901Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://leesin.cc/miscellaneous/index.html</loc>
-    
-    <lastmod>2019-10-29T14:12:32.016Z</lastmod>
     
   </url>
   
