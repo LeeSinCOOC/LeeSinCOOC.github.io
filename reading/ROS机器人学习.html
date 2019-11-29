@@ -63,22 +63,22 @@
 <meta property="og:site_name" content="Chen Jian&#39;s Blog">
 <meta property="og:description" content="视觉机器人+人体姿态识别项目总结之前也做过一段时间的ROS开发，偶然看到这篇博客，记录一下，如果有生之年还有幸做ROS不妨拿出来参考一下。 原文链接： https://www.cnblogs.com/wdzeng/p/10274657.html  一．整体介绍项目大概从17年的5月份开始，那时候招了一个团队来做。两个大二的，三个大一的。后来慢慢摸索。暑假过后就没有人在项目组了。后来暑假重新找到了人">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_0.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_1.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_2.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_3.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_4.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_5.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_6.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_7.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_8.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_9.jpg">
-<meta property="og:image" content="http://leesin.cc/reading/images/ros_10.jpg">
-<meta property="og:updated_time" content="2019-11-28T10:04:38.638Z">
+<meta property="og:image" content="http://leesin.cc/images/ros_0.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_1.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_2.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_3.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_4.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_5.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_6.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_7.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_8.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_9.jpg">
+<meta property="og:image" content="http://leesin.cc/images/ros_10.jpg">
+<meta property="og:updated_time" content="2019-11-29T00:53:48.224Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ROS机器人学习">
 <meta name="twitter:description" content="视觉机器人+人体姿态识别项目总结之前也做过一段时间的ROS开发，偶然看到这篇博客，记录一下，如果有生之年还有幸做ROS不妨拿出来参考一下。 原文链接： https://www.cnblogs.com/wdzeng/p/10274657.html  一．整体介绍项目大概从17年的5月份开始，那时候招了一个团队来做。两个大二的，三个大一的。后来慢慢摸索。暑假过后就没有人在项目组了。后来暑假重新找到了人">
-<meta name="twitter:image" content="http://leesin.cc/reading/images/ros_0.jpg">
+<meta name="twitter:image" content="http://leesin.cc/images/ros_0.jpg">
   <link rel="canonical" href="http://leesin.cc/reading/ROS机器人学习">
 
 
@@ -307,11 +307,19 @@
                 
               
 
-              <time title="创建时间：2019-11-28 18:03:59 / 修改时间：18:04:38" itemprop="dateCreated datePublished" datetime="2019-11-28T18:03:59+08:00">2019-11-28</time>
+              <time title="创建时间：2019-11-28 18:03:59" itemprop="dateCreated datePublished" datetime="2019-11-28T18:03:59+08:00">2019-11-28</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-29 08:53:48" itemprop="dateModified" datetime="2019-11-29T08:53:48+08:00">2019-11-29</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -522,7 +530,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rqt --force-discovery</span><br></pre></td></tr></table></figure>
 
 <p>然后重新运行第一个命令。</p>
-<p><img src="images/ros_0.jpg" alt></p>
+<p><img src="/images/ros_0.jpg" alt></p>
 <p>这个时候要确保变量已经导出：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_dashboard turtlebot_dashboard.launch</span><br></pre></td></tr></table></figure>
 
@@ -541,16 +549,16 @@
 <h5 id="使用rqt遥控器："><a href="#使用rqt遥控器：" class="headerlink" title="使用rqt遥控器："></a>使用rqt遥控器：</h5><p>确保<a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Network%20Configuration" target="_blank" rel="noopener">ROS_MASTER_URI / ROS_HOSTNAME</a>配置正确。这个非常重要：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rqt_remocon</span><br></pre></td></tr></table></figure>
 
-<p><img src="images/ros_1.jpg" alt></p>
+<p><img src="/images/ros_1.jpg" alt></p>
 <p> 选择PC Pairing </p>
-<p><img src="images/ros_2.jpg" alt></p>
+<p><img src="/images/ros_2.jpg" alt></p>
 <p> 双击Listener： </p>
-<p><img src="images/ros_3.jpg" alt></p>
+<p><img src="/images/ros_3.jpg" alt></p>
 <p>开始不断发出请求。</p>
 <p>然后添加一个Master：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rocon_remocon</span><br></pre></td></tr></table></figure>
 
-<p><img src="images/ros_4.jpg" alt></p>
+<p><img src="/images/ros_4.jpg" alt></p>
 <p>参考文章：</p>
 <p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/A%20First%20Interaction" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/A%20First%20Interaction</a></p>
 <h4 id="（2）turtlebot可视化："><a href="#（2）turtlebot可视化：" class="headerlink" title="（2）turtlebot可视化："></a>（2）turtlebot可视化：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_model.launch --screen</span><br></pre></td></tr></table></figure>
@@ -577,7 +585,7 @@
 <li>PointCloud</li>
 <li>Registered PointCloud</li>
 </ul>
-<p><img src="images/ros_5.jpg" alt></p>
+<p><img src="/images/ros_5.jpg" alt></p>
 <p>参考网址;</p>
 <p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/3D%20Visualisation" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/3D%20Visualisation</a></p>
 <h4 id="（4）交互式标记来控制机器人"><a href="#（4）交互式标记来控制机器人" class="headerlink" title="（4）交互式标记来控制机器人;"></a>（4）交互式标记来控制机器人;</h4><p>输入命令：</p>
@@ -593,7 +601,7 @@
 
 <p>相互作用：</p>
 <p>检查“交互式标记”显示组件，然后在屏幕顶部的工具调色板（如下所示）中选择“交互”工具，为turtlebot调出交互式标记。</p>
-<p><img src="images/ros_6.jpg" alt></p>
+<p><img src="/images/ros_6.jpg" alt></p>
 <p>可以拖动红色的箭头来驱动TurtleBot向前和向后，蓝色的环可以旋转TurtleBot。也可以拖动蓝色圆环同时旋转TurtleBot。</p>
 <p>参考网址：</p>
 <p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot_interactive_markers/Tutorials/indigo/UsingTurtlebotInteractiveMarkers" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot_interactive_markers/Tutorials/indigo/UsingTurtlebotInteractiveMarkers</a></p>
@@ -604,7 +612,7 @@
 <h5 id="在PC上运行："><a href="#在PC上运行：" class="headerlink" title="在PC上运行："></a>在PC上运行：</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch turtlebot_rviz_launchers view_navigation.launch</span><br></pre></td></tr></table></figure>
 
 <p>可以启动遥控器进行遥控：</p>
-<p><img src="images/ros_7.jpg" alt></p>
+<p><img src="/images/ros_7.jpg" alt></p>
 <p>保存SLAM建图时产生的地图：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun map_server map_saver -f / tmp / my_map</span><br></pre></td></tr></table></figure>
 
@@ -623,7 +631,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">＃eg）export TURTLEBOT_MAP_FILE：=`rospack find turtlebot_navigation` / maps / willow-2010-02-18-0.10.yaml</span><br></pre></td></tr></table></figure>
 
 <p>启动遥控器并启动PC配对/导航交互:</p>
-<p><img src="images/ros_8.jpg" alt></p>
+<p><img src="/images/ros_8.jpg" alt></p>
 <p>启动时，TurtleBot不知道它在哪里。为了给他提供在地图上的大概位置：</p>
 <ol>
 <li>点击“2D Pose Estimate”按钮</li>
@@ -657,8 +665,8 @@
 
 <p>参考网址：</p>
 <p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot_panorama/Tutorials/Demo" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot_panorama/Tutorials/Demo</a></p>
-<h4 id="（9）通过安卓控制turtlebot机器人："><a href="#（9）通过安卓控制turtlebot机器人：" class="headerlink" title="（9）通过安卓控制turtlebot机器人："></a>（9）通过安卓控制turtlebot机器人：</h4><p><img src="images/ros_9.jpg" alt></p>
-<img src="images/ros_10.jpg" style="zoom:50%;">
+<h4 id="（9）通过安卓控制turtlebot机器人："><a href="#（9）通过安卓控制turtlebot机器人：" class="headerlink" title="（9）通过安卓控制turtlebot机器人："></a>（9）通过安卓控制turtlebot机器人：</h4><p><img src="/images/ros_9.jpg" alt></p>
+<img src="/images/ros_10.jpg" style="zoom:50%;">
 
 <p>参考网址：</p>
 <p><a href="http://link.zhihu.com/?target=http%3A//wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/Download%20Turtlebot%20Android%20Apps%20from%20Play%20Store" target="_blank" rel="noopener">http://wiki.ros.org/turtlebot/Tutorials/indigo/Android%20Interactions/Download%20Turtlebot%20Android%20Apps%20from%20Play%20Store</a></p>
