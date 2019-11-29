@@ -265,6 +265,94 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/18.漂亮的结尾.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/moviepy/18.漂亮的结尾.html" class="post-title-link" itemprop="url">18.漂亮的结尾</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-03 15:26:13 / 修改时间：15:42:37" itemprop="dateCreated datePublished" datetime="2019-11-03T15:26:13+08:00">2019-11-03</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="漂亮的结尾"><a href="#漂亮的结尾" class="headerlink" title="漂亮的结尾"></a>漂亮的结尾</h1><p><img src="/images/magic_theEnd.gif" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.drawing <span class="keyword">import</span> circle</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 原有视频</span></span><br><span class="line">clip = VideoFileClip(<span class="string">"./videos/1.mp4"</span>, audio=<span class="literal">False</span>).add_mask()</span><br><span class="line">           </span><br><span class="line">w,h = clip.size</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 这里的mask是一个半径按照 r(t) = 800-200*t  根据时间变化消失的圆           </span></span><br><span class="line">clip.mask.get_frame = <span class="keyword">lambda</span> t: circle(screensize=(clip.w,clip.h),</span><br><span class="line">                                       center=(clip.w/<span class="number">2</span>,clip.h/<span class="number">4</span>),</span><br><span class="line">                                       radius=max(<span class="number">0</span>,int(<span class="number">200</span><span class="number">-200</span>*t)),</span><br><span class="line">                                       col1=<span class="number">1</span>, col2=<span class="number">0</span>, blur=<span class="number">4</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 搞一个TextClip来放The End</span></span><br><span class="line">the_end = TextClip(<span class="string">"The End"</span>, font=<span class="string">"Amiri-bold"</span>, color=<span class="string">"white"</span>,</span><br><span class="line">                   fontsize=<span class="number">70</span>).set_duration(clip.duration)</span><br><span class="line"> </span><br><span class="line">final = CompositeVideoClip([the_end.set_pos(<span class="string">'center'</span>),clip],</span><br><span class="line">                           size =clip.size)</span><br><span class="line">                           </span><br><span class="line">final.write_gif(<span class="string">"./images/magic_theEnd.gif"</span>,fps=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/17.追踪人脸.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1082,109 +1170,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/8.创建和导出video_clips.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/moviepy/8.创建和导出video_clips.html" class="post-title-link" itemprop="url">8.创建和导出video_clips</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-03 15:24:31 / 修改时间：15:54:48" itemprop="dateCreated datePublished" datetime="2019-11-03T15:24:31+08:00">2019-11-03</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="创建和导出video-clips"><a href="#创建和导出video-clips" class="headerlink" title="创建和导出video clips"></a>创建和导出video clips</h1><p>video 和 audio clips是moviepy中的核心的对象。这篇博文，我们会介绍不同的clip，展示如何创建他们，以及如何将它们<br>导出到文件中。关于修改和处理vedio clip的信息点这里。</p><h2 id="一些基本的clips。"><a href="#一些基本的clips。" class="headerlink" title="一些基本的clips。"></a>一些基本的clips。</h2><h3 id="VIDEO-CLIPS"><a href="#VIDEO-CLIPS" class="headerlink" title="VIDEO CLIPS"></a>VIDEO CLIPS</h3><ul>
-<li>clip = VideoClip(make_frame, duration=4) # 自定义动画</li>
-<li>clip = VideoFileClip(“my_vedio_file.mp4”) # 文件格式还可以是avi、webm、 gif等</li>
-<li>clip = ImageSequenceClip([‘imagefile.jpeg’, … ], fps=24)</li>
-<li>clip = ImageClip(‘my_picture.png’) # 文件格式还可以是 png、tiff等</li>
-<li>clip = TextClip(‘Hello!’, font=”Amiri-Bold”, fintsize=70, color=’black’)</li>
-<li>clip = ColorClip(size=(460, 380), color=[R,G,B])</li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/moviepy/8.创建和导出video_clips.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1225,7 +1210,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

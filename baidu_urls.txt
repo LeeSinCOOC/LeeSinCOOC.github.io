@@ -1,3 +1,4 @@
+http://leesin.cc/reading/Docker+Python+Nginx部署图片应用.html
 http://leesin.cc/reading/PyMysql插入数据.html
 http://leesin.cc/reading/ROS机器人学习.html
 http://leesin.cc/reading/霍夫变换车道线检测.html
@@ -97,4 +98,3 @@ http://leesin.cc/python/8.Python的字符串.html
 http://leesin.cc/reading/卷积神经网络.html
 http://leesin.cc/reading/如何使用SVM训练自己的数据.html
 http://leesin.cc/python/7.Python的随机数模块.html
-http://leesin.cc/homework/number.html

@@ -265,6 +265,102 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/Docker+Python+Nginx部署图片应用.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/reading/Docker+Python+Nginx部署图片应用.html" class="post-title-link" itemprop="url">Docker+Python+Nginx部署图片应用</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-29 08:58:05 / 修改时间：09:00:56" itemprop="dateCreated datePublished" datetime="2019-11-29T08:58:05+08:00">2019-11-29</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Docker-Python-Nginx部署分享图片的应用"><a href="#Docker-Python-Nginx部署分享图片的应用" class="headerlink" title="Docker+Python+Nginx部署分享图片的应用"></a>Docker+Python+Nginx部署分享图片的应用</h1><p>这是一个如何使用Docker打包自己的Python应用，同时利用Nginx进行部署的教程</p><p>简单设想一个应用：我们将当前的时间做成图片，部署到远程服务器上，别人通过IP地址进行访问查看我们的图片</p><h2 id="做图片的代码："><a href="#做图片的代码：" class="headerlink" title="做图片的代码："></a>做图片的代码：</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">save_path = <span class="string">'./time_imgs/'</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    img_array = np.zeros((<span class="number">300</span>,<span class="number">600</span>),dtype=<span class="string">'uint8'</span>)</span><br><span class="line">    text = str(datetime.datetime.now())</span><br><span class="line">    font_face = cv.FONT_HERSHEY_PLAIN</span><br><span class="line">    font_scale = <span class="number">2</span></span><br><span class="line">    thickness = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    text_size = cv.getTextSize(text,font_face,font_scale,thickness)</span><br><span class="line"></span><br><span class="line">    origin_x = (img_array.shape[<span class="number">1</span>] - text_size[<span class="number">0</span>][<span class="number">0</span>])//<span class="number">2</span></span><br><span class="line">    origin_y = (img_array.shape[<span class="number">0</span>] + text_size[<span class="number">0</span>][<span class="number">1</span>])//<span class="number">2</span></span><br><span class="line"></span><br><span class="line">    cv.putText(img_array,text,(origin_x,origin_y),font_face,font_scale,(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>),thickness,<span class="number">8</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    cv.imwrite(save_path+str(time.time())+<span class="string">'.jpg'</span>,img_array)</span><br><span class="line"></span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/reading/Docker+Python+Nginx部署图片应用.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/PyMysql插入数据.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1102,94 +1198,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/moviepy/18.漂亮的结尾.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/moviepy/18.漂亮的结尾.html" class="post-title-link" itemprop="url">18.漂亮的结尾</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-03 15:26:13 / 修改时间：15:42:37" itemprop="dateCreated datePublished" datetime="2019-11-03T15:26:13+08:00">2019-11-03</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MoviePy-教程/" itemprop="url" rel="index"><span itemprop="name">MoviePy 教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="漂亮的结尾"><a href="#漂亮的结尾" class="headerlink" title="漂亮的结尾"></a>漂亮的结尾</h1><p><img src="/images/magic_theEnd.gif" alt></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> moviepy.editor <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> moviepy.video.tools.drawing <span class="keyword">import</span> circle</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 原有视频</span></span><br><span class="line">clip = VideoFileClip(<span class="string">"./videos/1.mp4"</span>, audio=<span class="literal">False</span>).add_mask()</span><br><span class="line">           </span><br><span class="line">w,h = clip.size</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 这里的mask是一个半径按照 r(t) = 800-200*t  根据时间变化消失的圆           </span></span><br><span class="line">clip.mask.get_frame = <span class="keyword">lambda</span> t: circle(screensize=(clip.w,clip.h),</span><br><span class="line">                                       center=(clip.w/<span class="number">2</span>,clip.h/<span class="number">4</span>),</span><br><span class="line">                                       radius=max(<span class="number">0</span>,int(<span class="number">200</span><span class="number">-200</span>*t)),</span><br><span class="line">                                       col1=<span class="number">1</span>, col2=<span class="number">0</span>, blur=<span class="number">4</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 搞一个TextClip来放The End</span></span><br><span class="line">the_end = TextClip(<span class="string">"The End"</span>, font=<span class="string">"Amiri-bold"</span>, color=<span class="string">"white"</span>,</span><br><span class="line">                   fontsize=<span class="number">70</span>).set_duration(clip.duration)</span><br><span class="line"> </span><br><span class="line">final = CompositeVideoClip([the_end.set_pos(<span class="string">'center'</span>),clip],</span><br><span class="line">                           size =clip.size)</span><br><span class="line">                           </span><br><span class="line">final.write_gif(<span class="string">"./images/magic_theEnd.gif"</span>,fps=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1230,7 +1238,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

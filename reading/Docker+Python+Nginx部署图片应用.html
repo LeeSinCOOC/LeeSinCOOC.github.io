@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon1.ico?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="Docker+Python+Nginx部署分享图片的应用这是一个如何使用Docker打包自己的Python应用，同时利用Nginx进行部署的教程简单设想一个应用：我们将当前的时间做成图片，部署到远程服务器上，别人通过IP地址进行访问查看我们的图片做图片的代码：1234567891011121314151617181920212223import cv2 as cvimport numpy as n">
+<meta name="keywords" content="python,tensorflow,pytorch,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker+Python+Nginx部署图片应用">
+<meta property="og:url" content="http://leesin.cc/reading/Docker+Python+Nginx部署图片应用.html">
+<meta property="og:site_name" content="Chen Jian&#39;s Blog">
+<meta property="og:description" content="Docker+Python+Nginx部署分享图片的应用这是一个如何使用Docker打包自己的Python应用，同时利用Nginx进行部署的教程简单设想一个应用：我们将当前的时间做成图片，部署到远程服务器上，别人通过IP地址进行访问查看我们的图片做图片的代码：1234567891011121314151617181920212223import cv2 as cvimport numpy as n">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://leesin.cc/images/docker_0.jpg">
+<meta property="og:image" content="http://leesin.cc/images/docker_1.png">
+<meta property="og:updated_time" content="2019-11-29T01:00:56.185Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker+Python+Nginx部署图片应用">
+<meta name="twitter:description" content="Docker+Python+Nginx部署分享图片的应用这是一个如何使用Docker打包自己的Python应用，同时利用Nginx进行部署的教程简单设想一个应用：我们将当前的时间做成图片，部署到远程服务器上，别人通过IP地址进行访问查看我们的图片做图片的代码：1234567891011121314151617181920212223import cv2 as cvimport numpy as n">
+<meta name="twitter:image" content="http://leesin.cc/images/docker_0.jpg">
+  <link rel="canonical" href="http://leesin.cc/reading/Docker+Python+Nginx部署图片应用">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Docker+Python+Nginx部署图片应用 | Chen Jian's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chen Jian's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-reading">
+      
+    
+
+    <a href="/reading/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>笔记</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-miscellaneous">
+      
+    
+
+    <a href="/miscellaneous/" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>常用网站</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/reading/Docker+Python+Nginx部署图片应用.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">Docker+Python+Nginx部署图片应用
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-29 08:58:05 / 修改时间：09:00:56" itemprop="dateCreated datePublished" datetime="2019-11-29T08:58:05+08:00">2019-11-29</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/一些笔记/" itemprop="url" rel="index"><span itemprop="name">一些笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Docker-Python-Nginx部署分享图片的应用"><a href="#Docker-Python-Nginx部署分享图片的应用" class="headerlink" title="Docker+Python+Nginx部署分享图片的应用"></a>Docker+Python+Nginx部署分享图片的应用</h1><p>这是一个如何使用Docker打包自己的Python应用，同时利用Nginx进行部署的教程</p><p>简单设想一个应用：我们将当前的时间做成图片，部署到远程服务器上，别人通过IP地址进行访问查看我们的图片</p><h2 id="做图片的代码："><a href="#做图片的代码：" class="headerlink" title="做图片的代码："></a>做图片的代码：</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">save_path = <span class="string">'./time_imgs/'</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    img_array = np.zeros((<span class="number">300</span>,<span class="number">600</span>),dtype=<span class="string">'uint8'</span>)</span><br><span class="line">    text = str(datetime.datetime.now())</span><br><span class="line">    font_face = cv.FONT_HERSHEY_PLAIN</span><br><span class="line">    font_scale = <span class="number">2</span></span><br><span class="line">    thickness = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    text_size = cv.getTextSize(text,font_face,font_scale,thickness)</span><br><span class="line"></span><br><span class="line">    origin_x = (img_array.shape[<span class="number">1</span>] - text_size[<span class="number">0</span>][<span class="number">0</span>])//<span class="number">2</span></span><br><span class="line">    origin_y = (img_array.shape[<span class="number">0</span>] + text_size[<span class="number">0</span>][<span class="number">1</span>])//<span class="number">2</span></span><br><span class="line"></span><br><span class="line">    cv.putText(img_array,text,(origin_x,origin_y),font_face,font_scale,(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>),thickness,<span class="number">8</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    cv.imwrite(save_path+str(time.time())+<span class="string">'.jpg'</span>,img_array)</span><br><span class="line"></span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>这样，每隔一秒，程序就将当前时间做成图片保存下来，效果如下：<br><img src="/images/docker_0.jpg" alt></p>
+<h2 id="上传应用代码"><a href="#上传应用代码" class="headerlink" title="上传应用代码"></a>上传应用代码</h2><p>接下来我们需要将这个代码放在服务器上，工具很多，ssh命令，xshell软件，或者pycharm都可以<br>我上传后的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-Hi_Docker</span><br><span class="line">---Project</span><br><span class="line">------time_imgs</span><br><span class="line">------gen_img.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="准备Dockerfile"><a href="#准备Dockerfile" class="headerlink" title="准备Dockerfile"></a>准备Dockerfile</h2><p>Docker作为一个系统级的容器，权当它是让你重装了一个系统，流程就是下面这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"># ---------------------------配置系统，添加加速源，更新源 ------------------------------------</span><br><span class="line">FROM ubuntu:16.04 </span><br><span class="line">LABEL maintainer &quot;NVIDIA CORPORATION &lt;cudatools@nvidia.com&gt;&quot;</span><br><span class="line">RUN sed -i &quot;s/archive.ubuntu./mirrors.aliyun./g&quot; /etc/apt/sources.list</span><br><span class="line">RUN sed -i &quot;s/deb.debian.org/mirrors.aliyun.com/g&quot; /etc/apt/sources.list</span><br><span class="line">RUN sed -i &quot;s/security.debian.org/mirrors.aliyun.com\/debian-security/g&quot; /etc/apt/sources.list</span><br><span class="line">RUN sed -i &apos;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&apos; /etc/apt/sources.list</span><br><span class="line">RUN apt-get update</span><br><span class="line"># -----------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># ------------- 安装nginx ---------------</span><br><span class="line">RUN  apt-get install -y nginx</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># ************** 更改nginx默认配置 ********</span><br><span class="line">ADD ./default /etc/nginx/sites-available # 要事先准备：default文件</span><br><span class="line"># ****************************************</span><br><span class="line"></span><br><span class="line"># ------------------------------ 安装依赖，python，pip -----------</span><br><span class="line">RUN apt-get update</span><br><span class="line">RUN  apt-get upgrade -y</span><br><span class="line">RUN  apt-get install -y libglib2.0-0</span><br><span class="line">RUN  apt-get install -y libsm6</span><br><span class="line">RUN  apt-get install -y libxrender1</span><br><span class="line">RUN  apt-get install -y libxext-dev</span><br><span class="line">RUN  apt-get install -y scrot</span><br><span class="line">RUN  apt-get install -y python3</span><br><span class="line">RUN apt-get install -y wget vim</span><br><span class="line">RUN wget -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py</span><br><span class="line">RUN python3 /tmp/get-pip.py</span><br><span class="line">RUN pip3 install --upgrade pip</span><br><span class="line"># ---------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># ******************* 配置时区为上海 *********</span><br><span class="line">ADD ./Shanghai /etc/                        # 要事先准备：Shanghai 时区文件</span><br><span class="line">RUN mv /etc/Shanghai /etc/localtime</span><br><span class="line">RUN echo &apos;Asia/Shanghai&apos; &gt;/etc/timezone</span><br><span class="line"># ******************************************</span><br><span class="line"></span><br><span class="line"># ************************ 安装项目使用到的库 *****************************</span><br><span class="line">ADD ./requirements.txt /tmp/requirements.txt                            # 要事先准备：requirements文件</span><br><span class="line">RUN pip3 install --default-timeout=1000  -i https://pypi.tuna.tsinghua.edu.cn/simple  -r /tmp/requirements.txt</span><br><span class="line"># ***********************************************************************</span><br><span class="line"></span><br><span class="line"># -------------------- 将整个项目文件放进Docker ------------</span><br><span class="line">ADD ./Project /opt/Project</span><br><span class="line">WORKDIR /opt/Project/</span><br><span class="line"># --------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># ------ 声明端口 ------</span><br><span class="line">EXPOSE 8080 # EXPOSE命令只是声明了容器应该打开的端口并没有实际上将它打开</span><br><span class="line"># ---------------------</span><br><span class="line"></span><br><span class="line"># ------- 运行nginx和主程序 -----------</span><br><span class="line">CMD nohup sh -c &apos;/usr/sbin/nginx &amp;&amp; python3 gen_img.py&apos;</span><br><span class="line"># ------------------------------------</span><br></pre></td></tr></table></figure>
+
+<p><code>Dockerfile</code>虽然写好了，但是也说了，欠缺三个文件：</p>
+<ul>
+<li><code>default</code>:nginx配置文件</li>
+<li><code>Shanghai</code>:时区文件</li>
+<li><code>requirements</code>:python外部库文件</li>
+</ul>
+<h3 id="default"><a href="#default" class="headerlink" title="default"></a>default</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">##</span><br><span class="line"># You should look at the following URL&apos;s in order to grasp a solid understanding</span><br><span class="line"># of Nginx configuration files in order to fully unleash the power of Nginx.</span><br><span class="line"># http://wiki.nginx.org/Pitfalls</span><br><span class="line"># http://wiki.nginx.org/QuickStart</span><br><span class="line"># http://wiki.nginx.org/Configuration</span><br><span class="line">#</span><br><span class="line"># Generally, you will want to move this file somewhere, and start with a clean</span><br><span class="line"># file but keep this around for reference. Or just disable in sites-enabled.</span><br><span class="line">#</span><br><span class="line"># Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.</span><br><span class="line">##</span><br><span class="line"></span><br><span class="line"># Default server configuration</span><br><span class="line">#</span><br><span class="line">server &#123;</span><br><span class="line">	listen 80 default_server;</span><br><span class="line">	listen [::]:80 default_server;</span><br><span class="line"></span><br><span class="line">	# SSL configuration</span><br><span class="line">	#</span><br><span class="line">	# listen 443 ssl default_server;</span><br><span class="line">	# listen [::]:443 ssl default_server;</span><br><span class="line">	#</span><br><span class="line">	# Note: You should disable gzip for SSL traffic.</span><br><span class="line">	# See: https://bugs.debian.org/773332</span><br><span class="line">	#</span><br><span class="line">	# Read up on ssl_ciphers to ensure a secure configuration.</span><br><span class="line">	# See: https://bugs.debian.org/765782</span><br><span class="line">	#</span><br><span class="line">	# Self signed certs generated by the ssl-cert package</span><br><span class="line">	# Don&apos;t use them in a production server!</span><br><span class="line">	#</span><br><span class="line">	# include snippets/snakeoil.conf;</span><br><span class="line">    </span><br><span class="line">    # ************ 需要分享的文件夹 ****************</span><br><span class="line">	root /opt/Project/time_imgs/;               #*</span><br><span class="line">    # ********************************************</span><br><span class="line">	autoindex on;</span><br><span class="line"></span><br><span class="line">	# Add index.php to the list if you are using PHP</span><br><span class="line">	index index.html index.htm index.nginx-debian.html;</span><br><span class="line"></span><br><span class="line">	server_name _;</span><br><span class="line"></span><br><span class="line">	location / &#123;</span><br><span class="line">		# First attempt to serve request as file, then</span><br><span class="line">		# as directory, then fall back to displaying a 404.</span><br><span class="line">		try_files $uri $uri/ =404;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">	#</span><br><span class="line">	#location ~ \.php$ &#123;</span><br><span class="line">	#	include snippets/fastcgi-php.conf;</span><br><span class="line">	#</span><br><span class="line">	#	# With php7.0-cgi alone:</span><br><span class="line">	#	fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">	#	# With php7.0-fpm:</span><br><span class="line">	#	fastcgi_pass unix:/run/php/php7.0-fpm.sock;</span><br><span class="line">	#&#125;</span><br><span class="line"></span><br><span class="line">	# deny access to .htaccess files, if Apache&apos;s document root</span><br><span class="line">	# concurs with nginx&apos;s one</span><br><span class="line">	#</span><br><span class="line">	#location ~ /\.ht &#123;</span><br><span class="line">	#	deny all;</span><br><span class="line">	#&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Virtual Host configuration for example.com</span><br><span class="line">#</span><br><span class="line"># You can move that to a different file under sites-available/ and symlink that</span><br><span class="line"># to sites-enabled/ to enable it.</span><br><span class="line">#</span><br><span class="line">#server &#123;</span><br><span class="line">#	listen 80;</span><br><span class="line">#	listen [::]:80;</span><br><span class="line">#</span><br><span class="line">#	server_name example.com;</span><br><span class="line">#</span><br><span class="line">#	root /opt/helmet_det_docker//images/;</span><br><span class="line">#	index index.html;</span><br><span class="line">#</span><br><span class="line">#	location / &#123;</span><br><span class="line">#		try_files $uri $uri/ =404;</span><br><span class="line">#	&#125;</span><br><span class="line">#&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Shanghai"><a href="#Shanghai" class="headerlink" title="Shanghai"></a>Shanghai</h3><p>这个也可以不用，自行配置docker的时区也无妨</p>
+<h3 id="requirements"><a href="#requirements" class="headerlink" title="requirements"></a>requirements</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip freeze &gt; requirements.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="开始创建镜像"><a href="#开始创建镜像" class="headerlink" title="开始创建镜像"></a>开始创建镜像</h2><p>进入<code>Hi_Docker</code></p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t hello_docker . # -t 是tag简称</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行镜像"><a href="#运行镜像" class="headerlink" title="运行镜像"></a>运行镜像</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /root/ChenJian/Hi_Docker/rootimgs:/opt/Project/time_imgs -p 9999:80 hello_docker</span><br></pre></td></tr></table></figure>
+
+<p>为了说明命令这里新建了个文件夹<code>rootimgs</code></p>
+<ul>
+<li>-p: 指定端口映射，格式为：主机(宿主)端口:容器端口</li>
+<li>-volume , -v: 绑定一个卷</li>
+</ul>
+<p>浏览器访问：`xxx.xxx.xxx.xxx:9999<br>效果如下：<br><img src="/images/docker_1.png" alt></p>
+<h2 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+
+<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 1133f6abaf51 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@1133f6abaf51:/opt/Project#</span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭容器"><a href="#关闭容器" class="headerlink" title="关闭容器"></a>关闭容器</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm 1133f6abaf51 -f</span><br></pre></td></tr></table></figure>
+
+<p>需要完整项目代码文件，请<a href="https://github.com/LeeSinCOOC/Hi_Docker.git" target="_blank" rel="noopener">克隆</a>我的GitHub</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持是对我最大的鼓励</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/weixin.jpg" alt="陈 建 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="陈 建 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>陈 建</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://leesin.cc/reading/Docker+Python+Nginx部署图片应用.html" title="Docker+Python+Nginx部署图片应用">http://leesin.cc/reading/Docker+Python+Nginx部署图片应用.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/reading/PyMysql插入数据.html" rel="next" title="PyMysql插入数据">
+                  <i class="fa fa-chevron-left"></i> PyMysql插入数据
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="陈 建">
+  <p class="site-author-name" itemprop="name">陈 建</p>
+  <div class="site-description motion-element" itemprop="description">当时明月在，曾照彩云归</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/LeeSinCOOC" title="GitHub &rarr; https://github.com/LeeSinCOOC" rel="noopener" target="_blank"><i class="fa fa-fw fa-GitHub"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:690246265@qq.com" title="E-Mail &rarr; mailto:690246265@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-E-Mail"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+  <div class="links-of-blogroll motion-element links-of-blogroll-block">
+    <div class="links-of-blogroll-title">
+      <i class="fa  fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com" title="https://www.baidu.com" rel="noopener" target="_blank">baidu</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker-Python-Nginx部署分享图片的应用"><span class="nav-number">1.</span> <span class="nav-text">Docker+Python+Nginx部署分享图片的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#做图片的代码："><span class="nav-number">1.1.</span> <span class="nav-text">做图片的代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传应用代码"><span class="nav-number">1.2.</span> <span class="nav-text">上传应用代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备Dockerfile"><span class="nav-number">1.3.</span> <span class="nav-text">准备Dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#default"><span class="nav-number">1.3.1.</span> <span class="nav-text">default</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shanghai"><span class="nav-number">1.3.2.</span> <span class="nav-text">Shanghai</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#requirements"><span class="nav-number">1.3.3.</span> <span class="nav-text">requirements</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始创建镜像"><span class="nav-number">1.4.</span> <span class="nav-text">开始创建镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行镜像"><span class="nav-number">1.5.</span> <span class="nav-text">运行镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看容器"><span class="nav-number">1.6.</span> <span class="nav-text">查看容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入容器"><span class="nav-number">1.7.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭容器"><span class="nav-number">1.8.</span> <span class="nav-text">关闭容器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈 建</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.3.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
