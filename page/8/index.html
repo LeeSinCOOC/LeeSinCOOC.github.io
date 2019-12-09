@@ -265,6 +265,110 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/11.21个项目玩转深度学习之CycleGAN与非配对图像转换.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈 建">
+      <meta itemprop="description" content="当时明月在，曾照彩云归">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chen Jian's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/tensorflow/11.21个项目玩转深度学习之CycleGAN与非配对图像转换.html" class="post-title-link" itemprop="url">11.21个项目玩转深度学习之CycleGAN与非配对图像转换</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 21:29:48" itemprop="dateCreated datePublished" datetime="2019-09-04T21:29:48+08:00">2019-09-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-02 18:33:16" itemprop="dateModified" datetime="2019-11-02T18:33:16+08:00">2019-11-02</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CycleGAN与非配对图像转换"><a href="#CycleGAN与非配对图像转换" class="headerlink" title="CycleGAN与非配对图像转换"></a>CycleGAN与非配对图像转换</h1><h2 id="下载数据集并训练"><a href="#下载数据集并训练" class="headerlink" title="下载数据集并训练"></a>下载数据集并训练</h2><p>下载一个事先准备好的数据集：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash download_dataset.sh apple2orange</span><br></pre></td></tr></table></figure><p>将图片转换成tfrecords格式：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python build_data.py \</span><br><span class="line">  --X_input_dir data/apple2orange/trainA \</span><br><span class="line">  --Y_input_dir data/apple2orange/trainB \</span><br><span class="line">  --X_output_file data/tfrecords/apple.tfrecords \</span><br><span class="line">  --Y_output_file data/tfrecords/orange.tfrecords</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/tensorflow/11.21个项目玩转深度学习之CycleGAN与非配对图像转换.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/10.21个项目玩转深度学习之超分辨让图像变得更清晰.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1248,110 +1352,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leesin.cc/tensorflow/1.21个项目玩转深度学习之MNIST机器学习入门.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈 建">
-      <meta itemprop="description" content="当时明月在，曾照彩云归">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Chen Jian's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/tensorflow/1.21个项目玩转深度学习之MNIST机器学习入门.html" class="post-title-link" itemprop="url">1.21个项目玩转深度学习之MNIST机器学习入门.md</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-04 21:18:13" itemprop="dateCreated datePublished" datetime="2019-09-04T21:18:13+08:00">2019-09-04</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-17 00:12:08" itemprop="dateModified" datetime="2019-09-17T00:12:08+08:00">2019-09-17</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow教程/" itemprop="url" rel="index"><span itemprop="name">TensorFlow教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="MNIST-机器学习入门"><a href="#MNIST-机器学习入门" class="headerlink" title="MNIST 机器学习入门"></a>MNIST 机器学习入门</h1><h2 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入TensorFlow和tf.keras</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入辅助库</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">print(tf.__version__)</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/tensorflow/1.21个项目玩转深度学习之MNIST机器学习入门.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1392,7 +1392,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -1,3 +1,4 @@
+http://leesin.cc/reading/Python中的hash算法和加密算法.html
 http://leesin.cc/reading/如何在HTML页面添加数学公式.html
 http://leesin.cc/reading/Docker+Python+Nginx部署图片应用.html
 http://leesin.cc/reading/PyMysql插入数据.html
@@ -88,13 +89,12 @@ http://leesin.cc/python/18.Python的文件.html
 http://leesin.cc/python/17.Python的模块.html
 http://leesin.cc/python/16.Python的函数.html
 http://leesin.cc/python/15.Python的循环.html
-http://leesin.cc/python/13.Python运算符.html
 http://leesin.cc/python/14.Python条件判断.html
-http://leesin.cc/python/11.Python的字典.html
+http://leesin.cc/python/13.Python运算符.html
 http://leesin.cc/python/10.Python的元组.html
+http://leesin.cc/python/11.Python的字典.html
 http://leesin.cc/python/12.复习.html
 http://leesin.cc/python/9.Python 的列表.html
-http://leesin.cc/reading/卷积神经网络.html
-http://leesin.cc/python/7.Python的随机数模块.html
-http://leesin.cc/reading/如何使用SVM训练自己的数据.html
 http://leesin.cc/python/8.Python的字符串.html
+http://leesin.cc/reading/OpenCV检测分割图像.html
+http://leesin.cc/reading/如何使用SVM训练自己的数据.html
